@@ -1,0 +1,65 @@
+.applicationView {
+
+  img {
+    width: 75px;
+    height: 75px;
+    margin-right: 30px;
+    border: 1px solid #e8e8e8;
+  }
+  margin: 0 auto;
+  margin-bottom: 50px;
+  .module_headerCrumb .searchTitle a:hover {
+    color: #ddd;
+  }
+  .publish {
+    text-align: center;
+  }
+  &::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  .box-card0 {
+    padding: 20px 20px 20px 20px;
+    width: 100%;
+    margin: 40px auto;
+  }
+  .box-card2 {
+    width: 25%;
+    float: right;
+    margin-top: 20px;
+    span {
+      font-size: 18px;
+    }
+  }
+  .text span {
+    margin-left: 5px;
+    font-size: 14px;
+  }
+
+  .item {
+    margin-bottom: 10px;
+  }
+  .clearfix span {
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .clearfix:before,
+  .clearfix:after {
+    display: table;
+    content: "";
+  }
+  .clearfix:after {
+    clear: both;
+  }
+  .el-input__inner {
+    background: rgb(251, 251, 251);
+  }
+  .el-textarea__inner {
+    background: rgb(251, 251, 251);
+  }
+  .el-card__header {
+    padding: 10px 20px 8px;
+    background: rgb(251, 251, 251);
+  }
+}

@@ -1,0 +1,110 @@
+h6,
+h3,
+h1,
+h4,
+h5,
+h2,
+p,
+ul,
+li,
+body,
+html {
+  margin: 0;
+  padding: 0;
+  font-weight: 400;
+}
+.detail {
+  width: 850px;
+  display: inline-block;
+  word-wrap: break-word;
+  word-break: normal;
+}
+a:focus {
+  outline: none;
+}
+img {
+  border: 0;
+}
+.container,
+.o-container {
+  min-width: 300px;
+  max-width: 1020px;
+  margin: 0 auto;
+  // padding: 0 1rem;
+  box-sizing: border-box;
+}
+.deskHeader {
+  max-width: 1200px;
+}
+
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: #4c83c3;
+}
+
+.el-button--primary {
+  border-color: transparent;
+}
+
+.el-button--primary:hover {
+  border-color: transparent;
+}
+.clearfix:before,
+.clearfix:after {
+  content: "";
+  display: table;
+}
+.height_main {
+  min-height: 100%;
+  position: relative;
+}
+.height_footer {
+  bottom: -80px;
+  position: absolute;
+  width: 100%;
+}
+.Crumbs {
+  padding: 15px 0 15px;
+  border-bottom: 1px solid #e8e8e8;
+  color: #606266;
+  span {
+    cursor: pointer;
+  }
+  .active {
+    color: #909399;
+  }
+}
+.hasBg {
+  background: url("../img/homepage/space.jpg");
+  padding: 59px 0 15px 0;
+}
+.searchTitle {
+  font-size: 17px;
+  color: rgba(255, 255, 255, 0.712);
+  a {
+    color: white;
+  }
+}
+.searchTitle a:hover {
+  color: #ddd;
+}
+.module_headerCrumb {
+  margin: 20px 20px 0 0;
+}
+.el-table .tablehidden {
+  white-space: nowrap;
+  // text-overflow: ellipsis;
+  // overflow: hidden;
+}
+.badge {
+  vertical-align: top;
+  margin-top: 0;
+}
+.el-badge__content.is-fixed.is-dot {
+  top: 5px;
+  right: 8px;
+}

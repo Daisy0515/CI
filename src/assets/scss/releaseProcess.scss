@@ -1,0 +1,405 @@
+.releaseProcess{
+	.buzhou{
+        width: 715px;
+		margin: 40px auto;
+        span{
+			padding-bottom: 30px;
+            float: left;
+			margin: 10px 10px 0 10px;
+			font-weight:1000;
+			color: #4C83C3;
+		}
+		li{
+		}
+		&>li>p{
+			border:1px solid #4C83C3;
+            padding: 10px 20px 10px 20px;
+            float: left;
+    }
+}
+	.searchTitle{
+		font-size: 17px;
+		color: rgba(255, 255, 255, 0.712);
+		}
+    .container{
+        .main{
+            margin-top: 40px;
+            text-align: center;
+            h1{
+                margin-bottom: 20px;
+            }
+        }
+        .processBottom{
+            margin: 60px auto;
+			width: 644px;
+			box-sizing: border-box;
+            span{
+                margin: 0 50px 50px;
+                background: #4C83C3;
+                border: 1px solid #4c83c3;
+                color: white;
+                font-size: 15px;
+                cursor: pointer;
+                padding: 10px 80px 10px 80px;
+            }
+        }
+    }
+    .el-step.is-center{
+        margin-top: 50px; 
+        margin-bottom: 30px;
+    }
+    .processItem{
+        margin: 20px auto;
+        width: 600px;
+      .stats_item{
+          float: left;
+          align-items: center;
+          width: 200px;
+          i{
+			  font-size: 50px;
+			  color: #4C83C3;
+          }
+          strong{
+              font-size: 18px;
+              font-weight: 400;
+          }
+      }
+    }
+.avatar{
+	float: left;
+}
+.identityName{
+	font-size: 14px;
+}
+.subtext{
+	font-size: 13px;
+}
+.avatarinfo{
+	margin-left: 45px;
+}
+.clearfix:after {
+	clear: both
+}
+.saveSearchError {
+	background: #D06320;
+	color: #fff;
+	padding: 5px;
+	font-size: 12px;
+	border-radius: 5px;
+	display: inline-block;
+	margin-left: 5px
+}
+#searchTop .ui-autocomplete {
+	position: absolute
+}
+
+#searchTop .ui-autocomplete li a,
+#searchTop .ui-autocomplete li div {
+	padding: 10px
+}
+.module_headerCrumb .searchTitle a:hover {
+	color: #ddd
+}
+
+.module_headerCrumb .searchTitle h1 {
+	display: inline;
+	color: #fff;
+	font-size: 25px;
+}
+
+.module_headerCrumb .searchTitle h1 strong {
+	color: #fff
+}
+
+.module_headerCrumb .searchTitle span {
+	color: #ccc;
+	font-weight: 400;
+	font-size: 16px
+}
+.module_headerCrumb{
+	margin: 20px 20px 0px 0;
+}
+
+
+.panel,
+.panelHold {
+	background: rgb(245,245,245)
+}
+
+.switchPanel ul li a {
+	font-size: 13px;
+}
+
+.panelHold {
+	margin-left: 0;
+	width: 100%;
+	/*min-height: 1600px;*/
+	height: 100%;
+	transition: -webkit-transform 200ms ease;
+	transition: transform 200ms ease;
+	transition: transform 200ms ease, -webkit-transform 200ms ease
+}
+
+
+.panel {
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	padding: 12px
+}
+
+.filterHeader {
+	display: block
+}
+
+a.anyLink,
+a.drillDown,
+a.toggleLink {
+	display: block;
+	padding: 4px 0;
+	color: #666
+}
+
+ul.services li.serviceItem .workWrapper {
+	margin-bottom: 10px
+}
+
+ul.services li.serviceItem .workWrapper .workBg {
+	position: relative;
+	padding-bottom: 66.66666%;
+	overflow: hidden;
+	display: block
+}
+
+ul.services li.serviceItem .workWrapper .workBg .work {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: #fff;
+	padding: 0;
+	border: 1px solid #DDD
+}
+
+ul.services li.serviceItem .workWrapper .enhance {
+	display: none
+}
+
+ul.services li.serviceItem .serviceMeta {
+	width: 100%;
+	margin: 0;
+	float: left
+}
+
+ul.services li.serviceItem .serviceMeta h2.servTitle {
+	font-size: 17.5px;
+	font-size: 1.25rem;
+	margin: 0;
+	font-family: "Open Sans", sans-serif !important;
+	font-weight: 600;
+	word-wrap: break-word
+}
+
+ul.services li.serviceItem p.desc {
+	font-size: 14px;
+	color: #666;
+	margin: 6px 0;
+	padding: 0;
+	word-wrap: break-word
+}
+
+
+ul.services li.serviceItem p.desc .highlight {
+	color: #333
+}
+
+ul.services li.serviceItem .userAvatar div h3 {
+	font-size: 13px;
+	margin: 0;
+	padding: 0;
+	line-height: 1;
+	height: auto;
+	font-family: "Open Sans", sans-serif !important
+}
+
+ul.services li.serviceItem .userAvatar div .countryInfo {
+	font-size: 12px;
+	color: #999;
+	display: block
+}
+
+ul.services li.serviceItem ul.skills {
+	margin: 7px 0 10px;
+	padding: 0;
+	list-style: none;
+	line-height: 16px;
+	display: block
+}
+
+ul.services li.serviceItem ul.skills li {
+	display: inline-block;
+	padding: 0 12px 0 0
+}
+
+ul.services li.serviceItem ul.skills li a {
+	color: #999;
+	font-size: 13px;
+	font-family: "Open Sans", sans-serif !important
+}
+
+ul.services li.serviceItem ul.skills li a em.highlight {
+	color: #333
+}
+
+ul.services li.serviceItem .extras2 {
+	display: block;
+	color: #999;
+	font-size: 14px;
+	padding: 3px 0 8px;
+	line-height: 1.8
+}
+
+ul.services li.serviceItem .extras2 strong {
+	color: #333
+}
+
+ul.services li.serviceItem .extras2 a {
+	color: #999;
+	font-size: 11px
+}
+
+.searchPro .mainContact {
+	text-align: right
+}
+
+ul.services li.serviceItem .userAvatar {
+	margin: 20px 0
+}
+
+
+.toolbarSearch .sorts {
+	width: 110px;
+	margin: 0
+}
+
+
+ul.services li.serviceItem .userAvatar>div {
+	width: 80%
+}
+
+.switchPanel,
+.switchPanel.open {
+	width: 25%;
+	margin: 20px 1% 0 0;
+	float: left;
+}
+.searchRefinement a.active{
+	font-weight: 600;
+	color: #333;
+}
+.searchRefinement li:nth-child(1){
+	margin-bottom: 5px;
+}
+.searchRefinement{
+	margin-top: 10px;
+}
+.switchPanel h3:hover {
+	cursor: default
+}
+.searchRefinement.category li a span.totalNumber{
+	font-size: 11px;
+	color: #aaa;
+}
+.panelHold {
+	width: 74%;
+	float: left
+}
+
+
+.services>li {
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	background: #fff;
+	padding: 12px !important;
+	margin-bottom: 12px;
+	border: 2px solid transparent !important;
+	position: relative
+}
+
+
+.services>li .serviceHeader .servTitle {
+	display: block;
+	font-size: 22px;
+	line-height: 1;
+	color: #4c83c3;
+	font-weight: 400;
+	word-wrap: break-word
+}
+
+.services>li .serviceHeader .servTitle h2 {
+	font-size: 22px !important;
+	font-weight: 400;
+	line-height: 1
+}
+
+.services>li .serviceHeader .fb {
+	float: right;
+	width: 20%;
+	text-align: right
+}
+
+.services>li .serviceHeader .fb a {
+	display: inline-block;
+	padding: 5px;
+	font-size: 16px;
+	color: #999
+}
+
+.serviceHeader .servfeedback,
+.serviceIdentity__contact {
+	display: block;
+	float: right;
+	text-align: right
+}
+
+.serviceIdentity {
+	margin-bottom: 12px
+}
+
+.serviceIdentity__info {
+	display: block;
+	margin-bottom: 12px;
+	float: left;
+	width: 75%
+}
+
+.serviceHeader .servTitle {
+	float: left;
+	max-width: 80%;
+	margin-bottom: 6px;
+	margin-left: 4px;
+}
+.services{
+	margin-top: 15px;
+}
+.pagerHold{
+text-align: center;
+}
+.module_tabs .tab.active a{
+	font-size: 14px;
+	border-bottom:3px solid#4c83c3;
+	padding: 0 3px 8px 3px;
+	color: #666;
+	font-weight: 600;
+}
+.searchActive{
+	margin-top: 8px;
+	color: #666;
+	font-size:13px;
+}
+.clearList{
+	color: #4C83C3;
+	margin-top: 9px;
+	font-size:13px;
+}
+}

@@ -1,0 +1,65 @@
+.desk{
+  height: 100%;
+  min-height: 100%;
+  .header {
+    border-bottom: 1px solid #f0f0f0;
+    padding: 18px;
+  }
+.el-breadcrumb {
+  padding: 15px;
+}
+.module_box {
+  margin-top: 20px;
+}
+.box-card {
+  margin-top: 20px;
+  width: 32%;
+  float: left;
+  & ::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  span {
+    font-size: 16px;
+  }
+}
+.text {
+  font-size: 15px;
+}
+
+.item {
+  margin-bottom: 18px;
+}
+
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+.clearfix:after {
+  clear: both;
+}
+.globalHeader * {
+  margin-bottom: 0;
+}
+.el-tabs__item.is-active,.el-tabs__item:hover{
+  color:#3e76b8;
+}
+.el-tabs__active-bar{
+  background: #3e76b8;
+}
+.el-input__inner{
+border:1px solid #c0c0c0
+}
+.el-input__inner::-webkit-input-placeholder {
+ color:#c0c0c0
+}
+.el-input--prefix .el-input__inner{
+  width:180px;
+  padding-left:50px;
+}
+.el-date-editor.el-input, .el-date-editor.el-input__inner{
+  width: 180px;
+}
+}
