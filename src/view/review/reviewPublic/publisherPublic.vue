@@ -142,16 +142,9 @@ body,
   .service_main {
     box-sizing: border-box;
     float: right;
-    width: 75%;
-    margin: 40px auto;
-    &::before {
-      content: "";
-      display: table;
-      clear: both;
-    }
-    h3 {
-      margin-bottom: 40px;
-    }
+    width: 85%;
+    /* margin: 40px auto; */
+    
   }
 }
 </style>
