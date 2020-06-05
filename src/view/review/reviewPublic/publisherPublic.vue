@@ -19,37 +19,37 @@
       <div class="left-scroll">
         <div class="left_top">
 			<el-menu
-			      default-active="2"
+			      
 			      class="el-menu-vertical-demo"
 			      @open="handleOpen"
 			      @close="handleClose"
 				  :default-active="this.$router.path"
 				  router>
 			      
-			      <el-menu-item index="/managerIndex">
+			      <el-menu-item index="/publisherIndex">
 			        <i class="el-icon-menu"></i>
 			        <span slot="title">首页</span>
 			      </el-menu-item>
 				  
-			      <el-menu-item index="/managerNotAccept">
+			      <el-menu-item index="/publisherNotAccept">
 			        <i class="el-icon-setting"></i>
 			        <span slot="title">未接受</span>
 			      </el-menu-item>
 				  
-				  <el-menu-item index="/managerRollback">
+				  <el-menu-item index="/publisherRollback">
 				    <i class="el-icon-setting"></i>
 				    <span slot="title">打回中</span>
 				  </el-menu-item>
 				  
-			      <el-menu-item index="/managerReview">
+			      <el-menu-item index="/publisherReview">
 			        <i class="el-icon-setting"></i>
 			        <span slot="title">评审中</span>
 			      </el-menu-item>
-				  <el-menu-item index="/managerComplete">
+				  <el-menu-item index="/publisherComplete">
 				    <i class="el-icon-setting"></i>
 				    <span slot="title">已完成</span>
 				  </el-menu-item>
-				  <el-menu-item index="/managerDraft" >
+				  <el-menu-item index="/publisherDraft" >
 				    <i class="el-icon-document"></i>
 				    <span slot="title">草稿箱</span>
 				  </el-menu-item>
@@ -133,7 +133,7 @@ body,
 .service {
   .left-scroll {
    /* text-align: center; */
-    width: 15%;
+    width: 11%;
     float: left;
     height: 100%;
        

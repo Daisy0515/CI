@@ -2,7 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import index from '@/view/home/index/index'
 import homePublic from '@/view/home/homePublic/homePublic'
-import reviewPublic from '@/view/review/reviewPublic/reviewPublic'
+import managerPublic from '@/view/review/reviewPublic/managerPublic'
+import publisherPublic from '@/view/review/reviewPublic/publisherPublic'
 import store from '@/store/index.js'
 Vue.use(Router)
 const vueRouter = new Router({
@@ -88,8 +89,8 @@ const vueRouter = new Router({
     },
 	{
 		path:'/',
-		name:'reviewPublic',
-		component:reviewPublic,
+		name:'managerPublic',
+		component:managerPublic,
 		redirect:'index',//??
 		children:[{
 			path:'/managerIndex',
@@ -132,14 +133,7 @@ const vueRouter = new Router({
 				title:'已完成',
 			}
 		},
-		{
-			path:'/managerDraft',
-			name:'managerDraft',
-			component:() => import('@/view/review/manager/draft'),
-			meta:{
-				title:'草稿箱',
-			}
-		},
+		
 		{
 			path:'/managerDraft',
 			name:'managerDraft',
@@ -151,6 +145,64 @@ const vueRouter = new Router({
 		
 	},
     {
+    	path:'/',
+    	name:'publisherPublic',
+    	component:publisherPublic,
+    	redirect:'index',//??
+    	children:[{
+    		path:'/publisherIndex',
+    		name:'publisherIndex',
+    		component:() => import('@/view/review/publisher/publisherIndex'),
+    		meta:{
+    			title:'首页',
+    		}
+    		
+    	},
+    	{
+    		path:'/publisherNotAccept',
+    		name:'publisherNotAccept',
+    		component:() => import('@/view/review/publisher/notAccept'),
+    		meta:{
+    			title:'未接受',
+    		}
+    	},
+    	{
+    		path:'/publisherRollback',
+    		name:'publisherRollback',
+    		component:() => import('@/view/review/publisher/rollback'),
+    		meta:{
+    			title:'打回中',
+    		}
+    	},
+    	{
+    		path:'/publisherReview',
+    		name:'publisherReview',
+    		component:() => import('@/view/review/publisher/review'),
+    		meta:{
+    			title:'评审中',
+    		}
+    	},
+    	{
+    		path:'/publisherComplete',
+    		name:'publisherComplete',
+    		component:() => import('@/view/review/publisher/complete'),
+    		meta:{
+    			title:'已完成',
+    		}
+    	},
+    	{
+    		path:'/publisherDraft',
+    		name:'publisherDraft',
+    		component:() => import('@/view/review/publisher/draft'),
+    		meta:{
+    			title:'草稿箱',
+    		}
+    	},
+    	]
+    	
+    },
+    
+	{
       path: '/',
       name: 'homePublic',
       component: homePublic,
