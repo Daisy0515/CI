@@ -92,6 +92,7 @@ export default {
 		},
 		// 提交ruleFrom不知道对不对
 		setIdCard(data) {
+			data && (this.ruleForm.sourceFile = data);
 			httpPut('/v1/authorization/mission/missioncommit/update', this.ruleForm).then(results => {
 				const { msg, httpCode } = results.data;
 				if (httpCode === 200) {

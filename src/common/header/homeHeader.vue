@@ -57,6 +57,10 @@ export default {
           title: "招标投标",
           url: "roleSelection"
         },
+		{
+		  title: "内测招募",
+		  url: "testEmploy"
+		},
         {
           title: "经典案例",
           url: "classicCase"

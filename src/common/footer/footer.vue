@@ -3,8 +3,8 @@
 <footer class="myfooter">
     <div class="footer_top">
         <p><i class="icon iconfont icon-shouye"></i>哈尔滨工业大学（深圳）</p>
-        <p><i class="icon iconfont icon-youjian"></i>cos@163.com</p>
-        <p><i class="icon iconfont icon-dianhua"></i>联系方式：400-058-1201</p>
+        <p><i class="icon iconfont icon-youjian"></i>cosineHIT@163.com</p>
+        <p><i class="icon iconfont icon-dianhua"></i>联系方式：0755-26033086</p>
     </div>
     <div class="footer_bottom">
         <p>Copyright © 2018 cos Inc. 粤ICP备17120953号</p>

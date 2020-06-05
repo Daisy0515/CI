@@ -12,7 +12,7 @@
         type="date"
         placeholder="投标开始时间"
         value-format="yyyy-MM-dd"
-        :picker-options="startDatePicker"
+        :picker-options="endDatePicker"
       ></el-date-picker>
       <span style="margin-right: 15px;">到</span>
       <el-date-picker
@@ -119,6 +119,12 @@
             <i class="el-icon-error"></i>
             {{scope.row.ban}}
           </router-link>
+		  
+		
+		  <router-link :to ="{path:'projectDeliver',query:{Id:scope.row.id}}" v-if="scope.row.status===2">
+		    <i class="el-icon-success"></i>
+			交付
+		  </router-link>
         </template>
       </el-table-column>
     </el-table>
@@ -174,7 +180,12 @@ export default {
         orderBy: "id",
         orderType: "DESC"
       },
-      bidTable: []
+      bidTable: [],
+	  endDatePicker: {
+	  	disabledDate(time) {
+	  			return time.getTime() <= new Date().getTime() - 8.64e6;
+	  	},
+	  },
     };
   },
   created: function() {

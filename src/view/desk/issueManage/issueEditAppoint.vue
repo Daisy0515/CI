@@ -86,7 +86,7 @@
           <el-form-item label="级别：">
             <span v-if="ruleForm.level===1" style="color:red">█马上解决</span>
             <span v-if="ruleForm.level===2" style="color:orange">█急需解决</span>
-            <span v-if="ruleForm.level===3" style="color:yellow">#FFE153</span>
+            <span v-if="ruleForm.level===3" style="color:yellow">█高度重视</span>
             <span v-if="ruleForm.level===4" style="color:green">█正常处理</span>
             <span v-if="ruleForm.level===5" style="color:blue">█低优先级</span>
           </el-form-item>

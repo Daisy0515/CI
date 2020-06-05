@@ -8,12 +8,16 @@
 	
     <div class="container deskHeader">
 		<br>
-		<span style="color: #4478b4; font-size: 120%;" @click="toIssueManage">
+		<router-link :to="{path:'issueManage'}">
+		<span style="font-size: 120%;" >
 			代码缺陷&nbsp;&nbsp;
 		</span>
-		<span @click="toDocumentOpinion">
+		</router-link>
+		<router-link :to="{path:'documentOpinion'}">
+		<span style="color: #000000;">
 			文档意见
 		</span>
+		</router-link>
 			
 		
       <el-dialog :title="title" :visible.sync="diaIndex" width="30%">
@@ -40,7 +44,7 @@
             <el-option label="已结束" value="4"></el-option>
         </el-select>
         <input type="radio" v-on:click="changeRadio" :checked="checked"/>是否指派给我
-        <div class="buttons">
+        <!-- <div class="buttons"> -->
           <router-link :to="{path:'issueAdd'}">
             <el-button type="primary" size="middle"
               @click="routerIndex='issueAdd'"
@@ -52,7 +56,7 @@
 			
 		  >可视化</el-button>
 		</router-link>
-        </div>
+        <!-- </div> -->
       </div>
       <el-table
         :data="tableData"
@@ -301,6 +305,31 @@ export default {
     float: right;
   }
   .header_top {
+    width: 1200px;
+    margin: 15px auto;
+    padding-bottom: 20px;
+    .dao {
+      margin: 0 0 0 -25px;
+    }
+    button {
+      margin-left: 20px;
+    }
+    & button:nth-child(3) {
+      color: white;
+    }
+  }
+  .el-input {
+    display: inline-block;
+    width: 150px;
+    margin-right: 25px;
+  }
+  .el-input__inner {
+    border: 1px solid #c0c0c0;
+    width: 150px;
+    height: 35px;
+    line-height: 35px;
+  }
+  /* .header_top {
     margin-top: 15px;
     padding-bottom: 20px;
     button {
@@ -317,7 +346,7 @@ export default {
     width: 200px;
     height: 35px;
     line-height: 35px;
-  }
+  } */
   .el-table td,
   .el-table th.is-leaf {
     color: black;

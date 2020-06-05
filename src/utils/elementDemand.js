@@ -31,7 +31,11 @@ import {
     Slider,
     Loading,
     progress,
-    Tooltip
+    Tooltip,
+	Menu,
+	Submenu,
+	MenuItem,
+	MenuItemGroup,
 } from 'element-ui';
 const getElement = {
     install(Vue) {
@@ -69,6 +73,10 @@ const getElement = {
         Vue.use(RadioButton)
         Vue.use(RadioGroup)
         Vue.use(Pagination)
+		Vue.use(Menu)
+		Vue.use(Submenu)
+		Vue.use(MenuItem)
+		Vue.use(MenuItemGroup)
     }
 }
 export default getElement

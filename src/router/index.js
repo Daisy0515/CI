@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import index from '@/view/home/index/index'
 import homePublic from '@/view/home/homePublic/homePublic'
+import reviewPublic from '@/view/review/reviewPublic/reviewPublic'
 import store from '@/store/index.js'
 Vue.use(Router)
 const vueRouter = new Router({
@@ -85,6 +86,70 @@ const vueRouter = new Router({
         title: '注册成功'
       }
     },
+	{
+		path:'/',
+		name:'reviewPublic',
+		component:reviewPublic,
+		redirect:'index',//??
+		children:[{
+			path:'/managerIndex',
+			name:'managerIndex',
+			component:() => import('@/view/review/manager/managerIndex'),
+			meta:{
+				title:'首页',
+			}
+			
+		},
+		{
+			path:'/managerNotAccept',
+			name:'managerNotAccept',
+			component:() => import('@/view/review/manager/notAccept'),
+			meta:{
+				title:'未接受',
+			}
+		},
+		{
+			path:'/managerRollback',
+			name:'managerRollback',
+			component:() => import('@/view/review/manager/rollback'),
+			meta:{
+				title:'打回中',
+			}
+		},
+		{
+			path:'/managerReview',
+			name:'managerReview',
+			component:() => import('@/view/review/manager/review'),
+			meta:{
+				title:'评审中',
+			}
+		},
+		{
+			path:'/managerComplete',
+			name:'managerComplete',
+			component:() => import('@/view/review/manager/complete'),
+			meta:{
+				title:'已完成',
+			}
+		},
+		{
+			path:'/managerDraft',
+			name:'managerDraft',
+			component:() => import('@/view/review/manager/draft'),
+			meta:{
+				title:'草稿箱',
+			}
+		},
+		{
+			path:'/managerDraft',
+			name:'managerDraft',
+			component:() => import('@/view/review/manager/draft'),
+			meta:{
+				title:'草稿箱',
+			}
+		}]
+		
+	},
     {
       path: '/',
       name: 'homePublic',
@@ -266,7 +331,32 @@ const vueRouter = new Router({
           meta: {
             title: '关于我们',
           }
-        }
+        },
+		{
+		  path: '/testEmploy',
+		  name: 'testEmploy', 
+		  component: () => import('@/view/home/testEmploySquare/testEmploySquare'),
+		  meta: {
+		    title: "内测招募",
+		  },
+		},
+		{
+		  path: '/testPublish',
+		  name: 'testPublish',
+		  component: () => import('@/view/home/testEmploySquare/testPublish'),
+		  meta: {
+		    title: "内测招募",
+		    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+		  },
+		},
+		 {
+		   path: '/testView',
+		   name: 'testView',
+		   component: () => import('@/view/home/testEmploySquare/testView'),
+		   meta: {
+		     title: "内测招募",
+		   },
+		 },
       ]
     },
     {
@@ -336,18 +426,7 @@ const vueRouter = new Router({
 		    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
 		  },
 		},
-		{
-		  path: '/desk/editNeedDesign',
-		  name: 'editNeedDesign',
-		  component: () => import('@/view/desk/myTask/editNeedDesign'),
-		  meta: {
-		    title: "我的任务",
-		    routerIndex: "myTask",
-		    keepAlive: true,
-		    deepth: 2,
-		    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-		  },
-		},
+		
 		{
 		  path: '/desk/outlineDesign',
 		  name: 'outlineDesign',
@@ -364,18 +443,6 @@ const vueRouter = new Router({
 		  path: '/desk/viewOutlineDesign',
 		  name: 'editOutlineDesign',
 		  component: () => import('@/view/desk/myTask/viewOutlineDesign'),
-		  meta: {
-		    title: "我的任务",
-		    routerIndex: "myTask",
-		    keepAlive: true,
-		    deepth: 2,
-		    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-		  },
-		},
-		{
-		  path: '/desk/editOutlineDesign',
-		  name: 'editOutlineDesign',
-		  component: () => import('@/view/desk/myTask/editOutlineDesign'),
 		  meta: {
 		    title: "我的任务",
 		    routerIndex: "myTask",
@@ -408,18 +475,7 @@ const vueRouter = new Router({
 		    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
 		  },
 		},
-		{
-		  path: '/desk/editDetailedDesign',
-		  name: 'editDetailedDesign',
-		  component: () => import('@/view/desk/myTask/editDetailedDesign'),
-		  meta: {
-		    title: "我的任务",
-		    routerIndex: "myTask",
-		    keepAlive: true,
-		    deepth: 2,
-		    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-		  },
-		},
+		
 		{
 		  path: '/desk/kanBan',
 		  name: 'kanBan',
@@ -432,18 +488,7 @@ const vueRouter = new Router({
 		    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
 		  },
 		},
-		{
-		  path: '/desk/kanBanRight',
-		  name: 'kanBan',
-		  component: () => import('@/view/desk/myTask/kanBanRight'),
-		  meta: {
-		    title: "我的任务",
-		    routerIndex: "myTask",
-		    keepAlive: true,
-		    deepth: 2,
-		    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-		  },
-		},
+
         {
           path: '/desk/resourceManagement',
           name: 'resourceManagement',
@@ -455,6 +500,17 @@ const vueRouter = new Router({
             requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
           },
         },
+		{
+		  path: '/desk/viewTask',
+		  name: 'viewTask',
+		  component: () => import('@/view/desk/myTask/viewTask'),
+		  meta: {
+		    title: "我的任务",
+		    routerIndex: "myTask",
+		    deepth: 1,
+		    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+		  },
+		},
         {
           path: '/desk/bidView',
           name: 'bidView',
@@ -485,6 +541,16 @@ const vueRouter = new Router({
             requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
           },
         },
+		{
+		  path: '/desk/projectDeliver',
+		  name: 'projectDeliver',
+		  component: () => import('@/view/desk/myBid/projectDeliver'),
+		  meta: {
+		    routerIndex: "myBid",
+		    title: "我的投标",
+		    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+		  },
+		},
         {
           routerIndex: "myBid",
           path: '/desk/bidScoring',
@@ -769,6 +835,42 @@ const vueRouter = new Router({
 		  },
 		},
 		{
+		  path: '/desk/editNeedDesign',
+		  name: 'editNeedDesign',
+		  component: () => import('@/view/desk/myTask/editNeedDesign'),
+		  meta: {
+		    title: "缺陷管理",
+		    routerIndex: "issueManage",
+		    keepAlive: true,
+		    deepth: 2,
+		    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+		  },
+		},
+		{
+		  path: '/desk/editOutlineDesign',
+		  name: 'editOutlineDesign',
+		  component: () => import('@/view/desk/myTask/editOutlineDesign'),
+		  meta: {
+		    title: "缺陷管理",
+		    routerIndex: "issueManage",
+		    keepAlive: true,
+		    deepth: 2,
+		    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+		  },
+		},
+		{
+		  path: '/desk/editDetailedDesign',
+		  name: 'editDetailedDesign',
+		  component: () => import('@/view/desk/myTask/editDetailedDesign'),
+		  meta: {
+		    title: "缺陷管理",
+		    routerIndex: "issueManage",
+		    keepAlive: true,
+		    deepth: 2,
+		    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+		  },
+		},
+		{
 		  path: '/desk/opinionSum',
 		  name: 'opinionSum',
 		  component: () => import('@/view/desk/issueManage/opinionSum'),
@@ -804,42 +906,148 @@ const vueRouter = new Router({
 		    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
 		  },
 		},
-        { 
-          path: '/desk/testEmploy',
-          name: 'testEmploy', 
-          component: () => import('@/view/desk/testEmploy/testEmploySquare'),
-          meta: {
-            title: "内测招募",
-            routerIndex: "testEmploy",
-            keepAlive: true,
-            deepth: 2,
-            requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-          },
-        },
-        {
-          path: '/desk/testPublish',
-          name: 'testEmploy',
-          component: () => import('@/view/desk/testEmploy/testPublish'),
-          meta: {
-            title: "内测招募",
-            routerIndex: "testEmploy",
-            keepAlive: true,
-            deepth: 2,
-            requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-          },
-        },
-         {
-           path: '/desk/testView',
-           name: 'testEmploy',
-           component: () => import('@/view/desk/testEmploy/testView'),
-           meta: {
-             title: "内测招募",
-             routerIndex: "testEmploy",
-             keepAlive: true,
-             deepth: 2,
-             requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-           },
-         },
+		{
+		  path: '/desk/myTest',
+		  name: 'myTest', 
+		  component: () => import('@/view/desk/testEmploy/myTest'),
+		  meta: {
+		    title: "内测管理",
+		    routerIndex: "myTest",
+		    keepAlive: true,
+		    deepth: 2,
+		    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+		  },
+		},
+		{
+		  path: '/desk/myTestTask',
+		  name: 'myTestTask',
+		  component: () => import('@/view/desk/testEmploy/myTestTask'),
+		  meta: {
+		    title: "内测管理",
+		    routerIndex: "myTest",
+		    keepAlive: true,
+		    deepth: 2,
+		    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+		  },
+		},
+		
+		{
+		  path: '/desk/myTestView',
+		  name: 'myTestView',
+		  component: () => import('@/view/desk/testEmploy/myTestView'),
+		  meta: {
+		    title: "内测管理",
+		    routerIndex: "myTest",
+		    keepAlive: true,
+		    deepth: 2,
+		    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+		  },
+		},
+		{
+		  path: '/desk/myTestView&Edit',
+		  name: 'myTestView&Edit',
+		  component: () => import('@/view/desk/testEmploy/myTestView&Edit'),
+		  meta: {
+		    title: "内测管理",
+		    routerIndex: "myTest",
+		    keepAlive: true,
+		    deepth: 2,
+		    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+		  },
+		},
+		{
+		  path: '/desk/testIssueSum',
+		  name: 'testIssueSum',
+		  component: () => import('@/view/desk/testEmploy/testIssueSum'),
+		  meta: {
+		    title: "内测管理",
+		    routerIndex: "myTest",
+		    keepAlive: true,
+		    deepth: 2,
+		    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+		  },
+		},
+		{
+		  path: '/desk/editTest',
+		  name: 'editTest',
+		  component: () => import('@/view/desk/testEmploy/editTest'),
+		  meta: {
+		    title: "内测管理",
+		    routerIndex: "myTest",
+		    keepAlive: true,
+		    deepth: 2,
+		    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+		  },
+		},
+		
+		{
+		  path: '/desk/historyView',
+		  name: 'historyView',
+		  component: () => import('@/view/desk/testEmploy/historyView'),
+		  meta: {
+		    title: "内测管理",
+		    routerIndex: "myTest",
+		    keepAlive: true,
+		    deepth: 2,
+		    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+		  },
+		},
+		
+        // { 
+        //   path: '/desk/testEmploy',
+        //   name: 'testEmploy', 
+        //   component: () => import('@/view/desk/testEmploy/testEmploySquare'),
+        //   meta: {
+        //     title: "内测招募",
+        //     routerIndex: "testEmploy",
+        //     keepAlive: true,
+        //     deepth: 2,
+        //     requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+        //   },
+        // },
+		
+        // {
+        //   path: '/desk/testPublish',
+        //   name: 'testEmploy',
+        //   component: () => import('@/view/desk/testEmploy/testPublish'),
+        //   meta: {
+        //     title: "内测招募",
+        //     routerIndex: "testEmploy",
+        //     keepAlive: true,
+        //     deepth: 2,
+        //     requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+        //   },
+        // },
+         // {
+         //   path: '/desk/testView',
+         //   name: 'testEmploy',
+         //   component: () => import('@/view/desk/testEmploy/testView'),
+         //   meta: {
+         //     title: "内测招募",
+         //     routerIndex: "testEmploy",
+         //     keepAlive: true,
+         //     deepth: 2,
+         //     requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+         //   },
+         // },
+		 
+		
+		
+		 
+		 {
+		   path: '/desk/addTestIssue',
+		   name: 'addTestIssue',
+		   component: () => import('@/view/desk/testEmploy/addTestIssue'),
+		   meta: {
+		     title: "内测管理",
+		     routerIndex: "myTest",
+		     keepAlive: true,
+		     deepth: 2,
+		     requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+		   },
+		 },
+		 
+		 
         
         {
           path: '/desk/demandendView',

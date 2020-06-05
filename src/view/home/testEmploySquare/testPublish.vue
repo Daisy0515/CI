@@ -1,12 +1,19 @@
 <template>
 <div class="applicationView">
-    <div class="header">
-      <div class="container deskHeader">
-          <h4>
-          您的位置：
-          <router-link to="./testEmploy">内测招募</router-link>>
-          <span class="active">发布测试</span>
-        </h4>
+    <div class="responsive resp">
+      <div class="module_secondaryHead guruSearch hasBg">
+        <div class="container">
+          <div class="module_headerCrumb">
+            <div class="refinery">
+              <div class="searchTitle">
+                <p class="searchTitle">
+                  <router-link to="testEmploy">内测招募</router-link>> 发布测试
+                </p>
+              </div>
+            </div>
+            <span class="resultCount"></span>
+          </div>
+        </div>
       </div>
     </div>
 	<div class="container">
@@ -26,9 +33,9 @@
 	  </el-checkbox-group> -->
 	 </el-form-item>
 	 
-	 <el-form-item label="测试链接" prop="testLink">
+	 <!-- <el-form-item label="测试链接" prop="testLink">
 	   <el-input class="input_title title" v-model="ruleForm.testLink"></el-input>
-	 </el-form-item>
+	 </el-form-item> -->
 	 
 	 <el-form-item label="截止时间" prop="deadline">
 	   <el-date-picker
@@ -48,6 +55,10 @@
 	<el-form-item label="测试需求" prop="testRequirement">
 	  <el-input type="textarea" class="input_textarea " v-model="ruleForm.testRequirement " :rows="10" style="width:100%;float:right"></el-input>
 	</el-form-item>
+	
+	<el-form-item>
+	  <sourceUpload :uploadIndex="uploadIndex" v-on:setIdCard="setIdCard($event)" />
+	</el-form-item>
 
 	<el-form-item class="cancel">
 	  <el-button type="primary" @click="returnSquare" size="medium" style="width:150px;margin-left:25%">返回</el-button>
@@ -63,9 +74,20 @@
 import { httpGet,httpPost } from "@/utils/http.js";
 import { errTips,successTips } from "@/utils/tips.js";
 import { mapMutations, mapActions, mapGetters } from "vuex";
+import sourceUpload from "@/common/upload/resourceUpload";
 export default {
+	components: {
+	  sourceUpload
+	},
   data() {
+	  
     return {
+		endDatePicker: {
+			disabledDate(time) {
+					return time.getTime() <= new Date().getTime() - 8.64e6;
+			},
+		},
+		uploadIndex: false,
 		types:[],
       ruleForm: {
 		projectName:"",//项目名称
@@ -73,7 +95,8 @@ export default {
 		testRequirement:"",//测试需求
 		deadline:"",//截止时间
 		testLink:"",//测试链接
-		needCount:""//所需人数
+		needCount:"",//所需人数
+		sourceFile:""
       },
        // 表单验证
       rules: {
@@ -118,30 +141,60 @@ export default {
 		   }
 		})
 	},
-      setIdCard(data) {    
-      httpPost("/v1/authorization/test/itemtest/insert", this.ruleForm).then(results => {
-		  
-        const { msg, httpCode } = results.data;
-        if (httpCode === 200) {
-          successTips("发布测试成功！");
-          this.setCache("testEmploy");
-        } else if (httpCode !== 401) {
-          errTips(msg);
-        }
-      });
-    },
+      
 	returnSquare() {
 	  this.$router.push({ path: "./testEmploy" });
 	},
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {           
-          this.setIdCard();
-        } else {
-          return false;
-        }
-      })
-    }
+	setIdCard(data) {
+		
+		data && (this.ruleForm.sourceFile = data);
+		//alert(111);
+		httpPost('/v1/authorization/test/itemtest/insert', this.ruleForm).then(results => {
+			const {  msg, httpCode } = results.data;
+			if (httpCode === 200) {
+				//alert(this.ruleForm.sourceFile);
+				successTips('发布测试成功');
+				this.setCache('testEmploy');
+			} else if (httpCode !== 401) {
+				errTips(msg);
+			} else {
+				alert(httpCode);
+			}
+		});
+	},
+	
+	submitForm(formName) {
+		this.$refs[formName].validate(valid => {
+			if (valid) {
+				this.ruleForm.sourceFile ? this.setIdCard() : (this.uploadIndex = !this.uploadIndex);
+			} else {
+				return false;
+			}
+		});
+	}
+    
+	// setIdCard(data) {
+	//   data && (this.ruleForm.sourceFile = data);
+	//   //post /v1/authorization/test/itemtest/insert 
+	//   alert(123);
+	//   httpPost("/v1/authorization/test/itemtest/insert", this.ruleForm).then(results => {
+	//     const { data, msg, httpCode } = results.data;
+	//     if (httpCode === 200) {
+	//       successTips("发布测试成功");
+	//     } else  {
+	//       errTips(msg);
+	//     }
+	//   });
+	// },
+	// submitForm(formName) {
+	//   this.$refs[formName].validate(valid => {
+	//     if (valid) {
+	//       ruleForm.sourceFile?this.setIdCard():(this.uploadIndex = !this.uploadIndex);
+	//     } else {
+	//       return false;
+	//     }
+	//   });
+	// }
   }
 };
 </script>

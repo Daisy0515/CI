@@ -36,7 +36,7 @@
 						<span>{{ ruleForm.design }}</span>
 					</el-form-item>
 
-					<el-form-item class="cancel"><el-button type="primary" @click="" size="medium" style="width:150px;margin-left:45%">返回</el-button></el-form-item>
+					<el-form-item class="cancel"><el-button type="primary" @click="returnKB" size="medium" style="width:150px;margin-left:45%">返回</el-button></el-form-item>
 				</el-form>
 			</el-card>
 		</div>
@@ -75,7 +75,7 @@ export default {
 
 	methods: {
 		getView() {
-			alert(this.id);
+			//alert(this.id);
 			httpGet(`/v1/authorization/mission/mission/get?id=${this.id}`).then(results => {
 				const { data, httpCode } = results.data;
 				if (httpCode === 200) {

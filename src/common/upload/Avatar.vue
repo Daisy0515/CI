@@ -102,14 +102,14 @@ export default {
           errTips("上传失败,请刷新页面再试");
         } else if (newFile.success !== oldFile.success) {
           httpPut("/v1/authorization/coreuser/head/send", {
-            headurl: `http://cosine.resource.ienkel.com/${this.qiniuData.key}`
+            headurl: `http://sjy.lingdatech.net/${this.qiniuData.key}`
           }).then(results => {
             const { httpCode, msg } = results.data;
             if (httpCode === 200) {
               // this.imageUrl = URL.createObjectURL(file.raw);
               let newuserData = {};
               Object.assign(newuserData, this.getuserData);
-              newuserData.headurl = `http://cosine.resource.ienkel.com/${
+              newuserData.headurl = `http://sjy.lingdatech.net/${
                 this.qiniuData.key
               }`;
               sessionStorage.setItem("userData", JSON.stringify(newuserData));

@@ -107,7 +107,7 @@ export default {
         } else if (newFile.success !== oldFile.success) {
           this.$emit(
             "setIdCard",
-            `http://cosine.resource.ienkel.com/${this.qiniuData.key}`
+            `http://sjy.lingdatech.net/${this.qiniuData.key}`
           );
         }
       }

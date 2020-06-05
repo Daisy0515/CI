@@ -171,12 +171,13 @@ export default {
           this.dialogTableVisible = true;
           let { ganttChartList } = data;
           let newList = ganttChartList.map(item => {
+			  
             return {
               id: item.id,
               start_date: timeReversal(item.startTime),
               end_date: timestamp(item.endTime),
               text: item.content,
-              name: item.userName,
+              name: item.participantList,
               durationTime: item.sustainTime,
               progress: item.accomplishProgress * 0.01
             };

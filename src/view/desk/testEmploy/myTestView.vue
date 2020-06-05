@@ -4,7 +4,7 @@
       <div class="container deskHeader">
         <h4>
           您的位置：
-          <router-link to="./testEmploy">内测招募</router-link>>
+          <router-link to="./myTest">我的测试</router-link>>
           <span class="active">查看测试</span>
         </h4>
       </div>
@@ -17,7 +17,10 @@
           </el-form-item>
 		  
           <el-form-item label="项目类型:"> 
-            <span>{{typeValue}}</span>
+            <span v-if="ruleForm.type === 1">设计</span>
+            <span v-if="ruleForm.type === 2">软件开发</span>
+            <span v-if="ruleForm.type === 3">数据科学</span>
+            <span v-if="ruleForm.type === 4">其他类别 </span>
           </el-form-item>
           <el-form-item label="截止时间:">
             <span>{{ruleForm.deadline}}</span>
@@ -31,9 +34,14 @@
           <el-form-item label="测试需求：">
             <p class="detail">{{ruleForm.testRequirement}}</p>
           </el-form-item>
+		  <el-form-item label="附件：">
+		    <a target="_Blank" :href="ruleForm.sourceFile" v-if="ruleForm.sourceFile&&getUser">下载附件</a>
+		    <a v-if="!ruleForm.sourceFile&&getUser" target="_Blank">暂无附件</a>
+		    <a v-if="!getUser" href="javascript:void(0)">登录才能下载附件</a>
+		  </el-form-item>
 		  <el-form-item class="cancel">
-		    <el-button type="primary" @click="returnSquare" size="medium" style="width:150px;margin-left:25%">返回</el-button>
-		    <el-button type="primary" @click="publish()" size="medium" style="width:150px;margin-left:25%">加入</el-button>
+		    <el-button type="primary" @click="returnMyTest" size="medium" style="width:150px;margin-left: 40%;">返回</el-button>
+		    
 		  </el-form-item>
         </el-form>
 		
@@ -81,11 +89,7 @@ export default {
           const { httpCode } = results.data;
           if (httpCode === 200) {
             let newData = results.data.data;
-            for (let ele of this.getAllType) {
-              if (ele.id == newData.id) {
-                this.$set(this, "typeValue", ele.type);
-              } 
-            }
+            
             newData.deadline = specificDate(newData.deadline);
             this.ruleForm = newData;
           } else if (httpCode === 400) {
@@ -97,13 +101,13 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["getAllType"])
+    ...mapGetters(["getAllType","getUser"])
   },
   methods: {
     ...mapMutations(["setCache"]),
     ...mapActions(["GETALLTYPE"]),
-	returnSquare() {
-	  this.$router.push({ path: "./testEmploy" });
+	returnMyTest() {
+	  this.$router.push({ path: "./myTest" });
 	},
 	publish(){
 		//id?

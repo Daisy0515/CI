@@ -51,7 +51,7 @@
           <div class="contact">
             <p>联系方式</p>
             <p>哈尔滨工业大学（深圳）</p>
-            <p>联系方式：400-058-1201</p>
+            <p>联系方式：cosineHIT@163.com</p>
           </div>
         </div>
       </div>

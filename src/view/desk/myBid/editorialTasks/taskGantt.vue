@@ -54,7 +54,7 @@ export default {
           userId: item.userId,
           start_date: timeReversal(item.startTime),
           end_date: timestamp(item.endTime),
-          text: item.content,
+          text: item.content +'/'+item.subtitle ,
           name: item.userName,
           durationTime: item.sustainTime,
           progress: item.accomplishProgress * 0.01,

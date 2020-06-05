@@ -11,7 +11,7 @@
               </div>
             </router-link>
           </div>
-          <ul class="c-header__navigation clearfix">
+          <!-- <ul class="c-header__navigation clearfix">
             <li class="c-header__navigation__item" v-for="item in items" :key="item.title">
               <router-link
                 ondragstart="return false"
@@ -20,10 +20,11 @@
                 :to="item.url"
               >{{item.title}}</router-link>
             </li>
-          </ul>
+          </ul> -->
           <HeadUser/>
         </div>
       </div>
+	  
     </nav>
   </div>
 </template>
@@ -63,31 +64,7 @@ export default {
           title: "团队申请",
           url: "teamApplication"
         },
-        {
-          title: "个人信息",
-          url: "information"
-        },
-        {
-          title: "消息管理",
-          url: "myMessage"
-        },
-                {
-          title: "我的评分",
-          url: "myComments"
-        },
-        {
-          title: "我的收藏",
-          url: "myCollection"
-        },
-        {
-          title: "缺陷管理",
-          url: "issueManage"
-        }
-        ,
-        {
-          title: "内测管理",
-          url: "myTest"
-        }
+
         
       ],
       loginUrl: "login",

@@ -58,6 +58,16 @@
             <span v-if="scope.row.msgType===14">缺陷提醒</span>
             <span v-if="scope.row.msgType===15">需求推荐</span>
             <span v-if="scope.row.msgType===16">邀请提醒</span>
+			<span v-if="scope.row.msgType===17">任务提醒</span>
+			<span v-if="scope.row.msgType===18">提交/编辑文档提醒</span>
+			<span v-if="scope.row.msgType===19">文档意见提醒</span>
+			<span v-if="scope.row.msgType===20">意见解决提醒</span>
+			<span v-if="scope.row.msgType===21">成员招募提醒</span>
+			<span v-if="scope.row.msgType===22">测试项目更新提醒</span>
+			<span v-if="scope.row.msgType===23">测试项目任务提醒</span>
+			<span v-if="scope.row.msgType===24">测试任务结束提醒</span>
+			<span v-if="scope.row.msgType===25">测试项目结束提醒</span>
+			
           </template>
         </el-table-column>
         <el-table-column prop="gmtCreate" label="接受时间" align="center"></el-table-column>

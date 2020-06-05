@@ -1,26 +1,20 @@
 <template>
   <div class="square">
     <div class="responsive resp">
-		<div class="header">
-		  <div class="container deskHeader">
-		      <router-link to="./testEmploy">内测招募</router-link>>
-		      <span class="active">招募广场</span>
-		  </div>
-		</div>
-      <!-- <div class="module_secondaryHead guruSearch hasBg">
+      <div class="module_secondaryHead guruSearch hasBg">
         <div class="container">
           <div class="module_headerCrumb">
             <div class="refinery">
               <div class="searchTitle">
                 <p class="searchTitle">
-                  <router-link to="managerProcess">内测招募</router-link>> 招募广场
+                  <router-link to="testEmploy">内测招募</router-link>> 招募广场
                 </p>
               </div>
             </div>
             <span class="resultCount"></span>
           </div>
         </div>
-      </div> -->
+      </div>
     </div>
     <div class="container">
       <div class="clearfix">
@@ -98,7 +92,7 @@
                 <div class="clearfix serviceIdentity">
                   <div class="serviceIdentity__info">
                     <div class="module_avatar thirtytwo avatar_table">
-                      <!-- <div class="avatar">
+                      <div class="avatar">
                         <a href="javascript:;" title="头像">
                           <img
                             :src="item.headurl?item.headurl:getnoImg"
@@ -111,9 +105,9 @@
                       </div>
                       <div class="avatarinfo">
                         <p class="subtext">{{item.names?item.names:'未知'}}</p>
-                      </div> -->
+                      </div>
                       <div class="see_apply">
-                        <router-link :to="{path:'./testView', query:{id:item.id}}">
+                        <router-link :to="{path:'testView', query:{id:item.id}}">
                           <span>查看测试</span>
                         </router-link>
                       </div>
@@ -266,7 +260,7 @@ export default {
           this.pageNo = getData.data.pageNo;
           this.totalPage = parseInt(getData.data.totalPage + "0");
           for (let i of this.iteamTestList) {
-            i.gmtCreate = getDate(i.gmtCreate);
+            i.deadline = getDate(i.deadline);
           }
           this.loading = false;
           this.tipData = false;

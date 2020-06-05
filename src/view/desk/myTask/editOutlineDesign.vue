@@ -4,7 +4,7 @@
 			<div class="container deskHeader">
 				<h4>
 					您的位置：
-					<router-link to="myTask">我的任务</router-link>
+					<router-link to="documentOpinion">文档意见</router-link>
 					>
 					<span class="active">编辑文档</span>
 				</h4>
@@ -18,11 +18,13 @@
 
 				<el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
 					<el-form-item class="cancel">
-						<a target="_Blank" :href="ruleForm.sourceFile" style="display:inline;margin-left: 65%;font-size: 20px;">
+						<div style="float: right;">
+						<a target="_Blank" :href="ruleForm.sourceFile" style="display:inline;font-size: 20px;">
 						  <i class="el-icon-search"></i>
-						  文档预览
+						  文档预览&nbsp;&nbsp;
 						</a>
-						<el-button type="primary" @click="" size="large" style="width:150px;margin-left:3%;display: inline;">下载模板</el-button>
+						<el-button type="primary" @click="" size="large" style="width:150px;display: inline;">下载模板</el-button>
+						</div>
 					</el-form-item>
 
 					<el-form-item label="总体设计" prop="introduction">
@@ -68,6 +70,7 @@ export default {
 	data() {
 		return {
 			//？？？获取数据和提交数据的数据有区别，是否都需要写在一个ruleForm里面
+			uploadIndex: false,
 			id: '',
 			ruleForm: {
 				demand: '', //设计约束(没用到)
@@ -107,7 +110,7 @@ export default {
 					this.ruleForm = data;
 				} else if (httpCode === 400) {
 					errTips('页面丟失');
-					this.setCache('documentOpinion');
+					this.$router.push({ path: "./documentOpinion" });
 				}
 			});
 		},
@@ -115,6 +118,7 @@ export default {
 
 		//提交表单
 		setIdCard(data) {
+			data && (this.ruleForm.sourceFile = data);
 			httpPut('/v1/authorization/documents/missioninfo/update', this.ruleForm).then(results => {
 				const { msg, httpCode } = results.data;
 				if (httpCode === 200) {
@@ -128,7 +132,9 @@ export default {
 		submitForm(formName) {
 			this.$refs[formName].validate(valid => {
 				if (valid) {
-					this.setIdCard();
+					//this.setIdCard();
+					// this.ruleForm.sourceFile ? this.setIdCard() : (this.uploadIndex = !this.uploadIndex);
+					this.uploadIndex = !this.uploadIndex;
 				} else {
 					return false;
 				}

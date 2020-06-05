@@ -108,11 +108,12 @@ export default {
             start_date: timeReversal(item.startTime),
             end_date: timestamp(item.endTime),
             text: item.content,
-            name: item.userName,
+            name: item.participantList,
             durationTime: item.sustainTime,
             progress: item.accomplishProgress * 0.01,
             fileName: item.fileName,
-            trusteeship: item.trusteeship
+            trusteeship: item.trusteeship,
+			
           };
         });
         this.$set(this.tasks, "data", newList);

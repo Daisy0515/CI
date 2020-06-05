@@ -2,6 +2,7 @@ import axios from 'axios'
 import store from '../store/index.js'
 //let api = "http://10.249.46.207:8083/cosine-core-web-api/"
 let api = "http://118.178.194.230:8083/cosine-core-web-api/"
+//let api = "http://120.25.149.86:8083/"
 // let api = "http://api.cosine.ienkel.com/cosine-core-web-api/"
 //let api = "http://10.250.19.18:8081/cosine-core-web-api/"
 // let api = "http://192.168.5.112:8081/cosine-core-web-api/"
