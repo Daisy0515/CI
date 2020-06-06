@@ -33,6 +33,17 @@
 				</router-link>
 				<router-link :to="{path:'bidView', query:{id:scope.row.id}}">
 				  <i class="el-icon-message"></i>
+				  意见回复
+				</router-link>
+				<router-link
+				  :to="{ path: 'taskIndex', query: { projectId: scope.row.id } }"
+				  
+				>
+				  <i class="el-icon-edit"></i>
+				  修改提交
+				</router-link>
+				<!-- <router-link :to="{path:'bidView', query:{id:scope.row.id}}">
+				  <i class="el-icon-message"></i>
 				  意见
 				</router-link>
 				<router-link
@@ -41,7 +52,7 @@
 				>
 				  <i class="el-icon-edit"></i>
 				  评价
-				</router-link>
+				</router-link> -->
 			</template>
 		</el-table-column>
 	</el-table>

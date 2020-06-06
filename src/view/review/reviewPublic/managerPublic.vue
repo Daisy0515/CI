@@ -49,6 +49,10 @@
 				    <i class="el-icon-setting"></i>
 				    <span slot="title">已完成</span>
 				  </el-menu-item>
+				  <el-menu-item index="/managerDraft">
+				    <i class="el-icon-setting"></i>
+				    <span slot="title">草稿箱</span>
+				  </el-menu-item>
 				  
 			</el-menu>
           <!-- <ul>

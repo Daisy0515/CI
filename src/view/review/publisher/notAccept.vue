@@ -31,6 +31,17 @@
 				  <i class="el-icon-search"></i>
 				  查看详情
 				</router-link>
+				<router-link :to="{path:'bidView', query:{id:scope.row.id}}">
+				  <i class="el-icon-close"></i>
+				  打回
+				</router-link>
+				<router-link
+				  :to="{ path: 'taskIndex', query: { projectId: scope.row.id } }"
+				  
+				>
+				  <i class="el-icon-check"></i>
+				  接受
+				</router-link>
 				
 			</template>
 		</el-table-column>
