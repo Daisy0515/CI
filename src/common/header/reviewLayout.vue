@@ -3,7 +3,19 @@
     <nav class="c-header c-header--solid">
       <div class="o-container deskHeader clearfix">
         <div class="c-header__row">
+          <div style="display: inline-block;margin-left: 50%; margin-top: -1px">
+          <span style="color: white">角色切换：</span>
+          <el-select v-model="value" placeholder="请选择" @change="roleChange">
+            <el-option
+                    v-for="item in permissionList"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id"
+            />
+          </el-select>
+          </div>
           <div class="c-header__logowrap">
+
             <router-link :to="indexUrl">
               <div id="topnav-gurulogo" v-bind:href="indexUrl" style="display:block">
                 <title id="logo-title">{{title}}</title>
@@ -24,7 +36,6 @@
           <HeadUser/>
         </div>
       </div>
-	  
     </nav>
   </div>
 </template>
@@ -39,6 +50,20 @@ export default {
   name: "myheader",
   data: function() {
     return {
+      permissionList: [{
+        id: '1',
+        name: '项目发布者'
+      }, {
+        id: '2',
+        name: '项目经理'
+      }, {
+        id: '3',
+        name: '评审专家'
+      }, {
+        id: '4',
+        name: '评审管理员'
+      }],
+      value: '1',
       title: "群智化平台",
       logoUrl: require("@/assets/img/homepage/logo.png"),
       indexUrl: "/index",
@@ -65,7 +90,7 @@ export default {
           url: "teamApplication"
         },
 
-        
+
       ],
       loginUrl: "login",
       registerUrl: "selectRole"
@@ -88,8 +113,22 @@ export default {
     tiaoDesk() {
       this.setHeader("project");
     },
+    roleChange() {//角色切换
+      let role = this.value;
+      if(role==1){//跳转项目发布者
+        this.$router.push('/publisherIndex');
+      }else if(role==2){//跳转项目经理
+        this.$router.push('/managerIndex');
+      }else if(role==3){ //跳转评审专家
+
+      }else{ //跳转评审管理员
+
+      }
+
+    },
     ...mapMutations(["setHeader"])
-  }
+  },
+
 };
 </script>
 <style lang="scss">
