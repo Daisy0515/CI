@@ -25,7 +25,7 @@
 		</el-table-column>
 		<el-table-column prop="gmtCreate" label="开始时间" align="center"></el-table-column>
 		<el-table-column prop="gmtModified" label="截止时间" align="center"></el-table-column>
-	
+
 		<el-table-column prop="accomplishProgress" label="操作" align="center" width="280px">
 			<template slot-scope="scope">
 				<!-- <router-link :to="{path:'bidView', query:{id:scope.row.id}}">
@@ -38,7 +38,7 @@
 				</router-link>
 				<router-link
 				  :to="{ path: 'taskIndex', query: { projectId: scope.row.id } }"
-				  
+
 				>
 				  <i class="el-icon-refresh"></i>
 				  重新提交
@@ -55,7 +55,7 @@
 				</router-link>
 				<router-link
 				  :to="{ path: 'taskIndex', query: { projectId: scope.row.id } }"
-				  
+
 				>
 				  <i class="el-icon-check"></i>
 				  接受
@@ -69,6 +69,9 @@
 	<submit-review :form="formSubmit" :formLabelWidth="formLabelWidth"
 				   :dialogSubmitVisible="dialogSubmitVisible"
 				   @closeSubmitDialog="closeSubmitDialog"></submit-review>
+	<review-opinion :form="formOpinion" :formLabelWidth="formLabelWidth"
+					:dialogOpinionVisible="dialogOpinionVisible"
+					@closeOpinionDialog="closeOpinionDialog"></review-opinion>
 	</div>
 </template>
 
@@ -78,65 +81,88 @@ import { httpGet, httpDelete } from "@/utils/http.js";
 import { message, successTips, errTips } from "@/utils/tips.js";
 import reviewDetailDialog from '@/view/review/components/reviewDetailDialog';
 import submitReview from '@/view/review/components/submitReview';
-
+import reviewOpinion from '@/view/review/components/reviewOpinion'
 export default {
-  components: {reviewDetailDialog,submitReview},
+  components: {reviewDetailDialog,submitReview,reviewOpinion},
   data() {
     return {
 		dialogFormVisible: false,//控制表单对话框是否显示
 		dialogSubmitVisible: false,//控制重新提交框是否显示
 		dialogOpinionVisible: false,//控制意见详情框是否显示
-      loading: false,  
-      tableData: [
+	    loading: false,
+	    tableData: [
 		  {projectCode:111}
-	  ],  
-	  form: {//表单中的信息
-	  	name: '',
-	  	purpose: '',
-	  	date1: '',
-	  	date2: '',
-	  	content: '',
-	  	daysBeforeDeadline:'',
-	  	fileTable:[{
-	  		filename:'项目申请书',
-	  		url:''
-	  	}],
-	  	delivery: false,
-	  	type: [],
-	  	resource: '',
-	  	desc: ''
+	  ],
+	    form: {//表单中的信息
+		name: '',
+		purpose: '',
+		date1: '',
+		date2: '',
+		content: '',
+		daysBeforeDeadline:'',
+		fileTable:[{
+			filename:'项目申请书',
+			url:''
+		}],
+		delivery: false,
+		type: [],
+		resource: '',
+		desc: ''
 	  },
-	  formSubmit: {//表单中的信息
-	  	name: '',
-	  	purpose: '',
-	  	date1: '',
-	  	date2: '',
-	  	content: '',
-	  	daysBeforeDeadline:'',
-	  	fileTable:[{
-	  		filename:'项目申请书',
-	  		url:''
-	  	}],
-	  	delivery: false,
-	  	type: [],
-	  	resource: '',
-	  	desc: ''
-	  },
-	  formLabelWidth: '100px'//控制表单中输入框的尺寸
+	    formSubmit: {//表单中的信息
+		name: '',
+			purpose: '',
+			date1: '',
+			date2: '',
+			content: '',
+			daysBeforeDeadline:'',
+			fileTable:[{
+				filename:'项目申请书',
+				url:''
+			}],
+			delivery: false,
+			type: [],
+			resource: '',
+			desc: ''
+		  },
+		formOpinion: {//表单中的信息
+				name: '',
+				id:'',
+				title:'',
+				purpose: '',
+				date1: '',
+				date2: '',
+				content: '',
+				daysBeforeDeadline:'',
+				opinions:[{
+					opinionId:'yj123456789',
+					submitDate:'2020-04-05',
+					endDate:'2020-04-10',
+					opinionDetail:'论文引用格式有问题',
+				}],
+				delivery: false,
+				type: [],
+				resource: '',
+				desc: ''
+			},
+		formLabelWidth: '100px'//控制表单中输入框的尺寸
     };
   },
   created: function() {
-    
+
   },
   computed: {
-    
+
   },
-  methods: { 
+  methods: {
 	handleClickDetail(row) {
 		this.dialogFormVisible = true;
 	},
 	handleClickSubmit(row){
 		this.dialogSubmitVisible = true;
+	},
+	handleClickOpinion(row){
+		this.dialogOpinionVisible = true;
 	},
 	closeDialog(){
 		this.dialogFormVisible = false;
@@ -144,8 +170,11 @@ export default {
 	closeSubmitDialog(){
 		this.dialogSubmitVisible = false;
 	},
+	closeOpinionDialog(){
+		this.dialogOpinionVisible = false;
+	},
 	handleClickFile(row){
-	
+
 	},
 	rowClass() {
       return "background:#F4F6F9;";
