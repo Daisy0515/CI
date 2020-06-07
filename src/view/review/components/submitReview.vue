@@ -1,6 +1,6 @@
 <!--发起评审-->
 <template>
-    <el-dialog title="发起评审" :visible.sync="dialogSubmitVisible" :before-close="changeSubmitVisible"
+    <el-dialog :title="title" :visible.sync="dialogSubmitVisible" :before-close="changeSubmitVisible"
                style="text-align:left; font-weight: bolder;">
         <el-form :model="form">
             <el-row :gutter="20">
@@ -73,6 +73,22 @@
                     </el-form-item>
                 </el-col>
             </el-row>
+            <el-row v-if="isShowSubmitHistory">
+                <el-col :span="20" >
+                    <span>提交历史：</span>
+                    <el-table  :data="form.fileTable" border >
+                        <el-table-column prop="submitDate" label="上传时间"> </el-table-column>
+                        <el-table-column prop="filename" label="附件名称" > </el-table-column>
+                        <el-table-column label="操作" >
+                            <template slot-scope="scope">
+                                <el-button @click="handleClickFile(scope.row)" type="text" size="medium"
+                                           style="margin-left: 30%"
+                                >下载</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </el-col>
+            </el-row>
         </el-form>
         <div slot="footer" style="margin-right: 35%">
             <el-button @click="storeReview" style="margin-right: 10%">暂存</el-button>
@@ -83,7 +99,7 @@
 
 <script>
     export default {
-        props:['form','formLabelWidth','dialogSubmitVisible'],
+        props:['title','form','formLabelWidth','dialogSubmitVisible','isShowSubmitHistory'],
         methods:{
             changeSubmitVisible(){//传递消息给父组件
                 this.$emit('closeSubmitDialog');

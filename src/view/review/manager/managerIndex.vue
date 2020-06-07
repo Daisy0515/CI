@@ -51,7 +51,7 @@
 				</el-card>
 			</el-col>
 		</el-row>
-		<submit-review :form="form" :formLabelWidth="formLabelWidth"
+		<submit-review :form="form" :formLabelWidth="formLabelWidth" :title="submitTitle"
 					   :dialogSubmitVisible="dialogSubmitVisible"
 					   @closeSubmitDialog="closeSubmitDialog"></submit-review>
 
@@ -67,6 +67,7 @@
 		name: 'Dashboard',
 		data() {
 			return {
+				submitTitle:"发起评审",
 				dialogSubmitVisible: false, // 开启发起评审视窗
 				aboutTimeoutCount: 0, // 即将超时
 				acceptCount: 0, // 未接受

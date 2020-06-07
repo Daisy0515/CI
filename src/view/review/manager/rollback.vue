@@ -66,7 +66,7 @@
 	<review-detail-dialog :form="form" :formLabelWidth="formLabelWidth"
 						  :dialogFormVisible="dialogFormVisible"
 						  @closeDialog="closeDialog"></review-detail-dialog>
-	<submit-review :form="formSubmit" :formLabelWidth="formLabelWidth"
+	<submit-review :form="formSubmit" :formLabelWidth="formLabelWidth" :title="submitTitle" :isShowSubmitHistory="isShowSubmitHistory"
 				   :dialogSubmitVisible="dialogSubmitVisible"
 				   @closeSubmitDialog="closeSubmitDialog"></submit-review>
 	<review-opinion :form="formOpinion" :formLabelWidth="formLabelWidth"
@@ -86,6 +86,8 @@ export default {
   components: {reviewDetailDialog,submitReview,reviewOpinion},
   data() {
     return {
+    	submitTitle:'重新提交',
+		isShowSubmitHistory:false,//在重新提交评审的表单里是否显示提交历史
 		dialogFormVisible: false,//控制表单对话框是否显示
 		dialogSubmitVisible: false,//控制重新提交框是否显示
 		dialogOpinionVisible: false,//控制意见详情框是否显示
