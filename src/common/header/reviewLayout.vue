@@ -97,6 +97,13 @@ export default {
     };
   },
   created: function() {
+    /*通过地址栏进入页面时，根据路由判断角色*/
+    let currentRouteName = this.$route.name;
+    if(currentRouteName.indexOf('publisher')>=0){
+      this.value = '1';
+    }else if(currentRouteName.indexOf('manager')>=0){
+      this.value = '2';
+    }
     let routerName = this.$router.currentRoute.meta.routerIndex;
     this.setHeader(routerName);
   },
