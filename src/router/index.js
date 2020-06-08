@@ -98,6 +98,7 @@ const vueRouter = new Router({
 			component:() => import('@/view/review/manager/managerIndex'),
 			meta:{
 				title:'首页',
+				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
 			}
 			
 		},
@@ -107,6 +108,7 @@ const vueRouter = new Router({
 			component:() => import('@/view/review/manager/notAccept'),
 			meta:{
 				title:'未接受',
+				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
 			}
 		},
 		{
@@ -115,6 +117,7 @@ const vueRouter = new Router({
 			component:() => import('@/view/review/manager/rollback'),
 			meta:{
 				title:'打回中',
+				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
 			}
 		},
 		{
@@ -123,6 +126,7 @@ const vueRouter = new Router({
 			component:() => import('@/view/review/manager/review'),
 			meta:{
 				title:'评审中',
+				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
 			}
 		},
 		{
@@ -131,6 +135,7 @@ const vueRouter = new Router({
 			component:() => import('@/view/review/manager/complete'),
 			meta:{
 				title:'已完成',
+				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
 			}
 		},
 		
@@ -140,6 +145,7 @@ const vueRouter = new Router({
 			component:() => import('@/view/review/manager/draft'),
 			meta:{
 				title:'草稿箱',
+				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
 			}
 		}]
 		
@@ -155,6 +161,7 @@ const vueRouter = new Router({
     		component:() => import('@/view/review/publisher/publisherIndex'),
     		meta:{
     			title:'首页',
+				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
     		}
     		
     	},
@@ -164,6 +171,7 @@ const vueRouter = new Router({
     		component:() => import('@/view/review/publisher/notAccept'),
     		meta:{
     			title:'未接受',
+				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
     		}
     	},
     	{
@@ -172,6 +180,7 @@ const vueRouter = new Router({
     		component:() => import('@/view/review/publisher/rollback'),
     		meta:{
     			title:'打回中',
+				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
     		}
     	},
     	{
@@ -180,6 +189,7 @@ const vueRouter = new Router({
     		component:() => import('@/view/review/publisher/review'),
     		meta:{
     			title:'评审中',
+				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
     		}
     	},
     	{
@@ -188,6 +198,7 @@ const vueRouter = new Router({
     		component:() => import('@/view/review/publisher/complete'),
     		meta:{
     			title:'已完成',
+				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
     		}
     	},
     	{

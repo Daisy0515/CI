@@ -60,6 +60,10 @@
 
 <script>
 	import submitReview from '@/view/review/components/submitReview';
+	import { httpGet, httpDelete } from "@/utils/http.js";
+	import { specificDate } from '@/utils/getDate.js';
+	import { message, successTips, errTips } from "@/utils/tips.js";
+	
 	export default {
 		components:{
 			submitReview
@@ -67,6 +71,7 @@
 		name: 'Dashboard',
 		data() {
 			return {
+				role:2,
 				submitTitle:"发起评审",
 				dialogSubmitVisible: false, // 开启发起评审视窗
 				aboutTimeoutCount: 0, // 即将超时
@@ -98,9 +103,28 @@
 		},
 		computed: {
 		},
-		created() {
+		created: function() {
+		  this.getView();
 		},
 		methods: {
+			getView(){
+				//get /v1/authorization/review/summarizing/get 
+				httpGet("/v1/authorization/review/summarizing/get", {role:this.role}).then(results => {
+				  const { httpCode, msg, data } = results.data;
+				  if (httpCode == 200) {
+				    this.acceptCount=data.acceptCount;
+					this.reviewCount=data.reviewCount;
+					this.aboutTimeoutCount=data.aboutTimeoutCount ;
+					this.alreadyTimeoutCount=data.alreadyTimeoutCount ;
+				  } else if (msg == "该条件暂无数据") {
+				    this.tableData = [];
+				    message("该条件暂无数据");
+				  } else if (httpCode !== 401) {
+				    errTips(msg);
+				  }
+				  
+				});
+			},
 			handleChange(file, fileList) {
 				this.fileList = fileList.slice(-3)
 			},

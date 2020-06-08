@@ -57,7 +57,10 @@
 </template>
 
 <script>
-
+import { httpGet, httpDelete } from "@/utils/http.js";
+import { specificDate } from '@/utils/getDate.js';
+import { message, successTips, errTips } from "@/utils/tips.js";
+	
 	export default {
 		name: 'Dashboard',
 		data() {
@@ -92,9 +95,28 @@
 		},
 		computed: {
 		},
-		created() {
+		created: function() {
+		  this.getView();
 		},
 		methods: {
+			getView(){
+				//get /v1/authorization/review/summarizing/get 
+				httpGet("/v1/authorization/review/summarizing/get", {role:1}).then(results => {
+				  const { httpCode, msg, data } = results.data;
+				  if (httpCode == 200) {
+				    this.acceptCount=data.acceptCount;
+					this.reviewCount=data.reviewCount;
+					this.aboutTimeoutCount=data.aboutTimeoutCount ;
+					this.alreadyTimeoutCount=data.alreadyTimeoutCount ;
+				  } else if (msg == "该条件暂无数据") {
+				    this.tableData = [];
+				    message("该条件暂无数据");
+				  } else if (httpCode !== 401) {
+				    errTips(msg);
+				  }
+				  
+				});
+			},
 			handleChange(file, fileList) {
 				this.fileList = fileList.slice(-3)
 			}
