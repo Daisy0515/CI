@@ -32,7 +32,8 @@
                     <el-table-column prop="submitDate" label="提交日期"></el-table-column>
                     <el-table-column prop="endDate" label="回复截止日期"></el-table-column>
                     <el-table-column prop="opinionDetail" label="意见详情"></el-table-column>
-                    <el-table-column label="意见回复">
+                    <el-table-column prop="replyDetail" label="回复详情"></el-table-column>
+                    <el-table-column label="操作">
                         <template slot-scope="scope" style="display: inline">
                             <el-button @click="insertReply(scope.row)" type="text" size="medium"
                                        style="margin-left: 30%"
