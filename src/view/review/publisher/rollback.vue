@@ -1,7 +1,14 @@
 <template>
     <!-- <h1>publishercomplete</h1> -->
     <div>
-        <el-table v-loading="loading" :data="tableData" style="width:1000px;margin:0 auto"
+		<div style="padding-left: 10px;">
+		<el-breadcrumb separator-class="el-icon-arrow-right" style="font-size: 130%;">
+		  <el-breadcrumb-item :to="{ path: '/publisherIndex' }">项目发布者</el-breadcrumb-item>
+		  <el-breadcrumb-item>打回中</el-breadcrumb-item>
+		
+		</el-breadcrumb>
+		</div>
+        <el-table v-loading="loading" :data="tableData" style="width:1000px;margin:20px auto"
                   :header-cell-style="rowClass">
             <el-table-column fixed prop="projectCode" label="项目编号" align="center">
                 <template slot-scope="scope">

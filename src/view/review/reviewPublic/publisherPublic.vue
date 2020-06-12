@@ -143,7 +143,7 @@ body,
     box-sizing: border-box;
     float: right;
     width: 85%;
-    /* margin: 40px auto; */
+    margin: 40px auto;
     
   }
 }

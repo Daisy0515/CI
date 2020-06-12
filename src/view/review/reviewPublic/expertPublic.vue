@@ -26,43 +26,33 @@
 				  :default-active="this.$router.path"
 				  router>
 			      
-			      <el-menu-item index="/managerIndex">
+			      <el-menu-item index="/expertIndex">
 			        <i class="el-icon-menu"></i>
 			        <span slot="title">首页</span>
 			      </el-menu-item>
 				  
-			      <el-menu-item index="/managerNotAccept">
+			      <el-menu-item index="/expertTodo">
 			        <i class="el-icon-setting"></i>
-			        <span slot="title">未接受</span>
+			        <span slot="title">待处理</span>
 			      </el-menu-item>
 				  
-				  <el-menu-item index="/managerRollback">
+				  <el-menu-item index="/expertReview">
 				    <i class="el-icon-setting"></i>
-				    <span slot="title">打回中</span>
+				    <span slot="title">评审中</span>
 				  </el-menu-item>
 				  
-			      <el-menu-item index="/managerReview">
+			      <el-menu-item index="/expertComplete">
 			        <i class="el-icon-setting"></i>
-			        <span slot="title">评审中</span>
+			        <span slot="title">已完成</span>
 			      </el-menu-item>
-				  <el-menu-item index="/managerComplete">
+				  <el-menu-item index="/expertInformation">
 				    <i class="el-icon-setting"></i>
-				    <span slot="title">已完成</span>
+				    <span slot="title">信息维护</span>
 				  </el-menu-item>
-				  <el-menu-item index="/managerDraft">
-				    <i class="el-icon-setting"></i>
-				    <span slot="title">草稿箱</span>
-				  </el-menu-item>
+				  
 				  
 			</el-menu>
-          <!-- <ul>
-            <li
-              @click="changeleft(item)"
-              :class="getleftIndex===item.url ? 'leftbq':''"
-              v-for="item in leftdataOne"
-              :key="item.index"
-            >{{item.name}}</li>
-          </ul> -->
+          
         </div>
       </div>
       <div class="service_main clearfix">
@@ -145,7 +135,7 @@ body,
     float: right;
     width: 85%;
     margin: 40px auto;
-    /* &::before {
+   /* &::before {
       content: "";
       display: table;
       clear: both;

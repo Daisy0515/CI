@@ -103,6 +103,10 @@ export default {
       this.value = '1';
     }else if(currentRouteName.indexOf('manager')>=0){
       this.value = '2';
+    }else if(currentRouteName.indexOf('expert')>=0){
+      this.value = '3';
+    }else if(currentRouteName.indexOf('editor')>=0){
+      this.value = '4';
     }
     let routerName = this.$router.currentRoute.meta.routerIndex;
     this.setHeader(routerName);
@@ -127,9 +131,9 @@ export default {
       }else if(role==2){//跳转项目经理
         this.$router.push('/managerIndex');
       }else if(role==3){ //跳转评审专家
-
+		this.$router.push('/expertIndex');
       }else{ //跳转评审管理员
-
+		this.$router.push('/editorIndex');
       }
 
     },

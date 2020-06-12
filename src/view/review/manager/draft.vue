@@ -1,7 +1,14 @@
 <template>
 	<!-- <h1>publisherdraft</h1> -->
 	<div>
-		<el-table v-loading="loading" :data="tableData" style="width:1000px;margin:0 auto" :header-cell-style="rowClass">
+		<div style="padding-left: 10px;">
+		<el-breadcrumb separator-class="el-icon-arrow-right" style="font-size: 130%;">
+		  <el-breadcrumb-item :to="{ path: '/managerIndex' }">项目经理</el-breadcrumb-item>
+		  <el-breadcrumb-item>草稿箱</el-breadcrumb-item>
+		
+		</el-breadcrumb>
+		</div>  
+		<el-table v-loading="loading" :data="tableData" style="width:1000px;margin:20px auto" :header-cell-style="rowClass">
 			<el-table-column fixed prop="projectCode" label="项目编号" align="center">
 				<template slot-scope="scope">
 					<el-tooltip class="item" effect="dark" :content="scope.row.projectCode" placement="top-start">
@@ -33,7 +40,7 @@
 			</el-table-column>
 			<el-table-column prop="accomplishProgress" label="操作" align="center">
 				<template slot-scope="scope">
-					<el-button @click="handleClick(scope.row)" type="text" size="medium">
+					<el-button @click="handleClick(scope.row.id)" type="text" size="medium">
 						<i class="el-icon-edit"></i>
 						编辑
 					</el-button>
@@ -58,7 +65,7 @@
 		</el-table>
 		
 		<el-dialog
-		  title="提示"
+		  title="编辑"
 		  :visible.sync="dialogVisible"
 		  width="35%"
 		  :before-close="handleClose"
@@ -66,20 +73,18 @@
 		  
 		  <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
 		  	<el-form-item label="评审标题"  >
-				<el-select v-model="ruleForm.demand" placeholder="请选择评审标题">
-				        <el-option label="A" value="shanghai"></el-option>
-				        <el-option label="B" value="beijing"></el-option>
-				</el-select>
+				<el-input v-model="ruleForm.title" style="width: 85%;"></el-input>
+				
 			</el-form-item>
 		  
 		  	<el-form-item label="评审目的" >
-				<el-input v-model="ruleForm.functionality" style="width: 85%;"></el-input>
+				<el-input v-model="ruleForm.purpose" style="width: 85%;"></el-input>
 			</el-form-item>
 			
 			<el-form-item label="截止时间" prop="endTime" >
 			  <el-date-picker
 			 
-			    v-model="ruleForm.endTime"
+			    v-model="ruleForm.deadline"
 			    :picker-options="endDatePicker"
 			    type="date"
 			    placeholder="截止时间"
@@ -90,13 +95,13 @@
 		  	
 		  
 		  	<el-form-item label="评审内容" prop="remark">
-		  		<el-input type="textarea" class="input_textarea " v-model="ruleForm.remark" :rows="10" style="width:85%;"></el-input>
+		  		<el-input type="textarea" class="input_textarea " v-model="ruleForm.content " :rows="10" style="width:85%;"></el-input>
 		  	</el-form-item>
 		  
 		  	<sourceUpload :uploadIndex="uploadIndex" v-on:setIdCard="setIdCard($event)" />
 		  
 		  	<el-form-item class="cancel">
-		  		<el-button type="primary" @click="returnDO" size="medium" style="width:150px;margin-left:17%">暂存</el-button>
+		  		<el-button type="primary" @click="saveForm('ruleForm')" size="medium" style="width:150px;margin-left:17%">暂存</el-button>
 		  		<el-button type="primary" @click="submitForm('ruleForm')" size="medium" style="width:150px;margin-left:25%">提交</el-button>
 		  	</el-form-item>
 		  </el-form>
@@ -115,7 +120,7 @@
 
 <script>
 import { httpGet, httpDelete } from '@/utils/http.js';
-
+import { specificDate } from '@/utils/getDate.js';
 import { message, successTips, errTips } from '@/utils/tips.js';
 import sourceUpload from '@/common/upload/resourceUpload';
 export default {
@@ -129,14 +134,19 @@ export default {
 			dialogVisible: false,
 			tableData: [],
 			ruleForm: {
-				demand: '', //设计约束(没用到)
-				design: '', //模块设计说明
-				documentsId: null, //文档编号ID （如果这个页面没有用到这个参数是否需要写在ruleForm里面）
-				functionality: '', //系统组织结构
-				introduction: '', //引言
-				missionId: null, //get??
-				remark: '', //备注
-				sourceFile: '' //原文件
+				content:"",
+				deadline:"",
+				gmtCreate:"",
+				id:null,
+				projectCode:"",
+				projectId:null,
+				projectName:"",
+				purpose:"",
+				resourceList:[],
+				result:null,
+				title:"",
+				type:null,
+				warn:null
 			},
 			formLabelWidth: '260px',
 			pageData: {
@@ -179,7 +189,31 @@ export default {
 		  this.getView();
 		},
 		handleClick(row) {
-			this.dialogVisible = true;
+			// get /v1/authorization/review/draft/get 
+			httpGet("/v1/authorization/review/draft/get", {id:row}).then(results => {
+			  const { httpCode, msg, data } = results.data;
+			  if (httpCode == 200) {
+			    this.ruleForm=data;
+				this.ruleForm.deadline=specificDate(data.deadline);
+				this.ruleForm.gmtCreate=specificDate(data.gmtCreate);
+				
+			  } else {
+			    errTips(msg);
+			  }
+			  this.dialogVisible = true;
+			});
+			// this.dialogVisible = true;
+		},
+		saveForm(){
+			this.$refs[formName].validate(valid => {
+				if (valid) {
+					//this.setIdCard();
+					// this.ruleForm.sourceFile ? this.setIdCard() : (this.uploadIndex = !this.uploadIndex);
+					this.uploadIndex = !this.uploadIndex;
+				} else {
+					return false;
+				}
+			});
 		},
 		rowClass() {
 			return 'background:#F4F6F9;';

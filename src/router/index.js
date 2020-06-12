@@ -4,6 +4,8 @@ import index from '@/view/home/index/index'
 import homePublic from '@/view/home/homePublic/homePublic'
 import managerPublic from '@/view/review/reviewPublic/managerPublic'
 import publisherPublic from '@/view/review/reviewPublic/publisherPublic'
+import expertPublic from '@/view/review/reviewPublic/expertPublic'
+import editorPublic from '@/view/review/reviewPublic/editorPublic'
 import store from '@/store/index.js'
 Vue.use(Router)
 const vueRouter = new Router({
@@ -207,6 +209,114 @@ const vueRouter = new Router({
     		component:() => import('@/view/review/publisher/draft'),
     		meta:{
     			title:'草稿箱',
+    		}
+    	},
+    	]
+    	
+    },
+    {
+    	path:'/',
+    	name:'expertPublic',
+    	component:expertPublic,
+    	redirect:'index',//??
+    	children:[{
+    		path:'/expertIndex',
+    		name:'expertIndex',
+    		component:() => import('@/view/review/expert/expertIndex'),
+    		meta:{
+    			title:'首页',
+    			requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+    		}
+    		
+    	},
+    	{
+    		path:'/expertComplete',
+    		name:'expertComplete',
+    		component:() => import('@/view/review/expert/expertComplete'),
+    		meta:{
+    			title:'已完成',
+    			requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+    		}
+    	},
+    	{
+    		path:'/expertInformation',
+    		name:'expertInformation',
+    		component:() => import('@/view/review/expert/expertInformation'),
+    		meta:{
+    			title:'信息维护',
+    			requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+    		}
+    	},
+    	{
+    		path:'/expertReview',
+    		name:'expertReview',
+    		component:() => import('@/view/review/expert/expertReview'),
+    		meta:{
+    			title:'评审中',
+    			requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+    		}
+    	},
+    	{
+    		path:'/expertTodo',
+    		name:'expertTodo',
+    		component:() => import('@/view/review/expert/expertTodo'),
+    		meta:{
+    			title:'待处理',
+    			requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+    		}
+    	},
+    	]
+    	
+    },
+    {
+    	path:'/',
+    	name:'editorPublic',
+    	component:editorPublic,
+    	redirect:'index',//??
+    	children:[{
+    		path:'/editorIndex',
+    		name:'editorIndex',
+    		component:() => import('@/view/review/editor/editorIndex'),
+    		meta:{
+    			title:'首页',
+    			requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+    		}
+    		
+    	},
+    	{
+    		path:'/editorComplete',
+    		name:'editorComplete',
+    		component:() => import('@/view/review/editor/editorComplete'),
+    		meta:{
+    			title:'已完成',
+    			requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+    		}
+    	},
+    	{
+    		path:'/editorSearch',
+    		name:'expertInformation',
+    		component:() => import('@/view/review/editor/editorSearch'),
+    		meta:{
+    			title:'评审搜索',
+    			requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+    		}
+    	},
+    	{
+    		path:'/editorTodo',
+    		name:'editorTodo',
+    		component:() => import('@/view/review/editor/editorTodo'),
+    		meta:{
+    			title:'待处理任务',
+    			requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+    		}
+    	},
+    	{
+    		path:'/editorManager',
+    		name:'editorManager',
+    		component:() => import('@/view/review/editor/editorManager'),
+    		meta:{
+    			title:'待处理',
+    			requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
     		}
     	},
     	]

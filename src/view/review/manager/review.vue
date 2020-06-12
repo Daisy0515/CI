@@ -1,7 +1,14 @@
 <template>
 	<div>
 	<!-- <h1>publishercomplete</h1> -->
-	<el-table v-loading="loading" :data="tableData" style="width:1000px;margin:0 auto" :header-cell-style="rowClass">
+	<div style="padding-left: 10px;">
+	<el-breadcrumb separator-class="el-icon-arrow-right" style="font-size: 130%;">
+	  <el-breadcrumb-item :to="{ path: '/managerIndex' }">项目经理</el-breadcrumb-item>
+	  <el-breadcrumb-item>评审中</el-breadcrumb-item>
+	
+	</el-breadcrumb>
+	</div>
+	<el-table v-loading="loading" :data="tableData" style="width:1000px;margin:20px auto" :header-cell-style="rowClass">
 		<el-table-column fixed prop="projectCode" label="项目编号" align="center">
 			<template slot-scope="scope">
 				<el-tooltip class="item" effect="dark" :content="scope.row.projectCode" placement="top-start">
