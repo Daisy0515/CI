@@ -19,28 +19,28 @@
       <div class="left-scroll">
         <div class="left_top">
 			<el-menu
-			      
+
 			      class="el-menu-vertical-demo"
 			      @open="handleOpen"
 			      @close="handleClose"
-				  :default-active="this.$router.path"
+				  :default-active="this.$route.path"
 				  router>
-			      
+
 			      <el-menu-item index="/managerIndex">
 			        <i class="el-icon-menu"></i>
 			        <span slot="title">首页</span>
 			      </el-menu-item>
-				  
+
 			      <el-menu-item index="/managerNotAccept">
 			        <i class="el-icon-setting"></i>
 			        <span slot="title">未接受</span>
 			      </el-menu-item>
-				  
+
 				  <el-menu-item index="/managerRollback">
 				    <i class="el-icon-setting"></i>
 				    <span slot="title">打回中</span>
 				  </el-menu-item>
-				  
+
 			      <el-menu-item index="/managerReview">
 			        <i class="el-icon-setting"></i>
 			        <span slot="title">评审中</span>
@@ -53,7 +53,7 @@
 				    <i class="el-icon-setting"></i>
 				    <span slot="title">草稿箱</span>
 				  </el-menu-item>
-				  
+
 			</el-menu>
           <!-- <ul>
             <li
@@ -137,7 +137,7 @@ body,
     width: 11%;
     float: left;
     height: 100%;
-       
+
   }
 
   .service_main {

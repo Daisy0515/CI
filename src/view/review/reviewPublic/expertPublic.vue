@@ -19,28 +19,28 @@
       <div class="left-scroll">
         <div class="left_top">
 			<el-menu
-			      
+
 			      class="el-menu-vertical-demo"
 			      @open="handleOpen"
 			      @close="handleClose"
-				  :default-active="this.$router.path"
+				  :default-active="this.$route.path"
 				  router>
-			      
+
 			      <el-menu-item index="/expertIndex">
 			        <i class="el-icon-menu"></i>
 			        <span slot="title">首页</span>
 			      </el-menu-item>
-				  
+
 			      <el-menu-item index="/expertTodo">
 			        <i class="el-icon-setting"></i>
 			        <span slot="title">待处理</span>
 			      </el-menu-item>
-				  
+
 				  <el-menu-item index="/expertReview">
 				    <i class="el-icon-setting"></i>
 				    <span slot="title">评审中</span>
 				  </el-menu-item>
-				  
+
 			      <el-menu-item index="/expertComplete">
 			        <i class="el-icon-setting"></i>
 			        <span slot="title">已完成</span>
@@ -49,10 +49,10 @@
 				    <i class="el-icon-setting"></i>
 				    <span slot="title">信息维护</span>
 				  </el-menu-item>
-				  
-				  
+
+
 			</el-menu>
-          
+
         </div>
       </div>
       <div class="service_main clearfix">
@@ -127,7 +127,7 @@ body,
     width: 11%;
     float: left;
     height: 100%;
-       
+
   }
 
   .service_main {
