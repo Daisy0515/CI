@@ -36,19 +36,20 @@
 
             <el-table-column prop="accomplishProgress" label="操作" align="center" width="280px">
                 <template slot-scope="scope">
-                    <el-button @click="handleClickDetail(scope.row)" type="text" size="medium"
+                    <el-button @click="handleClickDetail(scope.row.id)" type="text" size="medium"
                     ><i class="el-icon-search"></i>查看详情
                     </el-button>
-                    <el-button @click="handleClickOpinion(scope.row)" type="text" size="medium"
+                    <el-button @click="handleClickOpinion(scope.row.id)" type="text" size="medium"
                     ><i class="el-icon-document"></i>意见回复</el-button>
-                    <el-button @click="handleAccept(scope.row)" type="text" size="medium"
+                    <el-button @click="handleAccept(scope.row.id)" type="text" size="medium"
                     ><i class="el-icon-check"></i>接受
                     </el-button>
                 </template>
             </el-table-column>
         </el-table>
-        <review-detail-dialog :form="form" :formLabelWidth="formLabelWidth"
+        <review-detail-dialog :form="form1" :formLabelWidth="formLabelWidth"
                               :dialogFormVisible="dialogFormVisible"
+							  :loading="form1Loading"
                               @closeDialog="closeDialog"></review-detail-dialog>
         <publisher-review-opinion :form="formOpinion" :formLabelWidth="formLabelWidth"
                                   :dialogOpinionVisible="dialogOpinionVisible"
@@ -66,12 +67,13 @@
 </template>
 
 <script>
-    import {httpGet, httpDelete} from "@/utils/http.js";
+    import {httpGet, httpPut,httpDelete} from "@/utils/http.js";
     import { MessageBox } from 'element-ui';
     import {message, successTips, errTips} from "@/utils/tips.js";
     import reviewDetailDialog from '@/view/review/components/reviewDetailDialog';
     import publisherReviewOpinion from '@/view/review/components/publisherReviewOpinion';
-    export default {
+    import { specificDate } from '@/utils/getDate.js';
+	export default {
         components: {
             reviewDetailDialog,
             publisherReviewOpinion,
@@ -82,25 +84,25 @@
                 dialogFormVisible: false,
                 dialogOpinionVisible:false,
                 formLabelWidth: '100px',
+				form1:{
+					projectName:"",
+					projectCode:null,
+					title:"",
+					purpose:"",
+					gmtCreate :"",
+					deadline :"",
+					warn :null,
+					content :"",
+					resourceList :[],
+				},
                 formOpinion: {//表单中的信息
-                    name: '',
-                    id:'',
-                    title:'',
-                    purpose: '',
-                    date1: '',
-                    date2: '',
-                    content: '',
-                    daysBeforeDeadline:'',
-                    opinions:[{
-                        opinionId:'yj123456789',
-                        submitDate:'2020-04-05',
-                        endDate:'2020-04-10',
-                        opinionDetail:'论文引用格式有问题',
-                    }],
-                    delivery: false,
-                    type: [],
-                    resource: '',
-                    desc: ''
+                    gmtCreate :"",
+                    projectCode :"",
+                    projectName :"",
+                    reviewOpinionList :[],
+                    title :"",
+                    userName :"",
+					
                 },
                 form: {//表单中的信息
                     name: '',
@@ -130,6 +132,7 @@
 				  status:3
 				},
 				totalPage: 0,
+				form1Loading:false,
             };
         },
         created: function () {
@@ -169,28 +172,67 @@
 			  this.pageData.pageNo = val;
 			  this.getView();
 			},
-            handleClickDetail() {
+            handleClickDetail(val) {
                 this.dialogFormVisible = true;
+				this.form1Loading=true;
+				httpGet("/v1/authorization/review/review/get", {id:val}).then(results => {
+				  const { httpCode, msg, data } = results.data;
+				  if (httpCode == 200) {
+				    this.form1 = data;
+					this.form1.deadline=specificDate(this.form1.deadline);
+					this.form1.gmtCreate=specificDate(this.form1.gmtCreate);
+				  } else if (msg == "该条件暂无数据") {
+				    this.form1="";
+				    message("该条件暂无数据");
+				  } else if (httpCode !== 401) {
+				    errTips(msg);
+				  }
+				  this.form1Loading = false;
+				});
             },
             closeDialog() {
                 this.dialogFormVisible = false;
             },
-            handleClickOpinion(row){
+            handleClickOpinion(val){
                 this.dialogOpinionVisible = true;
+				this.form2Loading=true;
+				
+				httpGet("/v1/authorization/review/opinion/list", {id:val}).then(results => {
+				  const { httpCode, msg, data } = results.data;
+				  if (httpCode == 200) {
+				    this.formOpinion = data;
+					this.formOpinion.gmtCreate=specificDate(this.formOpinion.gmtCreate);
+					let list = data.reviewOpinionList;
+					console.log(list);
+					for (let i of list) {
+						i.submitTime = specificDate(i.submitTime);
+						i.deadline  = specificDate(i.deadline);
+					}
+					 this.formOpinion.reviewOpinionList=list;
+					console.log(123);
+				  } else if (msg == "该条件暂无数据") {
+				    this.formOpinion="";
+				    message("该条件暂无数据");
+				  } else if (httpCode !== 401) {
+				    errTips(msg);
+				  }
+				  this.form2Loading = false;
+				});
             },
             closeOpinionDialog(){
                 this.dialogOpinionVisible = false;
             },
-            handleAccept(row) {
-                MessageBox.confirm('评审材料是否已经齐全，如若齐全，点击确认进入评审中状态', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    successTips('提交成功');
-                }).catch(() => {
-                    errTips('已取消');
-                });
+            handleAccept(val) {
+			//put /v1/authorization/review/status/update 
+               httpPut('/v1/authorization/review/status/update',{id:val}).then(results=>{
+               	const { data, msg, httpCode } = results.data;
+               	if (httpCode === 200) {
+               		successTips("已接受评审！");
+               		this.getView();
+               	} else {
+               		errTips(msg);
+               	}
+               })	
             },
             rowClass() {
                 return "background:#F4F6F9;";

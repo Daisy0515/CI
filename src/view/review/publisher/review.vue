@@ -36,58 +36,50 @@
 
             <el-table-column prop="accomplishProgress" label="操作" align="center" width="280px">
                 <template slot-scope="scope">
-                    <el-button @click="handleClickDetail(scope.row)" type="text" size="medium"
+                    <el-button @click="handleClickDetail(scope.row.id)" type="text" size="medium"
                     ><i class="el-icon-search"></i>查看详情
                     </el-button>
-                    <el-button @click="handleClickOpinion(scope.row)" type="text" size="medium" style="margin-right: 10px"
+                    <el-button @click="handleClickOpinion(scope.row.id)" type="text" size="medium" style="margin-right: 10px"
                     ><i class="el-icon-document"></i>意见</el-button>
-                    <el-button @click="handleClickEvaluate(scope.row)" type="text" size="medium" style="margin-right: 10px"
+                    <el-button @click="handleClickEvaluate(scope.row.id,scope.row.title)" type="text" size="medium" style="margin-right: 10px"
                     ><i class="el-icon-edit"></i>评价</el-button>
-                    <!-- <router-link :to="{path:'bidView', query:{id:scope.row.id}}">
-                      <i class="el-icon-message"></i>
-                      意见回复
-                    </router-link>
-                    <router-link
-                      :to="{ path: 'taskIndex', query: { projectId: scope.row.id } }"
-
-                    >
-                      <i class="el-icon-edit"></i>
-                      修改提交
-                    </router-link> -->
+                 
                 </template>
             </el-table-column>
         </el-table>
-        <review-detail-dialog :form="form" :formLabelWidth="formLabelWidth"
+        <review-detail-dialog :form="form1" :formLabelWidth="formLabelWidth"
                               :dialogFormVisible="dialogFormVisible"
+							  :loading="form1Loading"
                               @closeDialog="closeDialog"></review-detail-dialog>
         <publisher-review-opinion :form="formOpinion" :formLabelWidth="formLabelWidth"
                                   :dialogOpinionVisible="dialogOpinionVisible"
+								  :loading="form2Loading"
                                   @closeOpinionDialog="closeOpinionDialog"></publisher-review-opinion>
         <el-dialog title="tips:提交评价，代表本次评审结束，感谢您的评审" :visible.sync="dialogEvaluateVisible" style="width:100%;text-align:left; font-weight: bolder;" center>
-            <el-form :model="form">
+            <el-form :model="form2">
                 <el-row :gutter="20">
                     <el-col :span="10">
                         <el-form-item label="评审标题" :label-width="formLabelWidth">
-                            <el-input v-model="form.name" auto-complete="off" />
+                            <el-input v-model="evaluateTitle"  :disabled="true" auto-complete="off" />
                         </el-form-item>
                     </el-col>
                     <el-col :span="10">
                         <el-form-item label="是否通过" :label-width="formLabelWidth">
-                            <el-radio v-model="isPass" label="1">通过</el-radio>
-                            <el-radio v-model="isPass" label="2">未通过</el-radio>
+                            <el-radio v-model="form2.result" label="true">通过</el-radio>
+                            <el-radio v-model="form2.result" label="false">未通过</el-radio>
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="10">
                         <el-form-item label="评审得分" :label-width="formLabelWidth">
-                            <el-input v-model="form.score" auto-complete="off" />
+                            <el-input v-model="form2.score" auto-complete="off" />
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
                         <el-form-item label="评价内容" :label-width="formLabelWidth">
                             <el-input
-                                    v-model="form.content"
+                                    v-model="form2.content"
                                     type="textarea"
                                     :rows="3"
                                     placeholder="请输入内容"
@@ -101,6 +93,7 @@
                 <el-button type="primary" @click="submitEvaluate">提交</el-button>
             </div>
         </el-dialog>
+		
 		<div class="bid_footer">
 		  <el-pagination
 		    @current-change="handleCurrentChange"
@@ -113,7 +106,7 @@
 </template>
 
 <script>
-    import {httpGet, httpDelete} from "@/utils/http.js";
+    import {httpGet, httpDelete,httpPost} from "@/utils/http.js";
     import {message, successTips, errTips} from "@/utils/tips.js";
     import reviewDetailDialog from '@/view/review/components/reviewDetailDialog';
     import publisherReviewOpinion from '@/view/review/components/publisherReviewOpinion';
@@ -131,42 +124,35 @@
                 dialogEvaluateVisible:false,
                 formLabelWidth: '100px',
                 formOpinion: {//表单中的信息
-                    name: '',
-                    id:'',
-                    title:'',
-                    purpose: '',
-                    date1: '',
-                    date2: '',
-                    content: '',
-                    daysBeforeDeadline:'',
-                    opinions:[{
-                        opinionId:'yj123456789',
-                        submitDate:'2020-04-05',
-                        endDate:'2020-04-10',
-                        opinionDetail:'论文引用格式有问题',
-                    }],
-                    delivery: false,
-                    type: [],
-                    resource: '',
-                    desc: ''
+                    gmtCreate :"",
+					projectCode :"",
+					projectName :"",
+					reviewOpinionList :[],
+					title :"",
+					userName :"",
                 },
-                form: {//表单中的信息
-                    name: '',
-                    purpose: '',
-                    date1: '',
-                    date2: '',
-                    content: '',
-                    daysBeforeDeadline: '',
-                    fileTable: [{
-                        filename: '项目申请书',
-                        url: ''
-                    }],
-                    delivery: false,
-                    type: [],
-                    resource: '',
-                    desc: ''
-                },
-                tableData: [
+				form1:{
+					projectName:"",
+					projectCode:null,
+					title:"",
+					purpose:"",
+					gmtCreate :"",
+					deadline :"",
+					warn :null,
+					content :"",
+					resourceList :[],
+				},
+				form2:{
+					content:"",
+					result :null,
+					reviewInfoId:null,
+					score :null,
+					
+				},
+				form1Loading:false,
+				form2Loading:false,
+                evaluateTitle:"",
+				tableData: [
                     
                 ],
 				pageData: {
@@ -217,27 +203,81 @@
 			  this.pageData.pageNo = val;
 			  this.getView();
 			},
-            handleClickDetail() {
+            handleClickDetail(val) {
                 this.dialogFormVisible = true;
+				this.form1Loading=true;
+				httpGet("/v1/authorization/review/review/get", {id:val}).then(results => {
+				  const { httpCode, msg, data } = results.data;
+				  if (httpCode == 200) {
+				    this.form1 = data;
+					this.form1.deadline=specificDate(this.form1.deadline);
+					this.form1.gmtCreate=specificDate(this.form1.gmtCreate);
+				  } else if (msg == "该条件暂无数据") {
+				    this.form1="";
+				    message("该条件暂无数据");
+				  } else if (httpCode !== 401) {
+				    errTips(msg);
+				  }
+				  this.form1Loading = false;
+				});
             },
             closeDialog() {
                 this.dialogFormVisible = false;
             },
-            handleClickOpinion(row){
+            handleClickOpinion(val){
                 this.dialogOpinionVisible = true;
+				this.form2Loading=true;
+				//get /v1/authorization/review/opinion/list 
+				httpGet("/v1/authorization/review/opinion/list", {id:val}).then(results => {
+				  const { httpCode, msg, data } = results.data;
+				  if (httpCode == 200) {
+				    this.formOpinion = data;
+					this.formOpinion.gmtCreate=specificDate(this.formOpinion.gmtCreate);
+					let list = data.reviewOpinionList;
+					console.log(list);
+					for (let i of list) {
+						i.submitTime = specificDate(i.submitTime);
+						i.deadline  = specificDate(i.deadline);
+					}
+					 this.formOpinion.reviewOpinionList=list;
+					console.log(123);
+				  } else if (msg == "该条件暂无数据") {
+				    this.formOpinion="";
+				    message("该条件暂无数据");
+				  } else if (httpCode !== 401) {
+				    errTips(msg);
+				  }
+				  this.form2Loading = false;
+				});
             },
             closeOpinionDialog(){
                 this.dialogOpinionVisible = false;
             },
-            handleClickEvaluate(row){
-                this.dialogEvaluateVisible = true;
+            handleClickEvaluate(val,title){
+                this.dialogEvaluateVisible = true;	
+				//post /v1/authorization/review/evaluate/insert 
+				this.form2.reviewInfoId=val;
+				this.evaluateTitle = title;
+				
             },
             closeEvaluateDialog(){
                 this.dialogEvaluateVisible = false;
             },
             submitEvaluate(){
+				httpPost('/v1/authorization/review/evaluate/insert',this.form2).then(results=>{
+					const { data, msg, httpCode } = results.data;
+					if (httpCode === 200) {
+						successTips("评价结束");
+						this.getView();
+						this.evaluateTitle="";
+						this.form2="";
+						this.dialogEvaluateVisible = false;	
+					} else {
+						errTips(msg);
+					}
+				})	
                 this.dialogEvaluateVisible = false;
-                //提交评价
+                
             },
             rowClass() {
                 return "background:#F4F6F9;";

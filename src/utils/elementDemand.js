@@ -36,6 +36,7 @@ import {
 	Submenu,
 	MenuItem,
 	MenuItemGroup,
+
 } from 'element-ui';
 const getElement = {
     install(Vue) {
@@ -77,6 +78,7 @@ const getElement = {
 		Vue.use(Submenu)
 		Vue.use(MenuItem)
 		Vue.use(MenuItemGroup)
+
     }
 }
 export default getElement

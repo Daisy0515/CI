@@ -1,17 +1,17 @@
 <!--评审任务查看详情的对话框的组件-->
 <template>
-    <el-dialog title="评审详情" :visible.sync="dialogFormVisible" :before-close="changeVisible"
+    <el-dialog  title="评审详情" :visible.sync="dialogFormVisible" :before-close="changeVisible"
                style="width:100%;text-align:left; font-weight: bolder;">
-        <el-form :model="form">
+        <el-form :model="form" v-loading="loading">
             <el-row :gutter="20">
                 <el-col :span="8">
                     <el-form-item label="项目名称" :label-width="formLabelWidth">
-                        <el-input v-model="form.name" auto-complete="off" />
+                        <el-input v-model="form.projectName" auto-complete="off" />
                     </el-form-item>
                 </el-col>
                 <el-col :span="8">
                     <el-form-item label="项目编号" :label-width="formLabelWidth">
-                        <el-input v-model="form.id" auto-complete="off" />
+                        <el-input v-model="form.projectCode " auto-complete="off" />
                     </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -28,19 +28,21 @@
                 </el-col>
                 <el-col :span="8">
                     <el-form-item label="开始时间" :label-width="formLabelWidth">
-                        <el-input v-model="form.date1" auto-complete="off"  />
+                        <el-input v-model="form.gmtCreate " auto-complete="off"  />
                     </el-form-item>
                 </el-col>
                 <el-col :span="8">
                     <el-form-item label="截止时间" :label-width="formLabelWidth">
-                        <el-input v-model="form.date2" auto-complete="off" />
+                        <el-input v-model="form.deadline " auto-complete="off" />
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="8">
                     <el-form-item label="截止前提醒" :label-width="formLabelWidth">
-                        <el-input v-model="form.daysBeforeDeadline" auto-complete="off" placeholder="请输入天数" />
+                        <el-input v-model="form.warn " auto-complete="off" placeholder="请输入天数" >
+						<template slot="append">天</template>
+						</el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="16">
@@ -57,22 +59,24 @@
             <el-row>
                 <el-col :span="10">
                     <el-form-item label="附件下载" :label-width="formLabelWidth" style="text-align: center">
-                        <el-table
-                                :data="form.fileTable"
-                                border
-                        >
+                        <el-table :data="form.resourceList" :header-cell-style="rowClass">
                             <el-table-column
-                                    prop="filename"
+                                    prop="resourceName"
                                     label="附件名称"
+									align="center"
                             >
                             </el-table-column>
+							
                             <el-table-column
                                     label="操作"
+									align="center"
                             >
                                 <template slot-scope="scope">
-                                    <el-button @click="handleClickFile(scope.row)" type="text" size="medium"
-                                               style="margin-left: 30%"
-                                    >下载</el-button>
+									<a target="_Blank" :href="scope.row.resourceUrl" >  
+									  下载
+									</a>
+                                    <!-- <el-button @click="handleClickFile(scope.row.resourceUrl)" type="text" size="medium"
+                                    >下载</el-button> -->
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -86,14 +90,17 @@
 <script>
     export default {
         name: "reviewDetailDialog",
-        props:['form','formLabelWidth','dialogFormVisible'],
+        props:['form','formLabelWidth','dialogFormVisible','loading'],
         methods:{
             changeVisible(){
                 this.$emit('closeDialog');
             },
-            handleClickFile(row){
-
-            }
+            handleClickFile(val){
+				
+            },
+			rowClass() {
+			    return "background:#F4F6F9;";
+			}
         },
         data(){
             return{

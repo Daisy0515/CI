@@ -245,7 +245,7 @@ const vueRouter = new Router({
     		meta:{
     			title:'信息维护',
     			requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-    		}
+    		},
     	},
     	{
     		path:'/expertReview',
@@ -265,6 +265,24 @@ const vueRouter = new Router({
     			requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
     		}
     	},
+		{
+			path:'/expertDetail',
+			name:'expertDetail',
+			component:() => import('@/view/review/expert/expertDetail'),
+			meta:{
+				title:'信息维护',
+				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+			}
+		},
+		{
+			path:'/expertTotal',
+			name:'expertTotal',
+			component:() => import('@/view/review/expert/expertTotal'),
+			meta:{
+				title:'信息维护',
+				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+			}
+		},
     	]
     	
     },

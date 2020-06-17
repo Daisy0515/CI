@@ -42,13 +42,14 @@
 			</el-table-column>
             <el-table-column prop="accomplishProgress" label="操作" align="center">
                 <template slot-scope="scope">
-                    <el-button @click="handleEvaluateDetail(scope.row)" type="text" size="medium"
+                    <el-button @click="handleEvaluateDetail(scope.row.id)" type="text" size="medium"
                     ><i class="el-icon-search"></i>查看评价</el-button>
                 </template>
             </el-table-column>
         </el-table>
         <review-evaluation :form="form" :formLabelWidth="formLabelWidth"
                            :dialogEvaluationVisible="dialogEvaluationVisible"
+						   :loading="loading1"
                            @closeEvaluationDialog="closeEvaluationDialog"></review-evaluation>
     <div class="bid_footer">
       <el-pagination
@@ -71,14 +72,19 @@ import { specificDate } from '@/utils/getDate.js';
         data() {
             return {
                 loading: false,
+				loading1:false,
                 dialogEvaluationVisible:false,
                 formLabelWidth:'100px',
                 form:{
-                    fileTable:[{
-                        auditor:"ABC",
-                        isPass: '是',
-                        score: '70'
-                    }],
+                    content :"",
+					gmtCreate :"",
+					projectCode :"",
+					projectName :"",
+					result :"",
+					score :"",
+					title :"",
+					userName :"",
+					fileTable:[],
                 },
                 tableData: [],
                     pageData: {
@@ -132,8 +138,21 @@ import { specificDate } from '@/utils/getDate.js';
 			  this.pageData.pageNo = val;
 			  this.getView();
 			},
-            handleEvaluateDetail(row){
+            handleEvaluateDetail(val){
                 this.dialogEvaluationVisible = true;
+				this.loading1 = true;
+				//get /v1/authorization/review/evaluate/get 
+				httpGet("/v1/authorization/review/evaluate/get",{id:val}).then(results => {
+					const { httpCode, msg, data } = results.data;
+					if (httpCode == 200) {
+						this.form = data;
+						this.form.fileTable=[{auditor:data.userName,isPass:data.result,score:data.score}];
+						
+					} else {
+						errTips(msg);
+					}
+					this.loading1 = false;
+				});
             },
             closeEvaluationDialog(){
                 this.dialogEvaluationVisible = false;
