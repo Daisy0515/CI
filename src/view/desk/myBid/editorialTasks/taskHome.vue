@@ -138,7 +138,7 @@ export default {
 			httpUrlToRepo: '',
 			endDatePicker: {
 				disabledDate(time) {
-						return time.getTime() <= new Date().getTime() - 8.64e6;
+						return time.getTime() < new Date().getTime()- 86400000 ;
 				},
 			},
 		};

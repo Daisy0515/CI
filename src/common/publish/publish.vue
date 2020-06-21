@@ -14,6 +14,12 @@
 			</el-form-item>
 			<el-form-item label="一句话描述需求" prop="requirement"><el-input v-model="ruleForm.requirement"></el-input></el-form-item>
 			<el-form-item label="详细描述" prop="detail"><el-input type="textarea" v-model="ruleForm.detail" :rows="10"></el-input></el-form-item>
+			<el-form-item label="是否开放为竞赛">
+				<label v-for="(item, index) in isCompetition" :key="index">
+					<input name="FruitC" type="radio" :value="item.value" v-model="ruleForm.competition " />
+					{{ item.value }}
+				</label>
+			</el-form-item>
 			<el-form-item label="竞标方查看联系方式">
 				<label v-for="(item, index) in isSee" :key="index">
 					<input name="Fruit" type="radio" :value="item.value" v-model="ruleForm.checkedValue" />
@@ -130,12 +136,14 @@ export default {
 			parentidData: [],
 			typeidData: [],
 			isSee: [{ value: '是' }, { value: '否' }],
+			isCompetition: [{ value: '是' }, { value: '否' }],
 			isHave: [{ value: '有' }, { value: '无' }],
 			haveValue:'有',
 			ruleForm: {
 				parentId: null,
 				typeId: null,
 				checkedValue: '是',
+				competition:'否',
 				isSelect: '',
 				accessory: '',
 				name: '',
@@ -306,6 +314,7 @@ export default {
 			this.$refs[formName].validate(valid => {
 				let { typeIndex, parentIndex, ruleForm, getNormalType } = this;
 				let { checkedValue } = ruleForm;
+				let { competition } = ruleForm;
 				if (valid) {
 					for (let i of getNormalType) {
 						if (parentIndex === i.label) {
@@ -318,6 +327,7 @@ export default {
 						}
 					}
 					checkedValue === '是' ? (ruleForm.isSelect = 1) : (ruleForm.isSelect = 0);
+					competition === '是'?(ruleForm.isCompetition = 1) : (ruleForm.isCompetition = 0);
 					ruleForm.accessory ? this.setIdCard() : (this.uploadIndex = !this.uploadIndex);
 				} else {
 					return false;

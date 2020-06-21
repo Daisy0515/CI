@@ -81,9 +81,16 @@
             <i class="el-icon-search"></i>
             查看
           </router-link>
+		  <router-link
+		    :to="{path:'overCompetition', query:{projectId:scope.row.id}}"
+		    v-if="scope.row.status===1&&scope.row.isCompetition==1 "
+		  >
+		    <i class="icon iconfont icon-tuandui"></i>
+		    结束报名
+		  </router-link>
           <router-link
             :to="{path:'teamSelect', query:{projectId:scope.row.id}}"
-            v-if="scope.row.status===1"
+            v-if="scope.row.status===1&&scope.row.isCompetition==0 "
           >
             <i class="icon iconfont icon-tuandui"></i>
             选择团队

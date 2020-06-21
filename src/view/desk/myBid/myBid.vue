@@ -68,8 +68,10 @@
       <el-table-column prop="gmtModified" label="操作时间" align="center"></el-table-column>
       <el-table-column prop="status" label="状态" align="center">
         <template slot-scope="scope">
-          <span v-if="scope.row.status===1">投标中</span>
-          <span v-if="scope.row.status===2">中标</span>
+		<span v-if="scope.row.status===1&&scope.row.isCompetition==1">报名中</span>
+		<span v-if="scope.row.status===2&&scope.row.isCompetition==1">比赛中</span>
+          <span v-if="scope.row.status===1&&scope.row.isCompetition==0">投标中</span>
+          <span v-if="scope.row.status===2&&scope.row.isCompetition==0">中标</span>
           <span v-if="scope.row.status===3">结束</span>
           <span v-if="scope.row.status===4">失败</span>
         </template>
@@ -181,11 +183,7 @@ export default {
         orderType: "DESC"
       },
       bidTable: [],
-	  endDatePicker: {
-	  	disabledDate(time) {
-	  			return time.getTime() <= new Date().getTime() - 8.64e6;
-	  	},
-	  },
+
     };
   },
   created: function() {
