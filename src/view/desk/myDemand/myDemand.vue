@@ -72,7 +72,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="type" label="项目类型" align="center" width="180"></el-table-column>
-      <el-table-column label="操作" align="center" width="280">
+      <el-table-column label="操作" align="center" width="340">
         <template slot-scope="scope">
           <router-link
             :to="{path:'demandView', query:{id:scope.row.projectId}}"
@@ -113,6 +113,13 @@
             <i class="el-icon-date"></i>
             团队进度
           </router-link>
+		  <router-link
+		    :to="{path:'teamList', query:{projectId:scope.row.id}}"
+		    v-if="scope.row.status===3"
+		  >
+		    <i class="el-icon-date"></i>
+		    团队列表
+		  </router-link>
           <router-link
             :to="{path:'caseSelect', query:{projectId:scope.row.id}}"
             v-if="scope.row.status===3"
@@ -120,6 +127,13 @@
             <i class="el-icon-document"></i>
             {{scope.row.isClassic===1?'查看案例':'案例选择'}}
           </router-link>
+		<!--  <router-link
+		    :to="{path:'viewDelivery', query:{projectId:scope.row.id,Id:scope.row.id}}"
+		    v-if="scope.row.status===3"
+		  >
+		    <i class="el-icon-search"></i>
+		    查看交付
+		  </router-link> -->
           <router-link
             @click.native="deleteProject(scope.row.id)"
             to

@@ -1344,6 +1344,16 @@ const vueRouter = new Router({
             requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
           },
         },
+		{
+		  path: '/desk/teamList',
+		  name: 'teamList',
+		  component: () => import('@/view/desk/myDemand/teamList'),
+		  meta: {
+		    title: "我的需求",
+		    routerIndex: "myDemand",
+		    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+		  },
+		},
         {
           path: '/desk/caseSelect',
           name: 'caseSelect',

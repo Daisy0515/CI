@@ -58,7 +58,7 @@ export default {
   data() {
     return {
       centerDialogVisible: false,
-      loading: false,
+     // loading: false,
       projectId: "",
       loading: false,
       tableForm: [],

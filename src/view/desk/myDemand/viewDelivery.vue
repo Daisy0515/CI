@@ -6,7 +6,7 @@
 					您的位置：
 					<router-link to="myDemand">我的需求</router-link>
 					>
-				 <router-link :to="{path:'teamProgress', query:{projectId:projectId}}">团队进度</router-link>>
+				 <!-- <router-link :to="{path:'teamProgress', query:{projectId:projectId}}">团队进度</router-link>> -->
 					<span class="active">查看交付</span>
 				</h4>
 			</div>
@@ -122,7 +122,8 @@ export default {
 	methods: {
 		...mapMutations(['setCache']),
 		returnMybid() {
-			this.$router.push({path:'./teamProgress', query:{projectId:this.projectId}});
+			// this.$router.push({path:'./teamProgress', query:{projectId:this.projectId}});
+			this.$router.push({path:'./myDemand'});
 		},
 		getView() {
 			this.loading = true;
