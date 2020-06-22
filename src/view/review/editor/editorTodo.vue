@@ -7,7 +7,7 @@
 					<el-row style="margin-bottom: 55px;" :gutter="20">
 						<el-col :span="6">
 							<el-card>
-								<router-link to="">
+								<router-link to="/reviewTodo/0"> <!--0 表示新的任务-->
 									<h1>{{ acceptCount }}</h1>
 									<el-button type="text">新的任务</el-button>
 								</router-link>
@@ -15,7 +15,7 @@
 						</el-col>
 						<el-col :span="6">
 							<el-card>
-								<router-link to="">
+								<router-link to="/reviewTodo/1">  <!--1 表示评审专家完成评审-->
 									<h1>{{ reviewCount }}</h1>
 									<el-button type="text">评审专家完成评审</el-button>
 								</router-link>
@@ -23,14 +23,18 @@
 						</el-col>
 						<el-col :span="6">
 							<el-card>
-								<h1>{{ aboutTimeoutCount }}</h1>
-								<el-button type="text">需要额外评审专家</el-button>
+								<router-link to="/reviewTodo/2">  <!--2 表示需要额外评审专家-->
+									<h1>{{ reviewCount }}</h1>
+									<el-button type="text">需要额外评审专家</el-button>
+								</router-link>
 							</el-card>
 						</el-col>
 						<el-col :span="6">
 							<el-card>
-								<h1>{{ alreadyTimeoutCount }}</h1>
-								<el-button type="text">评审延期</el-button>
+								<router-link to="/reviewTodo/3">   <!--3 表示需要额外评审专家-->
+									<h1>{{ reviewCount }}</h1>
+									<el-button type="text">评审延期</el-button>
+								</router-link>
 							</el-card>
 						</el-col>
 					</el-row>
@@ -42,16 +46,20 @@
 					<el-row style="margin-bottom: 25px;">
 						<el-card >
 							<el-row :gutter="20">
-								<el-col :span="20"><el-button type="text" style="font-size: 16px;">评审邀请未回复</el-button></el-col>
-								<el-col :span="4"><h2>0</h2></el-col>
+								<router-link to="/reviewTodo/4">   <!--4 表示评审邀请未回复-->
+									<el-col :span="20"><el-button type="text" style="font-size: 16px;">评审邀请未回复</el-button></el-col>
+									<el-col :span="4"><h2>0</h2></el-col>
+								</router-link>
 							</el-row>
 						</el-card>
 					</el-row>
 					<el-row style="margin-bottom: 15px;">
 						<el-card>
 							<el-row :gutter="20">
-								<el-col :span="20"><el-button type="text" style="font-size: 16px;" >评审进行中</el-button></el-col>
-								<el-col :span="4"><h2>0</h2></el-col>
+								<router-link to="/reviewTodo/4">   <!--5 表示评审进行中-->
+									<el-col :span="20"><el-button type="text" style="font-size: 16px;" >评审进行中</el-button></el-col>
+									<el-col :span="4"><h2>0</h2></el-col>
+								</router-link>
 							</el-row>
 						</el-card>
 					</el-row>

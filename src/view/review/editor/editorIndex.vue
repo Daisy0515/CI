@@ -7,7 +7,7 @@
 					<el-row style="margin-bottom: 20px;" :gutter="20">
 						<el-col :span="6">
 							<el-card>
-								<router-link to="">
+								<router-link to="/reviewStatistic/0">
 									<h1>{{ acceptCount }}</h1>
 									<el-button type="text">0位专家已评审</el-button>
 								</router-link>
@@ -15,7 +15,7 @@
 						</el-col>
 						<el-col :span="6">
 							<el-card>
-								<router-link to="">
+								<router-link to="/reviewStatistic/1">
 									<h1>{{ reviewCount }}</h1>
 									<el-button type="text">1位专家已评审</el-button>
 								</router-link>
@@ -23,14 +23,18 @@
 						</el-col>
 						<el-col :span="6">
 							<el-card>
-								<h1>{{ aboutTimeoutCount }}</h1>
-								<el-button type="text">2位专家已评审</el-button>
+								<router-link to="/reviewStatistic/2">
+									<h1>{{ reviewCount }}</h1>
+									<el-button type="text">2位专家已评审</el-button>
+								</router-link>
 							</el-card>
 						</el-col>
 						<el-col :span="6">
 							<el-card>
-								<h1>{{ alreadyTimeoutCount }}</h1>
-								<el-button type="text">3位专家已评审</el-button>
+								<router-link to="/reviewStatistic/3">
+									<h1>{{ reviewCount }}</h1>
+									<el-button type="text">3位专家已评审</el-button>
+								</router-link>
 							</el-card>
 						</el-col>
 					</el-row>

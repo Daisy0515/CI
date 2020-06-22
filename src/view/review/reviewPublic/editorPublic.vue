@@ -44,7 +44,7 @@
 				  <el-menu-item index="/editorSearch">
 					<i class="el-icon-setting"></i>
 					<span slot="title">评审搜索</span>
-				</el-menu-item>
+				  </el-menu-item>
 
 				  <el-menu-item index="/editorManager">
 				    <i class="el-icon-setting"></i>
