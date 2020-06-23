@@ -53,6 +53,8 @@
 		</el-row>
 		<submit-review :form="form" :formLabelWidth="formLabelWidth" :title="submitTitle"
 					   :dialogSubmitVisible="dialogSubmitVisible"
+					   :projectList="projectList"
+					   :isShowSubmitHistory="isShowSubmitHistory"
 					   @closeSubmitDialog="closeSubmitDialog"></submit-review>
 
 	</div>
@@ -63,7 +65,7 @@
 	import { httpGet, httpDelete } from "@/utils/http.js";
 	import { specificDate } from '@/utils/getDate.js';
 	import { message, successTips, errTips } from "@/utils/tips.js";
-	
+
 	export default {
 		components:{
 			submitReview
@@ -74,30 +76,21 @@
 				role:2,
 				submitTitle:"发起评审",
 				dialogSubmitVisible: false, // 开启发起评审视窗
+				isShowSubmitHistory:false, // 是否显示附件的提交历史，在发起评审里面不用显示，设置为false
 				aboutTimeoutCount: 0, // 即将超时
 				acceptCount: 0, // 未接受
 				alreadyTimeoutCount: 0, // 已经超时
 				reviewCount: 0, // 评审中
-				form: {
-					name: '',
-					region: '',
-					date1: '',
-					date2: '',
-					content: '',
-					fileList: [{
-						name: 'food.jpeg',
-						url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100',
-						status: 'finished'
-					}, {
-						name: 'food2.jpeg',
-						url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100',
-						status: 'finished'
-					}],
-					delivery: false,
-					type: [],
-					resource: '',
-					desc: ''
+				form:{
+					content: "",
+					deadline: "",
+					projectId: null,
+					purpose: "",
+					resourceList: [],
+					title: "",
+					type: null,
 				},
+				projectList:[],//当前用户所竞标的项目列表，发起评审时，用于项目选择
 				formLabelWidth: '100px'
 			}
 		},
@@ -105,10 +98,11 @@
 		},
 		created: function() {
 		  this.getView();
+		  this.getUserProjectList();
 		},
 		methods: {
 			getView(){
-				//get /v1/authorization/review/summarizing/get 
+				//get /v1/authorization/review/summarizing/get
 				httpGet("/v1/authorization/review/summarizing/get", {role:this.role}).then(results => {
 				  const { httpCode, msg, data } = results.data;
 				  if (httpCode == 200) {
@@ -117,17 +111,25 @@
 					this.aboutTimeoutCount=data.aboutTimeoutCount ;
 					this.alreadyTimeoutCount=data.alreadyTimeoutCount ;
 				  } else if (msg == "该条件暂无数据") {
-				    this.tableData = [];
 				    message("该条件暂无数据");
 				  } else if (httpCode !== 401) {
 				    errTips(msg);
 				  }
-				  
+
 				});
 			},
-			handleChange(file, fileList) {
-				this.fileList = fileList.slice(-3)
+			getUserProjectList(){ //获取当前用户参与的项目
+				httpGet("/v1/authorization/mission/projectid/get").then(results => {
+					const {httpCode, msg, data} = results.data;
+					if (httpCode == 200) {
+					    this.projectList = data.projectList;
+					} else if (httpCode !== 401) {
+					    errTips(msg);
+					}
+
+				});
 			},
+
 			closeSubmitDialog(){
 				this.dialogSubmitVisible = false;
 			},

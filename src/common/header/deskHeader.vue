@@ -88,7 +88,7 @@ export default {
           title: "内测管理",
           url: "myTest"
         }
-        
+
       ],
       loginUrl: "login",
       registerUrl: "selectRole"

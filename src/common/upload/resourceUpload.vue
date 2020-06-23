@@ -92,7 +92,7 @@ export default {
 	components: {
 		FileUpload
 	},
-	props: ['uploadIndex', 'fileName', 'goUpload', 'fileIndex'],
+	props: ['uploadIndex', 'fileName', 'goUpload', 'fileIndex'],  //uploadIndex 用于开启上传文件
 	data() {
 		return {
 			files: [],
@@ -107,13 +107,13 @@ export default {
 		};
 	},
 	watch: {
-		uploadIndex() {
-			if (this.files.length === 0) {
+		uploadIndex() {//用于监控是否上传，当uploadIndex发生变化时，开启上传文件
+			if (this.files.length === 0) {  //没有文件时
 				this.$emit('setIdCard', ``);
-			} else {
-				this.centerDialogVisible = true;
+			} else {                       //有文件时
+				this.centerDialogVisible = true;  //加载转圈提示开启
 				this.loading = true;
-				this.$refs.upload.active = true;
+				this.$refs.upload.active = true;  //开启上传文件
 			}
 		}
 	},

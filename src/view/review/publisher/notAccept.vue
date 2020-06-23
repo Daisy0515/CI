@@ -1,12 +1,12 @@
 <template>
     <!-- <h1>publishercomplete</h1> -->
     <div>
-		
+
 <div style="padding-left: 10px;">
 		<el-breadcrumb separator-class="el-icon-arrow-right" style="font-size: 130%;">
 		  <el-breadcrumb-item :to="{ path: '/publisherIndex' }">项目发布者</el-breadcrumb-item>
 		  <el-breadcrumb-item>未接受</el-breadcrumb-item>
-		
+
 		</el-breadcrumb>
 		</div>
         <el-table v-loading="loading" :data="tableData" style="width:1000px;margin:20px auto"
@@ -68,7 +68,7 @@
                         </el-form-item>
 						<el-form-item label="截止时间" prop="deadline" :label-width="formLabelWidth">
 						  <el-date-picker
-						 
+
 						    v-model="form.deadline"
 						    :picker-options="endDatePicker"
 						    type="date"
@@ -134,7 +134,7 @@ import { specificDate } from '@/utils/getDate.js';
 					deadline:"",
                 },
                 tableData: [
-                    
+
                 ],
 				pageData: {
 				  pageNo: 1,
@@ -155,17 +155,17 @@ import { specificDate } from '@/utils/getDate.js';
         methods: {
 			getView(val = this.pageData) {
 			  this.loading = true;
-			   
-			  //get /v1/authorization/review/review/search 
+
+			  //get /v1/authorization/review/review/search
 			  httpGet("/v1/authorization/review/review/search", val).then(results => {
 			    const { httpCode, msg, data } = results.data;
 			    if (httpCode == 200) {
 			      this.pageNo = data.pageNo;
 			      this.totalPage = parseInt(data.totalPage + '0');
-			      
+
 			      let list = data.reviewInfoList ;
 			      for (let i of list) {
-			      	
+
 			      	i.gmtCreate = specificDate(i.gmtCreate);
 			      	i.deadline = specificDate(i.deadline);
 			      }
@@ -180,7 +180,7 @@ import { specificDate } from '@/utils/getDate.js';
 			    this.loading = false;
 			  });
 			},
-			
+
 			handleCurrentChange(val) {
 			  this.pageData.pageNo = val;
 			  this.getView();
@@ -188,7 +188,7 @@ import { specificDate } from '@/utils/getDate.js';
             handleClickDetail(val) {
                 this.dialogFormVisible = true;
 				this.form1Loading=true;
-				//get /v1/authorization/review/review/get 
+				//get /v1/authorization/review/review/get
 				httpGet("/v1/authorization/review/review/get", {id:val}).then(results => {
 				  const { httpCode, msg, data } = results.data;
 				  if (httpCode == 200) {
@@ -208,8 +208,8 @@ import { specificDate } from '@/utils/getDate.js';
             handleRollBack(val) {
                 this.dialogRollbackVisible = true;
 				this.form.reviewInfoId = val;
-				
-				//post /v1/authorization/review/opinion/insert 
+
+				//post /v1/authorization/review/opinion/insert
 				// httpPut('/v1/authorization/review/status/update',{id:val}).then(results=>{
 				// 	const { data, msg, httpCode } = results.data;
 				// 	if (httpCode === 200) {
@@ -218,13 +218,10 @@ import { specificDate } from '@/utils/getDate.js';
 				// 	} else {
 				// 		errTips(msg);
 				// 	}
-				// })	
+				// })
             },
             closeDialog() {
                 this.dialogFormVisible = false;
-            },
-            handleRollback(val) {
-                this.dialogRollbackVisible = false;
             },
             submitRollback(){
 				httpPost('/v1/authorization/review/opinion/insert',this.form).then(results=>{
@@ -239,7 +236,7 @@ import { specificDate } from '@/utils/getDate.js';
 					}
 				})
                 // this.dialogRollbackVisible = false;
-				
+
             },
             handleAccept(val) {
                 httpPut('/v1/authorization/review/status/update',{id:val}).then(results=>{
@@ -250,7 +247,7 @@ import { specificDate } from '@/utils/getDate.js';
                 	} else {
                 		errTips(msg);
                 	}
-                })	
+                })
             },
             rowClass() {
                 return "background:#F4F6F9;";
@@ -269,7 +266,7 @@ import { specificDate } from '@/utils/getDate.js';
 	      width: 70px;
 	    }
 	    .el-pagination {
-	      
+
 	      margin: 50px 0 50px 0;
 	    }
 	  }

@@ -1,43 +1,46 @@
 <template>
     <el-dialog title="评审材料意见" :visible.sync="dialogOpinionVisible" :before-close="changeVisible"
                style="width:100%;text-align:left; font-weight: bolder;">
-        <el-form :model="form">
+        <el-form :model="form" v-loading="loading">
             <el-row :gutter="20">
                 <el-col :span="8">
                     <el-form-item label="项目名称" :label-width="formLabelWidth">
-                        <el-input v-model="form.name" auto-complete="off" />
+                        <el-input v-model="form.projectName" auto-complete="off" :readonly="isReadOnly"/>
                     </el-form-item>
                 </el-col>
                 <el-col :span="8">
                     <el-form-item label="项目编号" :label-width="formLabelWidth">
-                        <el-input v-model="form.id" auto-complete="off" />
+                        <el-input v-model="form.projectCode" auto-complete="off" :readonly="isReadOnly"/>
                     </el-form-item>
                 </el-col>
                 <el-col :span="8">
                     <el-form-item label="开始时间" :label-width="formLabelWidth">
-                        <el-input v-model="form.date1" auto-complete="off"  />
+                        <el-input v-model="form.gmtCreate" auto-complete="off"  :readonly="isReadOnly"/>
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="8">
                     <el-form-item label="评审标题" :label-width="formLabelWidth">
-                        <el-input v-model="form.title" auto-complete="off" />
+                        <el-input v-model="form.title" auto-complete="off" :readonly="isReadOnly"/>
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row >
-                <el-table :data="form.opinions" border >
-                    <el-table-column prop="opinionId" label="意见编号" > </el-table-column>
-                    <el-table-column prop="submitDate" label="提交日期"></el-table-column>
-                    <el-table-column prop="endDate" label="回复截止日期"></el-table-column>
-                    <el-table-column prop="opinionDetail" label="意见详情"></el-table-column>
-                    <el-table-column prop="replyDetail" label="回复详情"></el-table-column>
+                <el-table :data="form.reviewOpinionList " border >
+                    <el-table-column prop="id" label="意见编号" > </el-table-column>
+                    <el-table-column prop="submitTime" label="提交日期"></el-table-column>
+                    <el-table-column prop="deadline" label="回复截止日期"></el-table-column>
+                    <el-table-column prop="details" label="意见详情"></el-table-column>
+                    <el-table-column prop="writeBack" label="回复详情"></el-table-column>
                     <el-table-column label="操作">
                         <template slot-scope="scope" style="display: inline">
                             <el-button @click="insertReply(scope.row)" type="text" size="medium"
-                                       style="margin-left: 30%"
+                                       style="margin-left: 30%" v-if="scope.row.writeBack==null"
                             >添加回复</el-button>
+                            <el-button @click="" type="text" size="medium"
+                                       style="margin-left: 30%" v-else
+                            >已回复</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -47,11 +50,7 @@
             <el-row gutter="10">
                 <el-col span="4"><span>回复内容: </span></el-col>
                 <el-col span="20">
-                    <el-input
-                        v-model="form.content"
-                        type="textarea"
-                        :rows="2"
-                        placeholder="请输入内容"/>
+                    <el-input v-model="form.content" type="textarea" :rows="2" placeholder="请输入内容"/>
                 </el-col>
             </el-row>
             <div slot="footer" class="dialog-footer">
@@ -68,9 +67,10 @@
         data(){
             return {
                 innerVisible:false,
+                isReadOnly:true,
             }
         },
-        props:['form','formLabelWidth','dialogOpinionVisible'],
+        props:['form','formLabelWidth','dialogOpinionVisible','loading'],
         methods:{
             changeVisible(){
                 this.$emit('closeOpinionDialog');
