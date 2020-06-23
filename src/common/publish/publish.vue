@@ -14,6 +14,12 @@
 			</el-form-item>
 			<el-form-item label="一句话描述需求" prop="requirement"><el-input v-model="ruleForm.requirement"></el-input></el-form-item>
 			<el-form-item label="详细描述" prop="detail"><el-input type="textarea" v-model="ruleForm.detail" :rows="10"></el-input></el-form-item>
+			<el-form-item label="是否开放为竞赛">
+				<label v-for="(item, index) in isCompetition" :key="index">
+					<input name="FruitC" type="radio" :value="item.value" v-model="ruleForm.competition " />
+					{{ item.value }}
+				</label>
+			</el-form-item>
 			<el-form-item label="竞标方查看联系方式">
 				<label v-for="(item, index) in isSee" :key="index">
 					<input name="Fruit" type="radio" :value="item.value" v-model="ruleForm.checkedValue" />
@@ -37,8 +43,10 @@
 					  </el-input>
 					</div>
 					<div style="margin-top: 15px;">
-					<el-radio v-model="radio" label="true" border>必需</el-radio>
-					<el-radio v-model="radio" label="false" border>可选</el-radio>
+					<label v-for="(item, index) in isMust" :key="index">
+						<input name="FruitX" type="radio" :value="item.value" v-model="radioValue" />
+						{{ item.value }}
+					</label>
 					</div>
 					
 					<el-button type="primary" @click="addItem" size="small" style="float: right;margin-top: 15px;">添加</el-button>
@@ -48,8 +56,8 @@
 						<el-table-column property="content" label="资源描述" align="center"></el-table-column>
 						<el-table-column property="isUpload" label="备注" align="center">
 							<template slot-scope="scope">
-							  <span v-if="scope.row.isUpload=='true'">必需</span>
-							  <span v-if="scope.row.isUpload=='false'">可选</span>
+							  <span v-if="scope.row.isUpload==1">必须</span>
+							  <span v-if="scope.row.isUpload==0">可选</span>
 							 
 							</template>
 						</el-table-column>
@@ -118,6 +126,7 @@ export default {
 			uploadIndex: false,
 			input1: '',
 			input2: '',
+			radioValue:'必须',
 			radio:'',
 			deliverData: [],
 			input3:'',
@@ -129,13 +138,16 @@ export default {
 			typeIndex: '',
 			parentidData: [],
 			typeidData: [],
+			isMust:[{value:'必须'},{value:'可选'}],
 			isSee: [{ value: '是' }, { value: '否' }],
+			isCompetition: [{ value: '是' }, { value: '否' }],
 			isHave: [{ value: '有' }, { value: '无' }],
 			haveValue:'有',
 			ruleForm: {
 				parentId: null,
 				typeId: null,
 				checkedValue: '是',
+				competition:'否',
 				isSelect: '',
 				accessory: '',
 				name: '',
@@ -180,6 +192,7 @@ export default {
 			if(index>-1){
 				errTips('资源名称已存在');
 			} else {
+				this.radioValue === '必须' ? (this.radio = 1) : (this.radio= 0);
 				var item={projectId:null,resourceName:this.input1,content:this.input2,isUpload:this.radio};
 				console.log(item);
 				this.deliverData.push(item);
@@ -187,7 +200,7 @@ export default {
 			
 			this.input1="";
 			this.input2="";
-			this.radio="";
+			this.radioValue="必须";
 			//console.log(this.deliverData);
 		},
 		deleteItem(itemName){
@@ -306,6 +319,7 @@ export default {
 			this.$refs[formName].validate(valid => {
 				let { typeIndex, parentIndex, ruleForm, getNormalType } = this;
 				let { checkedValue } = ruleForm;
+				let { competition } = ruleForm;
 				if (valid) {
 					for (let i of getNormalType) {
 						if (parentIndex === i.label) {
@@ -318,6 +332,7 @@ export default {
 						}
 					}
 					checkedValue === '是' ? (ruleForm.isSelect = 1) : (ruleForm.isSelect = 0);
+					competition === '是'?(ruleForm.isCompetition = 1) : (ruleForm.isCompetition = 0);
 					ruleForm.accessory ? this.setIdCard() : (this.uploadIndex = !this.uploadIndex);
 				} else {
 					return false;

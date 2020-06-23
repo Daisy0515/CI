@@ -147,6 +147,14 @@ export default {
 			console.log('%s, %s',this.resourceUrlList.length,this.ResourceTable.length);
 			
 			if (this.resourceUrlList.length==this.ResourceTable.length){
+			
+				console.log(this.resourceUrlList);
+				for ( var i = 0;i<this.resourceUrlList.length;i++){
+					console.log(i,this.resourceUrlList[i].resourceUrl);
+					if(this.resourceUrlList[i].resourceUrl==null){
+						this.resourceUrlList[i].resourceUrl = this.ResourceTable[i].resourceUrl;
+					}
+				}
 				this.ruleForm.resourceUrlList=this.resourceUrlList;
 				httpPut(
 				  "/v1/authorization/review/team/update",
@@ -157,16 +165,27 @@ export default {
 				    successTips("提交成功");
 					this.$router.push({ path: './mybid' });
 				  } else {
+				//	this.uploadIndex=false;
 				    errTips(msg);
 				  }
 				});
 			}
 		}
 	},
+
+
 	methods: {
 		...mapMutations(['setCache']),
 		returnMybid() {
 			this.$router.push({ path: './mybid' });
+		},
+		
+		sortBykey(arr,key){
+		  return arr.sort(function (a, b) {
+			let x = a[key]
+			let y = b[key]
+			return ((x < y) ? -1 : (x > y) ? 1 : 0)
+		  })
 		},
 		getView() {
 			this.loading = true;
@@ -196,10 +215,13 @@ export default {
 			var item = {id:this.resourceId,resourceUrl:this.resourceUrl};
 			console.log(item);
 			this.resourceUrlList.push(item);
+			this.resourceUrlList = this.sortBykey(this.resourceUrlList,'id')
 		},
 		submitForm() {
-			
-			 this.resourceUrl ? this.setIdCard2() : (this.uploadIndex = !this.uploadIndex);
+			this.uploadIndex=true;
+		
+			//this.setIdCard2();
+			 // this.resourceUrl ? this.setIdCard2() : (this.uploadIndex = !this.uploadIndex);
 				// alert(22);
 				// console.log(this.resourceUrlList);
 				// httpPut(

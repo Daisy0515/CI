@@ -16,7 +16,7 @@
 					<el-form-item label="任务名称" prop="missionName">
 						<el-input class="input_title title" v-model="ruleForm.missionName"></el-input>
 					</el-form-item>
-
+					
 					<el-form-item label="开始时间" prop="startTime">
 						<el-date-picker
 								style="margin-left:0%"

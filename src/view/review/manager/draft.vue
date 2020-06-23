@@ -45,21 +45,11 @@
 						编辑
 					</el-button>
 
-					<el-button @click="deleteDraft(scope.row)" type="text" size="medium">
+					<el-button @click="deleteDraft(scope.row.id)" type="text" size="medium">
 						<i class="el-icon-delete"></i>
 						删除
 					</el-button>
 
-					<!-- <router-link
-				  :to="{ path: 'taskIndex', query: { projectId: scope.row.id } }"
-				>
-				  <i class="el-icon-edit"></i>
-				  编辑
-				</router-link>
-				<router-link @click.native="deleteBid(scope.row.id)" to >
-				  <i class="el-icon-delete"></i>
-				  删除
-				</router-link> -->
 				</template>
 			</el-table-column>
 		</el-table>
@@ -214,6 +204,9 @@ export default {
 					return false;
 				}
 			});
+		},
+		deleteDraft(val){
+			
 		},
 		rowClass() {
 			return 'background:#F4F6F9;';

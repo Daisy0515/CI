@@ -58,6 +58,10 @@ export default {
           url: "roleSelection"
         },
 		{
+		  title: "竞赛广场",
+		  url: "competitionSquare"
+		},
+		{
 		  title: "内测招募",
 		  url: "testEmploy"
 		},

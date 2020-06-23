@@ -21,7 +21,7 @@
         <el-table-column prop="gmtModified" label="最后更新时间" align="center"></el-table-column>
         <el-table-column prop="dayCount" label="距上一次更新天数" align="center"></el-table-column>
         <el-table-column prop="accomplishProgress" label="完成进度" align="center"></el-table-column>
-        <el-table-column label="操作" prop="province" align="center" width="300px">
+        <el-table-column label="操作" prop="province" align="center" width="380px">
           <template slot-scope="scope">
             <span class="progressBtn" @click="seeProgress(scope.row.id)">
               <i class="el-icon-search"></i>
@@ -41,6 +41,13 @@
               <i class="el-icon-search"></i>
               团队明细
             </router-link>
+			<router-link
+			  :to="{path:'viewDelivery', query:{projectId:projectId,Id:scope.row.id}}"
+			  
+			>
+			  <i class="el-icon-search"></i>
+			  查看交付
+			</router-link>
           </template>
         </el-table-column>
       </el-table>
