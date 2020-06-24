@@ -3,38 +3,43 @@
 		<el-row :gutter="40">
 			<el-col :span="16">
 				<el-card class="left-card-menu">
-					<el-row style="margin-bottom: 20px;"><h1 style="text-align: left">评审统计</h1></el-row>
+					<el-row style="margin-bottom: 20px;"><h1 style="text-align: left"><i class="el-icon-date"></i>&nbsp;评审统计</h1></el-row>
 					<el-row style="margin-bottom: 20px;" :gutter="20">
 						<el-col :span="6">
-							<el-card>
+							<el-card shadow="hover">
 								<router-link to="/reviewStatistic/0">
-									<h1>{{ acceptCount }}</h1>
-									<el-button type="text">0位专家已评审</el-button>
+									<h1 class="numtitle">{{ acceptCount }}</h1>
+									<!-- <el-button type="text">0位专家已评审</el-button> -->
 								</router-link>
+								<span class="subtitle">0位专家已评审</span>
 							</el-card>
 						</el-col>
 						<el-col :span="6">
-							<el-card>
+							<el-card shadow="hover">
 								<router-link to="/reviewStatistic/1">
-									<h1>{{ reviewCount }}</h1>
-									<el-button type="text">1位专家已评审</el-button>
+									<h1 class="numtitle">{{ reviewCount }}</h1>
+									<!-- <el-button type="text">1位专家已评审</el-button> -->
 								</router-link>
+								<span class="subtitle">1位专家已评审</span>
 							</el-card>
 						</el-col>
 						<el-col :span="6">
-							<el-card>
+							<el-card shadow="hover">
 								<router-link to="/reviewStatistic/2">
-									<h1>{{ reviewCount }}</h1>
-									<el-button type="text">2位专家已评审</el-button>
+									<h1 class="numtitle">{{ reviewCount }}</h1>
+						
 								</router-link>
+								<!-- <br /> -->
+								<span class="subtitle">2位专家已评审</span>
 							</el-card>
 						</el-col>
 						<el-col :span="6">
-							<el-card>
+							<el-card shadow="hover">
 								<router-link to="/reviewStatistic/3">
-									<h1>{{ reviewCount }}</h1>
-									<el-button type="text">3位专家已评审</el-button>
+									<h1 class="numtitle">{{ reviewCount }}</h1>
+									
 								</router-link>
+								<span class="subtitle">3位专家已评审</span>
 							</el-card>
 						</el-col>
 					</el-row>
@@ -128,12 +133,21 @@
 			margin-left:20px;
 		}
 		.text {
-			font-size: 14px;
+			font-size: 16px;
+			color: #bcbfc3;
 		}
 
 		.item {
 			padding: 18px 0;
 		}
-
+		
+	}
+	.subtitle {
+		font-size: 14px;
+		color: #bcbfc3;
+	}
+	.numtitle{
+		color: black;
+		margin-bottom: 10px;
 	}
 </style>

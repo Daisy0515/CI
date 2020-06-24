@@ -3,38 +3,42 @@
 		<el-row :gutter="40">
 			<el-col :span="16">
 				<el-card class="left-card-menu">
-					<el-row style="margin-bottom: 50px;"><h1 style="text-align: left">待处理任务</h1></el-row>
+					<el-row style="margin-bottom: 50px;"><h1 style="text-align: left"><i class="el-icon-edit"></i>&nbsp;待处理任务</h1></el-row>
 					<el-row style="margin-bottom: 55px;" :gutter="20">
 						<el-col :span="6">
-							<el-card>
+							<el-card shadow="hover">
 								<router-link to="/reviewTodo/0"> <!--0 表示新的任务-->
 									<h1>{{ acceptCount }}</h1>
-									<el-button type="text">新的任务</el-button>
+									<!-- <el-button type="text">新的任务</el-button> -->
 								</router-link>
+								<span class="subtitle">新的任务</span>
 							</el-card>
 						</el-col>
 						<el-col :span="6">
-							<el-card>
+							<el-card shadow="hover">
 								<router-link to="/reviewTodo/1">  <!--1 表示评审专家完成评审-->
 									<h1>{{ reviewCount }}</h1>
-									<el-button type="text">评审专家完成评审</el-button>
+									<!-- <el-button type="text">评审专家完成评审</el-button> -->
 								</router-link>
+								<span class="subtitle">评审专家完成评审</span>
 							</el-card>
 						</el-col>
 						<el-col :span="6">
-							<el-card>
+							<el-card shadow="hover">
 								<router-link to="/reviewTodo/2">  <!--2 表示需要额外评审专家-->
 									<h1>{{ reviewCount }}</h1>
-									<el-button type="text">需要额外评审专家</el-button>
+									<!-- <el-button type="text">需要额外评审专家</el-button> -->
 								</router-link>
+								<span class="subtitle">需要额外评审专家</span>
 							</el-card>
 						</el-col>
 						<el-col :span="6">
-							<el-card>
+							<el-card shadow="hover">
 								<router-link to="/reviewTodo/3">   <!--3 表示需要额外评审专家-->
 									<h1>{{ reviewCount }}</h1>
-									<el-button type="text">评审延期</el-button>
+									<!-- <el-button type="text">评审延期</el-button> -->
 								</router-link>
+								<span class="subtitle">评审延期</span>
 							</el-card>
 						</el-col>
 					</el-row>
@@ -154,15 +158,23 @@
 	.manager {
 		&-container {
 			text-align:center;
-			// margin-left:-10%;
+			 margin-left:20px;
 		}
 		.text {
 			font-size: 16px;
 		}
 
 		.item {
-			padding: 18px 0;
+			//padding: 18px 0;
 		}
 
+	}
+	.subtitle {
+		font-size: 14px;
+		color: #bcbfc3;
+	}
+	.numtitle{
+		color: black;
+		margin-bottom: 10px;
 	}
 </style>

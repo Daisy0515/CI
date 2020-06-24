@@ -19,7 +19,7 @@
       <div class="left-scroll" >
         <div class="left_top" >
 			<el-menu
-
+					
 			      class="el-menu-vertical-demo"
 			      @open="handleOpen"
 			      @close="handleClose"
@@ -32,17 +32,17 @@
 			      </el-menu-item>
 
 				  <el-menu-item index="/editorTodo">
-				    <i class="el-icon-setting"></i>
-				    <span slot="title">待处理任务</span>
+				    <i class="el-icon-edit"></i>
+				    <span slot="title">待处理</span>
 				  </el-menu-item>
 
 			      <el-menu-item index="/editorComplete">
-			        <i class="el-icon-setting"></i>
+			        <i class="el-icon-circle-check-outline"></i>
 			        <span slot="title">评审完成</span>
 			      </el-menu-item>
 
 				  <el-menu-item index="/editorSearch">
-					<i class="el-icon-setting"></i>
+					<i class="el-icon-search"></i>
 					<span slot="title">评审搜索</span>
 				  </el-menu-item>
 
