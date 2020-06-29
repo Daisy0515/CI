@@ -24,7 +24,7 @@
 
 			<div id="main2" style="width: 600px;height: 400px;"></div>
 		</div> -->
-		<div style="width: 100%; height: 25rem;padding-left: 10%;">
+		<div style="width: 100%; height: 25rem;padding-left: 15%;">
 			<div style="float:left;width: 40%;height: 100%;">
 				
 				<div id="main1" style="width: 100%;height: 100%;margin-top: 2.5rem;"></div>

@@ -301,6 +301,26 @@ const vueRouter = new Router({
     		}
     		
     	},
+		{
+			path:'/reviewStatistic',
+			name:'reviewStatistic',
+			component:() => import('@/view/review/editor/reviewStatistic'),
+			meta:{
+				title:'评审统计',
+				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+			}
+			
+		},
+		{
+			path:'/reviewTodo',
+			name:'reviewTodo',
+			component:() => import('@/view/review/editor/reviewTodo'),
+			meta:{
+				title:'待处理',
+				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+			}
+			
+		},
     	{
     		path:'/editorComplete',
     		name:'editorComplete',

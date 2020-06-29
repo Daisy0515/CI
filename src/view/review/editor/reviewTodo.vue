@@ -4,10 +4,44 @@
         <div style="padding-left: 10px;">
             <el-breadcrumb separator-class="el-icon-arrow-right" style="font-size: 130%;">
                 <el-breadcrumb-item :to="{ path: '/editorTodo' }">待处理任务</el-breadcrumb-item>
-                <el-breadcrumb-item >{{reviewTypes[type]}}</el-breadcrumb-item>
+                <el-breadcrumb-item >{{reviewTypes[this.id]}}</el-breadcrumb-item>
 
             </el-breadcrumb>
         </div>
+		<div class="header_top">
+		  <el-input v-model="searchData.projectName" placeholder="评审标题"></el-input>
+		  <el-input v-model="searchData.projectName" placeholder="评审类型"></el-input>
+		  <el-input v-model="searchData.projectName" placeholder="发布者"></el-input>
+		  <el-input v-model="searchData.projectName" placeholder="提交人"></el-input>
+		  <el-date-picker
+		    v-model="searchData.startTime"
+		    type="date"
+			style="width: 150px;"
+		    placeholder="提交时间"
+		    value-format="yyyy-MM-dd"
+		    :picker-options="endDatePicker"
+		  ></el-date-picker>
+		  <span style="margin-right: 15px;">到</span>
+		  <el-date-picker
+		  style="width: 150px;"
+		    v-model="searchData.endTime"
+		    :picker-options="endDatePicker"
+		    type="date"
+		    placeholder="提交时间"
+		    value-format="yyyy-MM-dd"
+		  ></el-date-picker>
+		  
+		  
+		  <!-- <el-select v-model="selestate" clearable placeholder="请选择状态">
+		    <el-option label="中标" value="中标"></el-option>
+		    <el-option label="投标中" value="投标中"></el-option>
+		    <el-option label="失败" value="失败"></el-option>
+		    <el-option label="结束" value="结束"></el-option>
+		  </el-select> -->
+		
+		  <el-button type="primary" @click="searchList()">搜索</el-button>
+			
+		</div>
         <el-table v-loading="loading" :data="tableData" style="width:100%;margin:20px auto"
                   :header-cell-style="rowClass">
             <el-table-column label="操作" align="center" width="280px">
@@ -91,9 +125,13 @@
 
 
         </el-table>
-        <review-detail-dialog :form="form" :formLabelWidth="formLabelWidth"
+		<editor-view-detail :form="form" :formLabelWidth="formLabelWidth"
+		:dialogFormVisible="dialogFormVisible"
+		@closeDialog="closeDialog"></editor-view-detail>
+		
+       <!-- <review-detail-dialog :form="form" :formLabelWidth="formLabelWidth"
                               :dialogFormVisible="dialogFormVisible"
-                              @closeDialog="closeDialog"></review-detail-dialog>
+                              @closeDialog="closeDialog"></review-detail-dialog> -->
         <div class="bid_footer">
             <el-pagination
                     @current-change="handleCurrentChange"
@@ -113,13 +151,28 @@
     import reviewDetailDialog from '@/view/review/components/reviewDetailDialog';
     import submitReview from '@/view/review/components/submitReview';
     import reviewOpinion from '@/view/review/components/reviewOpinion'
+	import editorViewDetail from '@/view/review/components/editorViewDetail'
+	//import editorViewDetail from '@view/review/components/editorViewDetail'
     import {specificDate} from '@/utils/getDate.js';
 
     export default {
         props:['type'], //type用来区分'新任务'，‘评审专家需要额外评审’，‘评审延期’，‘评审中’等类型
-        components: {reviewDetailDialog, submitReview, reviewOpinion},
+        components: {reviewDetailDialog, submitReview, reviewOpinion,editorViewDetail},
         data() {
             return {
+			
+				searchData: {
+				  projectName: "",
+				  startTime: null,
+				  endTime: null,
+				  parentId: null,
+				  pageNo: 1,
+				  typeId: null,
+				  pageSize: 10,
+				  orderType: "DESC",
+				  orderBy: "id"
+				},
+				id:"",
                 reviewTypes:['新任务','评审专家完成评审','需要额外评审专家','评审延期','评审邀请未回复','评审进行中'],
                 submitTitle: '修改提交',
                 isShowSubmitHistory: true,//在修改提交评审的表单里是否显示提交历史
@@ -170,7 +223,7 @@
             };
         },
         created: function () {
-            // this.getView();
+            this.id=this.$route.query.id;
         },
         computed: {},
         methods: {
@@ -247,5 +300,18 @@
     }
 
     }
+	.header_top {
+	  /* width: 1200px; */
+	  margin: 15px auto;
+	  padding-bottom: 20px;
+	  button {
+	    margin-left: 20px;
+	  }
+	}
+	.el-input {
+	  display: inline-block;
+	  width: 150px;
+	  margin-right: 15px;
+	}
 </style>
 

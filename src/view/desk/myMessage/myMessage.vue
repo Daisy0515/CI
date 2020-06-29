@@ -55,6 +55,7 @@
             <span v-if="scope.row.msgType===10">延期提醒</span>
             <span v-if="scope.row.msgType===11">下架提醒（发布需求）</span>
             <span v-if="scope.row.msgType===12">下架提醒（经典案例）</span>
+			<span v-if="scope.row.msgType===13">组员禁用</span>
             <span v-if="scope.row.msgType===14">缺陷提醒</span>
             <span v-if="scope.row.msgType===15">需求推荐</span>
             <span v-if="scope.row.msgType===16">邀请提醒</span>
@@ -67,6 +68,11 @@
 			<span v-if="scope.row.msgType===23">测试项目任务提醒</span>
 			<span v-if="scope.row.msgType===24">测试任务结束提醒</span>
 			<span v-if="scope.row.msgType===25">测试项目结束提醒</span>
+			<span v-if="scope.row.msgType===26">评审即将超时</span>
+			<span v-if="scope.row.msgType===27">评审已经超时</span>
+			<span v-if="scope.row.msgType===28">比赛申请</span>
+			<span v-if="scope.row.msgType===29">报名成功</span>
+			<span v-if="scope.row.msgType===30">比赛结束</span>
 			
           </template>
         </el-table-column>
@@ -203,7 +209,7 @@ export default {
           const { httpCode, msg } = results.data;
           if (httpCode === 200) {
              this.getView();
-             changeState(row);
+             this.changeState(row);
 
           } else if (httpCode !== 401) {
               errTips(msg);
