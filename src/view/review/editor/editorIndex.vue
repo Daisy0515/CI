@@ -1,13 +1,13 @@
 <template>
 	<div class="editor-container">
-		<el-row :gutter="40">
+		<el-row :gutter="40" >
 			<el-col :span="16">
-				<el-card class="left-card-menu">
+				<el-card class="left-card-menu" v-loading="loading">
 					<el-row style="margin-bottom: 20px;"><h1 style="text-align: left"><i class="el-icon-date"></i>&nbsp;评审统计</h1></el-row>
 					<el-row style="margin-bottom: 20px;" :gutter="20">
 						<el-col :span="6">
 							<el-card shadow="hover">
-								<router-link to="/reviewStatistic/0">
+								<router-link :to="{path:'/reviewStatistic',query:{id:0}}">
 									<h1 class="numtitle">{{ acceptCount }}</h1>
 									<!-- <el-button type="text">0位专家已评审</el-button> -->
 								</router-link>
@@ -16,7 +16,7 @@
 						</el-col>
 						<el-col :span="6">
 							<el-card shadow="hover">
-								<router-link to="/reviewStatistic/1">
+								<router-link :to="{path:'/reviewStatistic',query:{id:1}}">
 									<h1 class="numtitle">{{ reviewCount }}</h1>
 									<!-- <el-button type="text">1位专家已评审</el-button> -->
 								</router-link>
@@ -25,7 +25,7 @@
 						</el-col>
 						<el-col :span="6">
 							<el-card shadow="hover">
-								<router-link to="/reviewStatistic/2">
+								<router-link :to="{path:'/reviewStatistic',query:{id:2}}">
 									<h1 class="numtitle">{{ reviewCount }}</h1>
 						
 								</router-link>
@@ -35,7 +35,7 @@
 						</el-col>
 						<el-col :span="6">
 							<el-card shadow="hover">
-								<router-link to="/reviewStatistic/3">
+								<router-link :to="{path:'/reviewStatistic',query:{id:3}}">
 									<h1 class="numtitle">{{ reviewCount }}</h1>
 									
 								</router-link>
@@ -62,6 +62,7 @@
 		name: 'Dashboard',
 		data() {
 			return {
+				loading:false,
 				role:2,
 				submitTitle:"发起评审",
 				dialogSubmitVisible: false, // 开启发起评审视窗
@@ -99,6 +100,7 @@
 		},
 		methods: {
 			getView(){
+				this.loading=true;
 				//get /v1/authorization/review/summarizing/get
 				httpGet("/v1/authorization/review/summarizing/get", {role:this.role}).then(results => {
 					const { httpCode, msg, data } = results.data;
@@ -115,6 +117,7 @@
 					}
 
 				});
+				this.loading=false;
 			},
 			handleChange(file, fileList) {
 				this.fileList = fileList.slice(-3)
@@ -147,7 +150,7 @@
 		color: #bcbfc3;
 	}
 	.numtitle{
-		color: black;
+		color: #4c83c3;
 		margin-bottom: 10px;
 	}
 </style>

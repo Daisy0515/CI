@@ -1,0 +1,81 @@
+<!--评审任务查看详情的对话框的组件-->
+<template>
+    <el-dialog  title="查看详情" :visible.sync="dialogFormVisible" :before-close="changeVisible"
+               style="width:100%;text-align:left; font-weight: bolder;">
+        <el-form :model="form" v-loading="loading">
+            <el-row :gutter="20">
+                <el-col :span="8">
+                    <el-form-item label="评审标题" :label-width="formLabelWidth">
+                        <el-input v-model="form.projectName" auto-complete="off" :readonly="isReadOnly"/>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                    <el-form-item label="评审类型" :label-width="formLabelWidth">
+                        <el-input v-model="form.projectCode " auto-complete="off" :readonly="isReadOnly"/>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                    <el-form-item label="评审编号" :label-width="formLabelWidth">
+                        <el-input v-model="form.title" auto-complete="off" :readonly="isReadOnly"/>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row :gutter="20">
+                <el-col :span="8">
+                    <el-form-item label="提交人" :label-width="formLabelWidth">
+                        <el-input v-model="form.purpose" auto-complete="off" :readonly="isReadOnly"/>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                    <el-form-item label="提交时间" :label-width="formLabelWidth">
+                        <el-input v-model="form.gmtCreate " auto-complete="off"  :readonly="isReadOnly"/>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                    <el-form-item label="更新时间" :label-width="formLabelWidth">
+                        <el-input v-model="form.deadline " auto-complete="off" :readonly="isReadOnly"/>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row :gutter="20">
+               
+                <el-col :span="16">
+                    <el-form-item label="评审详情" :label-width="formLabelWidth">
+                        <el-input v-model="form.content" type="textarea" :rows="6" placeholder="请输入内容" :readonly="isReadOnly"/>
+                    </el-form-item>
+                </el-col>
+				<el-col :span="6">
+					<el-button type="primary" @click="" size="large" >下载附件</el-button>
+				</el-col>
+            </el-row>
+        
+        </el-form>
+    </el-dialog>
+</template>
+
+<script>
+    export default {
+        name: "editorViewDetail",
+        props:['form','formLabelWidth','dialogFormVisible','loading'],
+        methods:{
+            changeVisible(){
+                this.$emit('closeDialog');
+            },
+            handleClickFile(val){
+
+            },
+			rowClass() {
+			    return "background:#F4F6F9;";
+			}
+        },
+        data(){
+            return{
+                isReadOnly: true,
+            }
+        }
+    }
+</script>
+
+<style scoped>
+
+</style>

@@ -5,10 +5,44 @@
             <el-breadcrumb separator-class="el-icon-arrow-right" style="font-size: 130%;">
                 <el-breadcrumb-item :to="{ path: '/editorIndex' }">首页</el-breadcrumb-item>
                 <el-breadcrumb-item :to="{ path: '/editorIndex' }">评审统计</el-breadcrumb-item>
-                <el-breadcrumb-item>{{$route.params.id}}人已完成评审</el-breadcrumb-item>
+                <el-breadcrumb-item>{{this.id}}人已完成评审</el-breadcrumb-item>
 
             </el-breadcrumb>
         </div>
+		<div class="header_top">
+		  <el-input v-model="searchData.projectName" placeholder="评审标题"></el-input>
+		  <el-input v-model="searchData.projectName" placeholder="评审类型"></el-input>
+		  <el-input v-model="searchData.projectName" placeholder="发布者"></el-input>
+		  <el-input v-model="searchData.projectName" placeholder="提交人"></el-input>
+		  <el-date-picker
+		    v-model="searchData.startTime"
+		    type="date"
+			style="width: 150px;"
+		    placeholder="提交时间"
+		    value-format="yyyy-MM-dd"
+		    :picker-options="endDatePicker"
+		  ></el-date-picker>
+		  <span style="margin-right: 15px;">到</span>
+		  <el-date-picker
+		  style="width: 150px;"
+		    v-model="searchData.endTime"
+		    :picker-options="endDatePicker"
+		    type="date"
+		    placeholder="提交时间"
+		    value-format="yyyy-MM-dd"
+		  ></el-date-picker>
+		  
+		  
+		  <!-- <el-select v-model="selestate" clearable placeholder="请选择状态">
+		    <el-option label="中标" value="中标"></el-option>
+		    <el-option label="投标中" value="投标中"></el-option>
+		    <el-option label="失败" value="失败"></el-option>
+		    <el-option label="结束" value="结束"></el-option>
+		  </el-select> -->
+		
+		  <el-button type="primary" @click="searchList()">搜索</el-button>
+	
+		</div>
         <el-table v-loading="loading" :data="tableData" style="width:100%;margin:20px auto"
                   :header-cell-style="rowClass">
             <el-table-column label="操作" align="center" width="280px">
@@ -120,7 +154,18 @@
         components: {reviewDetailDialog, submitReview, reviewOpinion},
         data() {
             return {
-
+				searchData: {
+				  projectName: "",
+				  startTime: null,
+				  endTime: null,
+				  parentId: null,
+				  pageNo: 1,
+				  typeId: null,
+				  pageSize: 10,
+				  orderType: "DESC",
+				  orderBy: "id"
+				},
+				id:"",
                 submitTitle: '修改提交',
                 isShowSubmitHistory: true,//在修改提交评审的表单里是否显示提交历史
                 dialogFormVisible: false,//控制表单对话框是否显示
@@ -170,7 +215,7 @@
             };
         },
         created: function () {
-            // this.getView();
+            this.id=this.$route.query.id;
         },
         computed: {},
         methods: {
@@ -247,5 +292,25 @@
     }
 
     }
+/* 	.header_top {
+	  .el-icon-error {
+	    cursor: pointer;
+	    color: #989898;
+	    margin-left: -6px;
+	  }
+	} */
+	.header_top {
+	  /* width: 1200px; */
+	  margin: 15px auto;
+	  padding-bottom: 20px;
+	  button {
+	    margin-left: 20px;
+	  }
+	}
+	.el-input {
+	  display: inline-block;
+	  width: 150px;
+	  margin-right: 15px;
+	}
 </style>
 
