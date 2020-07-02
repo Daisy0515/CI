@@ -4,10 +4,12 @@ import router from './router'
 import '@/assets/iconfont/iconfont.css'
 import store from './store/index.js'
 import getElement from './utils/elementDemand.js'
+import preventClick from './utils/preventClick'
 import promise from 'es6-promise';
 promise.polyfill();
 // import "@/assets/js/style.scss";
 Vue.use(getElement)
+Vue.use(preventClick)
 Vue.config.productionTip = false;
 import assign from 'object-assign';
 assign({}, {});

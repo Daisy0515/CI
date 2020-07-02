@@ -105,8 +105,8 @@
         </el-form>
         <div slot="footer" style="margin-right: 35%">
             <el-button @click="cancel" style="margin-right: 10%" v-if="isUpdateReview">取消</el-button>
-            <el-button @click="storeReviewDraft" style="margin-right: 10%" v-else>暂存</el-button>
-            <el-button type="primary" @click="submitReview('ruleForm')">确 定</el-button>
+            <el-button @click="storeReviewDraft" style="margin-right: 10%" v-else  v-prevent-click>暂存</el-button>
+            <el-button type="primary" @click="submitReview('ruleForm')" v-prevent-click>确 定</el-button>
         </div>
     </el-dialog>
 </template>

@@ -5,7 +5,7 @@
 		<el-breadcrumb separator-class="el-icon-arrow-right" style="font-size: 130%;">
 		  <el-breadcrumb-item :to="{ path: '/publisherIndex' }">项目发布者</el-breadcrumb-item>
 		  <el-breadcrumb-item>评审者</el-breadcrumb-item>
-		
+
 		</el-breadcrumb>
 		</div>
         <el-table v-loading="loading" :data="tableData" style="width:1000px;margin:20px auto"
@@ -43,7 +43,7 @@
                     ><i class="el-icon-document"></i>意见</el-button>
                     <el-button @click="handleClickEvaluate(scope.row.id,scope.row.title)" type="text" size="medium" style="margin-right: 10px"
                     ><i class="el-icon-edit"></i>评价</el-button>
-                 
+
                 </template>
             </el-table-column>
         </el-table>
@@ -90,10 +90,10 @@
             </el-form>
             <div slot="footer" class="dialog-footer" >
                 <el-button @click="dialogEvaluateVisible = false" style="margin-right: 30px;">取 消</el-button>
-                <el-button type="primary" @click="submitEvaluate">提交</el-button>
+                <el-button type="primary" @click="submitEvaluate" v-prevent-click>提交</el-button>
             </div>
         </el-dialog>
-		
+
 		<div class="bid_footer">
 		  <el-pagination
 		    @current-change="handleCurrentChange"
@@ -147,13 +147,13 @@
 					result :null,
 					reviewInfoId:null,
 					score :null,
-					
+
 				},
 				form1Loading:false,
 				form2Loading:false,
                 evaluateTitle:"",
 				tableData: [
-                    
+
                 ],
 				pageData: {
 				  pageNo: 1,
@@ -173,17 +173,17 @@
         methods: {
 			getView(val = this.pageData) {
 			  this.loading = true;
-			   
-			  //get /v1/authorization/review/review/search 
+
+			  //get /v1/authorization/review/review/search
 			  httpGet("/v1/authorization/review/review/search", val).then(results => {
 			    const { httpCode, msg, data } = results.data;
 			    if (httpCode == 200) {
 			      this.pageNo = data.pageNo;
 			      this.totalPage = parseInt(data.totalPage + '0');
-			      
+
 			      let list = data.reviewInfoList ;
 			      for (let i of list) {
-			      	
+
 			      	i.gmtCreate = specificDate(i.gmtCreate);
 			      	i.deadline = specificDate(i.deadline);
 			      }
@@ -198,7 +198,7 @@
 			    this.loading = false;
 			  });
 			},
-			
+
 			handleCurrentChange(val) {
 			  this.pageData.pageNo = val;
 			  this.getView();
@@ -227,7 +227,7 @@
             handleClickOpinion(val){
                 this.dialogOpinionVisible = true;
 				this.form2Loading=true;
-				//get /v1/authorization/review/opinion/list 
+				//get /v1/authorization/review/opinion/list
 				httpGet("/v1/authorization/review/opinion/list", {id:val}).then(results => {
 				  const { httpCode, msg, data } = results.data;
 				  if (httpCode == 200) {
@@ -254,11 +254,11 @@
                 this.dialogOpinionVisible = false;
             },
             handleClickEvaluate(val,title){
-                this.dialogEvaluateVisible = true;	
-				//post /v1/authorization/review/evaluate/insert 
+                this.dialogEvaluateVisible = true;
+				//post /v1/authorization/review/evaluate/insert
 				this.form2.reviewInfoId=val;
 				this.evaluateTitle = title;
-				
+
             },
             closeEvaluateDialog(){
                 this.dialogEvaluateVisible = false;
@@ -271,13 +271,13 @@
 						this.getView();
 						this.evaluateTitle="";
 						this.form2="";
-						this.dialogEvaluateVisible = false;	
+						this.dialogEvaluateVisible = false;
 					} else {
 						errTips(msg);
 					}
-				})	
+				})
                 this.dialogEvaluateVisible = false;
-                
+
             },
             rowClass() {
                 return "background:#F4F6F9;";
@@ -296,7 +296,7 @@
 	      width: 70px;
 	    }
 	    .el-pagination {
-	      
+
 	      margin: 50px 0 50px 0;
 	    }
 	  }

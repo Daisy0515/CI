@@ -115,7 +115,6 @@
 				  } else if (httpCode !== 401) {
 				    errTips(msg);
 				  }
-
 				});
 			},
 			getUserProjectList(){ //获取当前用户参与的项目

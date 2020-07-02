@@ -52,7 +52,7 @@
             </el-row>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="innerVisible = false">取 消</el-button>
-                <el-button type="primary" @click="replyOpinion">提交</el-button>
+                <el-button type="primary" @click="replyOpinion" v-prevent-click>提交</el-button>
             </div>
         </el-dialog>
     </el-dialog>
