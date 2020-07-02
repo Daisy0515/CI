@@ -51,18 +51,21 @@
         <review-detail-dialog :form="form" :formLabelWidth="formLabelWidth"
                               :dialogFormVisible="dialogFormVisible"
                               :loading="dialogLoading"
-                              @closeDialog="closeDialog"></review-detail-dialog>
+                              @closeDialog="closeDialog"
+                              ></review-detail-dialog>
         <review-opinion :form="formOpinion" :formLabelWidth="formLabelWidth"
                         :dialogOpinionVisible="dialogOpinionVisible"
                         :loading="dialogLoading"
-                        @closeOpinionDialog="closeOpinionDialog"></review-opinion>
+                        @closeOpinionDialog="closeOpinionDialog"
+                        @updateOpinion="updateOpinion"></review-opinion>
         <submit-review :form="formSubmit" :formLabelWidth="formLabelWidth" :title="submitTitle"
                        :isShowSubmitHistory="isShowSubmitHistory"
                        :dialogSubmitVisible="dialogSubmitVisible"
                        :loading="dialogLoading"
                        :projectList="projectList"
                        :reviewProcessList="reviewProcessList"
-                       @closeSubmitDialog="closeSubmitDialog"></submit-review>
+                       @closeSubmitDialog="closeSubmitDialog"
+                       ></submit-review>
 
         <div class="bid_footer">
             <el-pagination
@@ -178,10 +181,9 @@
                     } else if (httpCode !== 401) {
                         errTips(msg);
                     }
-
                 });
             },
-            getReviewProcessList(projectId){//获取用户当前项目的所有评审流程
+            getReviewProcessList(projectId){/***获取用户当前项目的所有评审流程***/
                 httpGet("/v1/authorization/review/process/list",{id: projectId}).then(results => {
                     const {httpCode, msg, data} = results.data;
                     // console.log(data);
@@ -245,15 +247,19 @@
             closeDialog() {
                 this.dialogFormVisible = false;
             },
-            closeSubmitDialog() {
+            closeSubmitDialog(updateReviewList=false) {//如果是重新提交，就需要重新加载页面
                 this.dialogSubmitVisible = false;
+                if(updateReviewList===true){
+                    this.getView();
+                }
             },
             closeOpinionDialog() {
                 this.dialogOpinionVisible = false;
             },
-            handleClickFile(row) {
-
+            updateOpinion(row){
+                this.handleClickOpinion(row);
             },
+
             rowClass() {
                 return "background:#F4F6F9;";
             }

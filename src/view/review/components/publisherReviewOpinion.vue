@@ -69,7 +69,7 @@
             </el-row>
             <div slot="footer" class="dialog-footer" >
                 <el-button @click="innerVisible = false" style="margin-right: 30px;">取 消</el-button>
-                <el-button type="primary" @click="submitOpinion">提交</el-button>
+                <el-button type="primary" @click="submitOpinion" v-prevent-click>提交</el-button>
             </div>
         </el-dialog>
     </el-dialog>
@@ -101,7 +101,7 @@
             },
             submitOpinion() {
 				this.ruleForm.reviewInfoId = this.form.id;
-				//post /v1/authorization/review/opinion/insert 
+				//post /v1/authorization/review/opinion/insert
 				httpPost('/v1/authorization/review/opinion/insert',this.ruleForm).then(results=>{
 					const { data, msg, httpCode } = results.data;
 					if (httpCode === 200) {
@@ -113,7 +113,7 @@
 						errTips(msg);
 					}
 				})
-               
+
                 //提交意见
             },
             handleClickFile(row) {

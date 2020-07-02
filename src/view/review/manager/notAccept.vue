@@ -51,48 +51,48 @@
 				<el-row :gutter="20">
 					<el-col :span="8">
 						<el-form-item label="项目名称" :label-width="formLabelWidth">
-							<el-input v-model="form.projectName" auto-complete="off" readonly="isReadOnly"/>
+							<el-input v-model="form.projectName" auto-complete="off" :readonly="isReadOnly"/>
 						</el-form-item>
 					</el-col>
 					<el-col :span="8">
 						<el-form-item label="项目编号" :label-width="formLabelWidth">
-							<el-input v-model="form.projectCode" auto-complete="off" readonly="isReadOnly"/>
+							<el-input v-model="form.projectCode" auto-complete="off" :readonly="isReadOnly"/>
 						</el-form-item>
 					</el-col>
 					<el-col :span="8">
 						<el-form-item label="评审标题" :label-width="formLabelWidth">
-							<el-input v-model="form.title" auto-complete="off" readonly="isReadOnly"/>
+							<el-input v-model="form.title" auto-complete="off" :readonly="isReadOnly"/>
 						</el-form-item>
 					</el-col>
 				</el-row>
 				<el-row :gutter="20">
 					<el-col :span="8">
 						<el-form-item label="评审目的" :label-width="formLabelWidth">
-							<el-input v-model="form.purpose" auto-complete="off" readonly="isReadOnly"/>
+							<el-input v-model="form.purpose" auto-complete="off" :readonly="isReadOnly"/>
 						</el-form-item>
 					</el-col>
 					<el-col :span="8">
 						<el-form-item label="开始时间" :label-width="formLabelWidth">
-							<el-input v-model="form.gmtCreate" auto-complete="off"  readonly="isReadOnly"/>
+							<el-input v-model="form.gmtCreate" auto-complete="off"  :readonly="isReadOnly"/>
 						</el-form-item>
 					</el-col>
 					<el-col :span="8">
 						<el-form-item label="截止时间" :label-width="formLabelWidth">
-							<el-input v-model="form.deadline" auto-complete="off" readonly="isReadOnly"/>
+							<el-input v-model="form.deadline" auto-complete="off" :readonly="isReadOnly"/>
 						</el-form-item>
 					</el-col>
 				</el-row>
 				<el-row :gutter="20">
 					<el-col :span="8">
 						<el-form-item label="截止前提醒" :label-width="formLabelWidth">
-							<el-input v-model="form.warn" auto-complete="off" placeholder="请输入天数" readonly="isReadOnly">
+							<el-input v-model="form.warn" auto-complete="off" placeholder="请输入天数" :readonly="isReadOnly">
 								<template slot="append">天</template>
 							</el-input>
 						</el-form-item>
 					</el-col>
 					<el-col :span="16">
 						<el-form-item label="评审内容" :label-width="formLabelWidth">
-							<el-input v-model="form.content" type="textarea" :rows="2" placeholder="请输入内容" readonly="isReadOnly"/>
+							<el-input v-model="form.content" type="textarea" :rows="2" placeholder="请输入内容" :readonly="isReadOnly"/>
 						</el-form-item>
 					</el-col>
 				</el-row>

@@ -52,213 +52,217 @@
 		<review-opinion :form="formOpinion" :formLabelWidth="formLabelWidth"
 						:dialogOpinionVisible="dialogOpinionVisible"
 						:loading="dialogLoading"
-						@closeOpinionDialog="closeOpinionDialog"></review-opinion>
+						@closeOpinionDialog="closeOpinionDialog"
+						@updateOpinion="updateOpinion"></review-opinion>
 		<submit-review :form="formSubmit" :formLabelWidth="formLabelWidth" :title="submitTitle"
 					   :isShowSubmitHistory="isShowSubmitHistory"
 					   :dialogSubmitVisible="dialogSubmitVisible"
 					   :loading="dialogLoading"
 					   :projectList="projectList"
 					   :reviewProcessList="reviewProcessList"
-					   @closeSubmitDialog="closeSubmitDialog"></submit-review>
-	<div class="bid_footer">
-	  <el-pagination
-	    @current-change="handleCurrentChange"
-	    :current-page.sync="pageData.pageNo"
-	    :total="totalPage"
-	    layout="prev, pager, next, jumper"
-	  ></el-pagination>
-	</div>
-	</div>
+					   @closeSubmitDialog="closeSubmitDialog"
+					   @openReviewDetail="openReviewDetail"></submit-review>
 
+		<div class="bid_footer">
+			<el-pagination
+					@current-change="handleCurrentChange"
+					:current-page.sync="pageData.pageNo"
+					:total="totalPage"
+					layout="prev, pager, next, jumper"
+			></el-pagination>
+		</div>
+	</div>
 </template>
 
 <script>
-import { httpGet, httpDelete } from "@/utils/http.js";
+	import {httpGet, httpDelete} from "@/utils/http.js";
+	import {specificDate} from '@/utils/getDate.js';
+	import {message, successTips, errTips} from "@/utils/tips.js";
+	import reviewDetailDialog from '@/view/review/components/reviewDetailDialog';
+	import submitReview from '@/view/review/components/submitReview';
+	import reviewOpinion from '@/view/review/components/reviewOpinion'
 
-import { message, successTips, errTips } from "@/utils/tips.js";
-import reviewDetailDialog from '@/view/review/components/reviewDetailDialog';
-import submitReview from '@/view/review/components/submitReview';
-import reviewOpinion from '@/view/review/components/reviewOpinion'
-import { specificDate } from '@/utils/getDate.js';
-export default {
-  components: {reviewDetailDialog,submitReview,reviewOpinion},
-  data() {
-	  return {
-
-		  submitTitle:'修改提交',
-		  isShowSubmitHistory: true,//在重新提交评审的表单里是否显示提交历史
-		  dialogFormVisible: false,//控制表单对话框是否显示
-		  dialogSubmitVisible: false,//控制重新提交框是否显示
-		  dialogOpinionVisible: false,//控制意见详情框是否显示
-		  loading: false, //控制整体页面表格的加载提示
-		  dialogLoading: false,//控制弹窗的加载提示
-		  tableData: [],
-		  pageData: {
-			  pageNo: 1,
-			  pageSize: 10,
-			  orderBy: "id",
-			  orderType: "DESC",
-			  role: 2,
-			  status: 3
-		  },
-		  totalPage: 0,
-		  form: {},//详情中的信息
-		  formOpinion: {},//对应查看评价的对话框
-		  formSubmit: {},//对应重新提交的对话框
-		  formLabelWidth: '100px',//控制表单中输入框的尺寸
-		  projectList:[],//当前用户所竞标的项目列表，发起评审时，用于项目选择
-		  reviewProcessList:[]//当前用户所评审项目的流程
-	  };
-  },
-  created: function() {
-	  this.getView();
-	  this.getUserProjectList();
-  },
-  computed: {
-
-  },
-	methods: {
-		getView(val = this.pageData) {
-			this.loading = true;
-
-			//get /v1/authorization/review/review/search
-			httpGet("/v1/authorization/review/review/search", val).then(results => {
-				const {httpCode, msg, data} = results.data;
-				if (httpCode == 200) {
-					this.pageNo = data.pageNo;
-					this.totalPage = parseInt(data.totalPage + '0');
-					let list = data.reviewInfoList;
-					for (let i of list) {
-						i.gmtCreate = specificDate(i.gmtCreate);
-						i.deadline = specificDate(i.deadline);
-					}
-					Object.assign(this.pageData, val);
-					this.$set(this, 'tableData', list);
-				} else if (msg == "该条件暂无数据") {
-					this.tableData = [];
-					message("该条件暂无数据");
-				} else if (httpCode !== 401) {
-					errTips(msg);
-				}
-				this.loading = false;
-			});
+	export default {
+		components: {reviewDetailDialog, submitReview, reviewOpinion},
+		data() {
+			return {
+				submitTitle: '修改提交',
+				isShowSubmitHistory: true,//在重新提交评审的表单里是否显示提交历史
+				dialogFormVisible: false,//控制表单对话框是否显示
+				dialogSubmitVisible: false,//控制重新提交框是否显示
+				dialogOpinionVisible: false,//控制意见详情框是否显示
+				loading: false, //控制整体页面表格的加载提示
+				dialogLoading: false,//控制弹窗的加载提示
+				tableData: [],
+				pageData: {
+					pageNo: 1,
+					pageSize: 10,
+					orderBy: "id",
+					orderType: "DESC",
+					role: 2,
+					status: 2
+				},
+				totalPage: 0,
+				form: {},//详情中的信息
+				formOpinion: {},//对应查看评价的对话框
+				formSubmit: {},//对应重新提交的对话框
+				formLabelWidth: '100px',//控制表单中输入框的尺寸
+				projectList:[],//当前用户所竞标的项目列表，发起评审时，用于项目选择
+				reviewProcessList:[]//当前用户所评审项目的流程
+			};
 		},
-
-		handleCurrentChange(val) {
-			this.pageData.pageNo = val;
+		created: function () {
 			this.getView();
+			this.getUserProjectList();
 		},
-		handleClickDetail(row) {
-			this.dialogFormVisible = true;
-			this.dialogLoading = true;
-			httpGet("/v1/authorization/review/review/get", {"id": row.id}).then(results => {
-				const {httpCode, msg, data} = results.data;
-				if (httpCode == 200) {
-					console.log("详情的数据：", data);
-					data.gmtCreate = specificDate(data.gmtCreate);
-					data.deadline = specificDate(data.deadline);
-					for (let i of data.resourceList) {
-						i.gmtCreate = specificDate(i.gmtCreate);
+		computed: {},
+		methods: {
+			getView(val = this.pageData) {
+				this.loading = true;
+				httpGet("/v1/authorization/review/review/search", val).then(results => {
+					const {httpCode, msg, data} = results.data;
+					if (httpCode == 200) {
+						this.pageNo = data.pageNo;
+						this.totalPage = parseInt(data.totalPage + '0');
+						let list = data.reviewInfoList;
+						for (let i of list) {
+							i.gmtCreate = specificDate(i.gmtCreate);
+							i.deadline = specificDate(i.deadline);
+						}
+						Object.assign(this.pageData, val);
+						this.$set(this, 'tableData', list);
+					} else if (msg == "该条件暂无数据") {
+						this.tableData = [];
+						message("该条件暂无数据");
+					} else if (httpCode !== 401) {
+						errTips(msg);
 					}
-					this.form = data;
-				} else if (msg == "该条件暂无数据") {
-					this.form = [];
-					message("该条件暂无数据");
-				} else if (httpCode !== 401) {
-					errTips(msg);
-				}
-				this.dialogLoading = false;
-			});
-		},
-		getUserProjectList(){ //获取当前用户参与的项目
-			httpGet("/v1/authorization/mission/projectid/get").then(results => {
-				const {httpCode, msg, data} = results.data;
-				if (httpCode == 200) {
-					this.projectList = data.projectList;
-				} else if (httpCode !== 401) {
-					errTips(msg);
-				}
+					this.loading = false;
+				});
+			},
 
-			});
-		},
-		getReviewProcessList(projectId){//获取用户当前项目的所有评审流程
-			httpGet("/v1/authorization/review/process/list",{id: projectId}).then(results => {
-				const {httpCode, msg, data} = results.data;
-				// console.log(data);
-				if (httpCode == 200) {
-					if(data.processList.length==0){ //没有评审流程
-						this.reviewProcessList = [{id:'-1',processName:"当前项目没有评审流程"}]
-					}else{
-						this.reviewProcessList = data.processList;
+			handleCurrentChange(val) {
+				this.pageData.pageNo = val;
+				this.getView();
+			},
+			handleClickDetail(row) {
+				this.dialogFormVisible = true;
+				this.dialogLoading = true;
+				httpGet("/v1/authorization/review/review/get", {"id": row.id}).then(results => {
+					const {httpCode, msg, data} = results.data;
+					if (httpCode == 200) {
+						// console.log("详情的数据：", data);
+						data.gmtCreate = specificDate(data.gmtCreate);
+						data.deadline = specificDate(data.deadline);
+						for (let i of data.resourceList) {
+							i.gmtCreate = specificDate(i.gmtCreate);
+						}
+						this.form = data;
+					} else if (msg == "该条件暂无数据") {
+						this.form = [];
+						message("该条件暂无数据");
+					} else if (httpCode !== 401) {
+						errTips(msg);
 					}
-				} else if (httpCode !== 401) {
-					errTips(msg);
-				}
-
-			});
-		},
-		handleClickOpinion(row) {
-			this.dialogOpinionVisible = true;
-			this.dialogLoading = true;
-			httpGet("/v1/authorization/review/opinion/list", {"id": row.id}).then(results => {
-				const {httpCode, msg, data} = results.data;
-				if (httpCode == 200) {
-					data.gmtCreate = specificDate(data.gmtCreate);
-					for (let i of data.reviewOpinionList ) {
-						i.submitTime   = specificDate(i.submitTime  );
-						i.deadline  = specificDate(i.deadline );
+					this.dialogLoading = false;
+				});
+			},
+			getUserProjectList(){ //获取当前用户参与的项目
+				httpGet("/v1/authorization/mission/projectid/get").then(results => {
+					const {httpCode, msg, data} = results.data;
+					if (httpCode == 200) {
+						this.projectList = data.projectList;
+					} else if (httpCode !== 401) {
+						errTips(msg);
 					}
-					this.formOpinion = data;
-				} else if (msg == "该条件暂无数据") {
-					this.formOpinion = [];
-					message("该条件暂无数据");
-				} else if (httpCode !== 401) {
-					errTips(msg);
-				}
-				this.dialogLoading = false;
-			});
-		},
-		handleClickSubmit(row) {
-			this.dialogSubmitVisible = true;
-			this.dialogLoading = true;
-			this.getReviewProcessList(row.projectId);
-			httpGet("/v1/authorization/review/review/get", {"id": row.id}).then(results => {
-				const {httpCode, msg, data} = results.data;
-				if (httpCode == 200) {
 
-					data.gmtCreate = specificDate(data.gmtCreate);
-					data.deadline = specificDate(data.deadline);
-					for (let i of data.resourceList) {
-						i.gmtCreate = specificDate(i.gmtCreate);
+				});
+			},
+			getReviewProcessList(projectId){//获取用户当前项目的所有评审流程
+				httpGet("/v1/authorization/review/process/list",{id: projectId}).then(results => {
+					const {httpCode, msg, data} = results.data;
+					// console.log(data);
+					if (httpCode == 200) {
+						if(data.processList.length==0){ //没有评审流程
+							this.reviewProcessList = [{id:'-1',processName:"当前项目没有评审流程"}]
+						}else{
+							this.reviewProcessList = data.processList;
+						}
+					} else if (httpCode !== 401) {
+						errTips(msg);
 					}
-					this.formSubmit = data;
-					console.log("formSubmit:",this.formSubmit);
-				} else if (msg == "该条件暂无数据") {
-					this.formSubmit = [];
-					message("该条件暂无数据");
-				} else if (httpCode !== 401) {
-					errTips(msg);
-				}
-				this.dialogLoading = false;
-			});
-		},
-		closeDialog() {
-			this.dialogFormVisible = false;
-		},
-		closeSubmitDialog() {
-			this.dialogSubmitVisible = false;
-		},
-		closeOpinionDialog() {
-			this.dialogOpinionVisible = false;
-		},
-		handleClickFile(row) {
 
-		},
-		rowClass() {
-			return "background:#F4F6F9;";
+				});
+			},
+			handleClickOpinion(row) {
+				this.dialogOpinionVisible = true;
+				this.dialogLoading = true;
+				httpGet("/v1/authorization/review/opinion/list", {"id": row.id}).then(results => {
+					const {httpCode, msg, data} = results.data;
+					if (httpCode == 200) {
+						data.gmtCreate = specificDate(data.gmtCreate);
+						for (let i of data.reviewOpinionList ) {
+							i.submitTime   = specificDate(i.submitTime  );
+							i.deadline  = specificDate(i.deadline );
+						}
+						this.formOpinion = data;
+					} else if (msg == "该条件暂无数据") {
+						this.formOpinion = [];
+						message("该条件暂无数据");
+					} else if (httpCode !== 401) {
+						errTips(msg);
+					}
+					this.dialogLoading = false;
+				});
+			},
+			handleClickSubmit(row) {
+				this.dialogSubmitVisible = true;
+				this.dialogLoading = true;
+				this.getReviewProcessList(row.projectId);
+				httpGet("/v1/authorization/review/review/get", {"id": row.id}).then(results => {
+					const {httpCode, msg, data} = results.data;
+					if (httpCode == 200) {
+
+						data.gmtCreate = specificDate(data.gmtCreate);
+						data.deadline = specificDate(data.deadline);
+						for (let i of data.resourceList) {
+							i.gmtCreate = specificDate(i.gmtCreate);
+						}
+						this.formSubmit = data;
+						console.log("formSubmit:",this.formSubmit);
+					} else if (msg == "该条件暂无数据") {
+						this.formSubmit = [];
+						message("该条件暂无数据");
+					} else if (httpCode !== 401) {
+						errTips(msg);
+					}
+					this.dialogLoading = false;
+				});
+			},
+			closeDialog() {
+				this.dialogFormVisible = false;
+			},
+			closeSubmitDialog(updateReviewList=false) {//如果是重新提交，就需要重新加载页面
+				this.dialogSubmitVisible = false;
+				if(updateReviewList===true){
+					this.getView();
+				}
+			},
+			closeOpinionDialog() {
+				this.dialogOpinionVisible = false;
+			},
+			updateOpinion(row){
+				this.handleClickOpinion(row);
+			},
+			openReviewDetail(row){
+				// console.log("row:",row);
+				this.handleClickDetail(row);
+			},
+			rowClass() {
+				return "background:#F4F6F9;";
+			}
 		}
-	}
-};
+	};
 
 </script>
 

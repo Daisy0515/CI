@@ -88,7 +88,7 @@
             </el-form>
             <div slot="footer" style="margin-right: 35%">
                 <el-button @click="dialogRollbackVisible=false" style="margin-right: 10%">取 消</el-button>
-                <el-button type="primary" @click="submitRollback">确 定</el-button>
+                <el-button type="primary" @click="submitRollback" v-prevent-click>确 定</el-button>
             </div>
         </el-dialog>
 		<div class="bid_footer">

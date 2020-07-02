@@ -5,7 +5,7 @@
 		<el-breadcrumb separator-class="el-icon-arrow-right" style="font-size: 130%;">
 		  <el-breadcrumb-item :to="{ path: '/managerIndex' }">项目经理</el-breadcrumb-item>
 		  <el-breadcrumb-item>已完成</el-breadcrumb-item>
-		
+
 		</el-breadcrumb>
 		</div>
 	<el-table v-loading="loading" :data="tableData" style="width:1000px;margin:20px auto" :header-cell-style="rowClass">
@@ -36,7 +36,7 @@
 			<template slot-scope="scope">
 			  <span v-if="scope.row.result==1">通过</span>
 			  <span v-if="scope.row.result==0">未通过</span>
-			  
+
 			</template>
 		</el-table-column>
 		<el-table-column prop="accomplishProgress" label="操作" align="center" width="280px">
@@ -48,6 +48,7 @@
 	</el-table>
 	<review-evaluation :form="form" :formLabelWidth="formLabelWidth"
 					   :dialogEvaluationVisible="dialogEvaluationVisible"
+					   :loading="dialogLoading"
 					   @closeEvaluationDialog="closeEvaluationDialog"></review-evaluation>
 	<div class="bid_footer">
 	  <el-pagination
@@ -58,7 +59,7 @@
 	  ></el-pagination>
 	</div>
 	</div>
-	
+
 </template>
 
 <script>
@@ -71,18 +72,11 @@ export default {
 	data() {
     	return {
 			loading: false,
+			dialogLoading:false,//控制组件在加载数据时的转圈状态
 			dialogEvaluationVisible:false,
 			formLabelWidth:'100px',
-			form:{
-				fileTable:[{
-					auditor:"ABC",
-					isPass: '是',
-					score: '70'
-				}],
-				},
-			tableData: [
-			  	
-			],
+			form:{},
+			tableData: [],
 			pageData: {
 			  pageNo: 1,
 			  pageSize: 10,
@@ -103,17 +97,15 @@ export default {
 	//获取页面数据
 	getView(val = this.pageData) {
 	  this.loading = true;
-	   
-	  //get /v1/authorization/review/review/search 
 	  httpGet("/v1/authorization/review/review/search", val).then(results => {
 	    const { httpCode, msg, data } = results.data;
 	    if (httpCode == 200) {
 	      this.pageNo = data.pageNo;
 	      this.totalPage = parseInt(data.totalPage + '0');
-	      
+
 	      let list = data.reviewInfoList ;
 	      for (let i of list) {
-	      	
+
 	      	i.gmtCreate = specificDate(i.gmtCreate);
 	      	i.deadline = specificDate(i.deadline);
 	      }
@@ -128,13 +120,31 @@ export default {
 	    this.loading = false;
 	  });
 	},
-	
+
 	handleCurrentChange(val) {
 	  this.pageData.pageNo = val;
 	  this.getView();
 	},
   	handleEvaluateDetail(row){
 		this.dialogEvaluationVisible = true;
+		this.dialogLoading = true;
+		httpGet("/v1/authorization/review/evaluate/get", {"id":row.id}).then(results => {
+			const { httpCode, msg, data } = results.data;
+			if (httpCode == 200) {
+				data.gmtCreate = specificDate(data.gmtCreate);
+				let reviewRecord  = {"userName":data.userName,"result":data.result,"score":data.score};
+				data.reviewRecord = [reviewRecord];
+				console.log("组合过的data:",data);
+				this.form = data;
+
+			} else if (msg == "该条件暂无数据") {
+				this.form = [];
+				message("该条件暂无数据");
+			} else if (httpCode !== 401) {
+				errTips(msg);
+			}
+			this.dialogLoading = false; // 这一句不能写在.then()之外，否则没有加载转圈的显示，写在.then之外会先于.then（）执行，这是异步请求
+		});
 	},
 	closeEvaluationDialog(){
 		this.dialogEvaluationVisible = false;
@@ -156,7 +166,7 @@ export default {
       width: 70px;
     }
     .el-pagination {
-      
+
       margin: 50px 0 50px 0;
     }
   }
