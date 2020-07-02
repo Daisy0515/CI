@@ -32,21 +32,21 @@
 			      </el-menu-item>
 
 			      <el-menu-item index="/expertTodo">
-			        <i class="el-icon-setting"></i>
+			        <i class="el-icon-tickets"></i>
 			        <span slot="title">待处理</span>
 			      </el-menu-item>
 
 				  <el-menu-item index="/expertReview">
-				    <i class="el-icon-setting"></i>
+				    <i class="el-icon-edit-outline"></i>
 				    <span slot="title">评审中</span>
 				  </el-menu-item>
 
 			      <el-menu-item index="/expertComplete">
-			        <i class="el-icon-setting"></i>
+			        <i class="el-icon-circle-check-outline"></i>
 			        <span slot="title">已完成</span>
 			      </el-menu-item>
 				  <el-menu-item index="/expertInformation">
-				    <i class="el-icon-setting"></i>
+				    <i class="el-icon-view"></i>
 				    <span slot="title">信息维护</span>
 				  </el-menu-item>
 

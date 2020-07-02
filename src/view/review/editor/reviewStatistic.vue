@@ -43,7 +43,8 @@
 		  <el-button type="primary" @click="searchList()">搜索</el-button>
 	
 		</div>
-        <el-table v-loading="loading" :data="tableData" style="width:100%;margin:20px auto"
+       
+		<el-table v-loading="loading" :data="tableData" style="width:100%;margin:20px auto"
                   :header-cell-style="rowClass">
             <el-table-column label="操作" align="center" width="280px">
                 <template slot-scope="scope">

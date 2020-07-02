@@ -31,6 +31,13 @@
                     </el-tooltip>
                 </template>
             </el-table-column>
+			<el-table-column prop="submitName" label="提交人" align="center">
+			    <template slot-scope="scope">
+			        <el-tooltip class="item" effect="dark" :content="scope.row.submitName">
+			            <span class="tablehidden">{{ scope.row.submitName }}</span>
+			        </el-tooltip>
+			    </template>
+			</el-table-column>
             <el-table-column prop="gmtCreate" label="开始时间" align="center"></el-table-column>
             <el-table-column prop="deadline" label="截止时间" align="center"></el-table-column>
 

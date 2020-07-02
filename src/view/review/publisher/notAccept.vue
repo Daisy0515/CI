@@ -32,6 +32,13 @@
                     </el-tooltip>
                 </template>
             </el-table-column>
+			<el-table-column prop="submitName" label="提交人" align="center">
+			    <template slot-scope="scope">
+			        <el-tooltip class="item" effect="dark" :content="scope.row.submitName">
+			            <span class="tablehidden">{{ scope.row.submitName }}</span>
+			        </el-tooltip>
+			    </template>
+			</el-table-column>
             <el-table-column prop="gmtCreate" label="开始时间" align="center"></el-table-column>
             <el-table-column prop="deadline" label="截止时间" align="center"></el-table-column>
 
@@ -228,7 +235,9 @@ import { specificDate } from '@/utils/getDate.js';
 					const { data, msg, httpCode } = results.data;
 					if (httpCode === 200) {
 						successTips("已打回评审！");
-						this.form="";
+						this.form.details="";
+						this.form.reviewInfoId="",
+						this.form.deadline="";
 						this.getView();
 						 this.dialogRollbackVisible = false;
 					} else {

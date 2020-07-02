@@ -32,21 +32,21 @@
 			      </el-menu-item>
 
 			      <el-menu-item index="/managerNotAccept">
-			        <i class="el-icon-setting"></i>
+			        <i class="el-icon-tickets"></i>
 			        <span slot="title">未接受</span>
 			      </el-menu-item>
 
 				  <el-menu-item index="/managerRollback">
-				    <i class="el-icon-setting"></i>
+				    <i class="el-icon-refresh"></i>
 				    <span slot="title">打回中</span>
 				  </el-menu-item>
 
 			      <el-menu-item index="/managerReview">
-			        <i class="el-icon-setting"></i>
+			        <i class="el-icon-edit-outline"></i>
 			        <span slot="title">评审中</span>
 			      </el-menu-item>
 				  <el-menu-item index="/managerComplete">
-				    <i class="el-icon-setting"></i>
+				    <i class="el-icon-circle-check-outline"></i>
 				    <span slot="title">已完成</span>
 				  </el-menu-item>
 				  <el-menu-item index="/managerDraft">

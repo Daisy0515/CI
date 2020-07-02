@@ -40,7 +40,7 @@
 				<el-card class="right-card-menu">
 					<el-row style="margin-bottom: 25px;">
 						<el-card>
-							<el-button type="text" @click="dialogFormVisible = true">发起第三方评审</el-button>
+							<el-button type="text" @click="submit">发起第三方评审</el-button>
 						</el-card>
 					</el-row>
 					<el-row style="margin-bottom: 15px;">
@@ -51,7 +51,7 @@
 				</el-card>
 			</el-col>
 		</el-row>
-	<el-dialog title="发起评审" :visible.sync="dialogFormVisible" style="text-align:left; font-weight: bolder;">
+<!-- 	<el-dialog title="发起评审" :visible.sync="dialogFormVisible" style="text-align:left; font-weight: bolder;">
 			<el-form :model="form">
 				<el-row :gutter="20">
 					<el-col :span="10">
@@ -128,7 +128,7 @@
 				<el-button @click="dialogFormVisible = false" style="margin-right: 10%">取 消</el-button>
 				<el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
 			</div>
-		</el-dialog>
+		</el-dialog> -->
 	
 
 	</div>
@@ -194,6 +194,9 @@ import { message, successTips, errTips } from "@/utils/tips.js";
 				  }
 				  
 				});
+			},
+			submit(){
+				this.$router.push('./submitReview');
 			},
 			handleChange(file, fileList) {
 				this.fileList = fileList.slice(-3)

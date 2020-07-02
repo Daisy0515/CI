@@ -167,6 +167,15 @@ const vueRouter = new Router({
     		}
     		
     	},
+		{
+			path:'/submitReview',
+			name:'submitReview',
+			component:() => import('@/view/review/publisher/submitReview'),
+			meta:{
+				title:'发起评审',
+				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+			}
+		},
     	{
     		path:'/publisherNotAccept',
     		name:'publisherNotAccept',
