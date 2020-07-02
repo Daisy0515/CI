@@ -14,7 +14,7 @@
     "dhtmlx-gantt": "^6.1.1",
     "echarts": "^4.6.0",
     "element-china-area-data": "^4.1.2",
-    "element-ui": "^2.6.1",
+    "element-ui": "^2.13.2",
     "image-compressor.js": "^1.1.4",
     "plupload": "^2.3.6",
     "postcss-loader": "^3.0.0",
