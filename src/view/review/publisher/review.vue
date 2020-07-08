@@ -398,19 +398,25 @@
             closeEvaluateDialog() {
                 this.dialogEvaluateVisible = false;
             },
-            submitEvaluate() {
-                httpPost('/v1/authorization/review/evaluate/insert', this.form2).then(results => {
-                    const {data, msg, httpCode} = results.data;
-                    if (httpCode === 200) {
-                        successTips("评价结束");
-                        this.getView();
-                        this.evaluateTitle = "";
-                        this.form2 = "";
-                        this.dialogEvaluateVisible = false;
-                    } else {
-                        errTips(msg);
-                    }
-                })
+
+            submitEvaluate(){
+				httpPost('/v1/authorization/review/evaluate/insert',this.form2).then(results=>{
+					const { data, msg, httpCode } = results.data;
+					if (httpCode === 200) {
+						successTips("评价结束");
+						this.getView();
+						this.evaluateTitle="";
+						this.form2.content="";
+						//content:"",
+						this.form2.result="";
+						this.form2.reviewInfoId="";
+						this.form2.score="";
+					//	this.dialogEvaluateVisible = false;
+					} else {
+						errTips(msg);
+					}
+				})
+
                 this.dialogEvaluateVisible = false;
 
             },

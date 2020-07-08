@@ -3,7 +3,7 @@
     <el-dialog  title="评审详情" :visible.sync="dialogFormVisible" :before-close="changeVisible"
                style="width:100%;text-align:left; font-weight: bolder;">
         <el-form :model="form" v-loading="loading">
-            <el-row :gutter="20">
+            <el-row :gutter="10">
                 <el-col :span="8">
                     <el-form-item label="项目名称" :label-width="formLabelWidth">
                         <el-input v-model="form.projectName" auto-complete="off" :readonly="isReadOnly"/>

@@ -1,23 +1,29 @@
 <template>
-	<div class="teamSelect">
+	<div class="myTable">
 		<div style="padding-left: 10px;">
-		    <el-breadcrumb separator-class="el-icon-arrow-right" style="font-size: 130%;">
-		        <el-breadcrumb-item :to="{ path: '/editorIndex' }">首页</el-breadcrumb-item>
-		        
-		        <el-breadcrumb-item>发起第三方评审</el-breadcrumb-item>
-		
-		    </el-breadcrumb>
+			<el-breadcrumb separator-class="el-icon-arrow-right" style="font-size: 130%;">
+				<el-breadcrumb-item :to="{ path: '/editorIndex' }">首页</el-breadcrumb-item>
+
+				<el-breadcrumb-item>发起第三方评审</el-breadcrumb-item>
+
+			</el-breadcrumb>
 		</div>
 
 		<div class="header_top">
-			<el-input v-model="searchData.projectName" placeholder="评审标题"></el-input>
-			<el-input v-model="searchData.projectName" placeholder="评审类型"></el-input>
-			<el-input v-model="searchData.projectName" placeholder="发布者"></el-input>
-			<el-input v-model="searchData.projectName" placeholder="提交人"></el-input>
-			<el-date-picker v-model="searchData.startTime" type="date" style="width: 140px;" placeholder="提交时间" value-format="yyyy-MM-dd"
-			 :picker-options="endDatePicker"></el-date-picker>
+			<el-select v-model="searchData.projectId" clearable placeholder="请选择项目名称" @change="changeProject">
+				<el-option v-for="item in projectList" :key="item.projectId" :label="item.projectName" :value="item.projectId"></el-option>
+			</el-select>
+			<el-select v-model="searchData.type" clearable placeholder="请选择评审类型">
+				<el-option v-for="item in processList" :key="item.id" :label="item.processName" :value="item.id"></el-option>
+			</el-select>
+			<!-- <el-input v-model="searchData.projectId" placeholder="项目名称"></el-input> -->
+			<!-- 	<el-input v-model="searchData.type" placeholder="评审类型"></el-input> -->
+			<el-input v-model="searchData.title" placeholder="评审标题"></el-input>
+			<el-input v-model="searchData.userName" placeholder="提交人"></el-input>
+			<el-date-picker v-model="searchData.gmtCreateStart" type="date" style="width: 140px;" placeholder="提交时间"
+			 value-format="yyyy-MM-dd" :picker-options="endDatePicker"></el-date-picker>
 			<span style="margin-right: 10px;margin-left: 10px;">到</span>
-			<el-date-picker style="width: 140px;" v-model="searchData.endTime" :picker-options="endDatePicker" type="date"
+			<el-date-picker style="width: 140px;" v-model="searchData.gmtCreateEnd" :picker-options="endDatePicker" type="date"
 			 placeholder="提交时间" value-format="yyyy-MM-dd"></el-date-picker>
 
 
@@ -32,23 +38,64 @@
 
 		</div>
 
-		<div class="container deskHeader">
-			<el-table :data="tableForm" style="width: 100%" :header-cell-style="rowClass" v-loading="loading" @selection-change="handleSelectionChange">
+
+		<el-table :data="tableData" style="width: 100%" :header-cell-style="rowClass" v-loading="loading" @selection-change="handleSelectionChange">
+			<el-table-column type="selection" align="center"></el-table-column>
+			<el-table-column prop="projectName" label="项目名称" align="center"></el-table-column>
+			<el-table-column prop="title" label="评审任务标题" align="center"></el-table-column>
+			<el-table-column prop="typeName" label="评审任务类型" align="center">
+
+			</el-table-column>
+			<el-table-column prop="gmtCreate" label="提交时间" align="center"></el-table-column>
+			<el-table-column prop="deadline" label="截止时间" align="center"></el-table-column>
+			<el-table-column prop="submitName" label="提交人" align="center"></el-table-column>
+			<el-table-column label="操作" prop="province" align="center" width="300px">
+				<template slot-scope="scope">
+					<el-button @click="handleClickDetail(scope.row.id)" type="text" size="medium"><i class="el-icon-search"></i>查看详情
+					</el-button>
+
+					<el-button @click="handleClickChoose(scope.row.id)" type="text" size="medium">
+						<i class="icon iconfont icon-yonghu"></i>
+						选择评审管理员
+					</el-button>
+				</template>
+			</el-table-column>
+		</el-table>
+		<review-detail-dialog :form="form1" :formLabelWidth="formLabelWidth" :dialogFormVisible="dialogFormVisible" :loading="form1Loading"
+		 @closeDialog="closeDialog"></review-detail-dialog>
+
+		<el-dialog title="选择管理员" :visible.sync="dialogChooseVisible" style="width:100%;text-align:left; font-weight: bolder;">
+
+			<div class="header_top" >
+
+				<el-input v-model="searchAdmin.name" placeholder="姓名"></el-input>
+				<el-input v-model="searchAdmin.workUnit" placeholder="单位"></el-input>
+
+
+				<el-button type="primary" @click="searchAdminList()">搜索</el-button>
+
+			</div>
+			<el-table :data="adminList" :header-cell-style="rowClass" @selection-change="handleAdminChange">
 				<el-table-column type="selection" align="center"></el-table-column>
-				<el-table-column prop="projectCognize" label="项目认知" align="center"></el-table-column>
-				<el-table-column prop="leaderName" label="团队组长" align="center"></el-table-column>
-				<el-table-column prop="gmtCreate" label="最后更新时间" align="center"></el-table-column>
-				<el-table-column prop="count" label="人员个数" align="center"></el-table-column>
-				<el-table-column label="操作" prop="province" align="center">
-					<template slot-scope="scope">
-						<router-link :to="{path:'teamDetails', query:{teamId:scope.row.id,projectId:projectId}}">
-							<i class="el-icon-search"></i>
-							团队明细
-						</router-link>
-					</template>
-				</el-table-column>
+				<el-table-column prop="name" label="评审管理员" align="center"></el-table-column>
+				<el-table-column prop="workUnit" label="单位" align="center"></el-table-column>
+				
 			</el-table>
-			<el-button type="primary" @click="choice">确定选择</el-button>
+			<div style="text-align: center;margin-top: 20px;">
+				<el-button type="primary" @click="returnDO" size="medium" >返回</el-button>
+				<el-button type="primary" @click="submitList" size="medium" style="margin-left:25%">提交</el-button>
+			</div>
+
+
+		</el-dialog>
+
+
+		<el-button type="primary" @click="choice" style="float: right;margin: 10px 0 10px 0;">批量选择评审管理员</el-button>
+
+
+
+		<div class="bid_footer">
+			<el-pagination @current-change="handleCurrentChange" :current-page.sync="pageData.pageNo" :total="totalPage" layout="prev, pager, next, jumper"></el-pagination>
 		</div>
 	</div>
 </template>
@@ -67,68 +114,253 @@
 	import {
 		mapMutations
 	} from "vuex";
+	import {
+		specificDate
+	} from "@/utils/getDate.js";
+	import reviewDetailDialog from '@/view/review/components/reviewDetailDialog';
+
 	export default {
-		components: {},
+		components: {
+			reviewDetailDialog
+		},
 		data() {
 			return {
-				searchData: {
+				form1Loading: false,
+				dialogFormVisible: false,
+				dialogChooseVisible: false,
+				formLabelWidth: '150px',
+				form1: {
 					projectName: "",
-					startTime: null,
-					endTime: null,
-					parentId: null,
+					projectCode: null,
+					title: "",
+					purpose: "",
+					gmtCreate: "",
+					deadline: "",
+					warn: null,
+					content: "",
+					resourceList: [],
+				},
+				searchData: {
+					projectId: "",
+					type: null,
+					gmtCreateStart: null,
+					gmtCreateEnd: null,
+					title: null,
+					userName: "",
 					pageNo: 1,
-					typeId: null,
 					pageSize: 10,
-					orderType: "DESC",
-					orderBy: "id"
+					orderBy: "id",
+					orderType: "DESC"
+				},
+				pageData: {
+					projectId: "",
+					type: null,
+					gmtCreateStart: null,
+					gmtCreateEnd: null,
+					title: null,
+					userName: "",
+					pageSize: 10,
+					pageNo: 1,
+					orderBy: "id",
+					orderType: "DESC"
+				},
+				pageAdmin:{
+					pageNo:1,
+					pageSize:10,
+					name:"",
+					workUnit:"",
+				},
+				searchAdmin:{
+					pageNo:1,
+					pageSize:10,
+					name:"",
+					workUnit:"",
 				},
 				centerDialogVisible: false,
+				tableData: [],
 				//  loading: false,
 				projectId: "",
 				loading: false,
-				tableForm: [],
+				tableForm: [{
+					leaderName: "111"
+				}],
 				ReqBidTeamVO: {
 					idList: []
+				},
+				projectList: [],
+				processList: [],
+				typeList: [],
+				adminList:[],
+				adminArr: {
+				  idList: [],
+				  userId:null,
 				}
 			};
 		},
 		created: function() {
 			this.projectId = this.$route.query.projectId;
-			// this.getView();
+			this.getType();
+			this.getProjectList();
+			this.getAdmin();
+			//	this.getView();
 		},
 		methods: {
 			...mapMutations(["setCache"]),
-			//获取页面数据
-			getView() {
-				this.loading = true;
-				httpGet("/v1/authorization/bid/select/teaminfo", {
-					id: this.projectId
-				}).then(results => {
+			getType() {
+				//get /v1/public/bid/process/list 
+				httpGet('/v1/public/bid/process/list').then(results => {
+					const {
+						msg,
+						data,
+						httpCode
+					} = results.data;
+					if (httpCode === 200) {
+						this.typeList = data.reviewProcessList;
+						//console.log(this.typeList);
+						this.getView();
+					} else {
+						errTips(msg);
+					}
+				});
+			},
+			getAdmin(val = this.pageAdmin){
+				//get /v1/authorization/review/admin/user 
+				httpGet("/v1/authorization/review/admin/user", val).then(results => {
 					const {
 						httpCode,
 						msg,
 						data
 					} = results.data;
 					if (httpCode === 200) {
-						let {
-							teamInfoList
-						} = data;
-						for (let i of teamInfoList) {
-							i.gmtCreate = hoursSeconds(i.gmtCreate, true);
+						this.totalPage = parseInt(data.totalPage + "0");
+						this.adminList = data.adminList;
+						Object.assign(this.pageData, val);
+					} else {
+						this.adminList = [];
+						errTips(msg);
+					}
+					
+				});
+							
+			},
+			searchAdminList(){
+				this.getAdmin(this.searchAdmin)
+			},
+			handleClickChoose(val) {
+				this.dialogChooseVisible = true;
+				
+			},
+			handleClickDetail(val) {
+				//alert(val);
+				this.dialogFormVisible = true;
+				this.form1Loading = true;
+				//get /v1/authorization/review/review/get
+				//get /v1/authorization/review/thirdparty/get 
+				httpGet("/v1/authorization/review/thirdparty/get", {
+					id: val
+				}).then(results => {
+					const {
+						httpCode,
+						msg,
+						data
+					} = results.data;
+					if (httpCode == 200) {
+						this.form1 = data;
+						this.form1.deadline = specificDate(this.form1.deadline);
+						this.form1.gmtCreate = specificDate(this.form1.gmtCreate);
+						let reviewInfoList = data.resourceList;
+						for (let i of reviewInfoList) {
+							i.gmtCreate = specificDate(i.gmtCreate);
 						}
-						this.loading = false;
-						this.tableForm = teamInfoList;
+						this.form1.resourceList = reviewInfoList;
+					} else if (msg == "该条件暂无数据") {
+						this.form1 = "";
+						message("该条件暂无数据");
 					} else if (httpCode !== 401) {
+						errTips(msg);
+					}
+					this.form1Loading = false;
+				});
+				//console.log(this.form1);
+			},
+			closeDialog() {
+				this.dialogFormVisible = false;
+			},
+			//获取页面数据
+			getProjectList() {
+				//get /v1/authorization/mission/promulgator/get 
+				httpGet('/v1/authorization/mission/promulgator/get').then(results => {
+					const {
+						msg,
+						data,
+						httpCode
+					} = results.data;
+					if (httpCode === 200) {
+						this.projectList = data.projectList;
+					} else {
 						errTips(msg);
 					}
 				});
 			},
-			//确定选择团队
-			choice() {
-				this.centerDialogVisible = true;
+			changeProject: function(value) {
+				//get /v1/authorization/review/process/list 
+				httpGet('/v1/authorization/review/process/list', {
+					id: value
+				}).then(results => {
+					const {
+						msg,
+						data,
+						httpCode
+					} = results.data;
+					if (httpCode === 200) {
+						this.processList = data.processList;
+					} else {
+						errTips(msg);
+					}
+				});
+			},
+			searchList() {
+				this.getView(this.searchData);
+			},
+			getView(val = this.pageData) {
 				this.loading = true;
-				httpPut(
-					"/v1/authorization/bid/teamstatus/update",
+				httpGet("/v1/authorization/review/thirdparty/search", val).then(results => {
+					const {
+						httpCode,
+						msg,
+						data
+					} = results.data;
+					if (httpCode === 200) {
+						this.totalPage = parseInt(data.totalPage + "0");
+						let {
+							reviewInfoList
+						} = data;
+
+						for (let i of reviewInfoList) {
+							i.deadline = specificDate(i.deadline);
+							i.gmtCreate = specificDate(i.gmtCreate);
+							var typeArr = this.typeList.filter(function(item) {
+								return item.id == i.type;
+							})
+							//console.log(typeArr);
+							i.typeName = typeArr[0].processName;
+							//console.log(i.typeName);
+						}
+
+						this.$set(this, "tableData", reviewInfoList);
+						Object.assign(this.pageData, val);
+					} else {
+						this.tableData = [];
+						errTips(msg);
+					}
+					this.loading = false;
+				});
+			
+			},
+			submitList(){
+				httpPost(
+				//post /v1/authorization/review/admin/insert 
+					"/v1/authorization/review/admin/insert",
 					this.ReqBidTeamVO
 				).then(results => {
 					const {
@@ -150,74 +382,62 @@
 					}
 				});
 			},
+			//确定选择团队
+			choice() {
+				this.centerDialogVisible = true;
+				this.loading = true;
+				httpPut(
+					"/v1/authorization/bid/teamstatus/update",
+					this.adminArr
+				).then(results => {
+					const {
+						httpCode,
+						msg
+					} = results.data;
+					if (httpCode === 200) {
+						this.centerDialogVisible = false;
+						this.loading = false;
+						successTips("选择团队成功");
+						this.setCache("myDemand");
+						// this.setCache("myDemand");
+					} else if (msg === "至少选择一个项目组") {
+						errTips("至少选择一个项目组");
+					} else if (msg === "执行中项目数量超限") {
+						errTips("执行中项目数量超限");
+					} else if (httpCode !== 401) {
+						errTips(msg);
+					}
+				});
+			},
 			//单选事件
-			handleSelectionChange(val) {
+			handleAdminChange(val){
 				const newVal = val.map(item => {
 					return item.id;
 				});
 				this.ReqBidTeamVO.idList = newVal;
 			},
+			handleSelectionChange(val) {
+				const newVal = val.map(item => {
+					return item.id;
+				});
+				this.adminArr.idList = newVal;
+			},
 			rowClass() {
 				return "background:#F4F6F9;";
-			}
+			},
+			handleCurrentChange(val) {
+				this.pageData.pageNo = val;
+				this.getView();
+			},
 		}
 	};
 </script>
-<style lang='scss'>
-	.teamSelect {
-		.el-table {
-			border: 1px solid #d8d8d8;
-			margin-top: 40px;
-		}
+<style scoped lang='scss'>
+	@import "@/assets/scss/myTable.scss";
 
-		button {
-			float: right;
-			margin-top: 30px;
-			margin-bottom: 30px;
-		}
-
-		.el-input {
-			display: inline-block;
-			width: 150px;
-			margin-right: 15px;
-		}
-
-		.el-input__inner {
-			border: 1px solid #c0c0c0;
-			width: 150px;
-			height: 35px;
-			line-height: 35px;
-		}
-
-		.el-table td,
-		.el-table th.is-leaf {
-			color: black;
-			border-bottom: 1px solid #d8d8d8;
-		}
-		.header_top {
-			margin: 30px auto;
-			padding-bottom: 20px;
-			button {
-			  margin-left: 20px;
-			}
-			.el-input {
-			  display: inline-block;
-			  width: 150px;
-			  margin-right: 15px;
-			}
-		}
-
-		.footer {
-			margin-bottom: 20px;
-
-			.el-input__inner {
-				width: 70px;
-			}
-
-			.el-pagination {
-				text-align: center;
-				margin: 50px 0 50px 0;
-			}
-		}
+	.el-select {
+		display: inline-block;
+		width: 150px;
+		margin-right: 15px;
 	}
 </style>

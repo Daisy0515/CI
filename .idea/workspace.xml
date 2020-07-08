@@ -2,16 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e858fc32-a75f-4688-a71b-a4889a531e86" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/utils/http.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/http.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/preventClick.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/preventClick.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/review/components/submitReview.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/review/components/submitReview.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/review/manager/complete.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/review/manager/complete.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/review/manager/managerIndex.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/review/manager/managerIndex.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/review/manager/notAccept.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/review/manager/notAccept.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/review/manager/review.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/review/manager/review.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/review/manager/rollback.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/review/manager/rollback.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/review/components/reviewDetailDialog.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/review/components/reviewDetailDialog.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/review/components/reviewEvaluation.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/review/components/reviewEvaluation.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/review/editor/reviewStatistic.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/review/editor/reviewStatistic.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/review/editor/reviewTodo.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/review/editor/reviewTodo.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/review/publisher/review.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/review/publisher/review.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/review/publisher/submitReview.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/review/publisher/submitReview.vue" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -50,8 +47,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/utils/http.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="676">
-              <caret line="81" column="12" selection-start-line="81" selection-start-column="12" selection-end-line="81" selection-end-column="12" />
+            <state relative-caret-position="100">
+              <caret line="4" column="68" selection-start-line="4" selection-start-column="68" selection-end-line="4" selection-end-column="68" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
               </folding>
@@ -148,10 +145,10 @@
         <option value="$PROJECT_DIR$/src/view/review/components/submitReview.vue" />
         <option value="$PROJECT_DIR$/src/view/review/manager/toBeTimeOut.vue" />
         <option value="$PROJECT_DIR$/src/view/review/manager/alreadyTimeOut.vue" />
-        <option value="$PROJECT_DIR$/src/utils/http.js" />
         <option value="$PROJECT_DIR$/src/router/index.js" />
         <option value="$PROJECT_DIR$/src/view/review/manager/managerIndex.vue" />
         <option value="$PROJECT_DIR$/src/view/review/components/manager.vue" />
+        <option value="$PROJECT_DIR$/src/utils/http.js" />
       </list>
     </option>
   </component>
@@ -161,7 +158,7 @@
     <other-services-enabled>true</other-services-enabled>
     <auto-save>true</auto-save>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
     <option name="width" value="1944" />
@@ -172,57 +169,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="CI - 副本" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CI - 副本" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="CI - 副本" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CI - 副本" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="CI - 副本" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CI - 副本" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="router" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="CI - 副本" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CI - 副本" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="utils" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="CI - 副本" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CI - 副本" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="view" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="CI - 副本" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CI - 副本" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="view" type="462c0819:PsiDirectoryNode" />
-              <item name="review" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="CI - 副本" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CI - 副本" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="view" type="462c0819:PsiDirectoryNode" />
-              <item name="review" type="462c0819:PsiDirectoryNode" />
-              <item name="publisher" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="ProjectPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -277,17 +226,18 @@
       <workItem from="1593739761337" duration="11023000" />
       <workItem from="1593769280463" duration="8856000" />
       <workItem from="1594004186021" duration="23838000" />
+      <workItem from="1594180588945" duration="25000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="324651000" />
+    <option name="totallyTimeSpent" value="324676000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18710022" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18923241" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -304,7 +254,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.15138593" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info anchor="bottom" id="Terminal" order="10" visible="true" weight="0.036247335" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" visible="true" weight="0.036247335" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" weight="0.32942432" />
       <window_info anchor="bottom" id="TypeScript" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -816,8 +766,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/utils/http.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="676">
-          <caret line="81" column="12" selection-start-line="81" selection-start-column="12" selection-end-line="81" selection-end-column="12" />
+        <state relative-caret-position="100">
+          <caret line="4" column="68" selection-start-line="4" selection-start-column="68" selection-end-line="4" selection-end-column="68" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
           </folding>

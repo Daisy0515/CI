@@ -33,9 +33,9 @@
                 </el-col>
             </el-row>
             <el-row>
-                <el-table :data="form.reviewRecord" :header-cell-style="rowClass" >
-                    <el-table-column prop="userName" label="审核人" align="center"> </el-table-column>
-                    <el-table-column prop="result" label="是否通过" align="center">
+                <el-table :data="form.fileTable" :header-cell-style="rowClass" >
+                    <el-table-column prop="auditor" label="审核人" align="center"> </el-table-column>
+                    <el-table-column prop="isPass" label="是否通过" align="center">
 						<template slot-scope="scope">
 							<span class="tablehidden" v-if="scope.row.result == true">通过</span>
 							<span class="tablehidden" v-else>未通过</span>
