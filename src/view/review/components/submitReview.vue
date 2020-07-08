@@ -6,7 +6,7 @@
             <el-row :gutter="20">
                 <el-col :span="10">
                     <el-form-item label="项目标题" :label-width="formLabelWidth" prop="projectId">
-                        <el-select v-model="localForm.projectId" placeholder="请选择项目" :disabled="isUpdateReview">
+                        <el-select v-model="localForm.projectId" placeholder="请选择项目" :disabled="isUpdateReview" @change="selectChange">
                             <el-option
                                     v-for="project in projectList"
                                     :key="project.projectId"
@@ -219,6 +219,9 @@
             }
         },
         methods: {
+            selectChange(){
+                this.localReviewProcess = [];
+            },
             setIdCard(data) { //发起评审时调用的，data 表示上传文件的地址
                 data && (this.localForm.resourceList = [{
                     'resourceUrl': data,
@@ -322,7 +325,7 @@
                     const {httpCode, msg, data} = results.data;
                     if (httpCode == 200) {
                         if (data.processList.length == 0) { //没有评审流程
-                            this.localReviewProcess = [{id: '-1', processName: "当前项目没有评审流程"}]
+                            this.localReviewProcess = [{id: null, processName: "当前项目没有评审流程"}]
                         } else {
                             this.localReviewProcess = data.processList;
                         }
