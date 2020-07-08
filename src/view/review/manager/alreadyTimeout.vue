@@ -8,8 +8,8 @@
         components:{manager},
         data() {
             return {
-                pageName:"打回中",
-                status:3,
+                pageName:"已经超时",
+                status:6,
             };
         },
     };

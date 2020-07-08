@@ -102,7 +102,7 @@ const vueRouter = new Router({
 				title:'首页',
 				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
 			}
-			
+
 		},
 		{
 			path:'/managerNotAccept',
@@ -140,7 +140,24 @@ const vueRouter = new Router({
 				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
 			}
 		},
-		
+		{
+			path:'/managerAboutTimeout',
+			name:'managerAboutTimeout',
+			component:() => import('@/view/review/manager/aboutTimeout'),
+			meta:{
+				title:'即将超时',
+				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+			}
+		},
+		{
+			path:'/managerAlreadyTimeout',
+			name:'managerAlreadyTimeout',
+			component:() => import('@/view/review/manager/alreadyTimeout'),
+			meta:{
+				title:'已经超时',
+				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+			}
+		},
 		{
 			path:'/managerDraft',
 			name:'managerDraft',
@@ -150,7 +167,7 @@ const vueRouter = new Router({
 				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
 			}
 		}]
-		
+
 	},
     {
     	path:'/',
@@ -165,7 +182,7 @@ const vueRouter = new Router({
     			title:'首页',
 				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
     		}
-    		
+
     	},
 		{
 			path:'/submitReview',
@@ -221,7 +238,7 @@ const vueRouter = new Router({
     		}
     	},
     	]
-    	
+
     },
     {
     	path:'/',
@@ -236,7 +253,7 @@ const vueRouter = new Router({
     			title:'首页',
     			requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
     		}
-    		
+
     	},
     	{
     		path:'/expertComplete',
@@ -293,7 +310,7 @@ const vueRouter = new Router({
 			}
 		},
     	]
-    	
+
     },
     {
     	path:'/',
@@ -308,7 +325,7 @@ const vueRouter = new Router({
     			title:'首页',
     			requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
     		}
-    		
+
     	},
 		{
 			path:'/reviewStatistic',
@@ -318,7 +335,7 @@ const vueRouter = new Router({
 				title:'评审统计',
 				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
 			}
-			
+
 		},
 		{
 			path:'/reviewTodo',
@@ -328,7 +345,7 @@ const vueRouter = new Router({
 				title:'待处理',
 				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
 			}
-			
+
 		},
     	{
     		path:'/editorComplete',
@@ -367,9 +384,9 @@ const vueRouter = new Router({
     		}
     	},
     	]
-    	
+
     },
-    
+
 	{
       path: '/',
       name: 'homePublic',
@@ -554,7 +571,7 @@ const vueRouter = new Router({
         },
 		{
 		  path: '/testEmploy',
-		  name: 'testEmploy', 
+		  name: 'testEmploy',
 		  component: () => import('@/view/home/testEmploySquare/testEmploySquare'),
 		  meta: {
 		    title: "内测招募",
@@ -579,7 +596,7 @@ const vueRouter = new Router({
 		 },
 		 {
 		   path: '/competitionSquare',
-		   name: 'competitionSquare', 
+		   name: 'competitionSquare',
 		   component: () => import('@/view/home/competition/competitionSquare'),
 		   meta: {
 		     title: "竞赛广场",
@@ -587,7 +604,7 @@ const vueRouter = new Router({
 		 },
 		 {
 		   path: '/competitionView',
-		   name: 'competitionView', 
+		   name: 'competitionView',
 		   component: () => import('@/view/home/competition/competitionView'),
 		   meta: {
 		     title: "竞赛详情",
@@ -595,7 +612,7 @@ const vueRouter = new Router({
 		 },
 		 {
 		   path: '/joinCompetition',
-		   name: 'joinCompetition', 
+		   name: 'joinCompetition',
 		   component: () => import('@/view/home/competition/joinCompetition'),
 		   meta: {
 		     title: "参与竞赛",
@@ -670,7 +687,7 @@ const vueRouter = new Router({
 		    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
 		  },
 		},
-		
+
 		{
 		  path: '/desk/outlineDesign',
 		  name: 'outlineDesign',
@@ -719,7 +736,7 @@ const vueRouter = new Router({
 		    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
 		  },
 		},
-		
+
 		{
 		  path: '/desk/kanBan',
 		  name: 'kanBan',
@@ -856,7 +873,7 @@ const vueRouter = new Router({
             title: "用户信息",
             routerIndex: "information",
             requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-          },                                         
+          },
           component: () => import('@/view/desk/information/index'),
           children: [{
               path: '/desk/changePersonal',
@@ -1152,7 +1169,7 @@ const vueRouter = new Router({
 		},
 		{
 		  path: '/desk/myTest',
-		  name: 'myTest', 
+		  name: 'myTest',
 		  component: () => import('@/view/desk/testEmploy/myTest'),
 		  meta: {
 		    title: "内测管理",
@@ -1174,7 +1191,7 @@ const vueRouter = new Router({
 		    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
 		  },
 		},
-		
+
 		{
 		  path: '/desk/myTestView',
 		  name: 'myTestView',
@@ -1223,7 +1240,7 @@ const vueRouter = new Router({
 		    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
 		  },
 		},
-		
+
 		{
 		  path: '/desk/historyView',
 		  name: 'historyView',
@@ -1236,10 +1253,10 @@ const vueRouter = new Router({
 		    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
 		  },
 		},
-		
-        // { 
+
+        // {
         //   path: '/desk/testEmploy',
-        //   name: 'testEmploy', 
+        //   name: 'testEmploy',
         //   component: () => import('@/view/desk/testEmploy/testEmploySquare'),
         //   meta: {
         //     title: "内测招募",
@@ -1249,7 +1266,7 @@ const vueRouter = new Router({
         //     requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
         //   },
         // },
-		
+
         // {
         //   path: '/desk/testPublish',
         //   name: 'testEmploy',
@@ -1274,10 +1291,10 @@ const vueRouter = new Router({
          //     requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
          //   },
          // },
-		 
-		
-		
-		 
+
+
+
+
 		 {
 		   path: '/desk/addTestIssue',
 		   name: 'addTestIssue',
@@ -1290,9 +1307,9 @@ const vueRouter = new Router({
 		     requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
 		   },
 		 },
-		 
-		 
-        
+
+
+
         {
           path: '/desk/demandendView',
           name: 'demandendView',

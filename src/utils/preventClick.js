@@ -9,7 +9,7 @@ export default {
                         el.disabled = true
                         setTimeout(() => {
                             el.disabled = false
-                        }, building.value ||3000)
+                        }, binding.value ||3000)
                     }
                 })
             }
