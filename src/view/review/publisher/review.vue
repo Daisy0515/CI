@@ -277,7 +277,11 @@
 						successTips("评价结束");
 						this.getView();
 						this.evaluateTitle="";
-						this.form2="";
+						this.form2.content="";
+						//content:"",
+						this.form2.result="";
+						this.form2.reviewInfoId="";
+						this.form2.score="";
 						this.dialogEvaluateVisible = false;
 					} else {
 						errTips(msg);
