@@ -18,7 +18,7 @@
                 </el-col>
                 <el-col :span="10">
                     <el-form-item label="评审类型" :label-width="formLabelWidth" prop="type">
-                        <el-select v-model="localForm.type" placeholder="请选择评审类型" :disabled="isUpdateReview"
+                        <el-select v-model="localForm.type" placeholder="请选择评审类型" :disabled="isUpdateReview" :loading="processLoading"
                                    @focus="getReviewProcessList(localForm.projectId)">
                             <el-option
                                     v-for="process in localReviewProcess"
@@ -105,8 +105,8 @@
         </el-form>
         <div slot="footer" style="margin-right: 35%">
             <el-button @click="cancel" style="margin-right: 10%" v-if="isUpdateReview">取消</el-button>
-            <el-button @click="storeReviewDraft" style="margin-right: 10%" v-else  v-prevent-click>暂存</el-button>
-            <el-button type="primary" @click="submitReview('ruleForm')" v-prevent-click>确 定</el-button>
+            <el-button @click="storeReviewDraft" style="margin-right: 10%" v-else  v-prevent-click :loading="buttonLoading">暂存</el-button>
+            <el-button type="primary" @click="submitReview('ruleForm')" v-prevent-click :loading="buttonLoading">确 定</el-button>
         </div>
     </el-dialog>
 </template>
@@ -118,7 +118,23 @@
 
     export default {
         components: {sourceUpload,},
-        props: ['title', 'form', 'formLabelWidth', 'dialogSubmitVisible', 'isShowSubmitHistory', 'projectList', 'loading', 'reviewProcessList'],
+        // props: ['title', 'form', 'formLabelWidth', 'dialogSubmitVisible', 'isShowSubmitHistory', 'projectList', 'loading', 'reviewProcessList'],
+        props:{
+            title:{
+                type:String,
+                default:"编辑评审任务",
+            },
+            form:Object,
+            formLabelWidth:Number,
+            dialogSubmitVisible:Boolean,
+            isShowSubmitHistory:{
+                type:Boolean,
+                default:false,
+            },
+            projectList:Array,
+            loading:Boolean,
+            reviewProcessList:Array,
+        },
         data() {
             var validateType = (rule, value, callback) => {
                 if (value === null) {
@@ -160,6 +176,8 @@
                     }
                 },
                 localReviewProcess: this.reviewProcessList,//当前用户所竞标的项目列表，发起评审时，用于项目选择
+                processLoading:false,//搜索框中点击类型下拉框时，加载的
+                buttonLoading:false,//提交按钮对应的加载框
                 uploadIndex: false, //用于开启上传文件 true时开启上传，false停止
                 isDraft: false,// 是否按照缓存提交
                 localForm:this.form,//localForm与为父组件传递的form内容保持一致
@@ -231,17 +249,20 @@
                 httpPost('/v1/authorization/review/review/insert', this.localForm).then(results => {
                     const {msg, httpCode} = results.data;
                     if (httpCode === 200) {
+                        successTips('发布评审任务成功');
                         // this.setCache('myReview');
-                        let draftId = this.localForm.id
+                        let draftId = this.localForm.id;
                         this.localForm = {};
                         this.$emit('closeSubmitDialog',{"isSubmit":true,"id":draftId});////在评审草稿中发起评审,发起成功之后要删除原先的评审草稿
-                        successTips('发布评审任务成功');
+                        if(this.title === "发起评审"||this.title === "编辑评审"){//
+                            this.$router.push('/managerNotAccept');
+                        }
                     } else if (httpCode !== 401) {
                         errTips(msg);
                     } else {
                         alert(httpCode);
                     }
-
+                    this.buttonLoading = false;
                 });
 
             },
@@ -275,7 +296,7 @@
                     } else {
                         alert(httpCode);
                     }
-
+                    this.buttonLoading = false;
                 });
 
             },
@@ -296,11 +317,13 @@
                     } else {
                         alert(httpCode);
                     }
+                    this.buttonLoading = false;
                     this.isDraft = false;
                 });
 
             },
             submitReview(formName) {//提交评审
+                this.buttonLoading = true;
                 this.$refs[formName].validate(valid => {
                     if (valid) {
                         console.log("有效的！");
@@ -315,12 +338,14 @@
                         }
                     } else {
                         console.log("无效的！");
+                        this.buttonLoading = false;
                         return false;
                     }
                 });
 
             },
             getReviewProcessList(projectId) {
+                this.processLoading = true;
                 httpGet("/v1/authorization/review/process/list", {id: projectId}).then(results => {
                     const {httpCode, msg, data} = results.data;
                     if (httpCode == 200) {
@@ -334,7 +359,7 @@
                     } else if (httpCode !== 401) {
                         errTips(msg);
                     }
-
+                    this.processLoading = false;
                 });
             },
             changeSubmitVisible() {//通过点击弹框右上角的 X的方式 关掉页面，需要传递消息给父组件，用过父组件关掉弹框

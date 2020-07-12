@@ -38,21 +38,21 @@ const mixinRegular = {
             }
         };
         const validatePass = (rule, value, callback) => {
-            let myReg = /^[0-9a-zA-Z_]{4,32}$/;
+            let myReg = /^[0-9a-zA-Z_]{8,32}$/;
             if (!value) {
                 callback(new Error("请输入密码"));
             } else if (!myReg.test(value)) {
-                callback(new Error("数字字母下划线，长度为4-32位"));
+                callback(new Error("数字字母下划线，长度为8-32位"));
             } else {
                 callback();
             }
         };
         let validatePass2 = (rule, value, callback) => {
-            let myReg = /^[0-9a-zA-Z_]{4,32}$/;
+            let myReg = /^[0-9a-zA-Z_]{8,32}$/;
             if (value === "") {
                 callback(new Error("请再次输入密码"));
             } else if (!myReg.test(value)) {
-                callback(new Error("数字字母下划线，长度为4-32位"));
+                callback(new Error("数字字母下划线，长度为8-32位"));
             } else if (value !== this.personalForm.password) {
                 callback(new Error("两次输入密码不一致!"));
             } else {

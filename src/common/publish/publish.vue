@@ -48,7 +48,7 @@
 						{{ item.value }}
 					</label>
 					</div>
-					
+
 					<el-button type="primary" @click="addItem" size="small" style="float: right;margin-top: 15px;">添加</el-button>
 
 					<el-table :data="deliverData">
@@ -58,7 +58,7 @@
 							<template slot-scope="scope">
 							  <span v-if="scope.row.isUpload==1">必须</span>
 							  <span v-if="scope.row.isUpload==0">可选</span>
-							 
+
 							</template>
 						</el-table-column>
 						<el-table-column label="操作" width="80" align="center">
@@ -92,7 +92,7 @@
 					  </el-input>
 					</div>
 					<el-button type="primary" @click="addRItem" size="small" style="float: right;margin-top: 15px;">添加</el-button>
-					
+
 					<el-table :data="reviewData">
 						<el-table-column property="processName" label="评审流程" width="100" align="center"></el-table-column>
 						<el-table-column property="demand" label="评审要求" align="center"></el-table-column>
@@ -160,7 +160,7 @@ export default {
 				isReview:'',
 				reviewProcessList:[],
 				reviewResourceList:[],
-				
+
 			}
 		};
 	},
@@ -197,7 +197,7 @@ export default {
 				console.log(item);
 				this.deliverData.push(item);
 			}
-			
+
 			this.input1="";
 			this.input2="";
 			this.radioValue="必须";
@@ -210,7 +210,7 @@ export default {
 			for(var i=0;i<L;i++){
 				if (itemName == this.deliverData[i].resourceName){
 					index=i;
-					
+
 					break;
 				}
 			}
@@ -219,7 +219,7 @@ export default {
 				this.deliverData.splice(index,1);
 				//console.log(this.deliverData);
 			}
-			
+
 		},
 		addRItem(){
 			var L=this.reviewData.length;
@@ -237,7 +237,7 @@ export default {
 				//console.log(item);
 				this.reviewData.push(item);
 			}
-			
+
 			this.input3="";
 			this.input4="";
 			//console.log(this.deliverData);
@@ -249,7 +249,7 @@ export default {
 			for(var i=0;i<L;i++){
 				if (itemName == this.reviewData[i].processName){
 					index=i;
-					
+
 					break;
 				}
 			}
@@ -258,9 +258,9 @@ export default {
 				this.reviewData.splice(index,1);
 				//console.log(this.deliverData);
 			}
-			
+
 		},
-		
+
 		uploadb() {
 			this.uploadIndex = !this.uploadIndex;
 		},
@@ -289,7 +289,7 @@ export default {
 					this.ruleForm1.reviewProcessList=this.reviewData;
 					this.ruleForm1.reviewResourceList=this.deliverData;
 					this.haveValue === '有' ? (this.ruleForm1.isReview= true) : (this.ruleForm1.isReview= false);
-					//put /v1/authorization/review/isreview/update 
+					//put /v1/authorization/review/isreview/update
 					console.log(this.ruleForm1);
 					httpPut('/v1/authorization/review/isreview/update',this.ruleForm1).then(results=>{
 						const { data, msg, httpCode } = results.data;
@@ -305,17 +305,21 @@ export default {
 									errTips(msg);
 								}
 							});
-							
+
 						} else {
 							errTips(msg);
 						}
-					})	
+					})
 				} else if (httpCode !== 401) {
 					errTips(msg);
 				}
 			});
 		},
 		submitForm(formName) {
+			if(this.deliverData.length===0){
+				errTips("请配置好项目交付资源！");
+				return false;
+			}
 			this.$refs[formName].validate(valid => {
 				let { typeIndex, parentIndex, ruleForm, getNormalType } = this;
 				let { checkedValue } = ruleForm;
