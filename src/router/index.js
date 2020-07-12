@@ -65,6 +65,15 @@ const vueRouter = new Router({
         title: '公司注册'
       }
     },
+	{
+	  path: '/adminRegister',
+	  name: 'adminRegister',
+	  component: () => import('@/view/loginRegister/register/adminRegister'),
+	  meta: {
+	    title: '评审管理员注册',
+		requireAuth: true,
+	  }
+	},
     {
       path: '/forget',
       name: 'forget',
@@ -189,7 +198,16 @@ const vueRouter = new Router({
 			name:'submitReview',
 			component:() => import('@/view/review/publisher/submitReview'),
 			meta:{
-				title:'发起评审',
+				title:'发起第三方评审',
+				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+			}
+		},
+		{
+			path:'/viewReview',
+			name:'viewReview',
+			component:() => import('@/view/review/publisher/viewReview'),
+			meta:{
+				title:'查看第三方评审',
 				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
 			}
 		},

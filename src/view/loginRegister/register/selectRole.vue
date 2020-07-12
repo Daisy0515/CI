@@ -25,7 +25,26 @@
           </el-card>
         </router-link>
       </div>
+	  
+	  
     </div>
+	<div class="container clearfix">
+	  <div class="selecyCard clearfix">
+	    <router-link to="adminRegister">
+	      <el-card class="box-card">
+	        <i class="el-icon-setting"></i>
+	        <div style="padding: 14px;">
+	          <div class="bottom clearfix">
+	            <el-button type="text" class="button">评审管理员注册</el-button>
+	          </div>
+	        </div>
+	      </el-card>
+	    </router-link>
+	    
+	  </div>
+	  
+	  
+	</div>
     <div style="clear:both"></div>
     <Footer class="height_footer"></Footer>
   </div>
@@ -91,5 +110,9 @@ export default {
     font-size: 90px;
     color: #4c83c3;
   }
+  .el-icon-setting{
+	font-size: 90px;
+	color: #4c83c3;
+	}
 }
 </style>

@@ -36,10 +36,12 @@ import {
 	Submenu,
 	MenuItem,
 	MenuItemGroup,
+	Transfer,
 
 } from 'element-ui';
 const getElement = {
     install(Vue) {
+		Vue.use(Transfer);
         Vue.use(Row);
         Vue.use(Col);
         Vue.use(badge)

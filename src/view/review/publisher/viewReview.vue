@@ -4,7 +4,7 @@
 			<el-breadcrumb separator-class="el-icon-arrow-right" style="font-size: 130%;">
 				<el-breadcrumb-item :to="{ path: '/publisherIndex' }">首页</el-breadcrumb-item>
 
-				<el-breadcrumb-item>发起第三方评审</el-breadcrumb-item>
+				<el-breadcrumb-item>查看第三方评审</el-breadcrumb-item>
 
 			</el-breadcrumb>
 		</div>
@@ -40,7 +40,7 @@
 
 
 		<el-table :data="tableData" style="width: 100%" :header-cell-style="rowClass" v-loading="loading" @selection-change="handleSelectionChange">
-			<el-table-column type="selection" align="center"></el-table-column>
+			<!-- <el-table-column type="selection" align="center"></el-table-column> -->
 			<el-table-column prop="projectName" label="项目名称" align="center"></el-table-column>
 			<el-table-column prop="title" label="评审任务标题" align="center"></el-table-column>
 			<el-table-column prop="typeName" label="评审任务类型" align="center">
@@ -49,6 +49,14 @@
 			<el-table-column prop="gmtCreate" label="提交时间" align="center"></el-table-column>
 			<el-table-column prop="deadline" label="截止时间" align="center"></el-table-column>
 			<el-table-column prop="submitName" label="提交人" align="center"></el-table-column>
+			<el-table-column prop="status" label="状态" align="center">
+				<template slot-scope="scope">
+					<span v-if="scope.row.status===1">未接受</span>
+					<span v-if="scope.row.status===2">评审中</span>
+					<span v-if="scope.row.status===3">打回中</span>
+					<span v-if="scope.row.status===4">已完成</span>
+				</template>
+			</el-table-column>
 			<el-table-column label="操作" prop="province" align="center" width="300px">
 				<template slot-scope="scope">
 					<el-button @click="handleClickDetail(scope.row.id)" type="text" size="medium"><i class="el-icon-search"></i>查看详情
@@ -56,7 +64,7 @@
 
 					<el-button @click="handleClickChoose(scope.row.id)" type="text" size="medium">
 						<i class="icon iconfont icon-yonghu"></i>
-						选择评审管理员
+						第三方评审意见
 					</el-button>
 				</template>
 			</el-table-column>
@@ -94,7 +102,7 @@
 		</el-dialog>
 
 
-		<el-button type="primary" @click="dialogChooseVisible=true" style="float: right;margin: 10px 0 10px 0;">批量选择评审管理员</el-button>
+	<!-- 	<el-button type="primary" @click="dialogChooseVisible=true" style="float: right;margin: 10px 0 10px 0;">批量选择评审管理员</el-button> -->
 
 
 
@@ -133,7 +141,7 @@
 					resourceList: [],
 				},
 				searchData: {
-					status:1,
+					status:4,
 					projectId: "",
 					type: null,
 					gmtCreateStart: null,
@@ -146,7 +154,7 @@
 					orderType: "DESC"
 				},
 				pageData: {
-					status:1,
+					status:4,
 					projectId: "",
 					type: null,
 					gmtCreateStart: null,
