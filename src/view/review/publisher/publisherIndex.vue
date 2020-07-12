@@ -45,7 +45,7 @@
 					</el-row>
 					<el-row style="margin-bottom: 15px;">
 						<el-card>
-							<el-button type="text" class="button">查看第三方评审</el-button>
+							<el-button type="text" @click="view">查看第三方评审</el-button>
 						</el-card>
 					</el-row>
 				</el-card>
@@ -197,6 +197,9 @@ import { message, successTips, errTips } from "@/utils/tips.js";
 			},
 			submit(){
 				this.$router.push('./submitReview');
+			},
+			view(){
+				this.$router.push('./viewReview');
 			},
 			handleChange(file, fileList) {
 				this.fileList = fileList.slice(-3)

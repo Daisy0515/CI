@@ -17,7 +17,7 @@
           ref="upload"
         >
           <img :src="getuserData.headurl?getuserData.headurl:getnoImg" class="rounded-circle">
-          <p class="changeHead">点击更换头像</p>
+          <p class="changeHead">点击上传头像</p>
         </file-uploade>
       </div>
     </div>
