@@ -118,7 +118,23 @@
 
     export default {
         components: {sourceUpload,},
-        props: ['title', 'form', 'formLabelWidth', 'dialogSubmitVisible', 'isShowSubmitHistory', 'projectList', 'loading', 'reviewProcessList'],
+        // props: ['title', 'form', 'formLabelWidth', 'dialogSubmitVisible', 'isShowSubmitHistory', 'projectList', 'loading', 'reviewProcessList'],
+        props:{
+            title:{
+                type:String,
+                default:"编辑评审任务",
+            },
+            form:Object,
+            formLabelWidth:Number,
+            dialogSubmitVisible:Boolean,
+            isShowSubmitHistory:{
+                type:Boolean,
+                default:false,
+            },
+            projectList:Array,
+            loading:Boolean,
+            reviewProcessList:Array,
+        },
         data() {
             var validateType = (rule, value, callback) => {
                 if (value === null) {
@@ -235,10 +251,12 @@
                     if (httpCode === 200) {
                         successTips('发布评审任务成功');
                         // this.setCache('myReview');
-                        let draftId = this.localForm.id
+                        let draftId = this.localForm.id;
                         this.localForm = {};
                         this.$emit('closeSubmitDialog',{"isSubmit":true,"id":draftId});////在评审草稿中发起评审,发起成功之后要删除原先的评审草稿
-
+                        if(this.title === "发起评审"||this.title === "编辑评审"){//
+                            this.$router.push('/managerNotAccept');
+                        }
                     } else if (httpCode !== 401) {
                         errTips(msg);
                     } else {

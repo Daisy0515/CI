@@ -1,5 +1,5 @@
 <template>
-    <manager :pageName="pageName" :status="status"></manager>
+    <manager :pageName="pageName" :timeStatus="timeStatus"></manager>
 </template>
 
 <script>
@@ -9,7 +9,7 @@
         data() {
             return {
                 pageName:"即将超时",
-                status:5,
+                timeStatus:1,//对应即将超时的状态id
             };
         },
     };

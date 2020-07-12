@@ -2,7 +2,7 @@ const mixinRegular = {
     data() {
         const userReg = /^[A-Za-z0-9\u4e00-\u9fa5]{6,16}$/;
         const phoneReg = /^1[3456789]\d{9}$/;
-        const passReg = /^[0-9a-zA-Z_]{4,32}$/;
+        const passReg = /^[0-9a-zA-Z_]{8,32}$/;
         const emallReg = /^[a-zA-Z0-9_\.-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
         const validateUser = (rule, value, callback) => {
             if (value === "") {
@@ -56,7 +56,7 @@ const mixinRegular = {
             if (!value) {
                 callback(new Error("请输入密码"));
             } else if (!passReg.test(value)) {
-                callback(new Error("数字字母下划线，长度为4-32位"));
+                callback(new Error("数字字母下划线，长度为8-32位"));
             } else {
                 callback();
             }
@@ -72,7 +72,7 @@ const mixinRegular = {
             if (value === "") {
                 callback(new Error("请再次输入密码"));
             } else if (!passReg.test(value)) {
-                callback(new Error("数字字母下划线，长度为4-32位"));
+                callback(new Error("数字字母下划线，长度为8-32位"));
             } else if (value !== this.companyForm.password) {
                 callback(new Error("两次输入密码不一致!"));
             } else {

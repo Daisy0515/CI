@@ -82,7 +82,7 @@
                         <span v-if="scope.row.result==0">未通过</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="status" label="评审状态" align="center" v-if="status===5||status===6">
+                <el-table-column prop="status" label="评审状态" align="center" v-if="timeStatus===1||timeStatus===2">
                     <template slot-scope="scope">
                         <span v-if="scope.row.status==1">未接受</span>
                         <span v-if="scope.row.status==2">评审中</span>
@@ -106,7 +106,7 @@
                         <el-button @click="handleClickSubmit(scope.row)" type="text" size="medium" v-if="status===2||scope.row.status===2"
                         ><i class="el-icon-refresh"></i>修改提交
                         </el-button>
-                        <el-button @click="handleEvaluateDetail(scope.row)" type="text" size="medium" v-if="status===4"
+                        <el-button @click="handleEvaluateDetail(scope.row)" type="text" size="medium" v-if="status===4||scope.row.status===4"
                         ><i class="el-icon-search"></i>查看评价
                         </el-button>
                     </template>
@@ -135,7 +135,6 @@
                            :dialogEvaluationVisible="dialogEvaluationVisible"
                            :loading="dialogLoading"
                            @closeEvaluationDialog="closeEvaluationDialog"></review-evaluation>
-
         <div class="bid_footer">
             <el-pagination
                     @current-change="handleCurrentChange"
@@ -155,11 +154,18 @@
     import submitReview from '@/view/review/components/submitReview';
     import reviewOpinion from '@/view/review/components/reviewOpinion';
     import reviewEvaluation from '@/view/review/components/reviewEvaluation'
-    import timeLimit from "@/mixins/regular/timeLimit.js";
+    import timeLimit from "@/mixins/regular/timeLimitForReview.js";
     export default {
         props:{
             pageName:String,//pageName当前页面名称
-            status:Number,//staus当前用户的角色,
+            status: {//评审状态1未接受2评审中3打回中4已完成
+                type:Number,
+                default:null,
+            },
+            timeStatus:{//时间状态1即将超时2已经超时
+                type:Number,
+                default:null,
+            },
         },
         components: {reviewDetailDialog, submitReview, reviewOpinion,reviewEvaluation},
         mixins: [timeLimit],
@@ -183,7 +189,8 @@
                     orderBy: "gmtModified",
                     orderType: "DESC",
                     role: 2,  //用户的角色 1项目发布者 2项目经理 3评审专家 4评审管理员
-                    status: this.status,//任务的评审状态 评审状态 1未接受 2评审中 3打回中 4已完成 5即将超时 6已经超时
+                    status: this.status,//任务的评审状态 评审状态 1未接受 2评审中 3打回中 4已完成
+                    timeStatus:this.timeStatus,//时间状态1即将超时2已经超时
                     projectId: null,//项目名称编号ID
                     type: null,//评审类型,
                     title: null,//评审标题
@@ -197,6 +204,7 @@
                     orderType: "DESC",
                     role:2,
                     status: this.status,
+                    timeStatus:this.timeStatus,//时间状态1即将超时2已经超时
                     projectId: null,
                     type: null,//评审类型,
                     title: null,//评审标题
@@ -223,9 +231,10 @@
             submitTitle: function(){  //确定submit-review组件中的标题
                 if (this.status === 2) {
                     return "修改提交";
-                }
-                if (this.status === 3) {
+                }else if (this.status === 3) {
                     return "重新提交";
+                }else{//null对应了默认的 编辑评审
+                    return null;
                 }
             },
             isShowSubmitHistory:function(){ //确定submit-review组件中是否显示提交历史
@@ -384,8 +393,8 @@
                     const {httpCode, msg, data} = results.data;
                     if (httpCode == 200) {
                         data.gmtCreate = specificDate(data.gmtCreate);
-                        let reviewRecord = {"userName": data.userName, "result": data.result, "score": data.score};
-                        data.reviewRecord = [reviewRecord];
+                        let reviewRecord = {"auditor": data.userName, "result": data.result, "score": data.score};
+                        data.fileTable = [reviewRecord];
                         this.formEvaluation = data;
 
                     } else if (msg == "该条件暂无数据") {

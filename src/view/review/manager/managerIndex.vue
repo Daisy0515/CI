@@ -49,7 +49,7 @@
                     </el-row>
                     <el-row style="margin-bottom: 15px;">
                         <el-card>
-                            <el-button type="text" class="button">评审模板</el-button>
+                            <el-button type="text" class="button" @click="getTips">评审模板</el-button>
                         </el-card>
                     </el-row>
                 </el-card>
@@ -104,6 +104,7 @@
             this.getUserProjectList();
         },
         methods: {
+
             getView() {
                 //get /v1/authorization/review/summarizing/get
                 httpGet("/v1/authorization/review/summarizing/get", {role: this.role}).then(results => {
@@ -131,9 +132,12 @@
 
                 });
             },
-
+            getTips(){
+                message("暂未开放，敬请期待！");
+            },
             closeSubmitDialog() {
                 this.dialogSubmitVisible = false;
+                // this.$router.push('/managerNotAccept');
             },
         }
     }

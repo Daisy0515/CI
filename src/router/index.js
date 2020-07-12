@@ -229,14 +229,24 @@ const vueRouter = new Router({
 				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
     		}
     	},
-    	{
-    		path:'/publisherDraft',
-    		name:'publisherDraft',
-    		component:() => import('@/view/review/publisher/draft'),
-    		meta:{
-    			title:'草稿箱',
-    		}
-    	},
+			{
+				path:'/publisherAboutTimeout',
+				name:'publisherAboutTimeout',
+				component:() => import('@/view/review/publisher/aboutTimeout'),
+				meta:{
+					title:'即将超时',
+					requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+				}
+			},
+			{
+				path:'/publisherAreadyTimeout',
+				name:'publisherAreadyTimeout',
+				component:() => import('@/view/review/publisher/alreadyTimeout'),
+				meta:{
+					title:'已经超时',
+					requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+				}
+			},
     	]
 
     },
