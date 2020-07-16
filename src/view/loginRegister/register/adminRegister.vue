@@ -11,7 +11,7 @@
 				<el-form :rules="rules" :model="ruleForm" style="margin-top: 2%;" ref="ruleForm" class="demo-ruleForm">
 					<el-row :gutter="20">
 						<el-col :span="12">
-							<el-form-item label="姓名" :label-width="formLabelWidth">
+							<el-form-item label="姓名" :label-width="formLabelWidth" prop="name">
 								<el-input v-model="ruleForm.name" ></el-input>
 							</el-form-item>
 							<el-form-item label="性别" :label-width="formLabelWidth">
@@ -130,7 +130,7 @@
 					<h2 style="text-align: left;font-weight: bolder;margin-top: 2%;margin-bottom: 2%;">研究兴趣</h2>
 					<el-row :gutter="20">
 						<el-col :span="19">
-						<el-form-item label="研究方向":label-width="formLabelWidth">
+						<el-form-item label="研究方向":label-width="formLabelWidth" prop="researchDirection">
 							<el-input v-model="researchName" ></el-input>
 						</el-form-item>
 						</el-col>
@@ -195,92 +195,6 @@
 					</el-form-item>
 				</el-form>
 				</div>
-
-
-
-
-
-				<!-- <el-form
-          :model="companyForm"
-          status-icon
-          :rules="rules"
-          ref="companyForm"
-          class="demo-ruleForm"
-        >
-          <el-form-item prop="companyName" :error="errorList.userError">
-            <el-input v-model="companyForm.companyName" placeholder="请输入公司名称">
-              <i slot="prefix" class="icon iconfont icon-gongsi00"></i>
-            </el-input>
-          </el-form-item>
-          <el-form-item prop="businessLicense" :error="errorList.businessLicenseError">
-            <el-input v-model="companyForm.businessLicense" placeholder="请输入统一社会信用代码">
-              <i slot="prefix" class="icon iconfont icon-gaikuang1"></i>
-            </el-input>
-          </el-form-item>
-          <el-form-item prop="email" :error="errorList.emailError">
-            <el-input v-model="companyForm.email" placeholder="请输入邮箱">
-              <i slot="prefix" class="icon iconfont icon-youjian"></i>
-            </el-input>
-          </el-form-item>
-          <el-form-item class="city" prop="city">
-            <el-cascader
-              size="large"
-              placeholder="请选择省市"
-              :options="options"
-              v-model="selectedOptions"
-            ></el-cascader>
-          </el-form-item>
-          <el-form-item prop="address">
-            <el-input placeholder="请输入详细地址" v-model="companyForm.address" autocomplete="off">
-              <i slot="prefix" class="icon iconfont icon-dizhi"></i>
-            </el-input>
-          </el-form-item>
-          <el-form-item prop="phone" :error="errorList.phoneError">
-            <el-input placeholder="请输入手机号" v-model="companyForm.phone" autocomplete="off">
-              <i slot="prefix" class="icon iconfont icon-dianhua"></i>
-            </el-input>
-          </el-form-item>
-          <el-form-item prop="code" :error="errorList.codeError">
-            <el-input class="Verification" v-model="companyForm.code" placeholder="请输入验证码">
-              <i slot="prefix" class="icon iconfont icon-yanzhengmatianchong"></i>
-            </el-input>
-            <codeBtn
-              :phone="companyForm.phone"
-              :codeType="1"
-              v-on:setPhoneErr="setPhoneErr($event)"
-            />
-          </el-form-item>
-          <el-form-item prop="password">
-            <el-input
-              type="password"
-              placeholder="请输入密码"
-              v-model="companyForm.password"
-              autocomplete="off"
-            >
-              <i slot="prefix" class="icon iconfont icon-ziyuanxhdpi"></i>
-            </el-input>
-          </el-form-item>
-          <el-form-item prop="checkPass">
-            <el-input
-              type="password"
-              placeholder="请再次输入密码"
-              v-model="companyForm.checkPass"
-              autocomplete="off"
-            >
-              <i slot="prefix" class="icon iconfont icon-ziyuanxhdpi"></i>
-            </el-input>
-          </el-form-item>
-          <el-form-item class="Remember" prop="type">
-            <el-checkbox-group v-model="companyForm.type">
-              <el-checkbox label="我已阅读并同意用户守则" name="type"></el-checkbox>
-            </el-checkbox-group>
-            <router-link target="_blank" style="margin-left:20px;" to="rules">用户守则</router-link>
-          </el-form-item>
-          <el-form-item class="register_get">
-            <el-button type="primary" @click="submitForm('companyForm')">注册</el-button>
-          </el-form-item>
-          <el-form-item></el-form-item>
-        </el-form> -->
 			</el-card>
 		</div>
 		<Footer></Footer>
@@ -322,6 +236,12 @@
 			      };
 			
 			return {
+				rules: {
+					name: [{ required: true, message: '请输入姓名', trigger: 'blur' }],
+					researchDirection:[{ required: true, message: '请选择研究方向', trigger: 'blur' }],
+					//researchName: [{ required: true, message: '请选择研究方向', trigger: 'blur' }],
+					//design: [{ required: true, message: '请输入模块设计说明', trigger: 'blur' }]
+				},
 				data: generateData(),
 				value: [],
 				filterMethod(query, item) {
