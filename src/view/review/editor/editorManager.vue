@@ -2,6 +2,51 @@
 	<div class="editor-container">
 		<el-row :gutter="40">
 			<el-col :span="16">
+				<el-card class="left-card-menu" v-loading="loading">
+					<el-row style="margin-bottom: 20px;"><h1 style="text-align: left"><i class="el-icon-setting"></i>&nbsp;评审管理</h1></el-row>
+					<el-row style="margin-bottom: 20px;" :gutter="20">
+						<el-col :span="6">
+							<el-card shadow="hover">
+								<router-link :to="{path:'/registerNewUser'}">
+								<span class="subtitle">注册新用户</span>
+									<!-- <el-button type="text">0位专家已评审</el-button> -->
+								</router-link>
+							<!-- 	<span class="subtitle">注册新用户</span> -->
+							</el-card>
+						</el-col>
+						<el-col :span="6">
+							<el-card shadow="hover">
+								<router-link :to="{path:'/reviewStatistic',query:{id:1}}">
+									<span class="subtitle">发送提醒邮件</span>
+									<!-- <el-button type="text">1位专家已评审</el-button> -->
+								</router-link>
+								
+							</el-card>
+						</el-col>
+						<el-col :span="6">
+							<el-card shadow="hover">
+								<router-link :to="{path:'/reviewStatistic',query:{id:2}}">
+									<span class="subtitle">评审模板配置</span>
+						
+								</router-link>
+								<!-- <br /> -->
+								<!-- <span class="subtitle">评审模板配置</span> -->
+							</el-card>
+						</el-col>
+						<el-col :span="6">
+							<el-card shadow="hover">
+								<router-link :to="{path:'/reviewStatistic',query:{id:3}}">
+								<span class="subtitle">已有评审模板</span>	
+									
+								</router-link>
+								
+							</el-card>
+						</el-col>
+					</el-row>
+				</el-card>
+			</el-col>
+			
+			<!-- <el-col :span="16">
 				<el-card class="left-card-menu">
 					<el-row style="margin-bottom: 40px;"><h1 style="text-align: left">评审管理</h1></el-row>
 					<el-row style="margin-bottom: 30px;" :gutter="20" >
@@ -32,7 +77,7 @@
 					</el-row>
 				</el-card>
 			</el-col>
-
+ -->
 		</el-row>
 	</div>
 </template>

@@ -37,10 +37,12 @@ import {
 	MenuItem,
 	MenuItemGroup,
 	Transfer,
+	Upload,
 
 } from 'element-ui';
 const getElement = {
     install(Vue) {
+		Vue.use(Upload);
 		Vue.use(Transfer);
         Vue.use(Row);
         Vue.use(Col);
