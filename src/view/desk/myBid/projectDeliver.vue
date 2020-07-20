@@ -75,7 +75,7 @@
 					</el-table-column>
 
 					<el-table-column prop="status" label="状态" align="center">
-						
+
 					</el-table-column>
 
 					<el-table-column label="操作" align="center" width="350">
@@ -145,9 +145,9 @@ export default {
 	watch:{
 		resourceUrlList:function(val){
 			console.log('%s, %s',this.resourceUrlList.length,this.ResourceTable.length);
-			
+
 			if (this.resourceUrlList.length==this.ResourceTable.length){
-			
+
 				console.log(this.resourceUrlList);
 				for ( var i = 0;i<this.resourceUrlList.length;i++){
 					console.log(i,this.resourceUrlList[i].resourceUrl);
@@ -179,7 +179,7 @@ export default {
 		returnMybid() {
 			this.$router.push({ path: './mybid' });
 		},
-		
+
 		sortBykey(arr,key){
 		  return arr.sort(function (a, b) {
 			let x = a[key]
@@ -198,6 +198,7 @@ export default {
 				const { httpCode, msg, data } = results.data;
 				if (httpCode === 200) {
 					this.ReviewTable = data.reviewStatusList;
+					console.log("reviewTable:",this.ReviewTable);
 					this.ResourceTable = data.reviewTeamList;
 					this.loading = false;
 				} else if (httpCode === 400) {
@@ -219,7 +220,7 @@ export default {
 		},
 		submitForm() {
 			this.uploadIndex=true;
-		
+
 			//this.setIdCard2();
 			 // this.resourceUrl ? this.setIdCard2() : (this.uploadIndex = !this.uploadIndex);
 				// alert(22);

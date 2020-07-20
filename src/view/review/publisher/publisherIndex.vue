@@ -1,5 +1,4 @@
 <template>
-
 	<div class="publisher-container">
 		<el-row :gutter="40">
 			<el-col :span="16">
@@ -38,18 +37,6 @@
 						        </router-link>
 						    </el-card>
 						</el-col>
-						<!-- <el-col :span="6">
-							<el-card>
-								<h1>{{ aboutTimeoutCount }}</h1>
-								<el-button type="text">即将超时</el-button>
-							</el-card>
-						</el-col>
-						<el-col :span="6">
-							<el-card>
-								<h1>{{ alreadyTimeoutCount }}</h1>
-								<el-button type="text">已经超时</el-button>
-							</el-card>
-						</el-col> -->
 					</el-row>
 				</el-card>
 			</el-col>
@@ -76,7 +63,7 @@
 import { httpGet, httpDelete } from "@/utils/http.js";
 import { specificDate } from '@/utils/getDate.js';
 import { message, successTips, errTips } from "@/utils/tips.js";
-	
+
 	export default {
 		name: 'Dashboard',
 		data() {
@@ -85,28 +72,6 @@ import { message, successTips, errTips } from "@/utils/tips.js";
 				acceptCount: 0, // 未接受
 				alreadyTimeoutCount: 0, // 已经超时
 				reviewCount: 0, // 评审中
-				dialogFormVisible: false, // 开启发起评审视窗
-				form: {
-					name: '',
-					region: '',
-					date1: '',
-					date2: '',
-					content: '',
-					fileList: [{
-						name: 'food.jpeg',
-						url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100',
-						status: 'finished'
-					}, {
-						name: 'food2.jpeg',
-						url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100',
-						status: 'finished'
-					}],
-					delivery: false,
-					type: [],
-					resource: '',
-					desc: ''
-				},
-				formLabelWidth: '100px'
 			}
 		},
 		computed: {
@@ -116,7 +81,7 @@ import { message, successTips, errTips } from "@/utils/tips.js";
 		},
 		methods: {
 			getView(){
-				//get /v1/authorization/review/summarizing/get 
+				//get /v1/authorization/review/summarizing/get
 				httpGet("/v1/authorization/review/summarizing/get", {role:1}).then(results => {
 				  const { httpCode, msg, data } = results.data;
 				  if (httpCode == 200) {
@@ -125,12 +90,10 @@ import { message, successTips, errTips } from "@/utils/tips.js";
 					this.aboutTimeoutCount=data.aboutTimeoutCount ;
 					this.alreadyTimeoutCount=data.alreadyTimeoutCount ;
 				  } else if (msg == "该条件暂无数据") {
-				    this.tableData = [];
 				    message("该条件暂无数据");
 				  } else if (httpCode !== 401) {
 				    errTips(msg);
 				  }
-				  
 				});
 			},
 			submit(){
@@ -139,9 +102,6 @@ import { message, successTips, errTips } from "@/utils/tips.js";
 			view(){
 				this.$router.push('./viewReview');
 			},
-			handleChange(file, fileList) {
-				this.fileList = fileList.slice(-3)
-			}
 		}
 	}
 

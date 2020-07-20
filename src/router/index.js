@@ -411,8 +411,35 @@ const vueRouter = new Router({
     			requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
     		}
     	},
+		{
+			path:'/editorReviewTemplateConfig',
+			name:'editorReviewTemplateConfig',
+			component:() => import('@/view/review/editor/reviewTemplateConfig'),
+			meta:{
+				title:'评审模板配置',
+				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+			}
+		},
+		{
+			path:'/editorReviewTemplates',
+			name:'editorReviewTemplates',
+			component:() => import('@/view/review/editor/reviewTemplates'),
+			meta:{
+				title:'已有评审模板',
+				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+			}
+		},
+		{
+			path:'/editorReviewTemplateDetail/:id',
+			name:'editorReviewTemplateDetail',
+			component:() => import('@/view/review/editor/reviewTemplateDetail'),
+			props:true,//将id视为组件的属性
+			meta:{
+				title:'评审模板详情',
+				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+			}
+		}
     	]
-
     },
 
 	{
