@@ -45,22 +45,25 @@
 					</div>
 					<div v-show="haveUser == false">
 					<h2 style="text-align: left;font-weight: bolder;margin-top: 2%;margin-bottom: 2%;">登录账号</h2>
-					<el-form-item label="请输入用户名">
-						<el-input v-model="ruleForm.userName1" style="width:40%"></el-input>
+					<el-form-item label="请输入用户名" :prop="userName" :error="errorList.userError">
+						<el-input v-model="ruleForm.userName" style="width:40%"></el-input>
 					</el-form-item>
 					<el-form-item label="请输入密码">
-						<el-input type="password" v-model="ruleForm.userName1" style="width:40%"></el-input>
+						<el-input type="password" v-model="ruleForm.password" style="width:40%"></el-input>
 					</el-form-item>
 					<el-form-item label="请再次输入密码">
-						<el-input type="password" v-model="ruleForm.userName1" style="width:40%"></el-input>
+						<el-input type="password" v-model="ruleForm.checkPass" style="width:40%"></el-input>
 					</el-form-item>
 					</div>
 					<h2 style="text-align: left;font-weight: bolder;margin-top: 2%;margin-bottom: 2%;">基本资料</h2>
 					<el-row :gutter="20">
 						<el-col :span="12">
-							<el-form-item label="姓名" prop="name">
-								<el-input v-model="ruleForm.name" ></el-input>
+							<el-form-item label="姓名" prop="userName">
+								<el-input v-model="ruleForm.userName" ></el-input>
 							</el-form-item>
+							
+						</el-col>
+						<el-col :span="12">
 							<el-form-item label="性别" >
 								<el-select v-model="ruleForm.sex" placeholder="请选择性别" style="width: 100%;">
 									<el-option label="男" value="1"></el-option>
@@ -68,9 +71,7 @@
 									<el-option label="未知" value="3"></el-option>
 								</el-select>
 							</el-form-item>
-						</el-col>
-						<el-col :span="12">
-							<div style="text-align: center;">
+							<!-- <div style="text-align: center;">
 							<el-upload
 							  class="avatar-uploader"
 							  action="https://jsonplaceholder.typicode.com/posts/"
@@ -80,7 +81,7 @@
 							  <img v-if="imageUrl" :src="imageUrl" class="avatar">
 							  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
 							</el-upload>
-							</div>
+							</div> -->
 						
 						</el-col>
 					</el-row>
@@ -167,8 +168,8 @@
 					</el-row>
 					<el-row :gutter="20">
 						<el-col :span="12">
-							<el-form-item label="通讯地址" >
-								<el-input v-model="ruleForm.contactAddress" ></el-input>
+							<el-form-item label="地址" >
+								<el-input v-model="ruleForm.address" ></el-input>
 							</el-form-item>
 						</el-col>
 					
@@ -195,18 +196,23 @@
 
 <script>
 	import submitReview from '@/view/review/components/submitReview';
-	import { httpGet, httpDelete } from "@/utils/http.js";
+	import { httpGet,httpPost,httpPut, httpDelete } from "@/utils/http.js";
 	import { specificDate } from '@/utils/getDate.js';
 	import { message, successTips, errTips } from "@/utils/tips.js";
 	import foreignArea from "@/view/loginRegister/register/components/foreignArea";
+	import regular from "@/mixins/regular/personRegister.js";
+	import {provinceAndCityData,CodeToText} from "element-china-area-data";
 	export default {
 		components:{
 			submitReview,
 			foreignArea,
 		},
-		name: 'Dashboard',
+		name: 'registerNewUser',
+		mixins: [regular],
 		data() {
 			return {
+				options: provinceAndCityData,
+				newcity: CodeToText,
 				isSee: [{ value: '是' }, { value: '否' }],
 				keywords:"",
 				searchForm:false,
@@ -215,19 +221,22 @@
 				haveUser:true,
 				imageUrl: '',
 				ruleForm: {
+					checkPass:"",
+					checkedValue:"否",
 					address: "",
 					city: "",
-					contactAddress: "",
+					//contactAddress: "",
 					cruxList:[],
 					department: "",
 					education:null,
 					email: "",
 					headurl:"",
 					homepage:"",
-					id:null,
+					//id:null,
 					jobTitle:"",
-					name:"",
+					//name:"",
 					nation:"",
+					password:"",
 					phone:"",
 					position:"",
 					province:"",
@@ -235,6 +244,7 @@
 					role:4,
 					school:"",
 					sex :null,
+					userName:"",
 					workUnit :"",
 				},
 			}
@@ -245,6 +255,44 @@
 		 // this.getView();
 		},
 		methods: {
+			selectCountry(val){
+				//console.log(val);
+				this.ruleForm.nation=val;
+			},
+			submitForm(formName){
+				this.ruleForm.province = this.newcity[this.selectedOptions[0]];
+				this.ruleForm.city = this.newcity[this.selectedOptions[1]];
+				this.ruleForm.researchDirectionList=this.value;
+				//console.log(this.researchObject);
+				console.log(this.ruleForm);
+				//post /v1/authorization/coreuser/review/costmer 
+				if(this.haveUser === false) {
+					httpPost("/v1/authorization/coreuser/review/costmer",this.ruleForm).then(results => {
+						const{httpCode,msg} = results.data;
+						if (httpCode === 200) {
+							successTips('注册新用户成功');
+						} else {
+							errTips(msg);
+						}
+						this.keywords="",
+						Object.assign(this.$ruleForm, this.$options.ruleForm())
+					})
+				} else{
+					
+					//put /v1/authorization/coreuser/review/user 
+					httpPut("/v1/authorization/coreuser/review/user",this.ruleForm).then(results => {
+						const{httpCode,msg} = results.data;
+						if (httpCode === 200) {
+							successTips('用户已变为专家');
+						} else {
+							errTips(msg);
+						}
+						this.keywords="",
+						Object.assign(this.$ruleForm, this.$options.ruleForm())
+					})
+				}
+				
+			},
 			chooseUser(val){
 				
 //get /v1/authorization/coreuser/review/byidregister 
@@ -263,7 +311,7 @@
 				});
 			},
 			searchUser(){
-				
+				this.searchData=[];
 				httpGet("/v1/authorization/coreuser/review/user",{userNamePhoneEmail:this.keywords}).then(results => {
 				  const { httpCode, msg, data } = results.data;
 				  
@@ -277,21 +325,7 @@
 				  this.searchForm=true;
 				});
 			},
-			handleAvatarSuccess(res, file) {
-			        this.imageUrl = URL.createObjectURL(file.raw);
-			      },
-		  beforeAvatarUpload(file) {
-			const isJPG = file.type === 'image/jpeg';
-			const isLt2M = file.size / 1024 / 1024 < 2;
 	
-			if (!isJPG) {
-			  this.$message.error('上传头像图片只能是 JPG 格式!');
-			}
-			if (!isLt2M) {
-			  this.$message.error('上传头像图片大小不能超过 2MB!');
-			}
-			return isJPG && isLt2M;
-		  },
 			rowClass() {
 			  return "background:#F4F6F9;";
 			}
