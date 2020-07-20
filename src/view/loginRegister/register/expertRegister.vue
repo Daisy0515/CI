@@ -4,7 +4,7 @@
 		<div class="container">
 			<el-card class="box-card">
 				<div slot="header" class="clearfix" style="text-align:center">
-					<span>评审管理员注册</span>
+					<span>评审专家注册</span>
 				</div>
 				<h2 style="text-align: left;font-weight: bolder;margin-top: 2%;">基本资料</h2>
 				<div style="text-align: right;">
@@ -211,7 +211,7 @@
 	import Avatar from "@/common/upload/Avatar";
 	import { errTips, successTips } from '@/utils/tips.js';
 	export default {
-		name: "adminRegister",
+		name: "expertRegister",
 		components: {
 			foreignArea,
 			IndexHeader,
@@ -269,7 +269,7 @@
 					position:"",
 					province:"",
 					researchDirectionList:[],
-					role:4,
+					role:3,
 					school:"",
 					sex :null,
 					workUnit :"",
@@ -307,7 +307,7 @@
 				this.keywordsVisible = false;
 			},
 			getPersonalInfo(){
-				httpGet("/v1/authorization/coreuser/review/register?role=4").then(results => {
+				httpGet("/v1/authorization/coreuser/review/register?role=3").then(results => {
 					const{httpCode,msg,data} = results.data;
 					if (httpCode === 200){
 						this.ruleForm.phone=data.phone;
@@ -358,7 +358,7 @@
 				httpPut("/v1/authorization/coreuser/review/user",this.ruleForm).then(results => {
 					const{httpCode,msg} = results.data;
 					if (httpCode === 200) {
-						successTips('注册管理员成功');
+						successTips('注册评审专家成功');
 					} else {
 						errTips(msg);
 					}

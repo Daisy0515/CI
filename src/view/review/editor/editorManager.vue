@@ -6,8 +6,8 @@
                     <el-row style="margin-bottom: 40px;"><h1 style="text-align: left">评审管理</h1></el-row>
                     <el-row style="margin-bottom: 30px;" :gutter="20">
                         <el-col :span="6">
-                            <el-card>
-                                <router-link to="">
+                            <el-card shadow="hover">
+                                <router-link to="/registerNewUser">
                                     <el-button type="text" class="editor-button">注册新用户</el-button>
                                 </router-link>
                             </el-card>

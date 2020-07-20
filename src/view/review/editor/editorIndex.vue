@@ -46,6 +46,36 @@
 				</el-card>
 			</el-col>
 
+			<el-col :span="7">
+				<el-card class="right-card-menu">
+					<el-row style="margin-bottom: 20px;"><h1 style="text-align: left">评审搜索</h1></el-row>
+					<el-row style="margin-bottom: 10px;">
+						<el-card shadow="hover" style="height: 60px">
+							<el-row :gutter="20" >
+								<router-link :to="{path:'',query:{id:4}}">   <!--4 表示评审邀请未回复-->
+									<el-col :span="20"><!-- <el-button type="text" style="font-size: 16px;">评审邀请未回复</el-button> -->
+									<span class="subtitle">评审任务搜索</span>
+									</el-col>
+									
+								</router-link>
+							</el-row>
+						</el-card>
+					</el-row>
+					<el-row style="margin-bottom: 10px;">
+						<el-card shadow="hover" style="height: 60px;">
+							<el-row :gutter="20">
+								<router-link :to="{path:'',query:{id:5}}">   <!--5 表示评审进行中-->
+									<el-col :span="20"><!-- <el-button type="text" style="font-size: 16px;" >评审进行中</el-button> -->
+									<span class="subtitle">评审人员搜索</span>
+									</el-col>
+									
+								</router-link>
+							</el-row>
+						</el-card>
+					</el-row>
+				</el-card>
+			</el-col>
+		
 		</el-row>
 	</div>
 </template>

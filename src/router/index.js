@@ -74,6 +74,15 @@ const vueRouter = new Router({
 		requireAuth: true,
 	  }
 	},
+	{
+	  path: '/expertRegister',
+	  name: 'expertRegister',
+	  component: () => import('@/view/loginRegister/register/expertRegister'),
+	  meta: {
+	    title: '评审专家注册',
+		requireAuth: true,
+	  }
+	},
     {
       path: '/forget',
       name: 'forget',
@@ -407,7 +416,7 @@ const vueRouter = new Router({
     		name:'editorManager',
     		component:() => import('@/view/review/editor/editorManager'),
     		meta:{
-    			title:'待处理',
+    			title:'评审管理',
     			requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
     		}
     	},
@@ -438,7 +447,16 @@ const vueRouter = new Router({
 				title:'评审模板详情',
 				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
 			}
-		}
+		},{
+			path:'/registerNewUser',
+			name:'registerNewUser',
+			component:() => import('@/view/review/editor/registerNewUser'),
+			meta:{
+				title:'注册新用户',
+				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+			}
+		},
+
     	]
     },
 
