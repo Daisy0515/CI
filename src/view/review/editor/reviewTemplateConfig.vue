@@ -78,22 +78,25 @@
             </el-form-item>
             <el-form-item style="margin-top: 20px;">
                 <el-button type="primary" @click="submitForm('templateForm')">立即创建</el-button>
-                <el-button @click="resetForm('templateForm')">重置</el-button>
             </el-form-item>
         </el-form>
         <review-item-template
                 :form="reviewItemForm" :itemIndex="itemIndex" :reviewItemType="selectedType"
                 :formItemVisible="formItemVisible" @closeReviewItemForm="closeReviewItemForm"
                 @getNewReviewItemForm="getNewReviewItemForm"
-                @getUpdatedReviewItemForm="getUpdatedReviewItemForm"></review-item-template>
+                @getUpdatedReviewItemForm="getUpdatedReviewItemForm">
+        </review-item-template>
     </div>
 </template>
 
 <script>
     import {errTips, successTips} from "@/utils/tips.js";
+    import deepCopyObject from "@/utils/deepCopyObject.js";
     import reviewItemTemplate from '@/view/review/components/reviewItemTemplate';
     import {httpPost} from "@/utils/http.js";
 
+    //他们的位置就对应着type的数字表示（传递给后端的，前端为了更好的阅读体验用的字符串表示）
+    const reviewItemTypeStringToId =["","scoreOption","yesOrNo","scoreInput"];
     export default {
         components: {
             reviewItemTemplate
@@ -101,12 +104,13 @@
         data() {
             return {
                 itemIndex: null,//编辑评审单项的时候，传递单项在表单中的位置
+                reviewItemForm: {},//存储单个评审项的信息
                 formItemVisible: false,//用于控制添加评审项的对话框显示
+                selectedType: null,//用户已选中的评审项类型
+
                 isSetTotalScore: false,//是否设定总分
                 expectedTotalScore: null,//期望的目标总分
-                selectedType: null,//用户已选中的评审项类型
                 configList: [],//模板配置信息列表 ,
-                reviewItemForm: {},//存储单个评审项的信息
                 templateForm: {
                     templateName: '',
                     totalScore: 0,//评审模板的总分
@@ -141,7 +145,8 @@
         },
         methods: {
             handleEditItem(index) { //编辑评审单项
-                this.reviewItemForm = this.configList[index];
+                this.selectedType = reviewItemTypeStringToId[this.configList[index].type];
+                this.reviewItemForm = deepCopyObject(this.configList[index]);
                 this.itemIndex = index;
                 this.formItemVisible = true;
             },
@@ -185,7 +190,6 @@
                         })
 
                     } else {
-                        console.log('error submit!!');
                         return false;
                     }
                 });
@@ -203,7 +207,8 @@
             },
             getUpdatedReviewItemForm(index, updatedReviewItemForm) {//存储评审单项组件提交的更新的评审单项记录
                 this.configList[index] = updatedReviewItemForm;
-                this.configList = [...this.configList];//多了这一步的原因是，this.configList本身的引用没有发生变化，所以已添加评审项对应的表格显示的内容不会变化
+                this.configList = deepCopyObject(this.configList);
+                // this.configList = [...this.configList];//多了这一步的原因是，this.configList本身的引用没有发生变化，所以已添加评审项对应的表格显示的内容不会变化
             },
             closeReviewItemForm() {//关闭评审单项对话框
                 this.formItemVisible = false;

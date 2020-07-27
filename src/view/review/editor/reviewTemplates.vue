@@ -9,13 +9,15 @@
         </div>
         <h3 style="margin: 20px auto;font-weight: bolder;">已有评审模板:</h3>
         <el-table :data="templateNameList" v-loading="loading" style="margin-top: 20px;width: 70%;"border >
-            <el-table-column property="templateName" label="评审项名称" align="center"></el-table-column>
+            <el-table-column property="templateName" label="评审模板名称" align="center"></el-table-column>
+            <el-table-column property="gmtCreate" label="创建时间" align="center"></el-table-column>
+            <el-table-column property="gmtModified" label="修改时间" align="center"></el-table-column>
             <el-table-column label="操作"  align="center">
                 <template slot-scope="scope">
                     <router-link :to="{name:'editorReviewTemplateDetail',params:{id:scope.row.id}}">
                         <el-button  type="text" size="medium" ><i class="el-icon-search"></i>详情 </el-button>
                     </router-link>
-                    <el-button @click="handleDeleteFormItem(scope.$index)" type="text" size="medium" ><i class="el-icon-delete"></i>删除 </el-button>
+                    <el-button @click="handleDeleteFormItem(scope.row.id)" type="text" size="medium" ><i class="el-icon-delete"></i>删除 </el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -29,7 +31,9 @@
 
 <script>
     import {errTips, successTips} from "@/utils/tips.js";
-    import {httpGet} from "@/utils/http.js";
+    import {httpGet,httpDelete} from "@/utils/http.js";
+    import { MessageBox } from "element-ui";
+    import {specificDate} from "@/utils/getDate";
     export default {
         name: "reviewTemplates",
         data(){
@@ -47,6 +51,10 @@
                 httpGet("/v1/authorization/review/templatename/list").then(results => {
                     const {httpCode, msg, data} = results.data;
                     if (httpCode == 200) {
+                        for(let item of data.templateNameList){
+                            item.gmtCreate = specificDate(item.gmtCreate);
+                            item.gmtModified = specificDate(item.gmtModified);
+                        }
                         this.templateNameList = data.templateNameList;
                     } else if (httpCode !== 401) {
                         errTips(msg);
@@ -54,6 +62,27 @@
                     this.loading = false;
                 });
             },
+            handleDeleteFormItem(id){
+                MessageBox.confirm("此操作将删除此评审模板, 是否继续?", "提示", {
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消",
+                    type: "warning"
+                }).then(() => {
+                        httpDelete(
+                            `/v1/authorization/review/template/delete/${id}`
+                        ).then(results => {
+                            const { msg, httpCode } = results.data;
+                            if (httpCode === 200) {
+                                this.getReviewTemplates()
+                                successTips('删除成功')
+                            } else if (httpCode === 400) {
+                                errTips("页面丟失");
+                            } else if (httpCode != 500 && httpCode != 401) {
+                                errTips(msg);
+                            }
+                        });
+                    })
+            }
         },
 
     }

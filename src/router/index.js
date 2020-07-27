@@ -411,6 +411,15 @@ const vueRouter = new Router({
     			requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
     		}
     	},
+		{
+			path:'editorOpinionAndDecision',
+			name:'editorOpinionAndDecision',
+			component:() => import('@/view/review/editor/editorOpinionAndDecision'),
+			meta:{
+				title:'意见与决定',
+				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+			}
+		},
     	{
     		path:'/editorManager',
     		name:'editorManager',

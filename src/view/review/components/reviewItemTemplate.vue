@@ -6,7 +6,7 @@
             除此之外，还可以设置一个文本输入域，评审者可以用文字描述一些他/她的想法</p>
         <p style="margin: -20px auto 20px auto; font-weight: bolder;" v-if="reviewItemType==='scoreInput'">
             说明：在文本/分数输入域，您可以设置一个输入框，评审者可以直接输入分数，
-            您需要限定好用户输入分数的范围，默认是0-100，,除此之外，还可以设置一个文本输入域，评审者可以用文字描述一些他/她的想法</p>
+            您需要限定好用户输入分数的范围，例如：0-100,除此之外，还可以设置一个文本输入域，评审者可以用文字描述一些他/她的想法</p>
         <p style="margin: -20px auto 20px auto; font-weight: bolder;" v-if="reviewItemType==='yesOrNo'">
             说明：在是或否选项域，您可以设置一个是或否的选择，例如：评审是否通过这种;
             除此之外，还可以设置一个文本输入域，评审者可以用文字描述一些他/她的想法</p>
@@ -26,9 +26,9 @@
                 <br>
                 说明:
                 <p v-if="reviewItemType==='scoreOption'">填写关于分数的信息。得分为有限个分数的集合的字段。分数必须是整数。
-                最小的数字应该表示质量最低:例如，“差”的数字应该比“好”的数字小。</p>
+                    最小的数字应该表示质量最低:例如，“差”的数字应该比“好”的数字小。</p>
                 <p v-if="reviewItemType==='scoreInput'">填写关于分数的信息。分数域是一个让评审者直接输入分数的域，您可以选择是否对作者可见。</p>
-                <el-form-item label="分数选项输入：" v-if="localForm.isScore">
+                <el-form-item label="分数相关设置：" v-if="localForm.isScore">
                     <br>
                     <div style="margin-left: 70px;">
                         <el-checkbox v-model="localForm.isScoreSubmitVisible  "><span
@@ -37,15 +37,17 @@
                         <el-checkbox v-model="localForm.isScoreRequired  "><span
                                 style=" font-weight: bolder;">评审者必须要完成</span></el-checkbox>
                         <br>
-                        <p style="line-height:20px;">一个分数的<span>权重</span>定义了这个分数如何贡献于评论的总体分数。例如，如果分数是5，
-                            权重是2，那么该字段将为总分增加10(即2 * 5)。权重通常为0(此字段不影响总体得分)
-                            或1(此字段的得分将被添加到总体得分中)。</p>
-                        <el-form-item label="权重：">
-                            <el-col :span="6">
-                                <el-input v-model.number="localForm.scoreWeight " size="medium" auto-complete="off"
-                                          style="margin-left: 18px;"/>
-                            </el-col>
-                        </el-form-item>
+                        <template v-if="reviewItemType==='scoreOption'">
+                            <p style="line-height:20px;">一个分数的<span>权重</span>定义了这个分数如何贡献于评论的总体分数。例如，如果分数是5，
+                                权重是2，那么该字段将为总分增加10(即2 * 5)。权重通常为0(此字段不影响总体得分)
+                                或1(此字段的得分将被添加到总体得分中)。</p>
+                            <el-form-item label="权重：">
+                                <el-col :span="6">
+                                    <el-input v-model.number="localForm.scoreWeight " size="medium" auto-complete="off"
+                                              style="margin-left: 18px;"/>
+                                </el-col>
+                            </el-form-item>
+                        </template>
                         <el-form-item v-if="reviewItemType==='scoreOption'">
                             <p style=" ">输入评审项所有的值和解释。它们还将出现在表单中，作为审核人员的指导方针。</p>
                             <el-row :gutter="20">
@@ -73,18 +75,20 @@
                             </el-table>
                         </el-form-item>
 
-                        <el-form-item  style="margin-top: 10px;" v-if="reviewItemType==='scoreInput'">
+                        <el-form-item style="margin-top: 10px;" v-if="reviewItemType==='scoreInput'">
                             <el-col :span="4"><!--这里伪造一下必须输入的标志-->
-                            <span style="color: red;">*</span>用户输入范围
+                                <span style="color: red;">*</span>用户输入范围
                             </el-col>
                             <el-col :span="6">
-                                <el-input v-model.number="localForm.value.min" size="medium" placeholder="请输入最小值"></el-input>
+                                <el-input v-model.number="localForm.value.min" size="medium"
+                                          placeholder="请输入最小值"></el-input>
                             </el-col>
                             <el-col :span="0.5" :offset="1">
                                 <span>到</span>
                             </el-col>
                             <el-col :span="6" :offset="1">
-                                <el-input v-model.number="localForm.value.max" size="medium" placeholder="请输入最大值"></el-input>
+                                <el-input v-model.number="localForm.value.max" size="medium"
+                                          placeholder="请输入最大值"></el-input>
                             </el-col>
                         </el-form-item>
                     </div>
@@ -117,7 +121,7 @@
                 <div style="border:0.5px solid #CCC;margin: 30px auto;"></div><!--分割线--->
                 <el-checkbox v-model="localForm.textAnnotation"><span style=" font-weight: bolder;">如果此评审项包含用于审阅人员的文本输入，请选中此框</span>
                 </el-checkbox>
-                <el-form-item label="文本输入：" v-if="localForm.textAnnotation">
+                <el-form-item label="文本输入设置：" v-if="localForm.textAnnotation">
                     <p>说明: 填写关于文本输入相关的信息。</p>
                     <div style="margin-left: 70px;">
                         <el-checkbox v-model="localForm.textSubmitVisible"><span
@@ -138,9 +142,10 @@
 
 <script>
     import {errTips} from "@/utils/tips.js";
-
+    import deepCopyObject from "@/utils/deepCopyObject.js";
+    import {httpPut} from "@/utils/http.js";
+    import {successTips} from "../../../utils/tips";
     export default {
-
         name: "reviewItemTemplate",
 
         props: {
@@ -156,10 +161,13 @@
             formItemVisible: {
                 type: Boolean,
                 default: false,
+            },
+            updateToBackEnd:{//更新操作是否发送给后端
+                type: Boolean,
+                default: false,
             }
         },
-        data() {
-
+        data(){
             return {
                 localForm: {//存储为空的评审项的信息
                     type: null,//当前评审单项的类型
@@ -203,7 +211,6 @@
                     return "是或否选择域";
                 }
             },
-
         },
         watch: {
             formItemVisible: function () {
@@ -211,14 +218,14 @@
                     if (this.itemIndex == null) {//新增一个评审项
                         this.localForm = this.getNullLocalForm();
                     } else {
-                        this.localForm = {...this.form};//编辑时，需要把要编辑的表单内容复制给localForm
+                        this.localForm = deepCopyObject(this.form);//编辑时，需要把要编辑的表单内容复制给localForm
                     }
                 }
             },
 
         },
         methods: {
-            getNullLocalForm(){
+            getNullLocalForm() {
                 return {//存储为空的评审项的信息
                     type: null,//当前评审单项的类型
                     scoreTitle: "",
@@ -238,8 +245,8 @@
                     textAnnotation: null,//是否有文本输入,1是0否 true/false
                     textSubmitVisible: null,//文本输入对作者是否可见
                     textDescription: null,//文本输入评审者是否必须要完成 1是0否
-                    fieldOne:null,//标记参数1
-                    fieldTwo:null,//标记参数2
+                    fieldOne: null,//标记参数1
+                    fieldTwo: null,//标记参数2
                 };
             },
             getType() {//生成数值的type类型
@@ -280,58 +287,75 @@
                         }
                     }
                 }
-                if (minScore === Number.MAX_VALUE){
+                if (minScore === Number.MAX_VALUE) {
                     this.localForm.value.min = null;
-                }else{
+                } else {
                     this.localForm.value.min = minScore;
                 }
-                if (maxScore === Number.MIN_VALUE){
+                if (maxScore === Number.MIN_VALUE) {
                     this.localForm.value.max = null;
-                }else{
+                } else {
                     this.localForm.value.max = maxScore;
                 }
             },
-            setValueOfScoreInput(){//如果评审项存在分数的输入，返回输入的限制范围
+            /**如果评审项存在分数的输入，返回输入的限制范围**/
+            setValueOfScoreInput() {
+                this.localForm.scoreWeight = 1;//分数输入的权重默认为1，且不可以修改
                 let minScore = this.localForm.value.min;//用个简短的中间变量来代替一下
                 let maxScore = this.localForm.value.max;
-                if(minScore===null||maxScore==null){
+                if (minScore === null || maxScore == null) {
                     errTips("用户输入范围不能为空");
                     return false;
-                }else if(typeof(minScore)!=='number'||typeof(maxScore)!=='number'){
+                } else if (typeof (minScore) !== 'number' || typeof (maxScore) !== 'number') {
                     errTips("用户输入范围只能是数字");
                     return false;
-                }else if(maxScore<minScore){
+                } else if (maxScore < minScore) {
                     errTips("输入范围的最大值要大于等于最小值");
                     return false;
-                }else{
+                } else {
                     return true;
                 }
             },
-            setValueOfScoreYesOrNo(){
+            /**在是或否选择域，选择了是，权重多少分就加多少分到总分上，选择了否就加0分**/
+            setValueOfScoreYesOrNo() {
                 this.localForm.value.min = 0;
-                this.localForm.value.max = 1;//在是或否选择域，选择了是，权重多少分就加多少分到总分上，选择了否就加0分
+                this.localForm.value.max = 1;
             },
-            saveFormItem(formName) {//保存当前的评审单项并关掉对话框
+            /**保存当前的评审单项并关掉对话框**/
+            saveFormItem(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         if (this.reviewItemType === 'scoreOption' && this.localForm.isScore === true) {//分数选项域，且包含数值分数以及选项
                             this.setValueOfScoreOption();
                         }
-                        if(this.reviewItemType==='scoreInput'&& this.localForm.isScore === true){//分数输入域，且包含数值输入
-                            if(false===this.setValueOfScoreInput()){
+                        if (this.reviewItemType === 'scoreInput' && this.localForm.isScore === true) {//分数输入域，且包含数值输入
+                            if (false === this.setValueOfScoreInput()) {
                                 return false;
                             }
                         }
-                        if(this.reviewItemType==='yesOrNo'){
+                        if (this.reviewItemType === 'yesOrNo') {
                             this.setValueOfScoreYesOrNo();
                             this.localForm.isScore = true;//yesOrNo选择域默认是含有数值域的
                         }
                         this.localForm.type = this.getType();
                         if (this.itemIndex === null) {//提交新的评审单项
-                            this.$emit("getNewReviewItemForm", {...this.localForm});
+                            this.$emit("getNewReviewItemForm", deepCopyObject(this.localForm));
                         } else {//更新已有的评审单项
-                            console.log("this.localForm",this.localForm);
-                            this.$emit("getUpdatedReviewItemForm", this.itemIndex, {...this.localForm});
+                            if(this.updateToBackEnd==false){//不向后端发送更新
+                                this.$emit("getUpdatedReviewItemForm", this.itemIndex, deepCopyObject(this.localForm));
+                            }else{//向后端发送更新
+                                httpPut('/v1/authorization/review/templateconfig/update',this.localForm).then(results => {
+                                    const {httpCode, msg, data} = results.data;
+                                    console.log("data", data);
+                                    if (httpCode == 200) {
+                                        successTips("更新成功！");
+                                    }else if(httpCode !== 401) {
+                                        errTips(msg);
+                                    }
+                                    this.configListLoading = false;
+                                });
+                            }
+
                         }
                         this.localForm = this.getNullLocalForm();
                         this.closeItemForm();//关闭评审单项对话框
