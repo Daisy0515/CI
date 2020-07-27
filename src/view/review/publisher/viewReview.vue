@@ -72,22 +72,24 @@
 		<review-detail-dialog :form="form1" :formLabelWidth="formLabelWidth" :dialogFormVisible="dialogFormVisible" :loading="form1Loading"
 		 @closeDialog="closeDialog"></review-detail-dialog>
 
-		<el-dialog title="选择管理员" :visible.sync="dialogChooseVisible" style="width:100%;text-align:left; font-weight: bolder;">
+		<el-dialog title="第三方评审意见" :visible.sync="dialogChooseVisible" style="width:100%;text-align:left; font-weight: bolder;">
 
 			<div class="header_top" >
 
-				<el-input v-model="searchAdmin.name" placeholder="姓名"></el-input>
-				<el-input v-model="searchAdmin.workUnit" placeholder="单位"></el-input>
-
-
-				<el-button type="primary" @click="searchAdminList()">搜索</el-button>
+				管理员意见：
+				<span v-if="opinin==1">接受</span>
+				<span v-if="opinin==2">需要修改</span>
+				<span v-if="opinin==3">拒绝</span>
+				<span v-if="opinin==4">没有意见 </span>
+				
 
 			</div>
-			<el-table :data="adminList" :header-cell-style="rowClass" >
+			<el-table :data="userList" :header-cell-style="rowClass" >
 				
-				<el-table-column prop="name" label="评审管理员" align="center"></el-table-column>
-				<el-table-column prop="workUnit" label="单位" align="center"></el-table-column>
-				<el-table-column label="操作" align="center">
+				<el-table-column prop="userName" label="评审专家" align="center"></el-table-column>
+				<el-table-column prop="gmtCreate" label="邀请时间" align="center"></el-table-column>
+				<el-table-column prop="status" label="状态" align="center"></el-table-column>
+				<el-table-column label="评审结果" align="center">
 					<template slot-scope="scope">
 						<el-button @click="submitList(scope.row.id)" type="text" size="medium">
 							选择
@@ -125,6 +127,8 @@
 		},
 		data() {
 			return {
+				opinin:"",
+				userList:[],
 				form1Loading: false,
 				dialogFormVisible: false,
 				dialogChooseVisible: false,
@@ -249,8 +253,34 @@
 				this.getAdmin(this.searchAdmin)
 			},
 			handleClickChoose(val) {
+				//get /v1/authorization/review/thirdparty/list 
+				httpGet("/v1/authorization/review/thirdparty/list", {
+					id: val
+				}).then(results => {
+					const {
+						httpCode,
+						msg,
+						data
+					} = results.data;
+					if (httpCode == 200) {
+						this.opinin=data.opinin;
+						let userList = data.userList;
+						for (let i of userList) {
+							i.gmtCreate = specificDate(i.gmtCreate);
+						}
+						
+						this.userList=userList;
+					} else if (msg == "该条件暂无数据") {
+						
+						message("该条件暂无数据");
+					} else if (httpCode !== 401) {
+						errTips(msg);
+					}
+					this.form1Loading = false;
+				});
+				
 				this.dialogChooseVisible = true;
-				this.adminArr.idList.push(val);
+				
 			},
 			handleClickDetail(val) {
 				this.dialogFormVisible = true;
@@ -280,6 +310,7 @@
 					}
 					this.form1Loading = false;
 				});
+				
 				//console.log(this.form1);
 			},
 			closeDialog() {

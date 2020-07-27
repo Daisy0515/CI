@@ -8,7 +8,7 @@
 						<el-col :span="6">
 							<el-card shadow="hover">
 								<router-link :to="{path:'/reviewStatistic',query:{id:0}}">
-									<h1 class="numtitle">{{ acceptCount }}</h1>
+									<h1 class="numtitle">{{ zeroSum  }}</h1>
 									<!-- <el-button type="text">0位专家已评审</el-button> -->
 								</router-link>
 								<span class="subtitle">0位专家已评审</span>
@@ -17,7 +17,7 @@
 						<el-col :span="6">
 							<el-card shadow="hover">
 								<router-link :to="{path:'/reviewStatistic',query:{id:1}}">
-									<h1 class="numtitle">{{ reviewCount }}</h1>
+									<h1 class="numtitle">{{ oneSum  }}</h1>
 									<!-- <el-button type="text">1位专家已评审</el-button> -->
 								</router-link>
 								<span class="subtitle">1位专家已评审</span>
@@ -26,7 +26,7 @@
 						<el-col :span="6">
 							<el-card shadow="hover">
 								<router-link :to="{path:'/reviewStatistic',query:{id:2}}">
-									<h1 class="numtitle">{{ reviewCount }}</h1>
+									<h1 class="numtitle">{{ twoSum  }}</h1>
 						
 								</router-link>
 								<!-- <br /> -->
@@ -36,7 +36,7 @@
 						<el-col :span="6">
 							<el-card shadow="hover">
 								<router-link :to="{path:'/reviewStatistic',query:{id:3}}">
-									<h1 class="numtitle">{{ reviewCount }}</h1>
+									<h1 class="numtitle">{{ threeSum  }}</h1>
 									
 								</router-link>
 								<span class="subtitle">3位专家已评审</span>
@@ -94,12 +94,12 @@
 			return {
 				loading:false,
 				role:2,
-				submitTitle:"发起评审",
+				
 				dialogSubmitVisible: false, // 开启发起评审视窗
-				aboutTimeoutCount: 0, // 即将超时
-				acceptCount: 0, // 未接受
-				alreadyTimeoutCount: 0, // 已经超时
-				reviewCount: 0, // 评审中
+				oneSum: 0, // 即将超时
+				threeSum : 0, // 未接受
+				twoSum  : 0, // 已经超时
+				zeroSum : 0, // 评审中
 				form: {
 					name: '',
 					region: '',
@@ -131,18 +131,18 @@
 		methods: {
 			getView(){
 				this.loading=true;
-				//get /v1/authorization/review/summarizing/get
-				httpGet("/v1/authorization/review/summarizing/get", {role:this.role}).then(results => {
+				//get /v1/authorization/review/statistics/get 
+				httpGet("/v1/authorization/review/statistics/get").then(results => {
 					const { httpCode, msg, data } = results.data;
 					if (httpCode == 200) {
-						this.acceptCount=data.acceptCount;
-						this.reviewCount=data.reviewCount;
-						this.aboutTimeoutCount=data.aboutTimeoutCount ;
-						this.alreadyTimeoutCount=data.alreadyTimeoutCount ;
-					} else if (msg == "该条件暂无数据") {
-						this.tableData = [];
-						message("该条件暂无数据");
-					} else if (httpCode !== 401) {
+						if (data != null){
+							this.oneSum = (data.oneSum == null)? 0: data.oneSum;
+							this.threeSum = (data.threeSum == null)? 0:data.threeSum;
+							this.twoSum = (data.twoSum == null)? 0: data.twoSum;
+							this.zeroSum = (data.zeroSum == null) ? 0: data.zeroSum ;
+						}
+						
+					} else  {
 						errTips(msg);
 					}
 
