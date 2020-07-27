@@ -9,14 +9,16 @@
 			</el-breadcrumb>
 		</div>
 		<div class="header_top">
-			<el-input v-model="searchData.projectName" placeholder="评审标题"></el-input>
-			<el-input v-model="searchData.projectName" placeholder="评审类型"></el-input>
-			<el-input v-model="searchData.projectName" placeholder="发布者"></el-input>
-			<el-input v-model="searchData.projectName" placeholder="提交人"></el-input>
-			<el-date-picker v-model="searchData.startTime" type="date" style="width: 150px;" placeholder="提交时间" value-format="yyyy-MM-dd"
+			<el-input v-model="searchData.title" placeholder="评审标题"></el-input>
+			<el-select v-model="searchData.type" clearable placeholder="请选择项目类型" >
+				<el-option v-for="index in typeList" :label="typeList[index]" :value="index"></el-option>
+			</el-select>
+			<el-input v-model="searchData.projectUserName" placeholder="发布者"></el-input>
+			<el-input v-model="searchData.submitterName" placeholder="提交人"></el-input>
+			<el-date-picker v-model="searchData.submitTimeStart" type="date" style="width: 150px;" placeholder="提交时间" value-format="yyyy-MM-dd"
 			 :picker-options="endDatePicker"></el-date-picker>
 			<span style="margin-right: 15px;">到</span>
-			<el-date-picker style="width: 150px;" v-model="searchData.endTime" :picker-options="endDatePicker" type="date"
+			<el-date-picker style="width: 150px;" v-model="searchData.submitTimeEnd" :picker-options="endDatePicker" type="date"
 			 placeholder="提交时间" value-format="yyyy-MM-dd"></el-date-picker>
 
 
@@ -35,7 +37,7 @@
 				<template slot-scope="scope">
 					<el-button @click="handleClickDetail(scope.row)" type="text" size="medium"><i class="el-icon-search"></i>查看详情
 					</el-button>
-					<el-button @click="handleClickOpinion(scope.row)" type="text" size="medium"><i class="el-icon-document"></i>邀请评审专家
+					<el-button @click="inviteExpert(scope.row.id)" type="text" size="medium"><i class="el-icon-document"></i>邀请评审专家
 					</el-button>
 					<el-button @click="handleClickSubmit(scope.row)" type="text" size="medium"><i class="el-icon-refresh"></i>意见与决定
 					</el-button>
@@ -64,47 +66,85 @@
 					</el-tooltip>
 				</template>
 			</el-table-column>
-			<el-table-column prop="reviewCode" label="评审编号" align="center">
+			<el-table-column prop="id" label="评审编号" align="center">
 				<template slot-scope="scope">
-					<el-tooltip class="item" effect="dark" :content="scope.row.reviewCode">
-						<span class="tablehidden">{{ scope.row.reviewCode  }}</span>
+					<el-tooltip class="item" effect="dark" :content="scope.row.id">
+						<span class="tablehidden">{{ scope.row.id  }}</span>
 					</el-tooltip>
 				</template>
 			</el-table-column>
-			<el-table-column prop="submitPeople" label="提交人" align="center">
+			<el-table-column prop="submitterName" label="提交人" align="center">
 				<template slot-scope="scope">
-					<el-tooltip class="item" effect="dark" :content="scope.row.submitPeople" placement="top-start">
-						<span class="tablehidden">{{ scope.row.submitPeople }}</span>
+					<el-tooltip class="item" effect="dark" :content="scope.row.submitterName" placement="top-start">
+						<span class="tablehidden">{{ scope.row.submitterName }}</span>
 					</el-tooltip>
 				</template>
 			</el-table-column>
-			<el-table-column prop="submitDate" label="提交时间" align="center"></el-table-column>
-			<el-table-column prop="updateDate" label="更新时间" align="center"></el-table-column>
+			<el-table-column prop="submitTime" label="提交时间" align="center"></el-table-column>
+			<el-table-column prop="gmtModified" label="更新时间" align="center"></el-table-column>
 
 			<el-table-column prop="status" label="状态" align="center">
 				<template slot-scope="scope">
-					<el-tooltip class="item" effect="dark" :content="scope.row.status">
-						<span class="tablehidden">{{ scope.row.status }}</span>
-					</el-tooltip>
+					<span v-show="scope.row.status==1">待处理</span>
+					<span v-show="scope.row.status==2">评审中</span>
+					<span v-show="scope.row.status==3">完成</span>
+					<span v-show="scope.row.status==4">中止</span>
 				</template>
 			</el-table-column>
-			<el-table-column prop="reviewStatus" label="评审状态" align="center">
+			<el-table-column prop="statusExplain" label="评审状态" align="center">
 				<template slot-scope="scope">
-					<el-tooltip class="item" effect="dark" :content="scope.row.reviewStatus">
-						<span class="tablehidden">{{ scope.row.reviewStatus }}</span>
+					
+					<el-tooltip class="item" effect="dark" :content="scope.row.statusExplain">
+						<span class="tablehidden" v-show="id==0">{{ scope.row.statusExplain }}</span>
 					</el-tooltip>
+					
+					<el-button v-show="id!=0" @click="viewReviewDetail(scope.row.id)" type="text" size="medium">查看详情
+					</el-button>
 				</template>
 			</el-table-column>
-			<el-table-column prop="editorOpinion" label="管理员意见" align="center">
+			<el-table-column prop="opinion" label="管理员意见" align="center">
 				<template slot-scope="scope">
-					<el-tooltip class="item" effect="dark" :content="scope.row.editorOpinion">
-						<span class="tablehidden">{{ scope.row.editorOpinion }}</span>
+					<el-tooltip class="item" effect="dark" :content="scope.row.opinion">
+						<span class="tablehidden">{{ scope.row.opinion }}</span>
 					</el-tooltip>
 				</template>
 			</el-table-column>
 
 
 		</el-table>
+		<el-dialog title="第三方评审意见" :visible.sync="dialogChooseVisible" width="80%" >
+		
+			
+			<div class="header_top" >
+			
+				管理员意见：
+				<span v-if="opinin==1">接受</span>
+				<span v-if="opinin==2">需要修改</span>
+				<span v-if="opinin==3">拒绝</span>
+				<span v-if="opinin==4">没有意见 </span>
+				
+			
+			</div>
+			<el-table :data="userList" :header-cell-style="rowClass" >
+				
+				<el-table-column prop="userName" label="评审专家" align="center"></el-table-column>
+				<el-table-column prop="gmtCreate" label="邀请时间" align="center"></el-table-column>
+				<el-table-column prop="status" label="状态" align="center"></el-table-column>
+				<el-table-column label="评审结果" align="center">
+					<template slot-scope="scope">
+						<el-button @click="viewResualtDetail(scope.row.id)" type="text" size="medium">
+							详情
+						</el-button>
+					</template>
+				</el-table-column>
+			</el-table>
+			<!-- <div class="bid_footer">
+				<el-pagination @current-change="handleCurrentChangeAdmin" :current-page.sync="pageAdmin.pageNo" :total="totalPageAdmin" layout="prev, pager, next, jumper"></el-pagination>
+			</div> -->
+		
+		</el-dialog>
+		
+		
 		<editor-view-detail :form="form" :formLabelWidth="formLabelWidth" :dialogFormVisible="dialogFormVisible" @closeDialog="closeDialog"></editor-view-detail>
 
 		<!-- <review-detail-dialog :form="form" :formLabelWidth="formLabelWidth"
@@ -147,17 +187,23 @@
 		},
 		data() {
 			return {
-
+				opinion:"",
+				userList:[],
+				dialogChooseVisible:false,
 				searchData: {
-					projectName: "",
-					startTime: null,
-					endTime: null,
-					parentId: null,
 					pageNo: 1,
-					typeId: null,
 					pageSize: 10,
+					orderBy: "id",
 					orderType: "DESC",
-					orderBy: "id"
+					title:null, //待增加
+					type:null,
+					submitterName:null,
+					projectUserName:null,
+					submitTimeStart:null,
+					submitTimeEnd:null,
+					expertAccomplishCount:null,
+					status:null,
+					statusExplain:null
 				},
 				id: "",
 				reviewTypes: ['新任务', '评审专家完成评审', '需要额外评审专家', '评审延期', '评审邀请未回复', '评审进行中'],
@@ -167,24 +213,20 @@
 				dialogSubmitVisible: false, //控制重新提交框是否显示
 				dialogOpinionVisible: false, //控制意见详情框是否显示
 				loading: false,
-				tableData: [{
-					title: "基于深度学习的机器翻译",
-					type: '开题检查',
-					reviewCode: 'ps000001',
-					submitPeople: 'Yun Li',
-					submitDate: '2020-04-02',
-					updateDate: '2020-04-03',
-					reviewStatus: "等待管理员分配",
-					status: '已完成',
-					editorOpinion: '通过'
-				}],
+				tableData: [],
 				pageData: {
 					pageNo: 1,
 					pageSize: 10,
 					orderBy: "id",
 					orderType: "DESC",
-					role: 2,
-					status: 2
+					type:null,
+					submitterName:null,
+					projectUserName:null,
+					submitTimeStart:null,
+					submitTimeEnd:null,
+					expertAccomplishCount:null,
+					status:null,
+					statusExplain:null
 				},
 				totalPage: 0,
 				form: { //表单中的信息
@@ -209,14 +251,80 @@
 		},
 		created: function() {
 			this.id = this.$route.query.id;
+			if (this.id == 0){
+				this.pageData.status = 1;
+				this.searchData.status = 1;
+			}
+			if (this.id >=1 && this.id <= 4) {
+				this.pageData.statusExplain = this.id;
+				this.searchData.statusExplain = this.id;
+			}
+			if (this.id == 5) {
+				this.pageData.status = 2;
+				this.searchData.status = 2;
+			}
+			this.getTpyeList();
+			this.getView();
 		},
 		computed: {},
 		methods: {
+			//获取评审结果
+			viewResualtDetail(val){
+				
+			},
+			viewReviewDetail(val){
+				console.log(this.dialogChooseVisible);
+				//get /v1/authorization/review/expertinviterecord/list 
+				httpGet("/v1/authorization/review/expertinviterecord/list",{id:val}).then(results => {
+					const {
+						httpCode,
+						msg,
+						data
+					} = results.data;
+					if (httpCode == 200) {
+						this.opinion = data.opinion;
+						let userList = data.userList;
+						for (let i of userList) {
+							i.gmtCreate = specificDate(i.gmtCreate);
+						}
+						this.userList=userList;
+					} else {
+						this.typeList=[];
+						errTips(msg);
+					}
+					
+				});
+				this.dialogChooseVisible=true;
+			},
+			inviteExpert(val){
+				this.$router.push({path:'./inviteExpert',query:{id:val}});
+			},
+			searchList(){
+				//alert('searchList');
+				this.getView(this.searchData);
+			},
+			getTpyeList(){
+				//get /v1/authorization/review/type/get 
+				httpGet("/v1/authorization/review/type/get").then(results => {
+					const {
+						httpCode,
+						msg,
+						data
+					} = results.data;
+					if (httpCode == 200) {
+						this.typeList = data.typeList;
+						console.log(this.typeList);
+					} else {
+						this.typeList=[];
+						errTips(msg);
+					}
+					
+				});
+							
+			},
 			getView(val = this.pageData) {
 				this.loading = true;
-
-				//get /v1/authorization/review/review/search
-				httpGet("/v1/authorization/review/review/search", val).then(results => {
+				httpGet("/v1/authorization/review/admin/search", val).then(results => {
 					const {
 						httpCode,
 						msg,
@@ -226,22 +334,21 @@
 						this.pageNo = data.pageNo;
 						this.totalPage = parseInt(data.totalPage + '0');
 
-						let list = data.reviewInfoList;
+						let list = data.adminMissionList;
 						for (let i of list) {
 
 							i.gmtCreate = specificDate(i.gmtCreate);
-							i.deadline = specificDate(i.deadline);
+							i.submitTime = specificDate(i.submitTime);
 						}
 						Object.assign(this.pageData, val);
 						this.$set(this, 'tableData', list);
-					} else if (msg == "该条件暂无数据") {
-						this.tableData = [];
-						message("该条件暂无数据");
-					} else if (httpCode !== 401) {
+					} else {
+						this.tableData=[];
 						errTips(msg);
 					}
 					this.loading = false;
 				});
+			
 			},
 
 			handleCurrentChange(val) {

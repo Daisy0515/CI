@@ -8,7 +8,7 @@
 						<el-col :span="6">
 							<el-card shadow="hover" style="height: 120px;">
 								<router-link :to="{path:'/reviewTodo',query:{id:0}}"> <!--0 表示新的任务-->
-									<h1>{{ acceptCount }}</h1>
+									<h1>{{ mission }}</h1>
 									<!-- <el-button type="text">新的任务</el-button> -->
 								</router-link>
 								<span class="subtitle">新的任务</span>
@@ -17,7 +17,7 @@
 						<el-col :span="6">
 							<el-card shadow="hover" style="height: 120px;">
 								<router-link :to="{path:'/reviewTodo',query:{id:1}}">  <!--1 表示评审专家完成评审-->
-									<h1>{{ reviewCount }}</h1>
+									<h1>{{ expertAccomplish  }}</h1>
 									<!-- <el-button type="text">评审专家完成评审</el-button> -->
 								</router-link>
 								<!-- <el-button type="text">评审专家完成评审</el-button> -->
@@ -27,7 +27,7 @@
 						<el-col :span="6">
 							<el-card shadow="hover" style="height: 120px;">
 								<router-link :to="{path:'/reviewTodo',query:{id:2}}">  <!--2 表示需要额外评审专家-->
-									<h1>{{ reviewCount }}</h1>
+									<h1>{{ extraExpert  }}</h1>
 									<!-- <el-button type="text">需要额外评审专家</el-button> -->
 								</router-link>
 								<span class="subtitle">需要额外评审专家</span>
@@ -36,7 +36,7 @@
 						<el-col :span="6">
 							<el-card shadow="hover" style="height: 120px;">
 								<router-link :to="{path:'/reviewTodo',query:{id:3}}">   <!--3 表示需要额外评审专家-->
-									<h1>{{ reviewCount }}</h1>
+									<h1>{{ postpone  }}</h1>
 									<!-- <el-button type="text">评审延期</el-button> -->
 								</router-link>
 								<span class="subtitle">评审延期</span>
@@ -56,7 +56,7 @@
 									<el-col :span="20"><!-- <el-button type="text" style="font-size: 16px;">评审邀请未回复</el-button> -->
 									<span class="subtitle">评审邀请未回复</span>
 									</el-col>
-									<el-col :span="4"><h2>0</h2></el-col>
+									<el-col :span="4"><h2>{{ inviteNoReply }} </h2></el-col>
 								</router-link>
 							</el-row>
 						</el-card>
@@ -68,7 +68,7 @@
 									<el-col :span="20"><!-- <el-button type="text" style="font-size: 16px;" >评审进行中</el-button> -->
 									<span class="subtitle">评审进行中</span>
 									</el-col>
-									<h2>0</h2>
+									<h2>{{underway }}</h2>
 								</router-link>
 							</el-row>
 						</el-card>
@@ -99,10 +99,12 @@
 				role:2,
 				submitTitle:"发起评审",
 				dialogSubmitVisible: false, // 开启发起评审视窗
-				aboutTimeoutCount: 0, // 即将超时
-				acceptCount: 0, // 未接受
-				alreadyTimeoutCount: 0, // 已经超时
-				reviewCount: 0, // 评审中
+				expertAccomplish: 0, 
+				extraExpert : 0, 
+				inviteNoReply : 0, 
+				mission : 0, 
+				postpone:0,
+				underway:0,
 				form: {
 					name: '',
 					region: '',
@@ -133,14 +135,16 @@
 		},
 		methods: {
 			getView(){
-				//get /v1/authorization/review/summarizing/get
-				httpGet("/v1/authorization/review/summarizing/get", {role:this.role}).then(results => {
+			//get /v1/authorization/review/statusexplain/get 
+				httpGet("/v1/authorization/review/statusexplain/get").then(results => {
 					const { httpCode, msg, data } = results.data;
 					if (httpCode == 200) {
-						this.acceptCount=data.acceptCount;
-						this.reviewCount=data.reviewCount;
-						this.aboutTimeoutCount=data.aboutTimeoutCount ;
-						this.alreadyTimeoutCount=data.alreadyTimeoutCount ;
+						this.expertAccomplish=data.expertAccomplish;
+						this.extraExpert=data.extraExpert;
+						this.inviteNoReply=data.inviteNoReply ;
+						this.mission=data.mission ;
+						this.postpone=data.postpone;
+						this.underway=data.underway;
 					} else if (msg == "该条件暂无数据") {
 						this.tableData = [];
 						message("该条件暂无数据");

@@ -299,7 +299,8 @@ export default {
         this.loading = false;
       });
     },
-    rowClass() {
+   
+	rowClass() {
       return "background:#F4F6F9;";
     }
   }

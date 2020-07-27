@@ -10,14 +10,14 @@
 			</el-breadcrumb>
 		</div>
 		<div class="header_top">
-			<el-input v-model="searchData.projectName" placeholder="评审标题"></el-input>
-			<el-input v-model="searchData.projectName" placeholder="评审类型"></el-input>
-			<el-input v-model="searchData.projectName" placeholder="发布者"></el-input>
-			<el-input v-model="searchData.projectName" placeholder="提交人"></el-input>
-			<el-date-picker v-model="searchData.startTime" type="date" style="width: 150px;" placeholder="提交时间" value-format="yyyy-MM-dd"
+			<el-input v-model="searchData.title" placeholder="评审标题"></el-input>
+			<el-input v-model="searchData.type" placeholder="评审类型"></el-input>
+			<el-input v-model="searchData.projectUserName" placeholder="发布者"></el-input>
+			<el-input v-model="searchData.submitterName" placeholder="提交人"></el-input>
+			<el-date-picker v-model="searchData.submitTimeStart" type="date" style="width: 150px;" placeholder="提交时间" value-format="yyyy-MM-dd"
 			 :picker-options="endDatePicker"></el-date-picker>
 			<span style="margin-right: 15px;">到</span>
-			<el-date-picker style="width: 150px;" v-model="searchData.endTime" :picker-options="endDatePicker" type="date"
+			<el-date-picker style="width: 150px;" v-model="searchData.submitTimeEnd" :picker-options="endDatePicker" type="date"
 			 placeholder="提交时间" value-format="yyyy-MM-dd"></el-date-picker>
 
 
@@ -26,7 +26,7 @@
 		    <el-option label="投标中" value="投标中"></el-option>
 		    <el-option label="失败" value="失败"></el-option>
 		    <el-option label="结束" value="结束"></el-option>
-		  </el-select> -->
+			</el-select> -->
 
 			<el-button type="primary" @click="searchList()">搜索</el-button>
 
@@ -66,41 +66,45 @@
 					</el-tooltip>
 				</template>
 			</el-table-column>
-			<el-table-column prop="reviewCode" label="评审编号" align="center">
+			<el-table-column prop="id" label="评审编号" align="center">
 				<template slot-scope="scope">
-					<el-tooltip class="item" effect="dark" :content="scope.row.reviewCode">
-						<span class="tablehidden">{{ scope.row.reviewCode  }}</span>
+					<el-tooltip class="item" effect="dark" :content="scope.row.id">
+						<span class="tablehidden">{{ scope.row.id  }}</span>
 					</el-tooltip>
 				</template>
 			</el-table-column>
-			<el-table-column prop="submitPeople" label="提交人" align="center">
+			<el-table-column prop="submitterName" label="提交人" align="center">
 				<template slot-scope="scope">
-					<el-tooltip class="item" effect="dark" :content="scope.row.submitPeople" placement="top-start">
-						<span class="tablehidden">{{ scope.row.submitPeople }}</span>
+					<el-tooltip class="item" effect="dark" :content="scope.row.submitterName" placement="top-start">
+						<span class="tablehidden">{{ scope.row.submitterName }}</span>
 					</el-tooltip>
 				</template>
 			</el-table-column>
-			<el-table-column prop="submitDate" label="提交时间" align="center"></el-table-column>
-			<el-table-column prop="updateDate" label="更新时间" align="center"></el-table-column>
+			<el-table-column prop="submitTime" label="提交时间" align="center"></el-table-column>
+			<el-table-column prop="gmtModified" label="更新时间" align="center"></el-table-column>
 
 			<el-table-column prop="status" label="状态" align="center">
 				<template slot-scope="scope">
-					<el-tooltip class="item" effect="dark" :content="scope.row.status">
+					<span v-show="scope.row.status==1">待处理</span>
+					<span v-show="scope.row.status==2">评审中</span>
+					<span v-show="scope.row.status==3">完成</span>
+					<span v-show="scope.row.status==4">中止</span>
+					<!-- <el-tooltip class="item" effect="dark" :content="scope.row.status">
 						<span class="tablehidden">{{ scope.row.status }}</span>
+					</el-tooltip> -->
+				</template>
+			</el-table-column>
+			<el-table-column prop="statusExplain" label="评审状态" align="center">
+				<template slot-scope="scope">
+					<el-tooltip class="item" effect="dark" :content="scope.row.statusExplain">
+						<span class="tablehidden">{{ scope.row.statusExplain }}</span>
 					</el-tooltip>
 				</template>
 			</el-table-column>
-			<el-table-column prop="reviewStatus" label="评审状态" align="center">
+			<el-table-column prop="opinion" label="管理员意见" align="center">
 				<template slot-scope="scope">
-					<el-tooltip class="item" effect="dark" :content="scope.row.reviewStatus">
-						<span class="tablehidden">{{ scope.row.reviewStatus }}</span>
-					</el-tooltip>
-				</template>
-			</el-table-column>
-			<el-table-column prop="editorOpinion" label="管理员意见" align="center">
-				<template slot-scope="scope">
-					<el-tooltip class="item" effect="dark" :content="scope.row.editorOpinion">
-						<span class="tablehidden">{{ scope.row.editorOpinion }}</span>
+					<el-tooltip class="item" effect="dark" :content="scope.row.opinion">
+						<span class="tablehidden">{{ scope.row.opinion }}</span>
 					</el-tooltip>
 				</template>
 			</el-table-column>
@@ -160,24 +164,20 @@
 				dialogSubmitVisible: false, //控制重新提交框是否显示
 				dialogOpinionVisible: false, //控制意见详情框是否显示
 				loading: false,
-				tableData: [{
-					title: "基于深度学习的机器翻译",
-					type: '开题检查',
-					reviewCode: 'ps000001',
-					submitPeople: 'Yun Li',
-					submitDate: '2020-04-02',
-					updateDate: '2020-04-03',
-					reviewStatus: "3人已完成",
-					status: '已完成',
-					editorOpinion: '通过'
-				}],
+				tableData: [],
 				pageData: {
 					pageNo: 1,
 					pageSize: 10,
 					orderBy: "id",
 					orderType: "DESC",
-					role: 2,
-					status: 2
+					type:null,
+					submitterName:null,
+					projectUserName:null,
+					submitTimeStart:null,
+					submitTimeEnd:null,
+					expertAccomplishCount:null,
+					status:null,
+					statusExplain:null
 				},
 				totalPage: 0,
 				form: { //表单中的信息
@@ -202,28 +202,30 @@
 		},
 		created: function() {
 			this.id = this.$route.query.id;
+			this.pageData.expertAccomplishCount = this.id;
+			this.getView();
 		},
 		computed: {},
 		methods: {
+			searchList(){
+				//alert('searchList');
+				this.getView(this.searchData);
+			},
 			getView(val = this.pageData) {
+				
 				this.loading = true;
-
-				//get /v1/authorization/review/review/search
-				httpGet("/v1/authorization/review/review/search", val).then(results => {
-					const {
-						httpCode,
-						msg,
-						data
-					} = results.data;
+				//get /v1/authorization/review/admin/search 
+				httpGet("/v1/authorization/review/admin/search", val).then(results => {
+					const { httpCode,msg,data} = results.data;
 					if (httpCode == 200) {
 						this.pageNo = data.pageNo;
 						this.totalPage = parseInt(data.totalPage + '0');
 
-						let list = data.reviewInfoList;
+						let list = data.adminMissionList ;
 						for (let i of list) {
 
 							i.gmtCreate = specificDate(i.gmtCreate);
-							i.deadline = specificDate(i.deadline);
+							i.submitTime = specificDate(i.submitTime);
 						}
 						Object.assign(this.pageData, val);
 						this.$set(this, 'tableData', list);
