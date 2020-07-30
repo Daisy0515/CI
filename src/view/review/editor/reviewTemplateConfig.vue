@@ -66,7 +66,7 @@
                     </el-table-column>
                     <el-table-column label="操作" align="center">
                         <template slot-scope="scope">
-                            <el-button @click="handleEditItem(scope.$index)" type="text" size="medium"
+                            <el-button @click="handleEditFormItem(scope.$index)" type="text" size="medium"
                             ><i class="el-icon-search"></i>编辑
                             </el-button>
                             <el-button @click="handleDeleteFormItem(scope.$index)" type="text" size="medium"
@@ -93,13 +93,19 @@
     import {errTips, successTips} from "@/utils/tips.js";
     import deepCopyObject from "@/utils/deepCopyObject.js";
     import reviewItemTemplate from '@/view/review/components/reviewItemTemplate';
-    import {httpPost} from "@/utils/http.js";
+    import {httpPost,httpGet} from "@/utils/http.js";
 
     //他们的位置就对应着type的数字表示（传递给后端的，前端为了更好的阅读体验用的字符串表示）
     const reviewItemTypeStringToId =["","scoreOption","yesOrNo","scoreInput"];
     export default {
         components: {
             reviewItemTemplate
+        },
+        props:{
+            templateId:{
+                type:[String,Number],
+                default:null,
+            }
         },
         data() {
             return {
@@ -123,6 +129,11 @@
                 },
             };
         },
+        created(){
+            if(this.templateId!==null){
+                this.getReviewTemplateDetail();
+            }
+        },
         computed: {
             scoreCompare: function () {//设定的总分与当前总分的比较
                 if (this.expectedTotalScore > this.templateForm.totalScore) {//设定的总分大于当前总分
@@ -136,7 +147,6 @@
         },
         watch: {
             configList: function () {
-                // console.log("configList has changed");
                 this.templateForm.totalScore = 0;
                 for (let item of this.configList) {
                     this.templateForm.totalScore += item.value.max * item.scoreWeight;
@@ -144,7 +154,31 @@
             }
         },
         methods: {
-            handleEditItem(index) { //编辑评审单项
+            getReviewTemplateDetail(){//评审表单详情中点击创建副本 跳转到当前页面时调用。
+                httpGet("/v1/authorization/review/templateconfig/list", {id: this.templateId}).then(results => {
+                    const {httpCode, msg, data} = results.data;
+                    console.log("data", data);
+                    if (httpCode == 200) {
+                        for(let item of data.templateConfigList){
+                            delete item.id;
+                        }
+                        this.configList = data.templateConfigList;
+                        this.templateForm.totalScore = data.totalScore;
+                        this.templateForm.templateName = data.templateName;
+                    }else if(httpCode !== 401){
+                        errTips(msg);
+                    }
+                });
+            },
+            addFormItem() {//增加一个评审单项
+                if (this.selectedType === null) {
+                    errTips("请选择评审项");
+                } else {
+                    this.itemIndex = null;//新增评审单项，itemIndex要置为null
+                    this.formItemVisible = true;
+                }
+            },
+            handleEditFormItem(index) { //编辑评审单项
                 this.selectedType = reviewItemTypeStringToId[this.configList[index].type];
                 this.reviewItemForm = deepCopyObject(this.configList[index]);
                 this.itemIndex = index;
@@ -194,14 +228,7 @@
                     }
                 });
             },
-            addFormItem() {//增加一个评审单项
-                if (this.selectedType === null) {
-                    errTips("请选择评审项");
-                } else {
-                    this.itemIndex = null;//新增评审单项，itemIndex要置为null
-                    this.formItemVisible = true;
-                }
-            },
+
             getNewReviewItemForm(newReviewItemForm) {//存储评审单项组件提交的新的评审单项记录
                 this.configList.push(newReviewItemForm);
             },

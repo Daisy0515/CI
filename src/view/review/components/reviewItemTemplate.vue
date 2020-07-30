@@ -10,7 +10,7 @@
         <p style="margin: -20px auto 20px auto; font-weight: bolder;" v-if="reviewItemType==='yesOrNo'">
             说明：在是或否选项域，您可以设置一个是或否的选择，例如：评审是否通过这种;
             除此之外，还可以设置一个文本输入域，评审者可以用文字描述一些他/她的想法</p>
-        <el-form :model="localForm" :rules="formItemRules" ref="reviewItemForm">
+        <el-form :model="localForm" :rules="formItemRules" ref="reviewItemForm" :disabled="readOnly">
             <el-form-item label="标题" :label-width="formLabelWidth" prop="scoreTitle">
                 <el-col :span="12">
                     <el-input v-model="localForm.scoreTitle " auto-complete="off"/>
@@ -107,7 +107,7 @@
                     <el-checkbox v-model="localForm.isScoreRequired  "><span
                             style=" font-weight: bolder;">评审者必须要完成</span></el-checkbox>
                     <br>
-                    <p style="line-height:20px;">一个分数的<span>权重</span>定义了这个分数如何贡献于评论的总体分数。如果选中此框，权重将直接添加到评审的总分数中。复选框的权重通常为0
+                    <p style="line-height:20px;">一个分数的<span>权重</span>定义了这个分数如何贡献于评论的总体分数。评审专家如果选中此框，权重将直接添加到评审的总分数中。复选框的权重通常为0
                     </p>
                     <el-form-item label="权重：">
                         <el-col :span="6">
@@ -133,7 +133,7 @@
                 </el-form-item>
             </template>
         </el-form>
-        <div slot="footer" style="margin-right: 35%">
+        <div slot="footer" style="margin-right: 35%" v-if="readOnly===false" >
             <el-button @click="closeItemForm" style="margin-right: 10%">取消</el-button>
             <el-button type="primary" v-prevent-click @click="saveFormItem('reviewItemForm')">保存</el-button>
         </div>
@@ -141,13 +141,12 @@
 </template>
 
 <script>
-    import {errTips} from "@/utils/tips.js";
+    import {successTips,errTips} from "@/utils/tips.js";
     import deepCopyObject from "@/utils/deepCopyObject.js";
-    import {httpPut} from "@/utils/http.js";
-    import {successTips} from "../../../utils/tips";
+    import {httpPut,httpPost} from "@/utils/http.js";
+
     export default {
         name: "reviewItemTemplate",
-
         props: {
             form: Object,//编辑评审单项时，传进组件的内容
             itemIndex: {//编辑评审单项时，改评审单项在父组件评审表单中的位置
@@ -165,29 +164,19 @@
             updateToBackEnd:{//更新操作是否发送给后端
                 type: Boolean,
                 default: false,
+            },
+            readOnly:{//评审表单详情里的表单项的详情，只读无法提交修改
+                type: Boolean,
+                default: false,
+            },
+            newTemplate:{//是否创建新的评审单项模板，向后端发送请求
+                type: Object,
+                default: null,
             }
         },
         data(){
             return {
-                localForm: {//存储为空的评审项的信息
-                    type: null,//当前评审单项的类型
-                    scoreTitle: "",
-                    hint: "",
-                    textAnnotation: null,//是否有文本输入
-                    textSubmitVisible: null,//文本输入对作者是否可见
-                    textDescription: null,//文本输入评审者是否必须要完成 1是0否
-
-                    isScore: null,//是否有分值选项 1是0否
-                    isScoreSubmitVisible: null,//对作者是否可见 1是0否
-                    isScoreRequired: null,//分值选项专家必选 1是0否
-                    scoreWeight: 1,//分值选项权重
-                    scoreExplainList: [],//分值选项说明(文本分数选项域)
-                    value: {
-                        min: null,//评审选项的得分最小值
-                        max: null,//评审选项的得分最大值
-                    },
-                    selectAnnotation: null,//选择框之后的文本说明(是或否选择域) ,
-                },
+                localForm: this.getNullLocalForm(),
                 minScore: null,//评审选项的得分最小值
                 maxScore: null,//评审选项的得分最大值
                 formItemRules: {//评审单项里的表单规则
@@ -195,7 +184,6 @@
                         {required: true, message: '请输入模板名称', trigger: 'blur'},
                     ]
                 },
-
                 tempScore: null,//暂存选项分数
                 tempExplain: null,//暂存选项说明
                 formLabelWidth: "100px",
@@ -218,15 +206,15 @@
                     if (this.itemIndex == null) {//新增一个评审项
                         this.localForm = this.getNullLocalForm();
                     } else {
-                        this.localForm = deepCopyObject(this.form);//编辑时，需要把要编辑的表单内容复制给localForm
+                        this.localForm = deepCopyObject(this.form);//编辑时，需要把要编辑的表单内容深拷贝给localForm
                     }
                 }
             },
-
         },
         methods: {
+            /**存储为空的评审项的信息*/
             getNullLocalForm() {
-                return {//存储为空的评审项的信息
+                return {
                     type: null,//当前评审单项的类型
                     scoreTitle: "",
                     hint: "",
@@ -240,6 +228,7 @@
                         min: null,//评审选项的得分最小值
                         max: null,//评审选项的得分最大值
                     },
+
                     selectAnnotation: null,//选择框之后的文本说明(是或否选择域) ,
 
                     textAnnotation: null,//是否有文本输入,1是0否 true/false
@@ -249,7 +238,8 @@
                     fieldTwo: null,//标记参数2
                 };
             },
-            getType() {//生成数值的type类型
+            /**生成数值的type类型*/
+            getType() {
                 if (this.reviewItemType === 'scoreOption') {
                     return 1;
                 } else if (this.reviewItemType === 'scoreInput') {
@@ -258,7 +248,8 @@
                     return 2;
                 }
             },
-            addOption() {//添加用户指定位置的选项解释
+            /**添加新的选项解释*/
+            addOption() {
                 if (this.tempScore === null || this.tempExplain === null) {
                     errTips("选项和分值都不能为空");
                 } else if (typeof (this.tempScore) != 'number') {
@@ -271,13 +262,15 @@
                     this.tempExplain = null;
                 }
             },
-            deleteOption(index) {//删除用户指定位置的选项解释
+            /**删除用户指定位置的选项解释*/
+            deleteOption(index) {
                 this.localForm.scoreExplainList.splice(index, 1);
             },
-            setValueOfScoreOption() {//如果评审项存在分数的选择，返回得分的范围
+            /**如果评审项存在分数的选择，返回得分的范围*/
+            setValueOfScoreOption() {
                 let minScore = Number.MAX_VALUE;//找出分数选项的最大值，最小值
                 let maxScore = Number.MIN_VALUE;
-                if (this.localForm.scoreExplainList.length > 0) {
+                if (this.localForm.scoreExplainList!==null&&this.localForm.scoreExplainList.length > 0) {
                     for (let scoreExplain of this.localForm.scoreExplainList) {
                         if (minScore > scoreExplain.score) {
                             minScore = scoreExplain.score;
@@ -321,6 +314,19 @@
                 this.localForm.value.min = 0;
                 this.localForm.value.max = 1;
             },
+            /**设置新增项（向后端发送数据的新增项）**/
+            setFieldOfNewTemplateItem(index) {
+                if (this.localForm.isScore === true){
+                    this.localForm.fieldOne = index + "-1";
+                }else{
+                    this.localForm.fieldOne = null;
+                }
+                if (this.localForm.textAnnotation === true) {
+                    this.localForm.fieldTwo = index + "-2";
+                }else{
+                    this.localForm.fieldTwo = null;
+                }
+            },
             /**保存当前的评审单项并关掉对话框**/
             saveFormItem(formName) {
                 this.$refs[formName].validate((valid) => {
@@ -339,23 +345,37 @@
                         }
                         this.localForm.type = this.getType();
                         if (this.itemIndex === null) {//提交新的评审单项
-                            this.$emit("getNewReviewItemForm", deepCopyObject(this.localForm));
+                            if(this.newTemplate!==null&&this.newTemplate.isCreateNewTemplate===true){//需要向后端提交更新
+                                this.localForm.templateId = this.newTemplate.templateId;
+                                this.setFieldOfNewTemplateItem(this.newTemplate.newIndex);// 设置fieldOne和fieldTwo
+                                httpPost('/v1/authorization/review/templateconfigadd/insert',this.localForm).then(results => {
+                                    const {httpCode, msg, data} = results.data;
+                                    if (httpCode === 200){
+                                        successTips("更新成功！");
+                                        this.$emit("getReviewTemplateDetail");//重新加载页面
+                                    }else if(httpCode !== 401){
+                                        errTips(msg);
+                                    }
+                                });
+                            }else{//不需要向后端提交更新
+                                this.$emit("getNewReviewItemForm", deepCopyObject(this.localForm));
+                            }
                         } else {//更新已有的评审单项
-                            if(this.updateToBackEnd==false){//不向后端发送更新
+                            if(this.updateToBackEnd===false){//不向后端发送更新
                                 this.$emit("getUpdatedReviewItemForm", this.itemIndex, deepCopyObject(this.localForm));
                             }else{//向后端发送更新
+                                this.setFieldOfNewTemplateItem(this.itemIndex);// 设置更新过后的fieldOne和fieldTwo
+                                // console.log("发送前的数据：",this.localForm);
                                 httpPut('/v1/authorization/review/templateconfig/update',this.localForm).then(results => {
-                                    const {httpCode, msg, data} = results.data;
-                                    console.log("data", data);
-                                    if (httpCode == 200) {
+                                    const {httpCode, msg} = results.data;
+                                    if (httpCode == 200){
                                         successTips("更新成功！");
+                                        this.$emit("getReviewTemplateDetail");//重新加载页面
                                     }else if(httpCode !== 401) {
                                         errTips(msg);
                                     }
-                                    this.configListLoading = false;
                                 });
                             }
-
                         }
                         this.localForm = this.getNullLocalForm();
                         this.closeItemForm();//关闭评审单项对话框
@@ -370,7 +390,3 @@
         },
     }
 </script>
-
-<style scoped>
-
-</style>

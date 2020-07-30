@@ -12,12 +12,24 @@
             <el-table-column property="templateName" label="评审模板名称" align="center"></el-table-column>
             <el-table-column property="gmtCreate" label="创建时间" align="center"></el-table-column>
             <el-table-column property="gmtModified" label="修改时间" align="center"></el-table-column>
+            <el-table-column property="isEmploy" label="是否被使用过" align="center">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.isEmploy===true">是</span>
+                    <span v-else>否</span>
+                </template>
+            </el-table-column>
             <el-table-column label="操作"  align="center">
                 <template slot-scope="scope">
-                    <router-link :to="{name:'editorReviewTemplateDetail',params:{id:scope.row.id}}">
+                    <router-link :to="{name:'editorReviewTemplateDetail',params:{id:scope.row.id,isEmploy:scope.row.isEmploy}}"
+                                 v-if="scope.row.isEmploy===true">
                         <el-button  type="text" size="medium" ><i class="el-icon-search"></i>详情 </el-button>
                     </router-link>
-                    <el-button @click="handleDeleteFormItem(scope.row.id)" type="text" size="medium" ><i class="el-icon-delete"></i>删除 </el-button>
+                    <template v-if="scope.row.isEmploy===false" >
+                        <router-link :to="{name:'editorReviewTemplateDetail',params:{id:scope.row.id,isEmploy:scope.row.isEmploy}}" >
+                            <el-button  type="text" size="medium" ><i class="el-icon-search"></i>编辑 </el-button>
+                        </router-link>
+                        <el-button @click="handleDeleteFormItem(scope.row.id)" type="text" size="medium" ><i class="el-icon-delete"></i>删除 </el-button>
+                    </template>
                 </template>
             </el-table-column>
         </el-table>
@@ -34,6 +46,7 @@
     import {httpGet,httpDelete} from "@/utils/http.js";
     import { MessageBox } from "element-ui";
     import {specificDate} from "@/utils/getDate";
+    import deepCopyObject from "../../../utils/deepCopyObject";
     export default {
         name: "reviewTemplates",
         data(){
@@ -54,14 +67,16 @@
                         for(let item of data.templateNameList){
                             item.gmtCreate = specificDate(item.gmtCreate);
                             item.gmtModified = specificDate(item.gmtModified);
+                            // item.isEmploy = true;
                         }
-                        this.templateNameList = data.templateNameList;
+                        this.templateNameList = deepCopyObject(data.templateNameList);
                     } else if (httpCode !== 401) {
                         errTips(msg);
                     }
                     this.loading = false;
                 });
             },
+
             handleDeleteFormItem(id){
                 MessageBox.confirm("此操作将删除此评审模板, 是否继续?", "提示", {
                     confirmButtonText: "确定",
@@ -73,11 +88,11 @@
                         ).then(results => {
                             const { msg, httpCode } = results.data;
                             if (httpCode === 200) {
-                                this.getReviewTemplates()
+                                this.getReviewTemplates();
                                 successTips('删除成功')
                             } else if (httpCode === 400) {
                                 errTips("页面丟失");
-                            } else if (httpCode != 500 && httpCode != 401) {
+                            } else {
                                 errTips(msg);
                             }
                         });

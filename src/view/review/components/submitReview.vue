@@ -118,14 +118,13 @@
 
     export default {
         components: {sourceUpload,},
-        // props: ['title', 'form', 'formLabelWidth', 'dialogSubmitVisible', 'isShowSubmitHistory', 'projectList', 'loading', 'reviewProcessList'],
         props:{
             title:{
                 type:String,
                 default:"编辑评审任务",
             },
             form:Object,
-            formLabelWidth:Number,
+            formLabelWidth:String,
             dialogSubmitVisible:Boolean,
             isShowSubmitHistory:{
                 type:Boolean,
