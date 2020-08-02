@@ -106,7 +106,7 @@
 							<el-col :span="9">
 								<el-form-item label="国家" :label-width="formLabelWidth">
 									<!-- <el-input v-model="ruleForm.nation" ></el-input> -->
-									<foreign-area popularCity="" selectBg="selectGray" groupBg="groupGray" @selectCountry="selectCountry"></foreign-area>
+									<foreign-area popularCity="Nation" selectBg="selectGray" groupBg="groupGray" @selectCountry="selectCountry"></foreign-area>
 								</el-form-item>
 							</el-col>
 							<el-col :span="9">
@@ -135,50 +135,31 @@
 						</el-row>
 						<h2 style="text-align: left;font-weight: bolder;margin-top: 2%;margin-bottom: 2%;">研究兴趣</h2>
 						<el-row :gutter="20">
-							<el-col :span="19">
+							
 							<el-form-item label="研究方向":label-width="formLabelWidth" prop="researchDirection">
-								<el-input v-model="researchName" ></el-input>
-							</el-form-item>
-							</el-col>
-							<el-col :span="5">
-								<div style="text-align: left;margin-top: 5px;">
+								<el-input v-model="researchName" style="width: 300px"></el-input>
 								<el-button  type="text" @click="keywordsVisible = true" class="add" ><i class="el-icon-plus"></i>添加</el-button>
-								</div>
+							</el-form-item>
+				
+							<el-dialog title="请选择个人研究方向" :visible.sync="keywordsVisible" style="text-align: left;" width="30%">
+								<div style="margin-left: 60px;">
+								<el-transfer
 								
-								<el-dialog title="请选择个人研究方向" :visible.sync="keywordsVisible" style="text-align: left;" width="30%">
-									<div style="margin-left: 60px;">
-									<el-transfer
-								    
-								     v-model="value"
-								     :data="data">
-								   </el-transfer>
-								   </div>
-								  <div slot="footer" class="dialog-footer">
-								    <el-button @click="keywordsVisible = false">取 消</el-button>
-								    <el-button type="primary" @click="printValue">确 定</el-button>
-								  </div>
-								</el-dialog>
-							</el-col>
+								 v-model="value"
+								 :data="data">
+							   </el-transfer>
+							   </div>
+							  <div slot="footer" class="dialog-footer">
+								<el-button @click="keywordsVisible = false">取 消</el-button>
+								<el-button type="primary" @click="printValue">确 定</el-button>
+							  </div>
+							</el-dialog>
+			
 					
 						</el-row>
-						<!-- <el-row :gutter="20">
-						<div style="text-align: left;margin-bottom: 15px;margin-left: 100px;">
-							<el-checkbox-group v-model="researchObject" @change="handleCheckedCitiesChange(value)">
-							    <el-checkbox v-for="item in researchList" :label="item.researchDirection" :key="item.id" :value="item.id">{{item.researchDirection}}</el-checkbox>
-							  </el-checkbox-group>
-					
-							
-						</div>
-						</el-row> -->
 						<el-row :gutter="20">
-							<el-col :span="12">
-								<el-form-item label="个人关键词" :label-width="formLabelWidth">
-									<el-input v-model="ruleForm.cruxList" ></el-input>
-								</el-form-item>
-								
-							</el-col>
-							<el-col :span="12">
-								<div style="text-align: left;margin-top: 10px;">
+							<el-form-item label="个人关键词" :label-width="formLabelWidth">
+								<el-input v-model="ruleForm.cruxList" ></el-input>
 								<el-popover placement="right" v-model="visible" width="200">
 									<el-input placeholder="关键词" v-model="interest"></el-input>
 									<div style="text-align: right; margin-top: 10px">
@@ -191,8 +172,9 @@
 										新建关键词
 									</span>
 								</el-popover>
-								</div>
-							</el-col>
+							</el-form-item>
+							
+							
 						
 						</el-row>
 							
@@ -201,114 +183,7 @@
 						</el-form-item>
 					</el-form>
 					</div>
-					<!-- <h2 style="text-align: left;font-weight: bolder;margin-top: 2%;">基本资料</h2>
-					<el-form
-					:rules="rules"
-					:model="ruleForm"
-					style="margin-top: 2%;"
-					ref="ruleForm" class="demo-ruleForm">
-					<el-row :gutter="20">
-						<el-col :span="12">
-							<el-form-item label="姓名">
-								<el-input v-model="ruleForm.name" style="width: 70%;"></el-input>
-							</el-form-item>
-						</el-col>
-						<el-col :span="12">
-							<el-form-item label="性别">
-								<el-select v-model="ruleForm.userName" placeholder="请选择活动区域">
-									<el-option label="区域一" value="shanghai"></el-option>
-									<el-option label="区域二" value="beijing"></el-option>
-								</el-select>
-							</el-form-item>
-						</el-col>
-					</el-row>
-					<el-row :gutter="20">
-						<el-col :span="12">
-							<el-form-item label="邮箱">
-								<el-input v-model="ruleForm.email" style="width: 70%;"></el-input>
-							</el-form-item>
-						</el-col>
-						<el-col :span="12">
-							<el-form-item label="手机">
-								<el-input v-model="ruleForm.phone" style="width: 70%;"></el-input>
-							</el-form-item>
-						</el-col>
-						
-					</el-row>
-					<el-row :gutter="20">
-						<el-col :span="12">
-							<el-form-item label="学历">
-								<el-input v-model="ruleForm.education" style="width: 70%;"></el-input>
-							</el-form-item>
-						</el-col>
-						<el-col :span="12">
-							<el-form-item label="职位">
-								<el-input v-model="ruleForm.position" style="width: 70%;"></el-input>
-							</el-form-item>
-						</el-col>
-						<hr style="width: 100%; color: #303133;">
-					</el-row>
-					<h2 style="text-align: left;font-weight: bolder;margin-top: 2%;margin-bottom: 2%;">机构相关信息</h2>
-					<el-row :gutter="20">
-						
-						<el-col :span="12">
-							<el-form-item label="单位">
-								<el-input v-model="ruleForm.workUnit" style="width: 70%;"></el-input>
-							</el-form-item>
-						</el-col>
-						<el-col :span="12">
-							<el-form-item label="地址">
-								<el-input v-model="ruleForm.address " style="width: 70%;"></el-input>
-							</el-form-item>
-						</el-col>
-					</el-row>
-					<el-row :gutter="20">
-						<el-col :span="12">
-							<el-form-item label="省市/自治区">
-								<el-input v-model="ruleForm.userName" style="width: 70%;"></el-input>
-							</el-form-item>
-						</el-col>
-						
-						
-					</el-row>
-					<el-row :gutter="20">
-						<el-col :span="12">
-							<el-form-item label="国家">
-								<el-input v-model="ruleForm.nation" style="width: 70%;"></el-input>
-							</el-form-item>
-						</el-col>
-						<el-col :span="12">
-							<el-form-item label="院所/机构">
-								<el-input v-model="ruleForm.userName" style="width: 60%;"></el-input>
-							</el-form-item>
-						</el-col>
 				
-						<hr style="width: 100%; color: #303133;">
-					</el-row>
-					<h2 style="text-align: left;font-weight: bolder;margin-top: 2%;margin-bottom: 2%;">研究兴趣</h2>
-					<el-row :gutter="20">
-						
-						<el-col :span="12">
-							<el-form-item label="研究方向">
-								<el-input v-model="ruleForm.researchDirectionList" style="width: 70%;"></el-input>
-							</el-form-item>
-						</el-col>
-				
-					</el-row>
-					<el-row :gutter="20">
-						<el-col >
-							<el-form-item label="个人关键词">
-								<el-input v-model="ruleForm.cruxList " style="width: 70%;"></el-input>
-							</el-form-item>
-						</el-col>
-						
-						
-					</el-row>
-					<el-form-item class="cancel" style="text-align: center;">
-						<el-button type="primary" @click="submitForm('ruleForm')" size="medium" style="width:150px;">保存</el-button>
-					</el-form-item>
-					</el-form> -->
-					
 				</el-card>
 			</el-col>
 			<el-col :span="6">
@@ -353,8 +228,32 @@
 			Avatar
 		},
 		data() {
+			const generateData = _ => {
+			        const data = [];
+			      //  const cities = ['上海', '北京', '广州', '深圳', '南京', '西安', '成都'];
+			      //  const pinyin = ['shanghai', 'beijing', 'guangzhou', 'shenzhen', 'nanjing', 'xian', 'chengdu'];
+			        for (let i=1;i<=4;i++) {
+						data.push({
+							key:i,
+							label:`备选项 ${i}`
+						})
+					}
+			        return data;
+			      };
 			return {
+				data: generateData(),
+				value: [],
+				filterMethod(query, item) {
+				  return item.pinyin.indexOf(query) > -1;
+				},
+				keywordsVisible:false,
+				visible:false,
+				interest:"",
 				formLabelWidth:'100px',
+				ED:["无","高中","大专","本科","研究生","博士","博士后","院士"],
+				Nation:'',
+				options: provinceAndCityData,
+				newcity: CodeToText,
 				ruleForm:{
 					address: "",
 					city: "",
@@ -385,15 +284,58 @@
 		},
 		created: function() {
 		  this.getView();
+		  this.getResearchList();
 		},
 		methods: {
+			addMission() {
+				if (this.interest==''){
+					errTips('关键词不能为空');
+					this.visible=false;
+					return false;
+				} else {
+					this.ruleForm.cruxList.push(this.interest);
+					this.interest="";
+					this.visible=false;
+				}
+				
+			},
+			getResearchList(){
+				httpGet("/v1/public/coreuser/list/research").then(results => {
+					const{httpCode,msg,data} = results.data;
+					if (httpCode === 200){
+						this.researchList=data.researchDirectionList;
+						console.log(this.researchList);
+						this.data = [];
+						for (var i=0;i<this.researchList.length;i++){
+						          this.data.push({
+						            label: this.researchList[i].researchDirection,
+						            key: this.researchList[i].id
+						         //   pinyin: pinyin[index]
+						          });
+						 }
+						 console.log(this.data);
+					}else {
+						errTips(msg);
+					}
+				})
+			},
 			getView(){
 				//get /v1/authorization/coreuser/reviewexpert/get 
-				alert(1);
+				//alert(1);
 				httpGet("/v1/authorization/coreuser/reviewexpert/get").then(results => {
 				  const { httpCode, msg, data } = results.data;
 				  if (httpCode == 200) {
 				    this.ruleForm=data;
+					if (this.ruleForm.sex == 1){
+						this.ruleForm.sex='男';
+					} else if (this.ruleForm.sex == 2){
+						this.ruleForm.sex='女';
+					} else {
+						this.ruleForm.sex='未知';
+					}
+					
+					this.ruleForm.education = this.ED[this.ruleForm.education];
+					this.Nation = {value:this.ruleForm.nation, label:this.ruleForm.nation};
 					// this.ruleForm.researchDirectionList=data.typeList;//?
 					// this.ruleForm.department=data.uDepartment ;
 					// this.ruleForm.education=data.uEducation  ;
@@ -430,5 +372,16 @@
 	// .el-select {
 	// 	width: 150px;
 	// }
+}
+.container{
+	.add {
+		
+		cursor: pointer;
+		color: #8c8c8c;
+		
+		&:hover {
+			color: #3e76b8;
+		}
+	}
 }
 </style>
