@@ -392,7 +392,7 @@ const vueRouter = new Router({
 				title:'邀请评审专家',
 				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
 			}
-		
+
 		},
     	{
     		path:'/editorComplete',
@@ -421,6 +421,15 @@ const vueRouter = new Router({
     			requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
     		}
     	},
+		{
+			path:'editorOpinionAndDecision',
+			name:'editorOpinionAndDecision',
+			component:() => import('@/view/review/editor/editorOpinionAndDecision'),
+			meta:{
+				title:'意见与决定',
+				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+			}
+		},
     	{
     		path:'/editorManager',
     		name:'editorManager',
@@ -434,6 +443,7 @@ const vueRouter = new Router({
 			path:'/editorReviewTemplateConfig',
 			name:'editorReviewTemplateConfig',
 			component:() => import('@/view/review/editor/reviewTemplateConfig'),
+			props: (route) => ({ templateId: route.query.templateId }),
 			meta:{
 				title:'评审模板配置',
 				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
@@ -449,10 +459,10 @@ const vueRouter = new Router({
 			}
 		},
 		{
-			path:'/editorReviewTemplateDetail/:id',
+			path:'/editorReviewTemplateDetail/templateId/:id/isEmploy/:isEmploy',
 			name:'editorReviewTemplateDetail',
 			component:() => import('@/view/review/editor/reviewTemplateDetail'),
-			props:true,//将id视为组件的属性
+			props:true,//将id,isEmploy视为组件的属性
 			meta:{
 				title:'评审模板详情',
 				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的

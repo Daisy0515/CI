@@ -66,7 +66,7 @@
                     </el-table-column>
                     <el-table-column label="操作" align="center">
                         <template slot-scope="scope">
-                            <el-button @click="handleEditItem(scope.$index)" type="text" size="medium"
+                            <el-button @click="handleEditFormItem(scope.$index)" type="text" size="medium"
                             ><i class="el-icon-search"></i>编辑
                             </el-button>
                             <el-button @click="handleDeleteFormItem(scope.$index)" type="text" size="medium"
@@ -78,35 +78,45 @@
             </el-form-item>
             <el-form-item style="margin-top: 20px;">
                 <el-button type="primary" @click="submitForm('templateForm')">立即创建</el-button>
-                <el-button @click="resetForm('templateForm')">重置</el-button>
             </el-form-item>
         </el-form>
         <review-item-template
                 :form="reviewItemForm" :itemIndex="itemIndex" :reviewItemType="selectedType"
                 :formItemVisible="formItemVisible" @closeReviewItemForm="closeReviewItemForm"
                 @getNewReviewItemForm="getNewReviewItemForm"
-                @getUpdatedReviewItemForm="getUpdatedReviewItemForm"></review-item-template>
+                @getUpdatedReviewItemForm="getUpdatedReviewItemForm">
+        </review-item-template>
     </div>
 </template>
 
 <script>
     import {errTips, successTips} from "@/utils/tips.js";
+    import deepCopyObject from "@/utils/deepCopyObject.js";
     import reviewItemTemplate from '@/view/review/components/reviewItemTemplate';
-    import {httpPost} from "@/utils/http.js";
+    import {httpPost,httpGet} from "@/utils/http.js";
 
+    //他们的位置就对应着type的数字表示（传递给后端的，前端为了更好的阅读体验用的字符串表示）
+    const reviewItemTypeStringToId =["","scoreOption","yesOrNo","scoreInput"];
     export default {
         components: {
             reviewItemTemplate
         },
+        props:{
+            templateId:{
+                type:[String,Number],
+                default:null,
+            }
+        },
         data() {
             return {
                 itemIndex: null,//编辑评审单项的时候，传递单项在表单中的位置
+                reviewItemForm: {},//存储单个评审项的信息
                 formItemVisible: false,//用于控制添加评审项的对话框显示
+                selectedType: null,//用户已选中的评审项类型
+
                 isSetTotalScore: false,//是否设定总分
                 expectedTotalScore: null,//期望的目标总分
-                selectedType: null,//用户已选中的评审项类型
                 configList: [],//模板配置信息列表 ,
-                reviewItemForm: {},//存储单个评审项的信息
                 templateForm: {
                     templateName: '',
                     totalScore: 0,//评审模板的总分
@@ -118,6 +128,11 @@
                     ],
                 },
             };
+        },
+        created(){
+            if(this.templateId!==null){
+                this.getReviewTemplateDetail();
+            }
         },
         computed: {
             scoreCompare: function () {//设定的总分与当前总分的比较
@@ -132,7 +147,6 @@
         },
         watch: {
             configList: function () {
-                // console.log("configList has changed");
                 this.templateForm.totalScore = 0;
                 for (let item of this.configList) {
                     this.templateForm.totalScore += item.value.max * item.scoreWeight;
@@ -140,8 +154,33 @@
             }
         },
         methods: {
-            handleEditItem(index) { //编辑评审单项
-                this.reviewItemForm = this.configList[index];
+            getReviewTemplateDetail(){//评审表单详情中点击创建副本 跳转到当前页面时调用。
+                httpGet("/v1/authorization/review/templateconfig/list", {id: this.templateId}).then(results => {
+                    const {httpCode, msg, data} = results.data;
+                    console.log("data", data);
+                    if (httpCode == 200) {
+                        for(let item of data.templateConfigList){
+                            delete item.id;
+                        }
+                        this.configList = data.templateConfigList;
+                        this.templateForm.totalScore = data.totalScore;
+                        this.templateForm.templateName = data.templateName;
+                    }else if(httpCode !== 401){
+                        errTips(msg);
+                    }
+                });
+            },
+            addFormItem() {//增加一个评审单项
+                if (this.selectedType === null) {
+                    errTips("请选择评审项");
+                } else {
+                    this.itemIndex = null;//新增评审单项，itemIndex要置为null
+                    this.formItemVisible = true;
+                }
+            },
+            handleEditFormItem(index) { //编辑评审单项
+                this.selectedType = reviewItemTypeStringToId[this.configList[index].type];
+                this.reviewItemForm = deepCopyObject(this.configList[index]);
                 this.itemIndex = index;
                 this.formItemVisible = true;
             },
@@ -185,25 +224,18 @@
                         })
 
                     } else {
-                        console.log('error submit!!');
                         return false;
                     }
                 });
             },
-            addFormItem() {//增加一个评审单项
-                if (this.selectedType === null) {
-                    errTips("请选择评审项");
-                } else {
-                    this.itemIndex = null;//新增评审单项，itemIndex要置为null
-                    this.formItemVisible = true;
-                }
-            },
+
             getNewReviewItemForm(newReviewItemForm) {//存储评审单项组件提交的新的评审单项记录
                 this.configList.push(newReviewItemForm);
             },
             getUpdatedReviewItemForm(index, updatedReviewItemForm) {//存储评审单项组件提交的更新的评审单项记录
                 this.configList[index] = updatedReviewItemForm;
-                this.configList = [...this.configList];//多了这一步的原因是，this.configList本身的引用没有发生变化，所以已添加评审项对应的表格显示的内容不会变化
+                this.configList = deepCopyObject(this.configList);
+                // this.configList = [...this.configList];//多了这一步的原因是，this.configList本身的引用没有发生变化，所以已添加评审项对应的表格显示的内容不会变化
             },
             closeReviewItemForm() {//关闭评审单项对话框
                 this.formItemVisible = false;

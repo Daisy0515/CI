@@ -2,6 +2,7 @@ import {
     Row,
     Col,
     Input,
+    InputNumber,
     Switch,
     Select,
     Button,
@@ -62,7 +63,8 @@ const getElement = {
         Vue.use(Option)
         Vue.use(Cascader)
         Vue.use(Checkbox)
-        Vue.use(Input);
+        Vue.use(Input)
+        Vue.use(InputNumber);
         Vue.use(Switch);
         Vue.use(Select);
         Vue.use(Popover);
