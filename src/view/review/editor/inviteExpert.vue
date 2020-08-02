@@ -53,9 +53,10 @@
 					<el-table :data="expertUserList" :header-cell-style="rowClass" style="margin-top: 20px;" v-loading="loading">
 						<el-table-column label="操作" align="center">
 							<template slot-scope="scope">
-								<el-button @click="viewResualtDetail(scope.row.id)" type="text" size="medium">
-									详情
-								</el-button>
+								<el-radio-group v-model="scope.row.radio" @change="invite(scope.row.uId,scope.row.radio)">
+								<el-radio  label="1" >邀请</el-radio>
+								<el-radio  label="2" >备选</el-radio>
+								</el-radio-group>
 							</template>
 						</el-table-column>
 						<el-table-column prop="uName" label="评审专家姓名" align="center"></el-table-column>
@@ -78,6 +79,7 @@
 						<el-table-column prop="status" label="评审统计(同意邀请)" align="center"></el-table-column>
 						<el-table-column prop="status" label="邀请统计" align="center"></el-table-column>
 					</el-table>
+					<el-button type="primary" style="float: right;margin-top: 20px;" @click=postInvite()>提交邀请</el-button>
 					<div class="bid_footer">
 					  <el-pagination
 					    @current-change="handleCurrentChange"
@@ -86,6 +88,20 @@
 					    layout="prev, pager, next, jumper"
 					  ></el-pagination>
 					</div>
+				
+				</el-dialog>
+				<el-dialog title="邀请评审专家" :visible.sync="settingVisible" :close-on-click-modal="false" width="50%" >
+				
+					<el-table :data="infoList" :header-cell-style="rowClass" style="margin-top: 20px;">
+						
+						<el-table-column prop="userName" label="评审专家姓名" align="center"></el-table-column>
+						<el-table-column prop="uJobTitle" label="信件" align="center"></el-table-column>
+						<el-table-column prop="uEducation" label="限定评审的时间" align="center">
+							
+						</el-table-column>
+						<el-table-column prop="uWorkUnit" label="不邀请" align="center"></el-table-column>
+						</el-table>
+				
 				
 				</el-dialog>
 				
@@ -219,7 +235,7 @@
 </template>
 
 <script>
-	import { httpGet, httpPut, httpDelete} from "@/utils/http.js";
+	import { httpGet, httpPut, httpPost, httpDelete} from "@/utils/http.js";
 	import {message,successTips,errTips} from "@/utils/tips.js";
 	import {specificDate} from '@/utils/getDate.js';
 
@@ -230,6 +246,8 @@
 		},
 		data() {
 			return {
+				totalPage:null,
+				radio:'1',
 				loading:false,
 				expertUserList:[],
 				dialogExpertVisible:false,
@@ -276,16 +294,47 @@
 				expertAlternativeList :[],
 				cruxList:[],
 				researchDirectionList:[],
+				postForm:{
+					expertInviteList:[],
+					id:null
+				},
+				infoList:[],
+				settingVisible : false
 			};
 		},
 		created: function() {
 			this.id = this.$route.query.id;
+			this.postForm.id = this.id;
 			this.getView();
 			this.getKeyWords();
 			this.getResearchList();
 		},
 		computed: {},
 		methods: {
+			postInvite(){
+				//alert(111);
+				httpPost("/v1/authorization/review/expertinvite/get",this.postForm).then(results => {
+					const {httpCode,msg,data} = results.data;
+					console.log(httpCode);
+					if (httpCode === 200){
+						this.infoList = data.infoList;
+						this.dialogExpertVisible=false;
+						this.settingVisible = true;
+					} else {
+						errTips(msg);
+					}
+				})
+			},
+			invite(id,val){
+				console.log(id,val);
+				var temp = {emailConfig:null,isInvite:true,restrictReviewTime:this.ruleForm.restrictReviewTime,
+				type:val,userId:id}
+				this.postForm.expertInviteList.push(temp);
+				console.log(this.postForm);
+			},
+			beixuan(val){
+				alert(val)
+			},
 			getKeyWords(){
 				// /v1/public/coreuser/crux/list 
 				httpGet("/v1/public/coreuser/crux/list").then(results => {

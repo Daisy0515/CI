@@ -48,57 +48,33 @@
 	import { message, successTips, errTips } from "@/utils/tips.js";
 	
 	export default {
-		components:{
-			submitReview
-		},
-		name: 'Dashboard',
+		
 		data() {
 			return {
-				role:2,
-				submitTitle:"发起评审",
+				
 				dialogSubmitVisible: false, // 开启发起评审视窗
 				aboutTimeoutCount: 0, // 即将超时
 				acceptCount: 0, // 未接受
 				alreadyTimeoutCount: 0, // 已经超时
 				reviewCount: 0, // 评审中
-				form: {
-					name: '',
-					region: '',
-					date1: '',
-					date2: '',
-					content: '',
-					fileList: [{
-						name: 'food.jpeg',
-						url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100',
-						status: 'finished'
-					}, {
-						name: 'food2.jpeg',
-						url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100',
-						status: 'finished'
-					}],
-					delivery: false,
-					type: [],
-					resource: '',
-					desc: ''
-				},
-				formLabelWidth: '100px'
+				
 			}
 		},
 		computed: {
 		},
 		created: function() {
-		  // this.getView();
+		   this.getView();
 		},
 		methods: {
 			getView(){
 				//get /v1/authorization/review/summarizing/get 
-				httpGet("/v1/authorization/review/summarizing/get", {role:this.role}).then(results => {
+				httpGet("/v1/authorization/review/expertsummarizing/get").then(results => {
 				  const { httpCode, msg, data } = results.data;
 				  if (httpCode == 200) {
-				    this.acceptCount=data.acceptCount;
-					this.reviewCount=data.reviewCount;
-					this.aboutTimeoutCount=data.aboutTimeoutCount ;
+				    this.aboutTimeoutCount=data.aboutTimeoutCount;
+					this.acceptCount=data.acceptCount;
 					this.alreadyTimeoutCount=data.alreadyTimeoutCount ;
+					this.reviewCount=data.reviewCount ;
 				  } else if (msg == "该条件暂无数据") {
 				    this.tableData = [];
 				    message("该条件暂无数据");
@@ -108,12 +84,7 @@
 				  
 				});
 			},
-			handleChange(file, fileList) {
-				this.fileList = fileList.slice(-3)
-			},
-			closeSubmitDialog(){
-				this.dialogSubmitVisible = false;
-			},
+			
 		}
 	}
 </script>
