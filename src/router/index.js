@@ -365,24 +365,24 @@ const vueRouter = new Router({
 
     	},
 		{
-			path:'/reviewStatistic',
+			path:'/reviewStatistic/expertAccomplishCount/:expertAccomplishCount',
 			name:'reviewStatistic',
 			component:() => import('@/view/review/editor/reviewStatistic'),
+			props:true,
 			meta:{
 				title:'评审统计',
 				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
 			}
-
 		},
 		{
 			path:'/reviewTodo',
 			name:'reviewTodo',
 			component:() => import('@/view/review/editor/reviewTodo'),
+			props: (route) => ({ status: route.query.status ,expertAccomplishCount: route.query.expertAccomplishCount,statusExplain: route.query.statusExplain}),
 			meta:{
 				title:'待处理',
 				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
 			}
-
 		},
 		{
 			path:'/inviteExpert',
@@ -404,15 +404,6 @@ const vueRouter = new Router({
     		}
     	},
     	{
-    		path:'/editorSearch',
-    		name:'expertInformation',
-    		component:() => import('@/view/review/editor/editorSearch'),
-    		meta:{
-    			title:'评审搜索',
-    			requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-    		}
-    	},
-    	{
     		path:'/editorTodo',
     		name:'editorTodo',
     		component:() => import('@/view/review/editor/editorTodo'),
@@ -422,9 +413,10 @@ const vueRouter = new Router({
     		}
     	},
 		{
-			path:'editorOpinionAndDecision',
+			path:'editorOpinionAndDecision/id/:id/identification/:identification',
 			name:'editorOpinionAndDecision',
 			component:() => import('@/view/review/editor/editorOpinionAndDecision'),
+			props:true,
 			meta:{
 				title:'意见与决定',
 				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
