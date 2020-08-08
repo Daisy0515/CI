@@ -11,7 +11,7 @@
                 </el-col>
                 <el-col :span="8">
                     <el-form-item label="评审类型" :label-width="formLabelWidth">
-                        <el-input v-model="form.type " auto-complete="off" :readonly="isReadOnly"/>
+                        <el-input v-model="form.typeName " auto-complete="off" :readonly="isReadOnly"/>
                     </el-form-item>
                 </el-col>
                 <el-col :span="8">

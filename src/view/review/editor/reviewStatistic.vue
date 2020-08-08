@@ -35,7 +35,7 @@
 		<el-table v-loading="loading" :data="tableData" style="width:100%;margin:20px auto" :header-cell-style="rowClass">
 			<el-table-column label="操作" align="center" width="280px">
 				<template slot-scope="scope">
-					<el-button @click="handleClickDetail(scope.row)" type="text" size="medium"><i class="el-icon-search"></i>查看详情
+					<el-button @click="handleClickDetail(scope.row.reviewId)" type="text" size="medium"><i class="el-icon-search"></i>查看详情
 					</el-button>
 					<el-button @click="inviteExpert(scope.row.id)" type="text" size="medium"><i class="el-icon-document"></i>邀请评审专家
 					</el-button>
@@ -111,8 +111,9 @@
 
 
 		</el-table>
-		<review-detail-dialog :form="form" :formLabelWidth="formLabelWidth" :dialogFormVisible="dialogFormVisible"
-		 @closeDialog="closeDialog"></review-detail-dialog>
+		<editor-view-detail :form="formReviewDetail" :formLabelWidth="formLabelWidth" :dialogFormVisible="dialogFormVisible"
+							:loading="formReviewDetailLoading"
+		                    @closeDialog="closeDialog"></editor-view-detail>
 		<div class="bid_footer">
 			<el-pagination @current-change="handleCurrentChange" :current-page.sync="pageData.pageNo" :total="totalPage" layout="prev, pager, next, jumper"></el-pagination>
 		</div>
@@ -133,7 +134,8 @@
 	} from "@/utils/tips.js";
 	import reviewDetailDialog from '@/view/review/components/reviewDetailDialog';
 	import submitReview from '@/view/review/components/submitReview';
-	import reviewOpinion from '@/view/review/components/reviewOpinion'
+	import reviewOpinion from '@/view/review/components/reviewOpinion';
+	import editorViewDetail from '@/view/review/components/editorViewDetail'
 	import {
 		specificDate
 	} from '@/utils/getDate.js';
@@ -142,7 +144,8 @@
 		components: {
 			reviewDetailDialog,
 			submitReview,
-			reviewOpinion
+			reviewOpinion,
+			editorViewDetail
 		},
 		data() {
 			return {
@@ -180,23 +183,8 @@
 					statusExplain:null
 				},
 				totalPage: 0,
-				form: { //表单中的信息
-					name: '',
-					purpose: '',
-					date1: '',
-					date2: '',
-					content: '',
-					daysBeforeDeadline: '',
-					fileTable: [{
-						filename: '项目申请书',
-						url: ''
-					}],
-					delivery: false,
-					type: [],
-					resource: '',
-					desc: ''
-				},
-
+				formReviewDetailLoading: false,//打开详情，加载转圈提示
+				formReviewDetail:{},
 				formLabelWidth: '100px' //控制表单中输入框的尺寸
 			};
 		},
@@ -207,6 +195,26 @@
 		},
 		computed: {},
 		methods: {
+			handleClickDetail(val) {//点击查看详情
+				console.log('reviewId:',val);
+			    this.dialogFormVisible = true;
+			    this.formReviewDetailLoading = true;
+			    //get /v1/authorization/review/review/get
+			    httpGet("/v1/authorization/review/review/get", {id: val}).then(results => {
+			        const {httpCode, msg, data} = results.data;
+			        if (httpCode == 200) {
+			            data.gmtModified  = specificDate(data.gmtModified );
+			            data.gmtCreate = specificDate(data.gmtCreate);
+						this.formReviewDetail = data;
+			        } else if (msg == "该条件暂无数据") {
+			            this.formReviewDetail = {};
+			            message("该条件暂无数据");
+			        } else if (httpCode !== 401) {
+			            errTips(msg);
+			        }
+			        this.formReviewDetailLoading = false;
+			    });
+			},
 			inviteExpert(val) {
 			    this.$router.push({path: './inviteExpert', query: {id: val}});
 			},
@@ -246,9 +254,7 @@
 				this.pageData.pageNo = val;
 				this.getView();
 			},
-			handleClickDetail(row) {
-				this.dialogFormVisible = true;
-			},
+
 			handleClickSubmit(row) {
 				this.dialogSubmitVisible = true;
 			},

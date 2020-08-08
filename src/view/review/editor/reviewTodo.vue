@@ -41,7 +41,7 @@
                     <el-button @click="handleClickDetail(scope.row.reviewId)" type="text" size="medium"><i
                             class="el-icon-search"></i>查看详情
                     </el-button>
-                    <el-button @click="inviteExpert(scope.row.id)" type="text" size="medium"><i
+                    <el-button @click="inviteExpert(scope.row.id,scope.row.reviewId)" type="text" size="medium"><i
                             class="el-icon-document"></i>邀请评审专家
                     </el-button>
                     <el-button @click="handleClickDecisionAndOpinion(scope.row)" type="text" size="medium"><i
@@ -296,8 +296,8 @@
                 });
                 this.dialogChooseVisible = true;
             },
-            inviteExpert(val) {
-                this.$router.push({path: './inviteExpert', query: {id: val}});
+            inviteExpert(val,reviewId) {
+                this.$router.push({path: './inviteExpert', query: {id: val,reviewId:reviewId}});
             },
             searchList() {
                 //alert('searchList');

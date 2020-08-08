@@ -117,6 +117,8 @@
 
 				<el-dialog title="邀请评审专家" :visible.sync="settingVisible" :close-on-click-modal="false" width="50%">
 					<el-dialog width="40%" title="邮件编辑" :visible.sync="emailSettingVisible" append-to-body>
+						<el-dialog width="40%" title="邮件预览" :visible.sync="emailePrviewVisible" append-to-body>
+						</el-dialog>
 
 						<el-form :label-position="'right'" label-width="100px" :model="emailForm">
 							<el-form-item label="From:">
@@ -133,7 +135,7 @@
 							</el-form-item>
 						</el-form>
 						<div style="text-align: right;">
-							<el-button type="primary" style="margin-top: 20px;" @click="confirm()">确定</el-button>
+							<el-button type="primary" style="margin-top: 20px;" @click="confirm()">预览与发送</el-button>
 						</div>
 					</el-dialog>
 
@@ -318,7 +320,9 @@
 		},
 		data() {
 			return {
+				reviewId:null,
 				emailForm: {
+					userId:null,
 					userName: null,
 					index: null,
 					config: {
@@ -384,10 +388,12 @@
 				settingVisible: false,
 				templateNameList: [],
 				dataList: [],
+				emailePrviewVisible:false,
 			};
 		},
 		created: function() {
 			this.id = this.$route.query.id;
+			this.reviewId = this.$route.query.reviewId;
 			this.postForm.id = this.id;
 			this.getView();
 			this.getKeyWords();
@@ -422,8 +428,24 @@
 				})
 			},
 			confirm(val) {
-
+				//get /v1/authorization/review/expertinviteemailconfig/get 
 				//console.log("1:",this.infoList);
+				this.emailePrviewVisible=true;
+				let getForm={userId:this.emailForm.userId,adminMissionId:this.reviewId,emailContent:this.emailForm.config.content}
+				httpGet("/v1/authorization/review/expertinviteemailconfig/get",getForm).then(results => {
+					const {
+						httpCode,
+						msg,
+						data
+					} = results.data;
+					if (httpCode == 200) {
+						
+					} else {
+						
+						errTips(msg);
+					}
+				
+				})
 				let i = this.emailForm.index;
 				this.infoList[i].emailConfig = this.emailForm.config;
 				//console.log("2:",this.infoList);
@@ -434,10 +456,28 @@
 				this.emailSettingVisible = true;
 				console.log("scope.row", val);
 				console.log("index", index);
+				this.emailForm.userId = val.userId;
 				this.emailForm.userName = val.userName;
 				this.emailForm.index = index;
 				if (val.emailConfig != null)
 					this.emailForm.config = val.emailConfig;
+				//post /v1/authorization/review/expertinviteemailconfig/update
+				let postEmailForm={adminMissionId:this.reviewId,receiver:2,userId:val.userId};
+				console.log('postEmailForm:',postEmailForm);
+				httpPost("/v1/authorization/review/expertinviteemailconfig/update", postEmailForm).then(results => {
+					const {
+						httpCode,
+						msg,
+						data
+					} = results.data;
+					//console.log(httpCode);
+					if (httpCode === 200) {
+						this.emailForm.config.content = data.content;
+					} else {
+						errTips(msg);
+					}
+				})
+				
 				// this.emailForm.config = {content:null, theme:null};
 				//console.log(this.emailForm);
 			},
@@ -466,6 +506,7 @@
 						errTips(msg);
 					}
 				})
+			
 			},
 			getTemplate() {
 				//get /v1/authorization/review/templatename/list
