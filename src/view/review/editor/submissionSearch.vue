@@ -4,8 +4,8 @@
 		<div style="padding-left: 10px;">
 			<el-breadcrumb separator-class="el-icon-arrow-right" style="font-size: 130%;">
 				<el-breadcrumb-item :to="{ path: '/editorIndex' }">首页</el-breadcrumb-item>
-				<el-breadcrumb-item :to="{ path: '/editorIndex' }">评审统计</el-breadcrumb-item>
-				<el-breadcrumb-item>{{this.id}}人已完成评审</el-breadcrumb-item>
+				
+				<el-breadcrumb-item>评审任务搜索</el-breadcrumb-item>
 
 			</el-breadcrumb>
 		</div>
@@ -74,6 +74,13 @@
 				</template>
 			</el-table-column>
 			<el-table-column prop="submitterName" label="提交人" align="center">
+				<template slot-scope="scope">
+					<el-tooltip class="item" effect="dark" :content="scope.row.submitterName" placement="top-start">
+						<span class="tablehidden">{{ scope.row.submitterName }}</span>
+					</el-tooltip>
+				</template>
+			</el-table-column>
+			<el-table-column prop="submitterName" label="发布者" align="center">
 				<template slot-scope="scope">
 					<el-tooltip class="item" effect="dark" :content="scope.row.submitterName" placement="top-start">
 						<span class="tablehidden">{{ scope.row.submitterName }}</span>

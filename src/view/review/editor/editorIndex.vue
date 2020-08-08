@@ -100,27 +100,7 @@
 				threeSum : 0, // 未接受
 				twoSum  : 0, // 已经超时
 				zeroSum : 0, // 评审中
-				form: {
-					name: '',
-					region: '',
-					date1: '',
-					date2: '',
-					content: '',
-					fileList: [{
-						name: 'food.jpeg',
-						url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100',
-						status: 'finished'
-					}, {
-						name: 'food2.jpeg',
-						url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100',
-						status: 'finished'
-					}],
-					delivery: false,
-					type: [],
-					resource: '',
-					desc: ''
-				},
-				formLabelWidth: '100px'
+				
 			}
 		},
 		computed: {

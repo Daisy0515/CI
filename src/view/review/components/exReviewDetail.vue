@@ -1,38 +1,53 @@
 <template>
-	<el-dialog title="评审详情" :visible.sync="dialogFormVisible" style="text-align:left; font-weight: bolder;">
-			<el-form :model="form">
+	<el-dialog title="评审详情" :visible.sync="dialogFormVisible" :before-close="changeVisible" style="text-align:left; font-weight: bolder;">
+			<el-form :model="form" v-loading="loading">
 				<el-row :gutter="20">
-					<el-col :span="10">
+					<el-col :span="8">
 						<el-form-item label="评审标题" :label-width="formLabelWidth">
-							<el-input v-model="form.name" auto-complete="off" />
+							<el-input v-model="form.title" auto-complete="off" />
 						</el-form-item>
 					</el-col>
-					<el-col :span="10">
+					<el-col :span="8">
+						<el-form-item label="评审类型" :label-width="formLabelWidth">
+							<el-input v-model="form.title" auto-complete="off" />
+						</el-form-item>
+					</el-col>
+					<el-col :span="8">
 						<el-form-item label="提交人" :label-width="formLabelWidth">
-							<el-input v-model="form.name" auto-complete="off" />
+							<el-input v-model="form.submitName" auto-complete="off" />
 						</el-form-item>
 					</el-col>
 				</el-row>
 				<el-row :gutter="20">
-					<el-col :span="10">
-						<el-form-item label="评审编号" :label-width="formLabelWidth">
-							<el-input v-model="form.name" auto-complete="off" />
+					<el-col :span="8">
+						<el-form-item label="邀请时间" :label-width="formLabelWidth">
+							<el-input v-model="form.gmtCreate" auto-complete="off" />
 						</el-form-item>
 					</el-col>
-					<el-col :span="10">
-						<el-form-item label="提交时间" :label-width="formLabelWidth">
-							<el-input v-model="form.name" auto-complete="off" />
+					<el-col :span="8">
+						<el-form-item label="截止时间" :label-width="formLabelWidth">
+							<el-input v-model="form.deadline" auto-complete="off" />
 						</el-form-item>
 					</el-col>
 				</el-row>
 				<el-row :gutter="20">
-					<el-col :span="15">
+					<el-col :span="12">
 						<el-form-item label="评审内容" :label-width="formLabelWidth">
-							<el-input type="textarea" class="input_textarea" v-model="form.name" :rows="10" style="width:87%;" auto-complete="off" />
+							<el-input type="textarea" class="input_textarea" v-model="form.content" :rows="10" style="width:87%;" auto-complete="off" />
 						</el-form-item>
 					</el-col>
-					<el-col :span="5">
-						<el-button type="primary" @click="dialogFormVisible = false" >附件下载</el-button>
+					<el-col :span="12">
+						<el-form-item label="附件下载" :label-width="formLabelWidth" style="text-align: center">
+						    <el-table :data="form.resourceList" :header-cell-style="rowClass">
+						        <el-table-column prop="resourceName" label="附件名称" align="center" ></el-table-column>
+						        <el-table-column  prop="gmtCreate" label="上传时间" align="center"></el-table-column>
+						        <el-table-column label="操作" align="center" >
+						            <template slot-scope="scope">
+										<a target="_Blank" :href="scope.row.resourceUrl" > 下载 </a>
+						            </template>
+						        </el-table-column>
+						    </el-table>
+						</el-form-item>
 					</el-col>
 				</el-row>
 		</el-form>
@@ -48,39 +63,22 @@
 <script>
 	export default {
 	    name: "exReviewDetail",
-	    props:['form','dialogFormVisible'],
+	    props:['form','dialogFormVisible','formLabelWidth','loading'],
 	    methods:{
 	        changeVisible(){
 	            this.$emit('closeDialog');
 	        },
-	        handleClickFile(row){
-	
+	        rowClass() {
+	            return "background:#F4F6F9;";
 	        }
 	    },
 	    data(){
 	        return{
-	            // dialogFormVisible:false,
-	            // form: {
-	            //     name: '',
-	            //     purpose:'',
-	            //     date1: '',
-	            //     date2: '',
-	            //     content: '',
-	            //     daysBeforeDeadline:'',
-	            //     fileTable:[{
-	            //         filename:'项目申请书',
-	            //         url:''
-	            //     }],
-	            //     delivery: false,
-	            //     type: [],
-	            //     resource: '',
-	            //     desc: ''
-	            // },
-	            // formLabelWidth: '100px'
+	            isReadOnly: true,
 	        }
 	    }
 	}
 </script>
 
-<style>
+<style scoped>
 </style>

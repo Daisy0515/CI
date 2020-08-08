@@ -17,9 +17,9 @@
             <el-input v-model="searchData.submitterName" placeholder="提交人"></el-input>
             <el-date-picker v-model="searchData.submitTimeStart" type="date" style="width: 150px;" placeholder="提交时间"
                             value-format="yyyy-MM-dd"
-                            :picker-options="endDatePicker"></el-date-picker>
+                            ></el-date-picker>
             <span style="margin-right: 15px;">到</span>
-            <el-date-picker style="width: 150px;" v-model="searchData.submitTimeEnd" :picker-options="endDatePicker"
+            <el-date-picker style="width: 150px;" v-model="searchData.submitTimeEnd" 
                             type="date"
                             placeholder="提交时间" value-format="yyyy-MM-dd"></el-date-picker>
 
@@ -38,7 +38,7 @@
                   :header-cell-style="rowClass">
             <el-table-column label="操作" align="center" width="280px">
                 <template slot-scope="scope">
-                    <el-button @click="handleClickDetail(scope.row)" type="text" size="medium"><i
+                    <el-button @click="handleClickDetail(scope.row.reviewId)" type="text" size="medium"><i
                             class="el-icon-search"></i>查看详情
                     </el-button>
                     <el-button @click="inviteExpert(scope.row.id)" type="text" size="medium"><i
@@ -141,7 +141,8 @@
                 </el-table-column>
             </el-table>
         </el-dialog>
-        <editor-view-detail :form="form" :formLabelWidth="formLabelWidth" :dialogFormVisible="dialogFormVisible"
+        <editor-view-detail :form="formReviewDetail" :formLabelWidth="formLabelWidth" :dialogFormVisible="dialogFormVisible"
+							:loading="formReviewDetailLoading"
                             @closeDialog="closeDialog"></editor-view-detail>
         <div class="bid_footer">
             <el-pagination @current-change="handleCurrentChange" :current-page.sync="pageData.pageNo" :total="totalPage"
@@ -222,22 +223,8 @@
                     statusExplain: null
                 },
                 totalPage: 0,
-                form: { //表单中的信息
-                    name: '',
-                    purpose: '',
-                    date1: '',
-                    date2: '',
-                    content: '',
-                    daysBeforeDeadline: '',
-                    fileTable: [{
-                        filename: '项目申请书',
-                        url: ''
-                    }],
-                    delivery: false,
-                    type: [],
-                    resource: '',
-                    desc: ''
-                },
+                formReviewDetailLoading: false,//打开详情，加载转圈提示
+				formReviewDetail:{},
 
                 formLabelWidth: '100px' //控制表单中输入框的尺寸
             };
@@ -261,6 +248,26 @@
         },
         computed: {},
         methods: {
+			handleClickDetail(val) {//点击查看详情
+				console.log('reviewId:',val);
+			    this.dialogFormVisible = true;
+			    this.formReviewDetailLoading = true;
+			    //get /v1/authorization/review/review/get
+			    httpGet("/v1/authorization/review/review/get", {id: val}).then(results => {
+			        const {httpCode, msg, data} = results.data;
+			        if (httpCode == 200) {
+			            data.gmtModified  = specificDate(data.gmtModified );
+			            data.gmtCreate = specificDate(data.gmtCreate);
+						this.formReviewDetail = data;
+			        } else if (msg == "该条件暂无数据") {
+			            this.formReviewDetail = {};
+			            message("该条件暂无数据");
+			        } else if (httpCode !== 401) {
+			            errTips(msg);
+			        }
+			        this.formReviewDetailLoading = false;
+			    });
+			},
             //获取评审结果
             viewResualtDetail(val) {
 
@@ -350,9 +357,7 @@
                 this.pageData.pageNo = val;
                 this.getView();
             },
-            handleClickDetail(row) {
-                this.dialogFormVisible = true;
-            },
+            
             handleClickSubmit(row) {
                 this.dialogSubmitVisible = true;
             },

@@ -365,6 +365,26 @@ const vueRouter = new Router({
 
     	},
 		{
+			path:'/submissionSearch',
+			name:'submissionSearch',
+			component:() => import('@/view/review/editor/submissionSearch'),
+			meta:{
+				title:'评审任务搜索',
+				//requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+			}
+		
+		},
+		{
+			path:'/expertSearch',
+			name:'expertSearch',
+			component:() => import('@/view/review/editor/expertSearch'),
+			meta:{
+				title:'评审专家搜索',
+				//requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+			}
+		
+		},
+		{
 			path:'/reviewStatistic',
 			name:'reviewStatistic',
 			component:() => import('@/view/review/editor/reviewStatistic'),
