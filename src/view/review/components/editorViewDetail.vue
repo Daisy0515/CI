@@ -6,24 +6,24 @@
             <el-row :gutter="20">
                 <el-col :span="8">
                     <el-form-item label="评审标题" :label-width="formLabelWidth">
-                        <el-input v-model="form.title" auto-complete="off" :readonly="isReadOnly"/>
+                        <el-input v-model="form.title " auto-complete="off" :readonly="isReadOnly"/>
                     </el-form-item>
                 </el-col>
                 <el-col :span="8">
                     <el-form-item label="评审类型" :label-width="formLabelWidth">
-                        <el-input v-model="form.typeName " auto-complete="off" :readonly="isReadOnly"/>
+                        <el-input v-model="form.type " auto-complete="off" :readonly="isReadOnly"/>
                     </el-form-item>
                 </el-col>
                 <el-col :span="8">
                     <el-form-item label="评审编号" :label-width="formLabelWidth">
-                        <el-input v-model="form.id" auto-complete="off" :readonly="isReadOnly"/>
+                        <el-input v-model="form.projectCode " auto-complete="off" :readonly="isReadOnly"/>
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="8">
                     <el-form-item label="提交人" :label-width="formLabelWidth">
-                        <el-input v-model="form.submitName" auto-complete="off" :readonly="isReadOnly"/>
+                        <el-input v-model="form.submitName " auto-complete="off" :readonly="isReadOnly"/>
                     </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -33,32 +33,30 @@
                 </el-col>
                 <el-col :span="8">
                     <el-form-item label="更新时间" :label-width="formLabelWidth">
-                        <el-input v-model="form.gmtModified " auto-complete="off" :readonly="isReadOnly"/>
+                        <el-input v-model="form.gmtModified  " auto-complete="off" :readonly="isReadOnly"/>
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row :gutter="20">
-               
-                <el-col :span="12">
-                	<el-form-item label="评审内容" :label-width="formLabelWidth">
-                		<el-input type="textarea" class="input_textarea" v-model="form.content" :rows="10" style="width:87%;" auto-complete="off" />
-                	</el-form-item>
-                </el-col>
-                <el-col :span="12">
-                	<el-form-item label="附件下载" :label-width="formLabelWidth" style="text-align: center">
-                	    <el-table :data="form.resourceList" :header-cell-style="rowClass">
-                	        <el-table-column prop="resourceName" label="附件名称" align="center" ></el-table-column>
-                	        <el-table-column  prop="gmtCreate" label="上传时间" align="center"></el-table-column>
-                	        <el-table-column label="操作" align="center" >
-                	            <template slot-scope="scope">
-                					<a target="_Blank" :href="scope.row.resourceUrl" > 下载 </a>
-                	            </template>
-                	        </el-table-column>
-                	    </el-table>
-                	</el-form-item>
+                <el-col :span="16">
+                    <el-form-item label="评审详情" :label-width="formLabelWidth">
+                        <el-input v-model="form.content" type="textarea" :rows="6" placeholder="请输入内容" :readonly="isReadOnly"/>
+                    </el-form-item>
                 </el-col>
             </el-row>
-        
+            <el-row >
+                <el-col :span="20">
+                    <el-table :data="form.resourceList" border>
+                        <el-table-column prop="gmtCreate" label="上传时间"></el-table-column>
+                        <el-table-column prop="resourceName" label="附件名称"></el-table-column>
+                        <el-table-column label="操作">
+                            <template slot-scope="scope">
+                                <a target="_Blank" :href="scope.row.resourceUrl" > 下载 </a>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </el-col>
+            </el-row>
         </el-form>
     </el-dialog>
 </template>
@@ -66,20 +64,31 @@
 <script>
     export default {
         name: "editorViewDetail",
-        props:['form','formLabelWidth','dialogFormVisible','loading'],
+        props:{
+            form:{
+                type:Object,
+                default:null,
+            },
+            dialogFormVisible:{
+                type:Boolean,
+                default:false,
+            },
+            loading:{
+                type:Boolean,
+                default:false,
+            }
+        },
         methods:{
             changeVisible(){
                 this.$emit('closeDialog');
             },
-            handleClickFile(val){
-
-            },
-			rowClass() {
+			rowClass(){
 			    return "background:#F4F6F9;";
 			}
         },
         data(){
             return{
+                formLabelWidth:"80px",
                 isReadOnly: true,
             }
         }

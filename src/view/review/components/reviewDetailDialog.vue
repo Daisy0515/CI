@@ -78,9 +78,6 @@
             changeVisible(){
                 this.$emit('closeDialog');
             },
-            handleClickFile(val){
-
-            },
 			rowClass() {
 			    return "background:#F4F6F9;";
 			}
