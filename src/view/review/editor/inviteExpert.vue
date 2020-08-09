@@ -51,16 +51,31 @@
 
 					</div>
 					<el-table :data="expertUserList" :header-cell-style="rowClass" style="margin-top: 20px;" v-loading="loading">
-						<el-table-column label="操作" align="center">
+						<el-table-column label="操作" align="center" width="160px">
 							<template slot-scope="scope">
-								<el-radio-group v-model="scope.row.radio" @change="invite(scope.row.uId,scope.row.radio)">
+								<el-radio-group v-model="scope.row.radio" @change="invite(scope.row.uId,scope.row.radio)" >
 									<el-radio label="1">邀请</el-radio>
 									<el-radio label="2">备选</el-radio>
 								</el-radio-group>
 							</template>
 						</el-table-column>
 						<el-table-column prop="uName" label="评审专家姓名" align="center"></el-table-column>
-						<el-table-column prop="uJobTitle" label="职称" align="center"></el-table-column>
+						<el-table-column label="个人信息" align="center" >
+							<template slot-scope="scope">
+								<span>职称：{{scope.row.uJobTitle}}</span></br>
+								<span>学历：</span>
+								<span v-if="scope.row.uEducation==1">高中</span>
+								<span v-if="scope.row.uEducation==2">大专</span>
+								<span v-if="scope.row.uEducation==3">本科</span>
+								<span v-if="scope.row.uEducation==4">研究生</span>
+								<span v-if="scope.row.uEducation==5">博士</span>
+								<span v-if="scope.row.uEducation==6">博士后</span>
+								<span v-if="scope.row.uEducation==7">院士</span>
+								</br>
+								<span>单位：{{scope.row.uWorkUnit}}</span></br>
+							</template>
+						</el-table-column>
+						<!-- <el-table-column prop="uJobTitle" label="职称" align="center"></el-table-column>
 						<el-table-column prop="uEducation" label="学历" align="center">
 							<template slot-scope="scope">
 								<span v-if="scope.row.uEducation==1">高中</span>
@@ -72,7 +87,7 @@
 								<span v-if="scope.row.uEducation==7">院士</span>
 							</template>
 						</el-table-column>
-						<el-table-column prop="uWorkUnit" label="单位" align="center"></el-table-column>
+						<el-table-column prop="uWorkUnit" label="单位" align="center"></el-table-column> -->
 						<el-table-column prop="uEmail" label="邮箱" align="center"></el-table-column>
 						<el-table-column prop="uNation" label="国家" align="center"></el-table-column>
 						<el-table-column prop="typeList" label="研究方向" align="center">
@@ -156,8 +171,9 @@
 						</el-table-column>
 						<el-table-column label="邀请" align="center">
 							<template slot-scope="scope">
-								<el-button @click="scope.row.isInvite=false" type="text" v-if="scope.row.isInvite==true">取消</el-button>
-								<el-button type="text" v-if="scope.row.isInvite==false">已取消</el-button>
+								<el-checkbox v-model="scope.row.isInvite"></el-checkbox>
+								<!-- <el-button @click="scope.row.isInvite=false" type="text" v-if="scope.row.isInvite==true">取消</el-button>
+								<el-button type="text" v-if="scope.row.isInvite==false">已取消</el-button> -->
 							</template>
 						</el-table-column>
 					</el-table>
@@ -183,6 +199,12 @@
 						</el-input>
 
 					</el-form-item>
+					<el-form-item label="邀请撤回前发送提醒邮件">
+						<el-input v-model="ruleForm.responseInvite">
+							<template slot="append">天</template>
+						</el-input>
+					
+					</el-form-item>
 					<el-form-item label="专家接受任务后限定完成的时间">
 						<el-input v-model="ruleForm.restrictReviewTime">
 							<template slot="append">天</template>
@@ -195,7 +217,7 @@
 						</el-input>
 
 					</el-form-item>
-					<el-form-item label="在取消未完成任务前发送提醒邮件次数">
+					<el-form-item label="截止日期后,在取消未完成任务前每隔固定天数发生提醒邮件">
 						<el-input v-model="ruleForm.unfinishedEmail">
 							<template slot="append">次</template>
 						</el-input>
@@ -431,7 +453,7 @@
 				//get /v1/authorization/review/expertinviteemailconfig/get 
 				//console.log("1:",this.infoList);
 				this.emailePrviewVisible=true;
-				let getForm={userId:this.emailForm.userId,adminMissionId:this.reviewId,emailContent:this.emailForm.config.content}
+				let getForm={userId:this.emailForm.userId,adminMissionId:this.reviewId,emailContent:this.emailForm.config.content};
 				httpGet("/v1/authorization/review/expertinviteemailconfig/get",getForm).then(results => {
 					const {
 						httpCode,
@@ -529,28 +551,34 @@
 			postInvite() {
 				//alert(111);
 				console.log("postForm:", this.postForm);
-				httpPost("/v1/authorization/review/expertinvite/get", this.postForm).then(results => {
-					const {
-						httpCode,
-						msg,
-						data
-					} = results.data;
-
-					if (httpCode === 200) {
-						//this.infoList = data.infoList;
-						let list = data.infoList;
-						for (let i of list) {
-							i.isInvite = true;
-							i.emailConfig = null;
-						}
-						this.infoList = list;
-						//console.log(this.infoList);
-						this.dialogExpertVisible = false;
-						this.settingVisible = true;
-					} else {
-						errTips(msg);
-					}
-				})
+				if (this.postForm.alternativeList.length == 0 && this.postForm.expertInviteList.length == 0)
+					errTips("请选择评审专家！");
+				else {
+					httpPost("/v1/authorization/review/expertinvite/get", this.postForm).then(results => {
+							const {
+								httpCode,
+								msg,
+								data
+							} = results.data;
+					
+							if (httpCode === 200) {
+								//this.infoList = data.infoList;
+								let list = data.infoList;
+								for (let i of list) {
+									i.isInvite = true;
+									i.emailConfig = null;
+									i.restrictReviewTime = this.ruleForm.restrictReviewTime;
+								}
+								this.infoList = list;
+								//console.log(this.infoList);
+								this.dialogExpertVisible = false;
+								this.settingVisible = true;
+							} else {
+								errTips(msg);
+							}
+					})
+					
+				}
 			},
 			invite(id, val) {
 				//console.log(id,val);

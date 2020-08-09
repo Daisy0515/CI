@@ -452,6 +452,15 @@ const vueRouter = new Router({
     		}
     	},
 		{
+			path:'/sendEmail',
+			name:'sendEmail',
+			component:() => import('@/view/review/editor/sendEmail'),
+			meta:{
+				title:'评审管理',
+				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+			}
+		},
+		{
 			path:'/editorReviewTemplateConfig',
 			name:'editorReviewTemplateConfig',
 			component:() => import('@/view/review/editor/reviewTemplateConfig'),

@@ -14,7 +14,7 @@
                         </el-col>
                         <el-col :span="6">
                             <el-card>
-                                <router-link to="">
+                                <router-link to="/sendEmail">
                                     <el-button type="text" class="editor-button">发送提醒邮件</el-button>
                                 </router-link>
                             </el-card>
