@@ -24,7 +24,6 @@
 					<h2 style="font-weight: bolder;text-align: center;">评审标题：<span>{{title}}</span></h2>
 					<div class="dialog_header_top">
 
-
 						<el-input v-model="searchData.name" placeholder="评审专家姓名"></el-input>
 						<el-input v-model="searchData.jobTitle" placeholder="职称"></el-input>
 						<el-select v-model="searchData.researchId" clearable placeholder="研究方向">
@@ -111,13 +110,10 @@
 					<el-button type="primary" style="float: right;margin-top: 20px;" @click="postInvite()">提交邀请</el-button>
 					<div class="bid_footer">
 						<el-pagination @current-change="handleCurrentChange" :current-page.sync="pageData.pageNo" :total="totalPage"
-						 layout="prev, pager, next, jumper"></el-pagination>
+									   layout="prev, pager, next, jumper"></el-pagination>
 					</div>
 
 				</el-dialog>
-<<<<<<< HEAD
-				<el-dialog title="邀请评审专家" :visible.sync="settingVisible" :close-on-click-modal="false" width="50%" >
-=======
 
 				<el-dialog title="邀请评审专家" :visible.sync="settingVisible" :close-on-click-modal="false" width="50%">
 					<el-dialog width="40%" title="邮件编辑" :visible.sync="emailSettingVisible" append-to-body>
@@ -142,21 +138,10 @@
 							<el-button type="primary" style="margin-top: 20px;" @click="confirm()">预览与发送</el-button>
 						</div>
 					</el-dialog>
->>>>>>> 432caec2bc84f820dbe81f5fda762daec8d35e19
 
 					<el-table :data="infoList" :header-cell-style="rowClass" style="margin-top: 20px;">
 
 						<el-table-column prop="userName" label="评审专家姓名" align="center"></el-table-column>
-<<<<<<< HEAD
-						<el-table-column prop="uJobTitle" label="信件" align="center"></el-table-column>
-						<el-table-column prop="uEducation" label="限定评审的时间" align="center">
-
-						</el-table-column>
-						<el-table-column prop="uWorkUnit" label="不邀请" align="center"></el-table-column>
-						</el-table>
-
-
-=======
 						<el-table-column prop="emailConfig" label="信件" align="center">
 							<template slot-scope="scope">
 								<el-button type="text" @click="emailSetting(scope.row,scope.$index)">编辑</el-button>
@@ -179,68 +164,10 @@
 					<div style="text-align: right;">
 						<el-button type="primary" style="margin-top: 20px;" @click="finalInvite()">提交邀请</el-button>
 					</div>
->>>>>>> 432caec2bc84f820dbe81f5fda762daec8d35e19
 				</el-dialog>
 
 
 			</div>
-<<<<<<< HEAD
-		<h2 style="text-align: left;font-weight: bolder;margin-top: 2%;">评审设置</h2>
-			<div class="setting" >
-				<el-form :label-position="right" label-width="350px" :model="ruleForm">
-				  <el-form-item label="评审专家人数要求">
-				    <el-input v-model="ruleForm.number">
-						<template slot="append">人</template>
-					</el-input>
-
-				  </el-form-item>
-				  <el-form-item label="自动取消评审专家没有响应邀请的时间限制">
-				    <el-input v-model="ruleForm.responseInvite">
-						<template slot="append">天</template>
-					</el-input>
-
-				  </el-form-item>
-				  <el-form-item label="专家接受任务后限定完成的时间">
-				    <el-input v-model="ruleForm.restrictReviewTime">
-						<template slot="append">天</template>
-					</el-input>
-
-				  </el-form-item>
-				  <el-form-item label="自动取消评审专家未完成(接受后)任务的时间限制">
-				    <el-input v-model="ruleForm.unfinished">
-						<template slot="append">天</template>
-					</el-input>
-
-				  </el-form-item>
-				  <el-form-item label="在取消未完成任务前发送提醒邮件次数">
-				    <el-input v-model="ruleForm.unfinishedEmail">
-						<template slot="append">次</template>
-					</el-input>
-
-				  </el-form-item>
-				  <el-form-item label="评审截止日前发送提醒邮件">
-				    <el-input v-model="ruleForm.deadline">
-						<template slot="append">天</template>
-					</el-input>
-
-				  </el-form-item>
-				  <el-form-item label="是否盲审">
-					<el-radio-group v-model="ruleForm.isBlindRial">
-				    <el-radio :label='true'>是</el-radio>
-				    <el-radio :label='false'>否</el-radio>
-					</el-radio-group>
-				  </el-form-item>
-				  <el-form-item label="评审打分模板">
-				    <el-input v-model="ruleForm.templateId"></el-input>
-					<el-button type="primary" @click="searchList" style="margin-left: 20px;">修改</el-button>
-				  </el-form-item>
-				  <el-form-item label="是否加入冲突检测">
-					<el-radio-group v-model="ruleForm.isConflictDetection">
-				    <el-radio :label="true">是</el-radio>
-				    <el-radio :label="false">否</el-radio>
-					</el-radio-group>
-				  </el-form-item>
-=======
 			<h2 style="text-align: left;font-weight: bolder;margin-top: 2%;">评审设置</h2>
 			<div class="setting">
 				<el-form :label-position="'right'" label-width="350px" :model="ruleForm">
@@ -297,7 +224,6 @@
 							<el-radio :label="false">否</el-radio>
 						</el-radio-group>
 					</el-form-item>
->>>>>>> 432caec2bc84f820dbe81f5fda762daec8d35e19
 				</el-form>
 				<div style="text-align: center;">
 					<el-button type="primary" @click="submitForm()">提交</el-button>
@@ -306,34 +232,6 @@
 			<h2 style="text-align: left;font-weight: bolder;margin-top: 2%;">已邀请专家列表</h2>
 			<div>
 				<el-table :data="expertInviteList" style="width:700px;margin:50px auto;" :header-cell-style="rowClass" v-loading="loading">
-<<<<<<< HEAD
-						<el-table-column prop="userName" label="评审专家" align="center">
-							<template slot-scope="scope">
-								<el-tooltip class="item" effect="dark" :content="scope.row.userName" placement="top-start">
-									<span class="tablehidden">{{ scope.row.userName }}</span>
-								</el-tooltip>
-							</template>
-						</el-table-column>
-						<el-table-column prop="replyOperation" label="状态" align="center">
-							<template slot-scope="scope">
-								<span v-if="scope.row.replyOperation==1">接受</span>
-								<span v-if="scope.row.replyOperation==2">拒绝</span>
-								<span v-if="scope.row.replyOperation==3">无回应</span>
-								<span v-if="scope.row.replyOperation==4">同意邀请前撤回邀请</span>
-							</template>
-						</el-table-column>
-						<el-table-column prop="gmtModified" label="状态更新时间" align="center">
-							<template slot-scope="scope">
-								<el-tooltip class="item" effect="dark" :content="scope.row.gmtModified" placement="top-start">
-									<span class="tablehidden">{{ scope.row.gmtModified }}</span>
-								</el-tooltip>
-							</template>
-						</el-table-column>
-
-						<el-table-column prop="replyContent" label="回复" align="center">
-
-						</el-table-column>
-=======
 					<el-table-column prop="userName" label="评审专家" align="center">
 						<template slot-scope="scope">
 							<el-tooltip class="item" effect="dark" :content="scope.row.userName" placement="top-start">
@@ -360,7 +258,6 @@
 					<el-table-column prop="replyContent" label="回复" align="center">
 
 					</el-table-column>
->>>>>>> 432caec2bc84f820dbe81f5fda762daec8d35e19
 
 
 
@@ -370,25 +267,8 @@
 
 			<h2 style="text-align: left;font-weight: bolder;margin-top: 2%;">备选专家列表</h2>
 			<div>
-<<<<<<< HEAD
-				<el-table :data="expertAlternativeList" style="width:500px;margin:50px auto;" :header-cell-style="rowClass" v-loading="loading">
-						<el-table-column prop="userName" label="评审专家" align="center">
-							<template slot-scope="scope">
-								<el-tooltip class="item" effect="dark" :content="scope.row.userName" placement="top-start">
-									<span class="tablehidden">{{ scope.row.userName }}</span>
-								</el-tooltip>
-							</template>
-						</el-table-column>
-						<el-table-column prop="resourceName" label="操作" align="center">
-							<template slot-scope="scope">
-								<el-button @click="viewResualtDetail(scope.row.id)" type="text" size="medium">
-									邀请
-								</el-button>
-							</template>
-						</el-table-column>
-=======
 				<el-table :data="expertAlternativeList" style="width:500px;margin:50px auto;" :header-cell-style="rowClass"
-				 v-loading="loading">
+						  v-loading="loading">
 					<el-table-column prop="userName" label="评审专家" align="center">
 						<template slot-scope="scope">
 							<el-tooltip class="item" effect="dark" :content="scope.row.userName" placement="top-start">
@@ -403,7 +283,6 @@
 							</el-button>
 						</template>
 					</el-table-column>
->>>>>>> 432caec2bc84f820dbe81f5fda762daec8d35e19
 
 
 
@@ -688,14 +567,9 @@
 
 				//console.log("post",this.postForm);
 			},
-<<<<<<< HEAD
-			getKeyWords(){
-				// /v1/public/coreuser/crux/list
-=======
 
 			getKeyWords() {
 				// /v1/public/coreuser/crux/list
->>>>>>> 432caec2bc84f820dbe81f5fda762daec8d35e19
 				httpGet("/v1/public/coreuser/crux/list").then(results => {
 					const {
 						httpCode,
@@ -711,13 +585,8 @@
 					console.log(this.cruxList);
 				})
 			},
-<<<<<<< HEAD
-			getResearchList(){
-				//
-=======
 			getResearchList() {
 				//
->>>>>>> 432caec2bc84f820dbe81f5fda762daec8d35e19
 				httpGet("/v1/public/coreuser/list/research").then(results => {
 					const {
 						httpCode,
@@ -746,30 +615,6 @@
 				this.getView();
 			},
 			getExpert(val = this.pageData) {
-<<<<<<< HEAD
-			  this.loading = true;
-			  //get /v1/authorization/review/expert/user
-			  httpGet("/v1/authorization/review/expert/user", val).then(results => {
-			    const { httpCode, msg, data } = results.data;
-			    if (httpCode == 200) {
-			      this.pageNo = data.pageNo;
-			      this.totalPage = parseInt(data.totalPage + "0");
-			      this.expertUserList = data.expertUserList;
-			      Object.assign(this.pageData, val);
-
-			    } else if (msg == "该条件暂无数据") {
-			      this.expertUserList = [];
-			      message("该条件暂无数据");
-			    } else if (httpCode !== 401) {
-			      errTips(msg);
-			    }
-			    this.loading = false;
-			  });
-			},
-
-			submitForm(){
-				//put /v1/authorization/review/reviewdeploy/update
-=======
 				this.loading = true;
 				//get /v1/authorization/review/expert/user
 				httpGet("/v1/authorization/review/expert/user", val).then(results => {
@@ -811,7 +656,6 @@
 
 			submitForm() {
 				//put /v1/authorization/review/reviewdeploy/update
->>>>>>> 432caec2bc84f820dbe81f5fda762daec8d35e19
 				console.log("submitForm");
 				httpPut("/v1/authorization/review/reviewdeploy/update", this.ruleForm).then(results => {
 					const {
@@ -847,15 +691,9 @@
 						for (let i of expertInviteList) {
 							i.gmtModified = specificDate(i.gmtModified);
 						}
-<<<<<<< HEAD
-						this.expertInviteList=expertInviteList;
-
-					} else{
-=======
 						this.expertInviteList = expertInviteList;
 
 					} else {
->>>>>>> 432caec2bc84f820dbe81f5fda762daec8d35e19
 						errTips(msg);
 					}
 					this.loading = false;
@@ -888,7 +726,7 @@
 
 	.setting {
 		margin-left: 60px;
-		;
+	;
 
 		.el-input {
 			//display: inline-block;

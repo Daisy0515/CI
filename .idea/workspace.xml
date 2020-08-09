@@ -2,18 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e858fc32-a75f-4688-a71b-a4889a531e86" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/view/review/editor/expertSearch.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/view/review/editor/submissionSearch.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/review/components/exReviewDetail.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/review/components/exReviewDetail.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/review/editor/editorIndex.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/review/editor/editorIndex.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/review/editor/inviteExpert.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/review/editor/inviteExpert.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/review/expert/expertComplete.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/review/expert/expertComplete.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/review/expert/expertDetail.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/review/expert/expertDetail.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/review/expert/expertIndex.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/review/expert/expertIndex.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/review/expert/expertReview.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/review/expert/expertReview.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/review/expert/expertTodo.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/review/expert/expertTodo.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/review/reviewPublic/editorPublic.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/review/reviewPublic/editorPublic.vue" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -82,65 +71,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/view/review/editor/reviewTodo.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="84">
-              <caret line="3" column="8" lean-forward="true" selection-start-line="3" selection-start-column="8" selection-end-line="3" selection-end-column="8" />
+            <state relative-caret-position="162">
+              <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/view/review/components/manager.vue">
+        <entry file="file://$PROJECT_DIR$/src/view/review/editor/reviewStatistic.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="228">
-              <caret line="318" column="14" lean-forward="true" selection-start-line="294" selection-start-column="12" selection-end-line="318" selection-end-column="14" />
-              <folding>
-                <element signature="n#style#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#el-breadcrumb#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#span#0;n#div#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#el-table#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#el-table#0;n#div#1;n#div#0;n#template#0;n#!!top" />
-                <element signature="n#el-table-column#7;n#el-table#0;n#div#1;n#div#0;n#template#0;n#!!top" />
-                <element signature="n#el-table-column#9;n#el-table#0;n#div#1;n#div#0;n#template#0;n#!!top" />
-                <element signature="n#review-detail-dialog#0;n#div#0;n#template#0;n#!!top" />
-                <element signature="n#review-opinion#0;n#div#0;n#template#0;n#!!top" />
-                <element signature="n#submit-review#0;n#div#0;n#template#0;n#!!top" />
-                <element signature="n#review-evaluation#0;n#div#0;n#template#0;n#!!top" />
-                <element signature="e#8484#8536#0" expanded="true" />
-                <element signature="e#11814#12383#0" />
-                <element signature="e#12432#12561#0" />
-                <element signature="e#12698#13111#0" />
-                <element signature="e#13157#14015#0" />
-                <element signature="e#14054#14565#0" />
-                <element signature="e#14608#15852#0" />
-                <element signature="e#16028#17078#0" />
-                <element signature="e#17116#18119#0" />
-                <element signature="e#18156#19216#0" />
-                <element signature="e#19256#20254#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/view/review/editor/reviewTemplates.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="243">
-              <caret line="48" column="33" selection-start-line="48" selection-start-column="33" selection-end-line="48" selection-end-column="33" />
-              <folding>
-                <element signature="n#style#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#h3#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#el-table#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#el-button#0;n#router-link#0;n#el-row#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/view/review/editor/editorManager.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="27" column="33" lean-forward="true" selection-start-line="27" selection-start-column="33" selection-end-line="27" selection-end-column="33" />
+            <state relative-caret-position="297">
+              <caret line="11" column="30" selection-start-line="11" selection-start-column="30" selection-end-line="11" selection-end-column="30" />
             </state>
           </provider>
         </entry>
@@ -148,40 +89,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/view/review/editor/inviteExpert.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="297">
-              <caret line="20" column="82" selection-start-line="20" selection-start-column="82" selection-end-line="20" selection-end-column="82" />
-              <folding>
-                <element signature="n#style#0;n#h2#0;n#el-dialog#0;n#div#0;n#el-dialog#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/view/review/editor/reminderMail/reviewerReminderSearchResult.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2457">
-              <caret line="91" column="30" lean-forward="true" selection-start-line="91" selection-start-column="30" selection-end-line="91" selection-end-column="30" />
-              <folding>
-                <element signature="n#style#0;n#el-breadcrumb#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#el-button#1;n#el-row#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="e#3061#3101#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/view/review/components/editorReviewList.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2403">
-              <caret line="7" column="28" lean-forward="true" selection-start-line="7" selection-start-column="28" selection-end-line="7" selection-end-column="28" />
-              <folding>
-                <element signature="n#style#0;n#el-date-picker#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#span#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#el-table#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#el-dialog#0;n#div#0;n#template#0;n#!!top" />
-              </folding>
+            <state relative-caret-position="-7317">
+              <caret line="267" column="17" selection-start-line="267" selection-start-column="17" selection-end-line="267" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -226,8 +135,8 @@
       <find>httpGet</find>
       <find>rowClass</find>
       <find>search</find>
-      <find>submitExpertList</find>
       <find>handleCurrentChange</find>
+      <find>submitExpertList</find>
     </findStrings>
     <replaceStrings>
       <replace>formReviewDetail</replace>
@@ -276,7 +185,6 @@
         <option value="$PROJECT_DIR$/src/view/review/editor/editorIndex.vue" />
         <option value="$PROJECT_DIR$/src/view/review/components/reviewDetailDialog.vue" />
         <option value="$PROJECT_DIR$/src/view/review/editor/reviewTodo.vue" />
-        <option value="$PROJECT_DIR$/src/view/review/components/editorReviewList.vue" />
         <option value="$PROJECT_DIR$/src/view/review/editor/editorOpinionAndDecision.vue" />
         <option value="$PROJECT_DIR$/src/common/upload/resourceUpload.vue" />
         <option value="$PROJECT_DIR$/src/view/review/components/reviewTemplate.vue" />
@@ -294,6 +202,7 @@
         <option value="$PROJECT_DIR$/src/view/review/editor/reminderMail/customizeAndSendEmail.vue" />
         <option value="$PROJECT_DIR$/src/view/review/editor/reviewTemplates.vue" />
         <option value="$PROJECT_DIR$/src/view/review/editor/reminderMail/mailTemplates.vue" />
+        <option value="$PROJECT_DIR$/src/view/review/components/editorReviewList.vue" />
         <option value="$PROJECT_DIR$/src/view/review/editor/inviteExpert.vue" />
       </list>
     </option>
@@ -462,12 +371,12 @@
       <workItem from="1595572731017" duration="111325000" />
       <workItem from="1596353384096" duration="14728000" />
       <workItem from="1596419512655" duration="7851000" />
-      <workItem from="1596505360296" duration="68062000" />
+      <workItem from="1596505360296" duration="69126000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="787067000" />
+    <option name="totallyTimeSpent" value="788131000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -601,13 +510,6 @@
           <folding>
             <element signature="n#style#0;n#el-input#0;n#el-form-item#0;n#el-col#0;n#el-row#2;n#el-form#0;n#el-dialog#0;n#template#0;n#!!top" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/view/review/editor/reviewStatistic.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="297">
-          <caret line="11" column="30" lean-forward="true" selection-start-line="11" selection-start-column="30" selection-end-line="11" selection-end-column="30" />
         </state>
       </provider>
     </entry>
@@ -970,13 +872,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/view/review/editor/editorManager.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="27" column="33" lean-forward="true" selection-start-line="27" selection-start-column="33" selection-end-line="27" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/view/review/manager/complete.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="162">
@@ -984,33 +879,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/view/review/editor/reviewTemplates.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="48" column="33" selection-start-line="48" selection-start-column="33" selection-end-line="48" selection-end-column="33" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#h3#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-table#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-button#0;n#router-link#0;n#el-row#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/view/review/manager/managerIndex.vue">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/view/review/editor/reminderMail/reviewerReminderSearchResult.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2457">
-          <caret line="91" column="30" lean-forward="true" selection-start-line="91" selection-start-column="30" selection-end-line="91" selection-end-column="30" />
-          <folding>
-            <element signature="n#style#0;n#el-breadcrumb#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-button#1;n#el-row#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="e#3061#3101#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/view/review/editor/reminderMail/customizeAndSendEmail.vue">
       <provider selected="true" editor-type-id="text-editor">
@@ -1029,6 +899,40 @@
             <element signature="n#style#0;n#el-button#1;n#el-row#3;n#el-dialog#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#el-dialog#0;n#el-dialog#0;n#el-dialog#0;n#div#0;n#template#0;n#!!top" />
             <element signature="e#1148#1188#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/view/review/editor/reminderMail/mailTemplates.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="394">
+          <caret line="74" column="72" selection-start-line="74" selection-start-column="72" selection-end-line="74" selection-end-column="72" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#h3#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-button#0;n#el-row#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-table#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#2574#2627#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/view/review/editor/editorManager.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="27" column="33" lean-forward="true" selection-start-line="27" selection-start-column="33" selection-end-line="27" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/view/review/editor/reviewTemplates.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="48" column="33" selection-start-line="48" selection-start-column="33" selection-end-line="48" selection-end-column="33" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#h3#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-table#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-button#0;n#router-link#0;n#el-row#0;n#div#0;n#template#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1064,31 +968,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/view/review/editor/reminderMail/mailTemplates.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="394">
-          <caret line="74" column="72" selection-start-line="74" selection-start-column="72" selection-end-line="74" selection-end-column="72" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#h3#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-button#0;n#el-row#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-table#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="e#2574#2627#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/view/review/editor/reviewTodo.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="84">
-          <caret line="3" column="8" lean-forward="true" selection-start-line="3" selection-start-column="8" selection-end-line="3" selection-end-column="8" />
+        <state relative-caret-position="162">
+          <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/view/review/components/editorReviewList.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2403">
-          <caret line="7" column="28" lean-forward="true" selection-start-line="7" selection-start-column="28" selection-end-line="7" selection-end-column="28" />
+        <state relative-caret-position="1242">
+          <caret line="106" lean-forward="true" selection-start-line="106" selection-end-line="106" />
           <folding>
             <element signature="n#style#0;n#el-date-picker#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
@@ -1098,13 +988,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/view/review/editor/inviteExpert.vue">
+    <entry file="file://$PROJECT_DIR$/src/view/review/editor/reminderMail/reviewerReminderSearchResult.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-432">
+          <caret line="8" column="24" selection-start-line="8" selection-start-column="8" selection-end-line="8" selection-end-column="24" />
+          <folding>
+            <element signature="n#style#0;n#el-breadcrumb#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-button#1;n#el-row#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#3061#3101#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/view/review/editor/reviewStatistic.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="297">
-          <caret line="20" column="82" selection-start-line="20" selection-start-column="82" selection-end-line="20" selection-end-column="82" />
-          <folding>
-            <element signature="n#style#0;n#h2#0;n#el-dialog#0;n#div#0;n#el-dialog#0;n#div#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-          </folding>
+          <caret line="11" column="30" selection-start-line="11" selection-start-column="30" selection-end-line="11" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/view/review/editor/inviteExpert.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-7317">
+          <caret line="267" column="17" selection-start-line="267" selection-start-column="17" selection-end-line="267" selection-end-column="17" />
         </state>
       </provider>
     </entry>
