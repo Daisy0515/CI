@@ -12,18 +12,18 @@
 			<h2 style="text-align: center;font-weight: bolder;margin-top: 20px;">评审标题：
 			<span style="font-weight: 400;">{{title}}</span>
 			</h2>
-			
+
 			<h2 style="text-align: left;font-weight: bolder;margin-top: 2%;">评审专家搜索</h2>
 			<div class="header_top">
 				<!-- <el-input v-model="searchData.projectName" placeholder="项目名称搜索"></el-input>
 				<el-input v-model="searchData.content" placeholder="任务名称"></el-input>
 				 -->
 				<el-button type="primary" @click="searchExpert()">专家搜索</el-button>
-				<el-dialog title="评审专家搜索" :visible.sync="dialogExpertVisible" :close-on-click-modal="false" width="80%" >
-				
+				<el-dialog title="评审专家搜索" :visible.sync="dialogExpertVisible" :close-on-click-modal="false" width="100%" >
+
 					<h2 style="font-weight: bolder;text-align: center;">评审标题：<span>{{title}}</span></h2>
 					<div class="dialog_header_top" >
-					
+
 						<el-input v-model="searchData.name" placeholder="评审专家姓名"></el-input>
 						<el-input v-model="searchData.jobTitle" placeholder="职称"></el-input>
 						<el-select v-model="searchData.researchId" clearable placeholder="研究方向" >
@@ -45,10 +45,10 @@
 							<el-option label="院士" value="7"></el-option>
 						</el-select>
 						<el-input v-model="searchData.nation" placeholder="国家"></el-input>
-						
-						
+
+
 						<el-button type="primary" @click="searchList">搜索</el-button>
-					
+
 					</div>
 					<el-table :data="expertUserList" :header-cell-style="rowClass" style="margin-top: 20px;" v-loading="loading">
 						<el-table-column label="操作" align="center">
@@ -88,24 +88,24 @@
 					    layout="prev, pager, next, jumper"
 					  ></el-pagination>
 					</div>
-				
+
 				</el-dialog>
 				<el-dialog title="邀请评审专家" :visible.sync="settingVisible" :close-on-click-modal="false" width="50%" >
-				
+
 					<el-table :data="infoList" :header-cell-style="rowClass" style="margin-top: 20px;">
-						
+
 						<el-table-column prop="userName" label="评审专家姓名" align="center"></el-table-column>
 						<el-table-column prop="uJobTitle" label="信件" align="center"></el-table-column>
 						<el-table-column prop="uEducation" label="限定评审的时间" align="center">
-							
+
 						</el-table-column>
 						<el-table-column prop="uWorkUnit" label="不邀请" align="center"></el-table-column>
 						</el-table>
-				
-				
+
+
 				</el-dialog>
-				
-				
+
+
 			</div>
 		<h2 style="text-align: left;font-weight: bolder;margin-top: 2%;">评审设置</h2>
 			<div class="setting" >
@@ -114,37 +114,37 @@
 				    <el-input v-model="ruleForm.number">
 						<template slot="append">人</template>
 					</el-input>
-					
+
 				  </el-form-item>
 				  <el-form-item label="自动取消评审专家没有响应邀请的时间限制">
 				    <el-input v-model="ruleForm.responseInvite">
 						<template slot="append">天</template>
 					</el-input>
-					
+
 				  </el-form-item>
 				  <el-form-item label="专家接受任务后限定完成的时间">
 				    <el-input v-model="ruleForm.restrictReviewTime">
 						<template slot="append">天</template>
 					</el-input>
-					
+
 				  </el-form-item>
 				  <el-form-item label="自动取消评审专家未完成(接受后)任务的时间限制">
 				    <el-input v-model="ruleForm.unfinished">
 						<template slot="append">天</template>
 					</el-input>
-					
+
 				  </el-form-item>
 				  <el-form-item label="在取消未完成任务前发送提醒邮件次数">
 				    <el-input v-model="ruleForm.unfinishedEmail">
 						<template slot="append">次</template>
 					</el-input>
-					
+
 				  </el-form-item>
 				  <el-form-item label="评审截止日前发送提醒邮件">
 				    <el-input v-model="ruleForm.deadline">
 						<template slot="append">天</template>
 					</el-input>
-					
+
 				  </el-form-item>
 				  <el-form-item label="是否盲审">
 					<el-radio-group v-model="ruleForm.isBlindRial">
@@ -192,17 +192,17 @@
 								</el-tooltip>
 							</template>
 						</el-table-column>
-				
+
 						<el-table-column prop="replyContent" label="回复" align="center">
-							
+
 						</el-table-column>
-				
-						
-					
+
+
+
 				</el-table>
-				
+
 			</div>
-			
+
 			<h2 style="text-align: left;font-weight: bolder;margin-top: 2%;">备选专家列表</h2>
 			<div>
 				<el-table :data="expertAlternativeList" style="width:500px;margin:50px auto;" :header-cell-style="rowClass" v-loading="loading">
@@ -220,16 +220,16 @@
 								</el-button>
 							</template>
 						</el-table-column>
-						
-				
-						
-					
+
+
+
+
 				</el-table>
-				
+
 			</div>
-			
+
 		</div>
-			
+
 	</div>
 
 </template>
@@ -242,7 +242,7 @@
 	export default {
 		props: ['type'], //type用来区分'新任务'，‘评审专家需要额外评审’，‘评审延期’，‘评审中’等类型
 		components: {
-			
+
 		},
 		data() {
 			return {
@@ -336,7 +336,7 @@
 				alert(val)
 			},
 			getKeyWords(){
-				// /v1/public/coreuser/crux/list 
+				// /v1/public/coreuser/crux/list
 				httpGet("/v1/public/coreuser/crux/list").then(results => {
 					const {httpCode, msg, data} = results.data;
 					if (httpCode == 200){
@@ -349,7 +349,7 @@
 				})
 			},
 			getResearchList(){
-				// 		
+				//
 				httpGet("/v1/public/coreuser/list/research").then(results => {
 					const {httpCode, msg, data} = results.data;
 					if (httpCode == 200){
@@ -375,7 +375,7 @@
 			},
 			getExpert(val = this.pageData) {
 			  this.loading = true;
-			  //get /v1/authorization/review/expert/user 
+			  //get /v1/authorization/review/expert/user
 			  httpGet("/v1/authorization/review/expert/user", val).then(results => {
 			    const { httpCode, msg, data } = results.data;
 			    if (httpCode == 200) {
@@ -383,7 +383,7 @@
 			      this.totalPage = parseInt(data.totalPage + "0");
 			      this.expertUserList = data.expertUserList;
 			      Object.assign(this.pageData, val);
-			      
+
 			    } else if (msg == "该条件暂无数据") {
 			      this.expertUserList = [];
 			      message("该条件暂无数据");
@@ -393,9 +393,9 @@
 			    this.loading = false;
 			  });
 			},
-			   
+
 			submitForm(){
-				//put /v1/authorization/review/reviewdeploy/update 
+				//put /v1/authorization/review/reviewdeploy/update
 				console.log("submitForm");
 				httpPut("/v1/authorization/review/reviewdeploy/update",this.ruleForm).then(results => {
 					const {httpCode,msg,data} = results.data;
@@ -426,7 +426,7 @@
 							i.gmtModified  = specificDate(i.gmtModified );
 						}
 						this.expertInviteList=expertInviteList;
-						
+
 					} else{
 						errTips(msg);
 					}
