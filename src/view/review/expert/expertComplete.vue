@@ -13,10 +13,10 @@
 				
 				<el-input v-model="searchData.type" placeholder="请输入评审类型"></el-input>
 				<el-input v-model="searchData.title" placeholder="请输入评审标题"></el-input>
-				<el-date-picker v-model="searchData.gmtCreateStart" :picker-options="startDatePicker" type="date" placeholder="创建开始时间"
+				<el-date-picker v-model="searchData.gmtCreateStart" type="date" placeholder="创建开始时间"
 				 value-format="yyyy-MM-dd"></el-date-picker>
 				<span style="margin-right:15px">到</span>
-				<el-date-picker v-model="searchData.gmtCreateEnd" :picker-options="endDatePicker" type="date" placeholder="创建结束时间"
+				<el-date-picker v-model="searchData.gmtCreateEnd" type="date" placeholder="创建结束时间"
 				 value-format="yyyy-MM-dd"></el-date-picker>
 				<el-button type="primary" @click="searchList()">搜索</el-button>
 			</div>
@@ -26,21 +26,21 @@
 		<el-table v-loading="loading" :data="tableData" style="width:1000px;margin:20px auto" :header-cell-style="rowClass">
 			<el-table-column fixed prop="title" label="评审标题" align="center">
 				<template slot-scope="scope">
-					<el-tooltip class="item" effect="dark" :content="scope.row.title" placement="top-start">
+					<el-tooltip class="item" effect="dark" content="scope.row.title" placement="top-start">
 						<span class="tablehidden">{{ scope.row.title  }}</span>
 					</el-tooltip>
 				</template>
 			</el-table-column>
 			<el-table-column prop="reviewId" label="评审编号" align="center">
 				<template slot-scope="scope">
-					<el-tooltip class="item" effect="dark" :content="scope.row.reviewId">
+					<el-tooltip class="item" effect="dark" content="scope.row.reviewId">
 						<span class="tablehidden">{{ scope.row.reviewId }}</span>
 					</el-tooltip>
 				</template>
 			</el-table-column>
 			<el-table-column prop="type" label="评审类型" align="center">
 				<template slot-scope="scope">
-					<el-tooltip class="item" effect="dark" :content="scope.row.type">
+					<el-tooltip class="item" effect="dark" content="scope.row.type">
 						<span class="tablehidden">{{ scope.row.type  }}</span>
 					</el-tooltip>
 				</template>

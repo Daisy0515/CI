@@ -8,7 +8,7 @@
 					<el-row style="margin-bottom: 20px;" :gutter="20">
 						<el-col :span="6">
 							<el-card>
-								<router-link to="/managerNotAccept">
+								<router-link to="/expertTodo">
 									<h1>{{ acceptCount }}</h1>
 									<el-button type="text">待处理</el-button>
 								</router-link>
@@ -16,7 +16,7 @@
 						</el-col>
 						<el-col :span="6">
 							<el-card>
-								<router-link to="/managerReview">
+								<router-link to="/expertReview">
 									<h1>{{ reviewCount }}</h1>
 									<el-button type="text">评审中</el-button>
 								</router-link>
@@ -24,8 +24,10 @@
 						</el-col>
 						<el-col :span="6">
 							<el-card>
-								<h1>{{ aboutTimeoutCount }}</h1>
-								<el-button type="text">即将超时</el-button>
+								<router-link to="/expertTodo">
+									<h1>{{ aboutTimeoutCount }}</h1>
+									<el-button type="text">即将超时</el-button>
+								</router-link>
 							</el-card>
 						</el-col>
 						<el-col :span="6">

@@ -13,10 +13,10 @@
 				
 				<el-input v-model="searchData.type" placeholder="请输入评审类型"></el-input>
 				<el-input v-model="searchData.title" placeholder="请输入评审标题"></el-input>
-				<el-date-picker v-model="searchData.gmtCreateStart" :picker-options="startDatePicker" type="date" placeholder="创建开始时间"
+				<el-date-picker v-model="searchData.gmtCreateStart" type="date" placeholder="创建开始时间"
 				 value-format="yyyy-MM-dd"></el-date-picker>
 				<span style="margin-right:15px">到</span>
-				<el-date-picker v-model="searchData.gmtCreateEnd" :picker-options="endDatePicker" type="date" placeholder="创建结束时间"
+				<el-date-picker v-model="searchData.gmtCreateEnd" type="date" placeholder="创建结束时间"
 				 value-format="yyyy-MM-dd"></el-date-picker>
 				<el-button type="primary" @click="searchList()">搜索</el-button>
 			</div>
@@ -26,21 +26,21 @@
 	<el-table v-loading="loading" :data="tableData" style="width:1000px;margin:20px auto" :header-cell-style="rowClass">
 		<el-table-column fixed prop="title" label="评审标题" align="center">
 			<template slot-scope="scope">
-				<el-tooltip class="item" effect="dark" :content="scope.row.title" placement="top-start">
+				<el-tooltip class="item" effect="dark" content="scope.row.title" placement="top-start">
 					<span class="tablehidden">{{ scope.row.title }}</span>
 				</el-tooltip>
 			</template>
 		</el-table-column>
 		<el-table-column prop="reviewId" label="评审编号" align="center">
 			<template slot-scope="scope">
-				<el-tooltip class="item" effect="dark" :content="scope.row.reviewId" >
+				<el-tooltip class="item" effect="dark" content="scope.row.reviewId" >
 					<span class="tablehidden">{{ scope.row.reviewId}}</span>
 				</el-tooltip>
 			</template>
 		</el-table-column>
 		<el-table-column prop="type" label="评审类型" align="center">
 			<template slot-scope="scope">
-				<el-tooltip class="item" effect="dark" :content="scope.row.type" >
+				<el-tooltip class="item" effect="dark" content="scope.row.type" >
 					<span class="tablehidden">{{ scope.row.type}}</span>
 				</el-tooltip>
 			</template>
@@ -63,60 +63,46 @@
 		</el-table-column>
 		<el-table-column prop="accomplishProgress" label="操作" align="center" width="220px">
 			<template slot-scope="scope">
-				<el-button @click="handleClick(scope.row)" type="text" size="medium"
+				<el-button @click="handleClickDetail(scope.row.reviewId)" type="text" size="medium"
 						   ><i class="el-icon-search"></i>查看详情</el-button>
-				<el-button @click="handleRollBack(scope.row)" type="text" size="medium"
+				<el-button @click="handleRollBack(scope.row.id)" type="text" size="medium"
 				><i class="el-icon-close"></i>打回
 				</el-button>
-				<el-button @click="handleAccept(scope.row)" type="text" size="medium"
+				<el-button @click="handleAccept(scope.row.id)" type="text" size="medium"
 				><i class="el-icon-check"></i>接受
 				</el-button>
 				
 			</template>
 		</el-table-column>
 	</el-table>
-	<el-dialog title="评审详情" :visible.sync="dialogFormVisible" style="text-align:left; font-weight: bolder;">
-			<el-form :model="form">
-				<el-row :gutter="20">
-					<el-col :span="10">
-						<el-form-item label="评审标题" :label-width="formLabelWidth">
-							<el-input v-model="form.name" auto-complete="off" />
-						</el-form-item>
-					</el-col>
-					<el-col :span="10">
-						<el-form-item label="提交人" :label-width="formLabelWidth">
-							<el-input v-model="form.name" auto-complete="off" />
-						</el-form-item>
-					</el-col>
-				</el-row>
-				<el-row :gutter="20">
-					<el-col :span="10">
-						<el-form-item label="评审编号" :label-width="formLabelWidth">
-							<el-input v-model="form.name" auto-complete="off" />
-						</el-form-item>
-					</el-col>
-					<el-col :span="10">
-						<el-form-item label="提交时间" :label-width="formLabelWidth">
-							<el-input v-model="form.name" auto-complete="off" />
-						</el-form-item>
-					</el-col>
-				</el-row>
-				<el-row :gutter="20">
-					<el-col :span="15">
-						<el-form-item label="评审内容" :label-width="formLabelWidth">
-							<el-input type="textarea" class="input_textarea" v-model="form.name" :rows="10" style="width:87%;" auto-complete="off" />
-						</el-form-item>
-					</el-col>
-					<el-col :span="5">
-						<el-button type="primary" @click="dialogFormVisible = false" >附件下载</el-button>
-					</el-col>
-				</el-row>
-		</el-form>
-			<div slot="footer" style="text-align: center;">
-				<el-button @click="dialogFormVisible = false" style="margin-right: 10%">取 消</el-button>
-				<el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-			</div>
+	<el-dialog title="拒绝评审" :visible.sync="dialogRollbackVisible"  style="text-align:left; font-weight: bolder;">
+	    <el-form :model="postForm">
+	        <el-row>
+	            <el-col :span="20">
+	                <el-form-item label="拒绝原因" :label-width="formLabelWidth">
+	                    <el-input
+	                            v-model="postForm.reply"
+	                            type="textarea"
+	                            :rows="3"
+	                            placeholder="请输入内容"
+	                    />
+	                </el-form-item>
+	            </el-col>
+	        </el-row>
+	    </el-form>
+	    <div slot="footer" style="margin-right: 35%">
+	        <el-button @click="dialogRollbackVisible=false" style="margin-right: 10%">取 消</el-button>
+	        <el-button type="primary" @click="submitRollback" v-prevent-click>确 定</el-button>
+	    </div>
 	</el-dialog>
+	
+	
+	<ex-review-detail :form="formReviewDetail" :formLabelWidth="formLabelWidth"
+	                      :dialogFormVisible="dialogFormVisible"
+	                      :loading="formReviewDetailLoading"
+	                      @closeDialog="closeDialog"></ex-review-detail>
+	
+	
 	<div class="bid_footer">
 	  <el-pagination
 	    @current-change="handleCurrentChange"
@@ -129,14 +115,25 @@
 </template>
 
 <script>
-import { httpGet, httpDelete } from "@/utils/http.js";
+import { httpGet, httpDelete,httpPut } from "@/utils/http.js";
 import { specificDate } from '@/utils/getDate.js';
 import { message, successTips, errTips } from "@/utils/tips.js";
+import reviewDetailDialog from '@/view/review/components/reviewDetailDialog';
+import exReviewDetail from '@/view/review/components/exReviewDetail.vue'
+import {MessageBox} from 'element-ui';
 
 export default {
+	components: {
+	    reviewDetailDialog,
+		exReviewDetail
+	},
   
   data() {
     return { 
+		dialogRollbackVisible: false,//控制打回对话框是否可见
+		formReviewDetailLoading: false,//打开详情，加载转圈提示
+		dialogFormVisible: false,//控制详情对话框是否可见
+		formLabelWidth: '100px',
       loading: false,  
       tableData: [],  
 	  pageData: {
@@ -158,27 +155,19 @@ export default {
 	  	submitTimeStart: null,
 	  	submitTimeEnd: null,
 	  	status: 1
-	  },
-	  
+	  },  
 	  totalPage: 0,
-	  dialogFormVisible: false,
-	  form: {
-	  	name: '',
-	  	purpose:'',
-	  	date1: '',
-	  	date2: '',
-	  	content: '',
-	  	daysBeforeDeadline:'',
-	  	fileTable:[{
-	  		filename:'项目申请书',
-	  		url:''
-	  	}],
-	  	delivery: false,
-	  	type: [],
-	  	resource: '',
-	  	desc: ''
-	  },
-	  formLabelWidth: '100px'
+		postForm:{
+			id:null,
+			type:null,
+			reply:null
+		},
+		formReviewDetail:{},
+		// form: {//表单中的信息，保存打回评审时填写的信息
+		//     details: "",
+		//     reviewInfoId: null,
+		//     deadline: "",
+		// },
     };
   },
   created: function() {
@@ -188,6 +177,73 @@ export default {
     
   },
   methods: { 
+	  submitRollback() {//提交打回信息
+		  
+		  
+	      httpPut('/v1/authorization/review/expertinvite/update', this.postForm).then(results => {
+	          const {data, msg, httpCode} = results.data;
+	          if (httpCode === 200) {
+	              successTips("已拒绝评审！");
+	              this.postForm.id = null;
+	              this.postForm.type = null;
+	              this.postForm.reply = null;
+	              this.getView();
+	              this.dialogRollbackVisible = false;
+	          } else {
+	              errTips(msg);
+	          }
+	      })
+	  },
+	  handleRollBack(val) {//点击查看打回中
+	      this.dialogRollbackVisible = true;
+	      this.postForm.id = val;
+		  this.postForm.type = 2;
+		 
+	  },
+	  handleAccept(val) {
+	      MessageBox.confirm("接受任务将进入评审中状态，是否接受？", "提示", {
+	          confirmButtonText: "确定",
+	          cancelButtonText: "取消",
+	          type: "warning"
+	      }).then(() => {
+			  //put /v1/authorization/review/expertinvite/update 
+			  this.postForm.id = val;
+			  this.postForm.type = 1;
+	              httpPut('/v1/authorization/review/expertinvite/update', this.postForm).then(results => {
+	                  const {data, msg, httpCode} = results.data;
+	                  if (httpCode === 200) {
+	                      successTips("已接受评审！");
+	                      this.getView();
+	                  } else {
+	                      errTips(msg);
+	                  }
+	              });
+	          }) .catch(() => {});
+	  
+	  },
+	  closeDialog() {
+	      this.dialogFormVisible = false;
+	  },
+	  handleClickDetail(val) {//点击查看详情
+	      this.dialogFormVisible = true;
+	      this.formReviewDetailLoading = true;
+	      //get /v1/authorization/review/review/get
+	      httpGet("/v1/authorization/review/review/get", {id: val}).then(results => {
+	          const {httpCode, msg, data} = results.data;
+	          if (httpCode == 200) {
+	              data.deadline = specificDate(data.deadline);
+	              data.gmtCreate = specificDate(data.gmtCreate);
+	              this.formReviewDetail = data;
+	          } else if (msg == "该条件暂无数据") {
+	              this.formReviewDetail = {};
+	              message("该条件暂无数据");
+	          } else if (httpCode !== 401) {
+	              errTips(msg);
+	          }
+	          this.formReviewDetailLoading = false;
+	      });
+	  },
+	  
 	  searchList(){
 	  	if (this.searchData.tpye == "") {this.searchData.type == null}
 	  	if (this.searchData.submitTimeStart == "") {this.searchData.submitTimeStart == null}
@@ -251,8 +307,8 @@ export default {
 
 </script>
 
-<style>
-@import "/src/assets/scss/myTable.scss";
+<style lang='scss'>
+@import "@/assets/scss/myTable.scss";
 .bid_footer {
 	 text-align: center;
     margin-top: 20px;

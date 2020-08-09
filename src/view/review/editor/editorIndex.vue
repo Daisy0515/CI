@@ -84,10 +84,12 @@
 				loading:false,
 				role:2,
 				dialogSubmitVisible: false, // 开启发起评审视窗
+
 				zeroSum : 0, // 0位专家已评审
 				oneSum: 0, // 1位专家已评审
 				twoSum  : 0, // 2位专家已评审
 				threeSum : 0, // 3位专家已评审
+
 			}
 		},
 		created: function() {

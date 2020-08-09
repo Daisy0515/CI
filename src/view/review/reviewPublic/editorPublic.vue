@@ -53,21 +53,7 @@ export default {
 	},
   data() {
     return {
-      select: "个人信息",
-      leftdataOne: [
-        {
-          name: "工具集",
-          url: "toolset",
-          open: true,
-          formindex: true
-        },
-        {
-          name: "知识广场",
-          url: "knowledgePlaza",
-          open: false,
-          formindex: false
-        }
-      ]
+   
     };
   },
   created: function() {

@@ -178,12 +178,12 @@
 						
 						</el-row>
 							
-						<el-form-item class="cancel" style="text-align: center;">
-							<el-button type="primary"  @click="submitForm('ruleForm')" size="medium" style="width:150px;">注册</el-button>
-						</el-form-item>
+						
 					</el-form>
 					</div>
-				
+					<div style="text-align: center;">
+						<el-button type="primary"  @click="submitForm('ruleForm')" size="medium" style="width:150px;">注册</el-button>
+					</div>
 				</el-card>
 			</el-col>
 			<el-col :span="6">
@@ -320,8 +320,7 @@
 				})
 			},
 			getView(){
-				//get /v1/authorization/coreuser/reviewexpert/get 
-				//alert(1);
+				
 				httpGet("/v1/authorization/coreuser/reviewexpert/get").then(results => {
 				  const { httpCode, msg, data } = results.data;
 				  if (httpCode == 200) {
@@ -336,15 +335,7 @@
 					
 					this.ruleForm.education = this.ED[this.ruleForm.education];
 					this.Nation = {value:this.ruleForm.nation, label:this.ruleForm.nation};
-					// this.ruleForm.researchDirectionList=data.typeList;//?
-					// this.ruleForm.department=data.uDepartment ;
-					// this.ruleForm.education=data.uEducation  ;
-					// this.ruleForm.email =data.uEmail  ;
-					// this.ruleForm.id=data.uId  ;
-					// this.ruleForm.jobTitle=data.uJobTitle  ;
-					// this.ruleForm.name=data.uName  ;
-					// this.ruleForm.nation=data.uNation  ;
-					// this.ruleForm.workUnit=data.uWorkUnit  ;
+					
 					
 				  } else {
 				    errTips(msg);
@@ -369,9 +360,7 @@
 		width: 200px;
 		
 	}
-	// .el-select {
-	// 	width: 150px;
-	// }
+	
 }
 .container{
 	.add {
