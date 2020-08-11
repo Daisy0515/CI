@@ -2,22 +2,16 @@
   <div>
     <!-- <button  >nihao</button> -->
     <!-- v-model="formValidate.province" -->
-    <el-select :class="selectBg" placeholder="请选择国家" filterable v-model="formData" style="width: 100%;">
-      <el-option-group
-        :class="groupBg"
-        v-for="group in country"
-        :key="group.label"
-        :label="group.label"
-      >
+    <el-select :class="selectBg" :placeholder="selected" filterable v-model="formData" style="width: 100%;">
         <el-option
           :disabled="item.disabled"
-          v-for="item in group.options"
-          :key="item.label"
+          v-for="item in country.options"
+          :key="item.label"S
           :label="item.label"
           :value="item.label"
           type="button"
         ></el-option>
-      </el-option-group>
+    
     </el-select>
   </div>
 </template>
@@ -26,10 +20,10 @@
 export default {
   name: "foreignArea",
   props: {
-    // title: {
-    //   Type: String,
-    //   default: ""
-    // },
+    selected:{
+		Type:String,
+		default:"请选择国家"
+	},
     selectBg: {
       Type: String,
       default: ""
@@ -38,20 +32,12 @@ export default {
       Type: String,
       default: ""
     },
-    popularCity: {
-      Type: Object,
-      default: null
-    }
+
   },
   data() {
     return {
       formData: "",
-      country: [
-        {
-          label: "Popular country",
-          options: [this.popularCity]
-        },
-        {
+      country: {
           label: "All country",
           options: [
 			 { value: "China", label: "中国" },
@@ -194,7 +180,6 @@ export default {
             { value: "Reunion", label: "留尼旺" },
             { value: "Romania", label: "罗马尼亚" },
             { value: "Russia", label: "俄罗斯" },
-            { value: "Saint Lueia", label: "圣卢西亚" },
             { value: "Saint Vincent", label: "圣文森特岛" },
             { value: "Samoa Eastern", label: "东萨摩亚(美)" },
             { value: "Samoa Western", label: "西萨摩亚" },
@@ -245,7 +230,9 @@ export default {
             { value: "Zambia", label: "赞比亚" }
           ]
         }
-      ]
+      
+       
+        
     };
   },
   watch: {

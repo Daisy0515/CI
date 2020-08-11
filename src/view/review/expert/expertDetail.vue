@@ -14,7 +14,7 @@
 					<hr style="width: 100%; color: #303133;">
 					<h2 style="text-align: left;font-weight: bolder;margin-top: 2%;">基本资料</h2>
 					<div class="detail">
-					<el-form :rules="rules" :model="ruleForm" style="margin-top: 2%;" ref="ruleForm" class="demo-ruleForm">
+					<el-form :model="ruleForm" style="margin-top: 2%;" ref="ruleForm" class="demo-ruleForm">
 						<el-row :gutter="20">
 							<el-col :span="9">
 								<el-form-item label="姓名" :label-width="formLabelWidth" prop="name">
@@ -33,13 +33,6 @@
 								<Avatar></Avatar>
 								</div>
 								
-								<!-- <el-form-item label="性别" :label-width="formLabelWidth">
-									<el-select v-model="ruleForm.sex" placeholder="请选择性别" style="width: 100%;">
-										<el-option label="男" value="1"></el-option>
-										<el-option label="女" value="2"></el-option>
-										<el-option label="未知" value="3"></el-option>
-									</el-select>
-								</el-form-item> -->
 							</el-col>
 						</el-row>
 						<el-row :gutter="20">
@@ -106,7 +99,7 @@
 							<el-col :span="9">
 								<el-form-item label="国家" :label-width="formLabelWidth">
 									<!-- <el-input v-model="ruleForm.nation" ></el-input> -->
-									<foreign-area popularCity="Nation" selectBg="selectGray" groupBg="groupGray" @selectCountry="selectCountry"></foreign-area>
+									<foreign-area :selected="ruleForm.nation" selectBg="selectGray" groupBg="groupGray" @selectCountry="selectCountry"></foreign-area>
 								</el-form-item>
 							</el-col>
 							<el-col :span="9">
@@ -182,7 +175,7 @@
 					</el-form>
 					</div>
 					<div style="text-align: center;">
-						<el-button type="primary"  @click="submitForm('ruleForm')" size="medium" style="width:150px;">注册</el-button>
+						<el-button type="primary"  @click="submitForm('ruleForm')" size="medium" style="width:150px;">修改</el-button>
 					</div>
 				</el-card>
 			</el-col>
@@ -228,20 +221,23 @@
 			Avatar
 		},
 		data() {
-			const generateData = _ => {
-			        const data = [];
-			      //  const cities = ['上海', '北京', '广州', '深圳', '南京', '西安', '成都'];
-			      //  const pinyin = ['shanghai', 'beijing', 'guangzhou', 'shenzhen', 'nanjing', 'xian', 'chengdu'];
-			        for (let i=1;i<=4;i++) {
-						data.push({
-							key:i,
-							label:`备选项 ${i}`
-						})
-					}
-			        return data;
-			      };
+			// const generateData = _ => {
+			//         const data = [];
+			//       //  const cities = ['上海', '北京', '广州', '深圳', '南京', '西安', '成都'];
+			//       //  const pinyin = ['shanghai', 'beijing', 'guangzhou', 'shenzhen', 'nanjing', 'xian', 'chengdu'];
+			//         for (let i=1;i<=4;i++) {
+			// 			data.push({
+			// 				key:i,
+			// 				label:`备选项 ${i}`
+			// 			})
+			// 		}
+			//         return data;
+			//       };
 			return {
-				data: generateData(),
+				// data: generateData(),
+				selectedOptions: [],
+				researchName:[],
+				data:[],
 				value: [],
 				filterMethod(query, item) {
 				  return item.pinyin.indexOf(query) > -1;
@@ -283,10 +279,38 @@
 		computed: {
 		},
 		created: function() {
-		  this.getView();
+		  
 		  this.getResearchList();
+		  this.getView();
+		  
 		},
 		methods: {
+			submitForm(formName){
+				this.ruleForm.province = this.newcity[this.selectedOptions[0]];
+			 	this.ruleForm.city = this.newcity[this.selectedOptions[1]];
+				this.ruleForm.researchDirectionList=this.value;
+				//console.log(this.researchObject);
+				console.log(this.ruleForm);
+				httpPut("/v1/authorization/coreuser/review/user",this.ruleForm).then(results => {
+					const{httpCode,msg} = results.data;
+					if (httpCode === 200) {
+						successTips('注册评审专家成功');
+					} else {
+						errTips(msg);
+					}
+				})
+			},
+			selectCountry(val){
+				//console.log(val);
+				this.ruleForm.nation=val;
+			},
+			printValue(){
+				console.log(this.value);
+				for(var i = 0; i<this.value.length; i++){
+					this.researchName.push(this.researchList[this.value[i]-1].researchDirection);
+				}
+				this.keywordsVisible = false;
+			},
 			addMission() {
 				if (this.interest==''){
 					errTips('关键词不能为空');
@@ -335,7 +359,14 @@
 					
 					this.ruleForm.education = this.ED[this.ruleForm.education];
 					this.Nation = {value:this.ruleForm.nation, label:this.ruleForm.nation};
-					
+					this.researchName = this.ruleForm.researchDirectionList;
+					//console.log(this.value);
+					var index;
+					for (let i of this.ruleForm.researchDirectionList){
+						index = this.researchList.map(item => item.researchDirection).indexOf(i) + 1;
+						this.value.push(index);
+					}
+					console.log("value:",this.value);
 					
 				  } else {
 				    errTips(msg);
