@@ -9,7 +9,8 @@ import editorPublic from '@/view/review/reviewPublic/editorPublic'
 import store from '@/store/index.js'
 Vue.use(Router)
 const vueRouter = new Router({
-  routes: [{
+  routes: [
+  	{
       path: '/login',
       name: 'login',
       component: () => import('@/view/loginRegister/login/login'),
@@ -452,11 +453,67 @@ const vueRouter = new Router({
     		}
     	},
 		{
-			path:'/sendEmail',
-			name:'sendEmail',
-			component:() => import('@/view/review/editor/sendEmail'),
+			path:'/editorReminderEmail',
+			name:'editorReminderEmail',
+			component:() => import('@/view/review/editor/reminderMail/editorReminderEmail'),
 			meta:{
-				title:'评审管理',
+				title:'提醒邮件',
+				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+			}
+		},
+		{
+			path:'/editorMailTemplates',
+			name:'editorMailTemplates',
+			component:() => import('@/view/review/editor/reminderMail/mailTemplates'),
+			meta:{
+				title:'邮件模板',
+				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+			}
+		},
+		{
+			path:'/editorReviewerReminder',
+			name:'editorReviewerReminder',
+			component:() => import('@/view/review/editor/reminderMail/reviewerReminder'),
+			meta:{
+				title:'评审专家提醒',
+				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+			}
+		},
+		{
+			path:'/editorReviewerReminderSearchResult/searchData/:searchData',
+			name:'editorReviewerReminderSearchResult',
+			component:() => import('@/view/review/editor/reminderMail/reviewerReminderSearchResult'),
+			props:true,
+			meta:{
+				title:'评审专家搜索结果',
+				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+			}
+		},
+		{
+			path:'/editorReviewInviteNoResponse',
+			name:'editorReviewInviteNoResponse',
+			component:() => import('@/view/review/editor/reminderMail/reviewInviteNoResponse'),
+			meta:{
+				title:'评审专家邀请未回复',
+				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+			}
+		},
+		{
+			path:'/editorReviewInviteNoResponse',
+			name:'editorReviewInviteNoResponse',
+			component:() => import('@/view/review/editor/reminderMail/reviewInviteNoResponse'),
+			meta:{
+				title:'评审专家邀请未回复',
+				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+			}
+		},
+		{
+			path:'/editorCustomizeAndSendEmail/expertIdList/:expertIdList',
+			name:'editorCustomizeAndSendEmail',
+			component:() => import('@/view/review/editor/reminderMail/customizeAndSendEmail'),
+			props:true,
+			meta:{
+				title:'定制与发送邮件',
 				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
 			}
 		},
@@ -500,7 +557,6 @@ const vueRouter = new Router({
 
     	]
     },
-
 	{
       path: '/',
       name: 'homePublic',

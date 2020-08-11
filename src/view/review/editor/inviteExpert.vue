@@ -104,14 +104,14 @@
 								<span>撤回邀请：{{scope.row.invite.revocationInvite }}</span><br />
 								<span>中止任务：{{scope.row.invite.withdrawMission }}</span><br />
 								<span>邀请总数：{{scope.row.invite.inviteSum }}</span><br />
-								
+
 							</template>
 						</el-table-column>
 					</el-table>
 					<el-button type="primary" style="float: right;margin-top: 20px;" @click="postInvite()">提交邀请</el-button>
 					<div class="bid_footer">
 						<el-pagination @current-change="handleCurrentChange" :current-page.sync="pageData.pageNo" :total="totalPage"
-						 layout="prev, pager, next, jumper"></el-pagination>
+									   layout="prev, pager, next, jumper"></el-pagination>
 					</div>
 
 				</el-dialog>
@@ -294,7 +294,7 @@
 			<h2 style="text-align: left;font-weight: bolder;margin-top: 2%;">备选专家列表</h2>
 			<div>
 				<el-table :data="expertAlternativeList" style="width:500px;margin:50px auto;" :header-cell-style="rowClass"
-				 v-loading="loading">
+						  v-loading="loading">
 					<el-table-column prop="userName" label="评审专家" align="center">
 						<template slot-scope="scope">
 							<el-tooltip class="item" effect="dark" :content="scope.row.userName" placement="top-start">
@@ -485,7 +485,7 @@
 				})
 			},
 			preview(val) {
-				
+
 				this.emailePrviewVisible=true;
 				let previewForm={adminMissionId:this.id,userId:this.emailForm.userId,emailContent:this.emailForm.config.content};
 				//post /v1/authorization/review/expertinviteemailconfig/get 
@@ -497,11 +497,12 @@
 					} = results.data;
 					if (httpCode == 200) {
 						this.previewArea = data.content;
+
 					} else {
-						
+
 						errTips(msg);
 					}
-				
+
 				})
 				// let i = this.emailForm.index;
 				// this.infoList[i].emailConfig = this.emailForm.config;
@@ -536,7 +537,7 @@
 						errTips(msg);
 					}
 				})
-				
+
 				// this.emailForm.config = {content:null, theme:null};
 				//console.log(this.emailForm);
 			},
@@ -548,8 +549,9 @@
 				}
 				console.log("finalInvite-list:",list);
 				this.postForm.expertInviteList = list;
-				//post /v1/authorization/review/expertinvite/insert 
+
 				console.log("finalInvite-postForm:",this.postForm);
+
 				httpPost("/v1/authorization/review/expertinvite/insert", this.postForm).then(results => {
 					const {
 						httpCode,
@@ -568,7 +570,7 @@
 						errTips(msg);
 					}
 				})
-			
+
 			},
 			getTemplate() {
 				//get /v1/authorization/review/templatename/list
@@ -637,7 +639,7 @@
 			},
 
 			getKeyWords() {
-				// /v1/public/coreuser/crux/list 
+				// /v1/public/coreuser/crux/list
 				httpGet("/v1/public/coreuser/crux/list").then(results => {
 					const {
 						httpCode,
@@ -654,7 +656,7 @@
 				})
 			},
 			getResearchList() {
-				// 		
+				//
 				httpGet("/v1/public/coreuser/list/research").then(results => {
 					const {
 						httpCode,
@@ -684,7 +686,7 @@
 			},
 			getExpert(val = this.pageData) {
 				this.loading = true;
-				//get /v1/authorization/review/expert/user 
+				//get /v1/authorization/review/expert/user
 				httpGet("/v1/authorization/review/expert/user", val).then(results => {
 					const {
 						httpCode,
@@ -697,7 +699,7 @@
 						this.expertUserList = data.expertUserList;
 						console.log('expertUserList',this.expertUserList);
 						let list = this.expertUserList;
-						
+
 						for (let i of list) {
 							i.invite.finallyInvite = specificDate(i.invite.finallyInvite);
 							i.review.finallyAcceptMissionTime = specificDate(i.review.finallyAcceptMissionTime);
@@ -723,7 +725,7 @@
 			},
 
 			submitForm() {
-				//put /v1/authorization/review/reviewdeploy/update 
+				//put /v1/authorization/review/reviewdeploy/update
 				console.log("submitForm");
 				httpPut("/v1/authorization/review/reviewdeploy/update", this.ruleForm).then(results => {
 					const {
@@ -794,7 +796,7 @@
 
 	.setting {
 		margin-left: 60px;
-		;
+	;
 
 		.el-input {
 			//display: inline-block;

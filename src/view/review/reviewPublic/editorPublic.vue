@@ -5,7 +5,6 @@
       <div class="left-scroll" >
         <div class="left_top" >
 			<el-menu
-
 			      class="el-menu-vertical-demo"
 			      @open="handleOpen"
 			      @close="handleClose"
@@ -31,10 +30,7 @@
 				    <i class="el-icon-setting"></i>
 				    <span slot="title">评审管理</span>
 				  </el-menu-item>
-
-
 			</el-menu>
-
         </div>
       </div>
       <div class="service_main clearfix" >

@@ -13,12 +13,14 @@
         </el-col>
     </el-row>
     <form-create v-model="fApi" :rule="rules" :option="option"/>
-    <el-form style="font-weight: bolder">
-        <el-form-item label="给作者的意见:">
-            <el-input type="textarea" :rows="5" v-model="commentsToAuthor"></el-input>
+    <el-form style="font-weight: bolder"  ref="editorForm" :rules="editorRules">
+        <el-form-item label="给作者的意见:" prop="commentsToAuthor">
+            <el-input type="textarea" :rows="5" v-model="commentsToAuthor"
+                      placeholder="请输入对作者的意见，若内容较多，您也可以放在附件中，此处留下简单提示即可"></el-input>
         </el-form-item>
-        <el-form-item label="给管理员的意见:">
-            <el-input type="textarea" :rows="5" v-model="commentsToEditor"></el-input>
+        <el-form-item label="给管理员的意见:" prop="commentsToEditor">
+            <el-input type="textarea" :rows="5" v-model="commentsToEditor"
+                      placeholder="请输入对管理员的意见，若内容较多，您也可以放在附件中，此处留下简单提示即可"></el-input>
         </el-form-item>
         <el-form-item>
             <sourceUpload style="margin-top: 30px;" :uploadIndex="uploadIndex" v-on:setIdCard="setIdCard($event)"/>
@@ -76,6 +78,11 @@
                     },
                     submitBtn : false,//隐藏提交按钮
                     resetBtn: false,// //隐藏表单重置按钮
+                },
+
+                editorRules:{
+                    commentsToAuthor:[{required:true,message:"请输入对作者的意见",trigger: 'blur'}],
+                    commentsToEditor:[{required:true,message:"请输入对管理员的意见",trigger: 'blur'}]
                 }
             };
         },
@@ -219,6 +226,13 @@
             /**自定义提交表单**/
             submit(){
                 this.fApi.submit((formData, $f)=>{
+                    this.$refs["editorForm"].validate(valid => {
+                        if (valid) {
+                            console.log("有效的！");
+                        } else {
+                            console.log("无效的！");
+                        }
+                    });
                     alert(JSON.stringify(formData));
                 })
             },

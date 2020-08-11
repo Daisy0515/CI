@@ -46,7 +46,7 @@
     import {httpGet,httpDelete} from "@/utils/http.js";
     import { MessageBox } from "element-ui";
     import {specificDate} from "@/utils/getDate";
-    import deepCopyObject from "../../../utils/deepCopyObject";
+    import deepCopyObject from "@/utils/deepCopyObject";
     export default {
         name: "reviewTemplates",
         data(){
