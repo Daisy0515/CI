@@ -1,42 +1,39 @@
-<!--根据评审项属性的列表生成评审表单-->
+<!--评审专家查看评价-->
 <template>
     <div>
-    <el-row style="margin: 20px auto 0 0;">
-        <el-col :span="5">
-            <span style="font-size: large;font-weight: bolder;">评审表单(总分：{{totalScore}}分)</span>
-        </el-col>
-        <el-col :span="2" :offset="14">
-            <span style="font-size: large;font-weight: bolder;">评审得分:</span>
-        </el-col>
-        <el-col :span="3">
-            <el-input v-model="editorForm.reviewScore" size="medium" style="margin-top: -5px;" :readonly="true"></el-input>
-        </el-col>
-    </el-row>
-    <form-create v-model="fApi" :rule="rules" :option="option"/>
-    <el-form :model="editorForm" style="font-weight: bolder"  ref="editorForm" :rules="editorRules">
-        <el-form-item label="给作者的意见:" prop="commentsToAuthor">
-            <el-input type="textarea" :rows="5" v-model="editorForm.commentsToAuthor"
-                      placeholder="请输入对作者的意见，若内容较多，您也可以放在附件中，此处留下简单提示即可"></el-input>
-        </el-form-item>
-        <el-form-item label="给管理员的意见:" prop="commentsToEditor">
-            <el-input type="textarea" :rows="5" v-model="editorForm.commentsToEditor"
-                      placeholder="请输入对管理员的意见，若内容较多，您也可以放在附件中，此处留下简单提示即可"></el-input>
-        </el-form-item>
-        <el-form-item>
-            <sourceUpload style="margin-top: 30px;" :uploadIndex="uploadIndex" v-on:setIdCard="setIdCard($event)"/>
-        </el-form-item>
-    </el-form>
-    <el-row style="margin-top: 20px;">
-        <el-col :span="3" :offset="9">
-            <el-button type="primary" @click="submit" :loading="submitLoading">提交</el-button>
-        </el-col>
-        <el-col :span="2" :offset="7">
-            <span style="font-size: large;font-weight: bolder;">评审得分:</span>
-        </el-col>
-        <el-col :span="3">
-            <el-input v-model="editorForm.reviewScore" size="medium" style="margin-top: -5px;" :readonly="true"></el-input>
-        </el-col>
-    </el-row>
+        <el-row style="margin: 20px auto 0 0;">
+            <el-col :span="5">
+                <span style="font-size: large;font-weight: bolder;">评审表单(总分：{{totalScore}}分)</span>
+            </el-col>
+            <el-col :span="2" :offset="14">
+                <span style="font-size: large;font-weight: bolder;">评审得分:</span>
+            </el-col>
+            <el-col :span="3">
+                <el-input v-model="editorForm.reviewScore" size="medium" style="margin-top: -5px;" :readonly="readonly"></el-input>
+            </el-col>
+        </el-row>
+        <form-create v-model="fApi" :rule="rules" :option="option"/>
+        <el-form :model="editorForm" style="font-weight: bolder"  ref="editorForm" :rules="editorRules">
+            <el-form-item label="给作者的意见:" prop="commentsToAuthor">
+                <el-input type="textarea" :rows="5" v-model="editorForm.commentsToAuthor" :readonly="readonly"
+                          placeholder="请输入对作者的意见，若内容较多，您也可以放在附件中，此处留下简单提示即可"></el-input>
+            </el-form-item>
+            <el-form-item label="给管理员的意见:" prop="commentsToEditor">
+                <el-input type="textarea" :rows="5" v-model="editorForm.commentsToEditor" :readonly="readonly"
+                          placeholder="请输入对管理员的意见，若内容较多，您也可以放在附件中，此处留下简单提示即可"></el-input>
+            </el-form-item>
+        </el-form>
+        <el-row style="margin-top: 20px;">
+            <el-col :span="3">
+                <a target="_Blank" :href="editorForm.attachment" > 下载 </a>
+            </el-col>
+            <el-col :span="2" :offset="16">
+                <span style="font-size: large;font-weight: bolder;">评审得分:</span>
+            </el-col>
+            <el-col :span="3">
+                <el-input v-model="editorForm.reviewScore" size="medium" style="margin-top: -5px;":readonly="readonly"></el-input>
+            </el-col>
+        </el-row>
     </div>
 </template>
 
@@ -45,15 +42,12 @@
     import formCreate from "@form-create/element-ui";
     import deepCopyObject from "@/utils/deepCopyObject";//深拷贝对象
     import reviewItemTemplate from '@/view/review/components/reviewItemTemplate';
-    import sourceUpload from '@/common/upload/resourceUpload';
-    import { httpPost} from "@/utils/http.js";
-    import { successTips, errTips } from "@/utils/tips.js";
+
     export default {
-        name: "reviewTemplate",
+        name: "readTemplateOpinion",
         components: {
             formCreate: formCreate.$form(),
             reviewItemTemplate:reviewItemTemplate,
-            sourceUpload:sourceUpload,
         },
         props:{
             templateConfigList:{
@@ -64,9 +58,10 @@
                 type:Number,
                 default:0,
             },
-            id:{//评审专家邀请信息编号ID
-                type:Number,
-                default:0,
+            result:{//评价结果
+                type:Object,
+                default:()=>{},
+
             }
         },
 
@@ -74,10 +69,9 @@
             return {
                 templateName: '',//当前评审模板的名称
                 templateId:null,//评审模板的id
-                uploadIndex: false,//控制上传组件是否上传
-                submitLoading:false,//点击提交按钮时，加载提示
+                readonly:true,//查看评价的所有页面都不能编辑
 
-                fApi:{},         //生成表单所必要的属性，表单生成后，关于表单相关的属性和操作都在fApi中
+                fApi:{},//生成表单所必要的属性，表单生成后，关于表单相关的属性和操作都在fApi中
                 rules: [],       //生成评审表单的规则
                 option: {
                     submitBtn : false,//隐藏提交按钮
@@ -88,33 +82,23 @@
                     commentsToAuthor:[{required:true,message:"请输入对作者的意见",trigger: 'blur'}],
                     commentsToEditor:[{required:true,message:"请输入对管理员的意见",trigger: 'blur'}]
                 },
-                editorForm:this.getInitEditorForm(),
             };
         },
         watch:{
             /*templateConfigList发生更新就重新生成评审表单*/
             templateConfigList:function(){
-                this.setReviewTemplateNull();//重新加载templateConfigList后，评审表单的信息清空
                 this.setCreateRule();
             }
         },
+        computed:{
+            editorForm:function(){
+                return this.result;
+            }
+        },
         methods:{
-
-            /**更新全局的 评审得分**/
-            changeReviewScore(){//评审专家选择选项、输入分数时发生改变触发的事件，同步更新所有的分数和单项的分数
-                const vm = this;
-                let score = 0;
-                console.log("vm.fApi:",vm.fApi);
-                for(let i=0;i<vm.templateConfigList.length;i++){
-                    if(vm.fApi.getValue(i+'-1')!=='undefined'){
-                        score += vm.fApi.getValue(i+'-1-1');
-                    }
-                }
-                this.editorForm.reviewScore = score;
-            },
             /**生成符合formCreate的生成表单的输入**/
             setCreateRule() {
-                const vm = this;
+                let content = this.result.content;
                 let rules = [];
                 let rule = {};
                 rule.props = {};
@@ -145,12 +129,12 @@
                                 span: 19 //与下方的本题得分一起占据一行 19 + 5 = 24
                             }
                         });
-                        /**生成本题得分框**/
+                        /*生成本题得分框**/
                         rules.push({
                             type: "input",
                             title: "本题得分:",
                             field: item.fieldOne + "-1",//一般为 i-1-1
-                            value: null,
+                            value: content[item.fieldOne + "-1"],
                             props: {
                                 size: "small",
                                 readonly: true,
@@ -159,13 +143,9 @@
                                 span: 5
                             },
                         });
-                        rule.on = {/**在题目右侧更新本题得分，然后更新全局得分**/
-                            change: function () {
-                                vm.fApi.setValue(i + '-1-1', vm.fApi.getValue(i + '-1') * item.scoreWeight);
-                                vm.changeReviewScore();
-                            }
-                        };
                         rule.field = item.fieldOne;//为 i-1，i为第i道题,i从0开始
+                        rule.value = content[rule.field];//填充这一题的选项
+                        rule.props.disabled = true;      //让题目无法编辑
                         if (item.type === 1) {//1.生成文本/分数选项
                             rule.title = "选项:";
                             if (item.scoreExplainList !== null && item.scoreExplainList.length > 0) {//存在评审选项
@@ -201,17 +181,19 @@
                             })
                         }
                         rules.push(rule);
-                        /**将rule置空**/
+                        /*将rule置空**/
                         rule = deepCopyObject(nullRule);
                     }
                     /*添加文本说明**/
                     if (item.textAnnotation === true){
                         rule.field = item.fieldTwo;
+                        rule.value = content[rule.field];
                         rule.type = "input";
                         rule.title = "说明:";
                         rule.props = {
                             type: "textarea",
                             rows: 5,
+                            readonly:true,
                         };
                         rule.col = {
                             span: 16
@@ -230,60 +212,6 @@
                 }
                 this.rules = deepCopyObject(rules);
                 console.log("rules:", this.rules);
-            },
-            /**设置评审内容为空，关闭评价对话框时会用到*/
-            setReviewTemplateNull(){//本方法父组件expert有调用
-                this.editorForm = this.getInitEditorForm();
-                this.fApi.resetFields();//将动态生成的表单内容清空
-            },
-            /**返回空的emailForm*/
-            getInitEditorForm(){
-                return {
-                    reviewScore:null,//评审专家的打分
-                    commentsToAuthor:null,
-                    commentsToEditor:null,
-                    attachment:null,//评审专家上传的附件
-                    map:null,//评价内容
-                    id:null,//评审专家编号信息
-                }
-            },
-            /**上传文件控制与提交意见*/
-            setIdCard(data) { //发起评审时调用的，data 表示上传文件的地址
-                data && (this.editorForm.attachment= data);
-                this.editorForm.id = this.id;//当前的评审专家信息id
-                console.log("postData",this.editorForm);
-                httpPost('/v1/authorization/review/experttemplateopinion/insert',this.editorForm).then(results => {
-                    const {msg, httpCode} = results.data;
-                    if (httpCode === 200) {
-                        successTips('提交评价成功,评审任务已完成！');
-                    } else {
-                        errTips(msg);
-                    }
-                    this.submitLoading = false;
-                    this.editorForm = this.getInitEditorForm();
-                    this.$emit("closeDialog");
-                });
-            },
-            /**自定义提交表单**/
-            submit(){
-                this.submitLoading = true;
-                this.fApi.submit((formData, $f)=>{
-                    this.$refs["editorForm"].validate(valid => {
-                        if (valid) {
-                            console.log("有效的！");
-                            console.log(formData);
-                            this.editorForm.map = formData;
-                            if(this.editorForm.attachment!==null){//上传地址已经获取了
-                                this.setIdCard();
-                            }else{
-                                this.uploadIndex = !this.uploadIndex;//上传文件
-                            }
-                        } else {
-                            console.log("无效的！");
-                            this.submitLoading = false;
-                        }
-                    });
-                })
             },
         }
     }

@@ -168,43 +168,17 @@
                 opinion: "",
                 userList: [],
                 dialogChooseVisible: false,
-                searchData: {
-                    pageNo: 1,
-                    pageSize: 10,
-                    orderBy: "id",
-                    orderType: "DESC",
-                    type: null,
-                    submitterName: null,
-                    projectUserName: null,
-                    submitTimeStart: null,
-                    submitTimeEnd: null,
-                    expertAccomplishCount: this.expertAccomplishCount,
-                    status: this.status,
-                    statusExplain: this.statusExplain,
-                },
+                searchData: this.getInitialPageOrSearchData(),
                 id: "",
                 submitTitle: '修改提交',
                 isShowSubmitHistory: true, //在修改提交评审的表单里是否显示提交历史
                 dialogFormVisible: false, //控制表单对话框是否显示
                 loading: false,
                 tableData: [],
-                pageData:{
-                    pageNo: 1,
-                    pageSize: 10,
-                    orderBy: "id",
-                    orderType: "DESC",
-                    type: null,
-                    submitterName: null,
-                    projectUserName: null,
-                    submitTimeStart: null,
-                    submitTimeEnd: null,
-                    expertAccomplishCount: this.expertAccomplishCount,
-                    status: this.status,
-                    statusExplain: this.statusExplain,
-                },
-                typeList:[],
+                pageData:this.getInitialPageOrSearchData(),
+                typeList:[],//搜索栏中的评审类型下拉框的数据来源
                 totalPage: 0,
-                reviewDetail: {},
+                reviewDetail: {},//查看评审详情时存储数据的框
                 allReviewProcessList: {},//以评审的id为键，评审的processName为值存储所有评审流程的
             };
         },
@@ -306,8 +280,10 @@
                 });
                 this.dialogChooseVisible = true;
             },
+
             inviteExpert(val,reviewId) {
-                this.$router.push({path: './inviteExpert', query: {id: val,reviewId:reviewId}});
+                this.$router.push({path: '/inviteExpert', query: {id: val,reviewId:reviewId}});
+
             },
             /**搜索列表*/
             searchList(){
