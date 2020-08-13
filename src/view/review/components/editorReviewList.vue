@@ -282,7 +282,7 @@
             },
 
             inviteExpert(val,reviewId) {
-                this.$router.push({path: './inviteExpert', query: {id: val,reviewId:reviewId}});
+                this.$router.push({path: '/inviteExpert', query: {id: val,reviewId:reviewId}});
 
             },
             /**搜索列表*/

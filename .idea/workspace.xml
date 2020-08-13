@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e858fc32-a75f-4688-a71b-a4889a531e86" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/view/review/editor/sendEmail.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/loginRegister/register/components/foreignArea.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/loginRegister/register/components/foreignArea.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/review/components/editorReviewList.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/review/components/editorReviewList.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/review/editor/inviteExpert.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/review/editor/inviteExpert.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/review/expert/expertDetail.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/review/expert/expertDetail.vue" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -169,14 +165,13 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/view/review/components/editorReviewList.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="8" column="14" lean-forward="true" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
+            <state relative-caret-position="230">
+              <caret line="284" column="42" selection-start-line="284" selection-start-column="42" selection-end-line="284" selection-end-column="42" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#el-date-picker#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#span#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#el-table#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#el-table#0;n#div#0;n#template#0;n#!!top" />
                 <element signature="n#el-dialog#0;n#div#0;n#template#0;n#!!top" />
               </folding>
             </state>
@@ -217,7 +212,6 @@
       <find>handleEvaluateDialogClose</find>
       <find>localForm</find>
       <find>templateId</find>
-      <find>inviteExpert</find>
       <find>editorForm</find>
       <find>editorRules</find>
       <find>commentsToAuthor</find>
@@ -234,6 +228,7 @@
       <find>exReviewDetail</find>
       <find>handleClick</find>
       <find>dialogFormVisible</find>
+      <find>inviteExpert</find>
     </findStrings>
     <replaceStrings>
       <replace>formReviewDetail</replace>
@@ -485,12 +480,12 @@
       <workItem from="1595572731017" duration="111325000" />
       <workItem from="1596353384096" duration="14728000" />
       <workItem from="1596419512655" duration="7851000" />
-      <workItem from="1596505360296" duration="166861000" />
+      <workItem from="1596505360296" duration="167437000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="885866000" />
+    <option name="totallyTimeSpent" value="886442000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1178,14 +1173,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/view/review/components/editorReviewList.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="8" column="14" lean-forward="true" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
+        <state relative-caret-position="230">
+          <caret line="284" column="42" selection-start-line="284" selection-start-column="42" selection-end-line="284" selection-end-column="42" />
           <folding>
             <element signature="n#style#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#el-date-picker#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#el-table#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#el-table#0;n#div#0;n#template#0;n#!!top" />
             <element signature="n#el-dialog#0;n#div#0;n#template#0;n#!!top" />
           </folding>
         </state>
