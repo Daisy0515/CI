@@ -1,19 +1,5 @@
 <template>
   <div class="service">
-    <!-- <div class="responsive resp">
-      <div class="module_secondaryHead guruSearch hasBg">
-        <div class="container">
-          <div class="module_headerCrumb">
-            <div class="refinery">
-              <div class="h1 searchTitle">
-                <p class="searchTitle">服务共享</p>
-              </div>
-            </div>
-            <span class="resultCount"></span>
-          </div>
-        </div>
-      </div>
-    </div> -->
 	<reviewHead/>
     <div class="container deskHeader" style="height:100%">
       <div class="left-scroll">
@@ -45,6 +31,14 @@
 			        <i class="el-icon-circle-check-outline"></i>
 			        <span slot="title">已完成</span>
 			      </el-menu-item>
+				<el-menu-item index="/expertStopped">
+					<i class="el-icon-remove"></i>
+					<span slot="title">已中止</span>
+				</el-menu-item>
+				<el-menu-item index="/expertRejected">
+					<i class="el-icon-circle-close"></i>
+					<span slot="title">已拒绝</span>
+				</el-menu-item>
 				  <el-menu-item index="/expertInformation">
 				    <i class="el-icon-view"></i>
 				    <span slot="title">信息维护</span>

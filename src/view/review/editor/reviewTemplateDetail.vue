@@ -71,13 +71,12 @@
                 :formItemVisible="formItemVisible" :readOnly="readOnly" :newTemplate="newTemplate"
                 @closeReviewItemForm="closeReviewItemForm" @getReviewTemplateDetail="getReviewTemplateDetail">
         </review-item-template>
-        <review-template :templateConfigList="templateConfigList"></review-template><!--生成评审表单的组件-->
+        <review-template :templateConfigList="templateConfigList" :totalScore="totalScore"></review-template><!--生成评审表单的组件-->
     </div>
 </template>
 
 <script>
-    /**本组件采用formCreate组件来动态生成表单**/
-    import formCreate from "@form-create/element-ui";
+
     import {errTips, successTips} from "@/utils/tips.js";
     import {httpGet,httpDelete} from "@/utils/http.js";
     import deepCopyObject from "@/utils/deepCopyObject.js";//深拷贝对象
@@ -86,7 +85,7 @@
     import reviewTemplate from '@/view/review/components/reviewTemplate';
 
 
-    //他们的位置就对应着type的数字表示（传递给后端的，前端为了更好的阅读体验用的字符串表示）
+    //他们的位置就对应着type的数字表示（传递给后端的，前端为了更好的阅读体验使用的字符串表示）
     const reviewItemTypeStringToId =["","scoreOption","yesOrNo","scoreInput"];
     export default {
         name: "reviewTemplateDetail",
@@ -101,7 +100,6 @@
             }
         },
         components: {
-            formCreate: formCreate.$form(),
             reviewItemTemplate:reviewItemTemplate,
             reviewTemplate:reviewTemplate,
         },

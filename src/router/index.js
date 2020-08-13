@@ -302,6 +302,24 @@ const vueRouter = new Router({
     			requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
     		}
     	},
+		{
+			path:'/expertStopped',
+			name:'expertStopped',
+			component:() => import('@/view/review/expert/expertStopped'),
+			meta:{
+				title:'已中止',
+				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+			}
+		},
+		{
+			path:'/expertRejected',
+			name:'expertRejected',
+			component:() => import('@/view/review/expert/expertRejected'),
+			meta:{
+				title:'已拒绝',
+				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+			}
+		},
     	{
     		path:'/expertInformation',
     		name:'expertInformation',
@@ -373,7 +391,7 @@ const vueRouter = new Router({
 				title:'评审任务搜索',
 				//requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
 			}
-		
+
 		},
 		{
 			path:'/expertSearch',
@@ -383,7 +401,7 @@ const vueRouter = new Router({
 				title:'评审专家搜索',
 				//requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
 			}
-		
+
 		},
 		{
 			path:'/reviewStatistic/expertAccomplishCount/:expertAccomplishCount',
@@ -457,7 +475,7 @@ const vueRouter = new Router({
 			name:'editorReminderEmail',
 			component:() => import('@/view/review/editor/reminderMail/editorReminderEmail'),
 			meta:{
-				title:'提醒邮件',
+				title:'发送提醒邮件',
 				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
 			}
 		},
@@ -499,11 +517,11 @@ const vueRouter = new Router({
 			}
 		},
 		{
-			path:'/editorReviewInviteNoResponse',
-			name:'editorReviewInviteNoResponse',
-			component:() => import('@/view/review/editor/reminderMail/reviewInviteNoResponse'),
+			path:'/editorUniversalMail',
+			name:'editorUniversalMail',
+			component:() => import('@/view/review/editor/reminderMail/universalMail'),
 			meta:{
-				title:'评审专家邀请未回复',
+				title:'通用邮件',
 				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
 			}
 		},
