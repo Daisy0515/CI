@@ -11,7 +11,9 @@
 		</div>
 		<div class="header_top">
 			<el-input v-model="searchData.title" placeholder="评审标题"></el-input>
-			<el-input v-model="searchData.type" placeholder="评审类型"></el-input>
+			<el-select v-model="searchData.type"  placeholder="请选择评审类型">
+			    <el-option v-for="index in typeList" :label="typeList[index]" :value="index"></el-option>
+			</el-select>
 			<el-input v-model="searchData.projectUserName" placeholder="发布者"></el-input>
 			<el-input v-model="searchData.submitterName" placeholder="提交人"></el-input>
 			<el-date-picker v-model="searchData.submitTimeStart" type="date" style="width: 150px;" placeholder="提交时间" value-format="yyyy-MM-dd"
@@ -203,7 +205,7 @@
 					resource: '',
 					desc: ''
 				},
-
+				typeList:[],
 				formLabelWidth: '100px' //控制表单中输入框的尺寸
 			};
 		},
@@ -211,9 +213,21 @@
 			this.id = this.$route.query.id;
 			this.pageData.expertAccomplishCount = this.id;
 			this.getView();
+			this.getTypeList();
 		},
 		computed: {},
 		methods: {
+			getTypeList() {
+			    httpGet("/v1/authorization/review/type/get").then(results => {
+			        const { httpCode, msg, data } = results.data;
+			        if (httpCode == 200) {
+			            this.typeList = data.typeList;
+			        } else {
+			            this.typeList = [];
+			            errTips(msg);
+			        }
+			    });
+			},
 			inviteExpert(val) {
 			    this.$router.push({path: './inviteExpert', query: {id: val}});
 			},

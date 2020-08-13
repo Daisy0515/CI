@@ -47,7 +47,7 @@
 					<el-row style="margin-bottom: 10px;">
 						<el-card shadow="hover" style="height: 60px">
 							<el-row :gutter="20" >
-								<router-link to="">
+								<router-link to="/submissionSearch">
 									<el-col :span="20"><!-- <el-button type="text" style="font-size: 16px;">评审邀请未回复</el-button> -->
 									<span class="subtitle">评审任务搜索</span>
 									</el-col>
@@ -59,7 +59,7 @@
 					<el-row style="margin-bottom: 10px;">
 						<el-card shadow="hover" style="height: 60px;">
 							<el-row :gutter="20">
-								<router-link to="">   <!--5 表示评审进行中-->
+								<router-link to="/expertSearch">   <!--5 表示评审进行中-->
 									<el-col :span="20"><!-- <el-button type="text" style="font-size: 16px;" >评审进行中</el-button> -->
 										<span class="subtitle">评审人员搜索</span>
 									</el-col>
