@@ -34,7 +34,7 @@
                     <el-button @click="handleClickDecisionAndOpinion(scope.row)" type="text" size="medium"><i
                             class="el-icon-refresh"></i>意见与决定
                     </el-button>
-                    <el-button @click="handleClickSubmit(scope.row)" type="text" size="medium"><i
+                    <el-button @click="handleClickSendEmail(scope.row.id)" type="text" size="medium"><i
                             class="el-icon-message"></i>发送邮件
                     </el-button>
                     <el-button @click="handleClickSubmit(scope.row)" type="text" size="medium"><i
@@ -343,6 +343,12 @@
             handleClickDecisionAndOpinion(row){
                 this.$router.push({name:'editorOpinionAndDecision',params:{id:row.id,identification:row.identification}})
             },
+			handleClickSendEmail(val){
+				//alert("id:",val);
+				console.log(val);
+				this.$router.push({path: './sendEmail', query: {id: val}});
+				//this.$router.push({name:'sendEmail',params:{id:val}});
+			},
             handleCurrentChange(val){
                 this.pageData.pageNo = val;
                 this.getView();

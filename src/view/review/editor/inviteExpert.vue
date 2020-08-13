@@ -137,7 +137,7 @@
 								<span>{{emailForm.userName}}</span>
 							</el-form-item>
 							<el-form-item label="抄送">
-								<el-checkbox-group v-model="checkList">
+								<el-checkbox-group v-model="checkList" @change="selectCC">
 								    <el-checkbox label="管理员"></el-checkbox>
 								    <el-checkbox label="发布者"></el-checkbox>
 								    
@@ -431,6 +431,9 @@
 		},
 		computed: {},
 		methods: {
+			selectCC(){
+				console.log(this.checkList);
+			},
 			emailConfirm(){
 				let i = this.emailForm.index;
 				console.log("emailConfirm-emailForm:",this.emailForm);
