@@ -2,21 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e858fc32-a75f-4688-a71b-a4889a531e86" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/view/review/expert/components/expert.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/view/review/expert/components/readReviewTemplate.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/view/review/expert/expertRejected.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/view/review/expert/expertStopped.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/view/review/editor/sendEmail.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/loginRegister/register/components/foreignArea.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/loginRegister/register/components/foreignArea.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/review/components/editorReviewList.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/review/components/editorReviewList.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/review/components/reviewTemplate.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/review/components/reviewTemplate.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/review/editor/reminderMail/mailTemplates.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/review/editor/reminderMail/mailTemplates.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/review/editor/reminderMail/universalMail.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/review/editor/reminderMail/universalMail.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/review/editor/reviewTemplateDetail.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/review/editor/reviewTemplateDetail.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/review/expert/expertComplete.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/review/expert/expertComplete.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/review/expert/expertReview.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/review/expert/expertReview.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/review/expert/expertTodo.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/review/expert/expertTodo.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/review/reviewPublic/expertPublic.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/review/reviewPublic/expertPublic.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/review/editor/inviteExpert.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/review/editor/inviteExpert.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/review/expert/expertDetail.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/review/expert/expertDetail.vue" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -141,7 +131,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/view/review/expert/components/expert.vue">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="108">
@@ -171,6 +161,23 @@
                 <element signature="e#12880#12912#0" />
                 <element signature="e#12671#12703#0" />
                 <element signature="e#14255#15099#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/view/review/components/editorReviewList.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="216">
+              <caret line="8" column="14" lean-forward="true" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
+              <folding>
+                <element signature="n#style#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#el-date-picker#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#el-table#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#el-table#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#el-dialog#0;n#div#0;n#template#0;n#!!top" />
               </folding>
             </state>
           </provider>
@@ -280,7 +287,6 @@
         <option value="$PROJECT_DIR$/src/view/review/editor/inviteExpert.vue" />
         <option value="$PROJECT_DIR$/src/view/review/editor/reminderMail/mailTemplates.vue" />
         <option value="$PROJECT_DIR$/src/view/review/editor/reminderMail/universalMail.vue" />
-        <option value="$PROJECT_DIR$/src/view/review/components/editorReviewList.vue" />
         <option value="$PROJECT_DIR$/src/view/review/expert/components/expertViewDetail.vue" />
         <option value="$PROJECT_DIR$/src/view/review/expert/expertTodo.vue" />
         <option value="$PROJECT_DIR$/src/view/review/editor/reviewTemplateDetail.vue" />
@@ -294,6 +300,7 @@
         <option value="$PROJECT_DIR$/src/router/index.js" />
         <option value="$PROJECT_DIR$/src/view/review/expert/components/readReviewTemplate.vue" />
         <option value="$PROJECT_DIR$/src/view/review/expert/components/expert.vue" />
+        <option value="$PROJECT_DIR$/src/view/review/components/editorReviewList.vue" />
       </list>
     </option>
   </component>
@@ -478,12 +485,12 @@
       <workItem from="1595572731017" duration="111325000" />
       <workItem from="1596353384096" duration="14728000" />
       <workItem from="1596419512655" duration="7851000" />
-      <workItem from="1596505360296" duration="166568000" />
+      <workItem from="1596505360296" duration="166861000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="885573000" />
+    <option name="totallyTimeSpent" value="885866000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -498,7 +505,7 @@
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.23982869" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.23982869" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -515,7 +522,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.15060908" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="10" sideWeight="0.4989339" visible="true" weight="0.05638298" />
+      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.4989339" visible="true" weight="0.24042553" />
       <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.5010661" side_tool="true" weight="0.19226637" />
       <window_info anchor="bottom" id="TypeScript" order="12" />
       <window_info anchor="bottom" id="Messages" order="13" />
@@ -959,23 +966,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/view/review/components/editorReviewList.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="462">
-          <caret line="126" column="20" selection-start-line="126" selection-start-column="16" selection-end-line="126" selection-end-column="20" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-date-picker#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#el-table#0;n#div#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#el-table#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#el-dialog#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="e#7955#8010#0" expanded="true" />
-            <element signature="e#13157#13890#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/view/review/editor/reviewTemplateDetail.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="108">
@@ -1182,6 +1172,21 @@
             <element signature="e#12880#12912#0" />
             <element signature="e#12671#12703#0" />
             <element signature="e#14255#15099#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/view/review/components/editorReviewList.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="8" column="14" lean-forward="true" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-date-picker#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#1;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#el-table#0;n#div#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#el-table#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#el-dialog#0;n#div#0;n#template#0;n#!!top" />
           </folding>
         </state>
       </provider>
