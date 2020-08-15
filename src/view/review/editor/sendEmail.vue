@@ -241,9 +241,12 @@
 				}
 				console.log("emailForm.userList:",this.emailForm.userList);
 			},
+			/*定制邮件*/
 			editEmail() {
 				//console.log("searchData:", this.searchData);
 				//get /v1/authorization/review/adminmissionemailtemplate/update
+				this.userNameList = [];
+				this.checkList = [];
 				httpGet("/v1/authorization/review/adminmissionemailtemplate/update", this.searchData).then(results => {
 					const {
 						httpCode,

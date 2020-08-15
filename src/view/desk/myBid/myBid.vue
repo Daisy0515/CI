@@ -123,7 +123,7 @@
           </router-link>
 		  
 		
-		  <router-link :to ="{path:'projectDeliver',query:{Id:scope.row.id}}" v-if="scope.row.status===2">
+		  <router-link :to ="{path:'projectDeliver',query:{Id:scope.row.id,projectId:scope.row.projectId}}" v-if="scope.row.status===2">
 		    <i class="el-icon-success"></i>
 			交付
 		  </router-link>

@@ -9,7 +9,7 @@
         </div>
         <div class="header_top">
             <el-input v-model="searchData.title" placeholder="评审标题"></el-input>
-            <el-select v-model="searchData.type"  placeholder="请选择评审类型">
+            <el-select v-model="searchData.type"  clearable placeholder="请选择评审类型">
                 <el-option v-for="index in typeList" :label="typeList[index]" :value="index"></el-option>
             </el-select>
             <el-input v-model="searchData.projectUserName" placeholder="发布者"></el-input>
@@ -124,7 +124,8 @@
                 </el-table-column>
             </el-table>
         </el-dialog>
-        <editor-view-detail :form="reviewDetail"  :dialogFormVisible="dialogFormVisible" @closeDialog="closeDialog"></editor-view-detail>
+        
+		<editor-view-detail :form="reviewDetail"  :dialogFormVisible="dialogFormVisible" @closeDialog="closeDialog"></editor-view-detail>
         <div class="bid_footer">
             <el-pagination @current-change="handleCurrentChange" :current-page.sync="pageData.pageNo" :total="totalPage"
                            layout="prev, pager, next, jumper"></el-pagination>
@@ -274,7 +275,7 @@
                         }
                         this.userList = userList;
                     } else {
-                        this.typeList = [];
+                        this.userList = [];
                         errTips(msg);
                     }
                 });
@@ -322,7 +323,7 @@
 			handleClickSendEmail(val){
 				//alert("id:",val);
 				console.log(val);
-				this.$router.push({path: './sendEmail', query: {id: val}});
+				this.$router.push({path: '/sendEmail', query: {id: val}});
 				//this.$router.push({name:'sendEmail',params:{id:val}});
 			},
             handleCurrentChange(val){
@@ -357,7 +358,8 @@
             rowClass() {
                 return "background:#F4F6F9;";
             }
-        }
+        
+		}
     };
 </script>
 

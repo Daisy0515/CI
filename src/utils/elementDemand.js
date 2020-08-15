@@ -39,6 +39,7 @@ import {
 	MenuItemGroup,
 	Transfer,
 	Upload,
+	
 
 } from 'element-ui';
 const getElement = {
@@ -84,6 +85,7 @@ const getElement = {
 		Vue.use(Submenu)
 		Vue.use(MenuItem)
 		Vue.use(MenuItemGroup)
+		
 
     }
 }
