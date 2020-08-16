@@ -1,8 +1,8 @@
 <template>
 	<!-- 不用的页面 -->
-	<div class="myTable">
+	<div class="myTableEmail">
 		<el-breadcrumb separator-class="el-icon-arrow-right" style="font-size: 130%;">
-			<el-breadcrumb-item :to="{  }">返回上一级</el-breadcrumb-item>
+			<el-breadcrumb-item><a class="Link" href="javascript:history.back(-1)">返回上一级</a></el-breadcrumb-item>
 			<el-breadcrumb-item>发送邮件</el-breadcrumb-item>
 
 		</el-breadcrumb>
@@ -296,7 +296,9 @@
 </script>
 
 <style lang="scss">
-	// @import "@/assets/scss/myTable.scss";
+	.Link{
+		color: black;
+	}
 	.searchBloack {
 		text-align: center;
 
