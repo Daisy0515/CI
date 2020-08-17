@@ -1,6 +1,6 @@
 <template>
-    <div class="editor-container">
-        <el-card>
+    <div>
+        <el-card class="editor-container">
             <el-row style="margin-bottom: 10px;"><h1 style="text-align: left">发送邮件</h1></el-row>
             <el-row>
                 <h3>说明：系统已经内置了几种常见的模板，请跟据需要选择合适的模板，然后点击“定制信件”进行下一步信息的填充</h3>
@@ -16,87 +16,28 @@
                 </el-select>
             </el-row>
             <el-row style="margin-top: 30px;">
-                <el-button style="margin-left:-10%;" @click="goBack">返回</el-button>
-                <el-button type="primary" style="margin-left:30px;" @click="ToCustomizeEmail">定制信件</el-button>
-                <el-button type="primary" style="margin-left:30px;" @click="previewAndSendEmail">预览与发送</el-button>
+                <el-button  @click="goBack">返回</el-button>
+                <el-button type="primary" style="margin-left:30px;" @click="next">下一步</el-button>
             </el-row>
         </el-card>
-        <el-dialog title="定制信件" :visible.sync="customizeEmailVisible" width="80%">
-            <el-table :data="infoList" v-loading="infoListLoading">
-                <el-table-column property="userName" label="评审专家" ></el-table-column>
-                <el-table-column property="id" label="评审编号" ></el-table-column>
-                <el-table-column property="title" label="评审标题" ></el-table-column>
-                <el-table-column property="templateName" label="信件模板" ></el-table-column>
-                <el-table-column property="title" label="操作" >
-                    <template slot-scope="scope">
-                        <el-button type="text" size="medium" @click="customizeEmail">定制</el-button>
-                    </template>
-                </el-table-column>
-                <el-table-column  label="不发送" ></el-table-column>
-            </el-table>
-            <!-- 定制信件的对话框 -->
-            <el-dialog
-                    width="60%"
-                    title="定制信件"
-                    :visible.sync="innerVisible"
-                    append-to-body>
-                <el-row>
-                    <el-col :span="6">
-                        From:
-                    </el-col>
-                    <el-col :span="18">
-                        <el-input placeholder="当前管理员的邮件"></el-input>
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-col :span="6">
-                        信件主题
-                    </el-col>
-                    <el-col :span="18">
-                        <el-input placeholder="信件的主题"></el-input>
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-col :span="6">
-                        <span>信件主体</span>
-                    </el-col>
-                    <el-col :span="18">
-                        <el-input type="'text" rows="8"></el-input>
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-button style="margin-left:-10%;" @click="goBack">关闭</el-button>
-                    <el-button type="primary" style="margin-left:30px;" @click="previewEmail">预览</el-button>
-                </el-row>
-                <!-- 定制邮件框中预览信件的对话框-->
-                <el-dialog
-                        width="60%"
-                        title="预览"
-                        :visible.sync="previewVisible"
-                        append-to-body>
-                    <el-row>
-                        <el-col :span="6">
-                            <span>信件内容</span>
-                        </el-col>
-                        <el-col :span="18">
-                            <el-input type="'text" rows="8" readonly="true"></el-input>
-                        </el-col>
-                    </el-row>
-                </el-dialog>
-            </el-dialog>
-        </el-dialog>
+        <customize-expert-email-dialog :visible="nextVisible"  :templateId="templateId" :userList="userList"
+                                       :userListLoading="userListLoading" :templateList="templateList" @closeDialog="closeSelectedUserDialog">
+        </customize-expert-email-dialog>
     </div>
 </template>
 
 <script>
     import {errTips} from "@/utils/tips.js";
     import {httpGet,httpPost} from "@/utils/http";
-
+    import customizeExpertEmailDialog from '@/view/review/editor/components/customizeExpertEmailDialog.vue'
     export default {
         props:{
-            expertIdList:{
+            expertIdList:{//已选择的评审专家
                 type:String,
             }
+        },
+        components:{
+            customizeExpertEmailDialog,
         },
         data(){
             return {
@@ -104,10 +45,10 @@
                 templateId:null,//在模板下拉框中选择的模板Id
                 idList:[],//评审专家邀请编号ID集合 ,
                 customizeEmailVisible:false,//定制邮件对话框是否显示
-                infoList:[],//被选中发邮件的专家信息列表
-                infoListLoading:false,
-
-                previewVisible:false,//定制邮件中的预览框显示
+                customizeSpecificEmailVisible:false,//定制特定用户的信件
+                userList:[],//被选中发邮件的专家信息列表
+                userListLoading:false,
+                nextVisible:false,//点击下一步，控制对话框的显示
             }
         },
         created(){
@@ -118,43 +59,63 @@
             getEmailTemplate(){
                 httpGet('/v1/authorization/review/emailtemplate/get').then(results=>{
                     const {httpCode, msg, data} = results.data;
-                    if (httpCode == 200) {
+                    if (httpCode == 200){
                         this.templateList = data.templateList;
                     } else {
                         errTips(msg);
                     }
-                })
+                });
             },
-
             goBack(){
                 this.$router.go(-1);
             },
-            ToCustomizeEmail(){//进入定制信件的对话框
-                if(this.templateId===null||this.templateId===''){
-                    // errTips("请先选择邮件模板！");
-                    // return ;
+            /**初始化duplicate*/
+            getInitDuplicate() {
+                return {
+                    isAdmin: false,//管理员
+                    isProjectUser: false,//发布者
+                };
+            },
+            /**发送邮件页面：是否允许点击下一步的条件判断*/
+            nextIsOk(){
+                if(this.templateId===null){
+                    errTips("请选择发送的模板！");
+                    return false;
                 }
-                this.customizeEmailVisible = true;
-                this.infoListLoading = true;
-                httpPost('/v1/authorization/review/getadmincurrentinfo/get',{idList:this.idList,templateId:this.templateId}).then(results=>{
-                    const {httpCode, msg, data} = results.data;
-                    if (httpCode == 200){
-                        this.infoList = data.infoList;
-                    } else {
+                return true;
+            },
+            /**发送邮件页面：点击下一步的操作,对应原型图的定制信件按钮*/
+            next(){
+                if(this.nextIsOk()===false){
+                    return false;
+                }
+                this.userList = [];//清空之前的待发送邮件的用户信息
+                let data = {
+                    idList: this.idList,
+                    templateId:this.templateId,
+                };
+                this.nextVisible = true;
+                this.userListLoading = true;
+                httpPost("/v1/authorization/review/getadmincurrentinfo/get",data).then(results=>{
+                    const {httpCode,msg,data} = results.data;
+                    if(httpCode===200){
+                        /*预先设定选择的每一个对象都是要发送的*/
+                        for(let item of data.infoList){
+                            item.isRemind = true;
+                            item.duplicate = this.getInitDuplicate();
+                            item.emailConfig = null;
+                        }
+                        this.userList = data.infoList;//待发送邮件的用户信息，在点击下一步后的对话框里显示，
+                                                      // 包含id : 管理员任务编号ID ,userId: 用户编号ID ,userName: 提交人/评审专家/评审发布者 用户名
+                    }else{
                         errTips(msg);
                     }
-                })
+                    this.userListLoading = false;
+                });
             },
-            customizeEmail(){//在对框框里，对特定对象的信件进行定制。
-
-
-            },
-            previewAndSendEmail(){
-
-            },
-            /**定制邮件中的预览操作*/
-            previewEmail(){
-
+            /**已选择对象对话框：关闭对话框*/
+            closeSelectedUserDialog(){
+                this.nextVisible=false
             },
             rowClass() {
                 return "background:#F4F6F9;";

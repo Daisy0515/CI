@@ -15,24 +15,23 @@
                     layout="prev, pager, next, jumper"
             ></el-pagination>
         </div>
-        <el-table v-loading="loading" :data="expertList" style="width:1000px;margin:20px auto"
-                  border :header-cell-style="rowClass">
+        <el-table v-loading="loading" :data="expertList" style="margin:20px auto" border :header-cell-style="rowClass" width="1500px">
             <el-table-column fixed label="操作" align="center">
                 <template slot-scope="scope">
                     <el-checkbox v-model="scope.row.isChoose" @change="idListChange(scope.row)"></el-checkbox>
                 </template>
             </el-table-column>
             <el-table-column prop="userName" label="评审专家" align="center"></el-table-column>
-            <el-table-column prop="loginTime" label="上次登录" align="center"></el-table-column>
+            <el-table-column prop="loginTime" label="上次登录" align="center" width="100px;"></el-table-column>
             <el-table-column prop="title" label="相关评审任务" align="center"></el-table-column>
-            <el-table-column prop="gmtCreate" label="评审邀请时间" align="center"></el-table-column>
-            <el-table-column prop="receiveTime" label="评审接受时间" align="center"></el-table-column>
-            <el-table-column prop="deadline" label="截止时间" align="center"></el-table-column>
-            <el-table-column prop="surplus" label="距离截止日期(天)" align="center"></el-table-column>
+            <el-table-column prop="gmtCreate" label="评审邀请时间" align="center" width="100px;"></el-table-column>
+            <el-table-column prop="receiveTime" label="评审接受时间" align="center" width="100px;"></el-table-column>
+            <el-table-column prop="deadline" label="截止时间" align="center" width="100px;"></el-table-column>
+            <el-table-column prop="surplus" label="距离截止日期(天)" align="center" ></el-table-column>
             <el-table-column prop="emailSum" label="发送提醒邮件总数" align="center"></el-table-column>
             <el-table-column prop="emailInvite" label="邀请提醒已发送" align="center"></el-table-column>
-            <el-table-column prop="emailDeadlineFront" label="截止日期前提醒" align="center"></el-table-column>
-            <el-table-column prop="emailDeadlineRear" label="截止日期后提醒" align="center"></el-table-column>
+            <el-table-column prop="emailDeadlineFront" label="截止日期前提醒" align="center" ></el-table-column>
+            <el-table-column prop="emailDeadlineRear" label="截止日期后提醒" align="center" ></el-table-column>
         </el-table>
         <el-row style="margin-top: 30px;">
             <el-button style="margin-left:42%;" @click="goBack">返回</el-button>
@@ -52,6 +51,7 @@
 <script>
     import {httpGet,httpPost} from "@/utils/http.js";
     import {message, successTips, errTips} from "@/utils/tips.js";
+    import {specificDate} from "@/utils/getDate";
     export default {
         name: "reviewReminderSearchResult",
         props:{
@@ -95,6 +95,14 @@
                 httpGet("v1/authorization/review/byadminmission/search", searchData).then(results => {
                     const {httpCode, msg, data} = results.data;
                     if (httpCode == 200) {
+                        for(let item of data.expertList){
+                            item.deadline = specificDate(item.deadline);
+                            item.emailDeadlineFront = specificDate(item.emailDeadlineFront);
+                            item.emailDeadlineRear  = specificDate(item.emailDeadlineRear );
+                            item.gmtCreate  = specificDate(item.gmtCreate );
+                            item.loginTime  = specificDate(item.loginTime);
+                            item.receiveTime   = specificDate(item.receiveTime );
+                        }
                         this.expertList = data.expertList;
                     } else if (httpCode !== 401){
                         errTips(msg);
@@ -115,19 +123,21 @@
                 }
             },
             submitExpertList(){
-                // if(this.idList.length===0){
-                //     errTips("请先选择专家！");
-                //     return;
-                // }
+                if(this.idList.length===0){
+                    errTips("请先选择专家！");
+                    return;
+                }
+                console.log("this.idList",this.idList);
                 httpPost("/v1/authorization/review/experteid/list",{idList: this.idList}).then(results=>{
                     const {httpCode, msg, data} = results.data;
                     if(httpCode===200){
                         this.expertIdList = data.expertList;//专家编号ID集合,这一块后端的命名不是很好，容易产生误解
+                        this.$router.push({name:'editorCustomizeAndSendEmail',params:{expertIdList:JSON.stringify(this.expertIdList)}});
                     }else{
                         errTips(msg);
                     }
                 });
-                this.$router.push({name:'editorCustomizeAndSendEmail',params:{expertIdList:JSON.stringify(this.expertIdList)}});
+
             },
             handleCurrentChange(val){ //对应分页栏的换页操作
                 this.pageData.pageNo = val;
@@ -144,6 +154,9 @@
 </script>
 
 <style scoped>
+    .editor-container{
+        width:100%;
+    }
     .bid_footer{
         margin-left: 38%;
         margin-top: 10px;

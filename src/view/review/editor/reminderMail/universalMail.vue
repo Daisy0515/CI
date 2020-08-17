@@ -99,6 +99,13 @@
                         </el-tooltip>
                     </template>
                 </el-table-column>
+                <el-table-column prop="projectUserName " label="发布者" align="center">
+                    <template slot-scope="scope">
+                        <el-tooltip class="item" effect="dark" :content="scope.row.projectUserName " placement="top-start">
+                            <span class="tablehidden">{{ scope.row.projectUserName }}</span>
+                        </el-tooltip>
+                    </template>
+                </el-table-column>
                 <el-table-column prop="submitTime" label="提交时间" align="center"></el-table-column>
                 <el-table-column prop="gmtModified" label="更新时间" align="center"></el-table-column>
                 <el-table-column prop="status" label="状态" align="center">
@@ -112,9 +119,9 @@
                 <el-table-column prop="statusExplain" label="评审状态" align="center">
                     <template slot-scope="scope">
                         <el-tooltip class="item" effect="dark" :content="scope.row.statusExplain">
-                            <span class="tablehidden" v-show="id==0">{{ scope.row.statusExplain }}</span>
+                            <span class="tablehidden" v-show="scope.row.status===1">{{ scope.row.statusExplain }}</span>
                         </el-tooltip>
-                        <el-button v-show="id!=0" @click="viewReviewDetail(scope.row.id)" type="text" size="medium">
+                        <el-button v-show="scope.row.status > 1" @click="viewReviewDetail(scope.row.id)" type="text" size="medium">
                             查看详情
                         </el-button>
                     </template>
@@ -131,71 +138,17 @@
         </div>
         <div class="bid_footer">
             <el-pagination @current-change="handleCurrentChange" :current-page.sync="pageData.pageNo" :total="totalPage"
-                           layout="prev, pager, next, jumper"></el-pagination>
+                           layout="prev, pager, next, jumper">
+            </el-pagination>
         </div>
         <el-row style="margin-top: 10px;">
-            <el-col :offset="10"><el-button type="primary" @click="next">下一步</el-button></el-col>
+            <el-col :offset="10">
+                <el-button type="primary" @click="next">下一步</el-button>
+            </el-col>
         </el-row>
-        <el-dialog title="定制信件" :visible.sync="nextVisible" width="80%">
-            <el-table :data="userList" v-loading="userListLoading">
-                <el-table-column property="userName" label="发送对象" ></el-table-column>
-                <el-table-column  label="信件模板" >
-                    <el-select v-model="templateId" placeholder="请选择模板" disabled>
-                        <el-option
-                                v-for="item in templateList"
-                                :key="item.id"
-                                :label="item.templateName"
-                                :value="item.id">
-                        </el-option>
-                    </el-select>
-                </el-table-column>
-                <el-table-column property="title" label="操作" >
-                    <template slot-scope="scope">
-                        <el-button type="text" size="medium" @click="customizeEmail(scope.row)">定制</el-button>
-                    </template>
-                </el-table-column>
-                <el-table-column  label="不发送" >
-                    <template slot-scope="scope">
-                        <el-checkbox v-model="scope.row.isChoose"></el-checkbox>
-                    </template>
-                </el-table-column>
-            </el-table>
-            <el-dialog
-                    width="60%"
-                    title="定制信件"
-                    :visible.sync="customizeVisible"
-                    append-to-body>
-                <el-row style="margin-top: 15px;">
-                    <el-col :span="3"> 收件人： </el-col>
-                    <el-col :span="10"> <el-input v-model="receiverName"></el-input> </el-col>
-                </el-row>
-                <el-row style="margin-top: 15px;">
-                    <el-col :span="3"> 信件主题： </el-col>
-                    <el-col :span="10"> <el-input placeholder="请输入信件的主题"></el-input> </el-col>
-                </el-row>
-                <el-row style="margin-top: 15px;">
-                    <el-col :span="3"> <span>信件主体：</span> </el-col>
-                    <el-col :span="18"> <el-input type="textarea" :rows="15" v-model="content"></el-input> </el-col>
-                </el-row>
-                <el-row style="margin-top: 15px;">
-                    <el-button style="margin-left:40%;" @click="customizeVisible=false">关闭</el-button>
-                    <el-button type="primary" style="margin-left:30px;" @click="previewEmail">预览</el-button>
-                </el-row>
-                <!-- 定制邮件框中预览信件的对话框-->
-                <el-dialog
-                        width="60%"
-                        title="预览"
-                        :visible.sync="previewVisible"
-                        append-to-body>
-                    <el-row>
-                        <el-col :span="3"> <span>信件内容</span> </el-col>
-                        <el-col :span="18">
-                            <el-input type="'textarea" rows="15" readonly="true" ></el-input>
-                        </el-col>
-                    </el-row>
-                </el-dialog>
-            </el-dialog>
-        </el-dialog>
+        <customize-email-dialog :visible="nextVisible" :receiver="receiver" :templateId="templateId" :userList="userList"
+                                :userListLoading="userListLoading" :templateList="templateList" @closeDialog="closeSelectedUserDialog">
+        </customize-email-dialog>
     </div>
 </template>
 
@@ -204,10 +157,13 @@
     import {httpGet, httpPost} from "@/utils/http.js";
     import {message, successTips, errTips} from "@/utils/tips.js";
     import {specificDate} from '@/utils/getDate.js';
-
+    import customizeEmailDialog from '@/view/review/editor/components/customizeEmailDialog'
     export default {
         name: "universalMail",
         mixins: [timeLimit],
+        components:{
+            customizeEmailDialog:customizeEmailDialog,
+        },
         data() {
             return {
                 /*邮件设置与搜索*/
@@ -217,6 +173,7 @@
                 tableData: [],//搜索的结果
                 loading: false,//搜索时加载
                 typeList: [],//评审类型的集合
+                totalPage: 0,
 
                 /*下一步按钮要提交给后台的数据*/
                 templateId:null,//选择的邮件模板的
@@ -224,28 +181,16 @@
                 receiver:null,//收件方1提交人2评审专家3评审发布者 ,
                 adminMissionList:[],//管理员任务编号ID集合 ,
 
-                /*对话框显示的属性*/
-                userList: [],//待发送邮件的用户信息
+                /*点击下一步，得到的已选择对象对话框显示的属性*/
+                userList: [],//已选择的待发送邮件的用户信息
                 userListLoading:false,//获取userList时的加载提示
                 nextVisible:false,//下一步对应的谈话框是否显示
-                customizeVisible:false,//针对特定的任务进行定制框的显示
 
-                /*点击定制后用到的属性*/
-                content:null,//模板信件主体
-                emailList:[],//用户名邮箱信息集合 ,
-                customizeUserList:[],//姓名集合
-                adminMissionId:null,//管理员任务编号id ,
-                receiverName:null,//收件人姓名
-                previewVisible:false,//控制预览页面的显示
-
-                options: [],
                 dialogChooseVisible: false,
                 id: "",
-                dialogFormVisible: false, //控制表单对话框是否显示
 
-                totalPage: 0,
                 reviewDetail: {},//查看详情的对话框
-                allReviewProcessList: {},//以评审的id为键，评审的processName为值存储所有评审流程的
+
             };
         },
         created() {
@@ -254,7 +199,31 @@
             this.getEmailTemplate();
         },
         methods: {
-            /**获取邮箱模板*/
+            /**初始化PageData和SearchData*/
+            getInitialPageOrSearchData() {
+                return {
+                    pageNo: 1,
+                    pageSize: 10,
+                    orderBy: "id",
+                    orderType: "DESC",
+                    type: null,
+                    submitterName: null,
+                    projectUserName: null,
+                    submitTimeStart: null,
+                    submitTimeEnd: null,
+                    expertAccomplishCount: this.expertAccomplishCount,
+                    status: this.status,
+                    statusExplain: this.statusExplain,
+                };
+            },
+            /**初始化emailConfig*/
+            getInitEmailConfig(){//用户设置的信件模板与信件主题,初始化为null
+                return {
+                    content:null,
+                    theme:null,
+                }
+            },
+            /**通用邮件页面：获取邮箱模板*/
             getEmailTemplate(){
                 httpGet('/v1/authorization/review/emailtemplate/get').then(results=>{
                     const {httpCode, msg, data} = results.data;
@@ -263,10 +232,9 @@
                     } else {
                         errTips(msg);
                     }
-                })
-
+                });
             },
-            /**获取评审任务*/
+            /**通用邮件页面：获取评审任务列表*/
             getView(val = this.pageData) {
                 this.loading = true;
                 httpGet("/v1/authorization/review/admin/search", val).then(results => {
@@ -288,24 +256,7 @@
                     this.loading = false;
                 });
             },
-            /**初始化PageData和SearchData*/
-            getInitialPageOrSearchData() {
-                return {
-                    pageNo: 1,
-                    pageSize: 10,
-                    orderBy: "id",
-                    orderType: "DESC",
-                    type: null,
-                    submitterName: null,
-                    projectUserName: null,
-                    submitTimeStart: null,
-                    submitTimeEnd: null,
-                    expertAccomplishCount: this.expertAccomplishCount,
-                    status: this.status,
-                    statusExplain: this.statusExplain,
-                };
-            },
-            /**当前评审*/
+            /**通用邮件页面：获取当前评审类型列表*/
             getTypeList() {
                 httpGet("/v1/authorization/review/type/get").then(results => {
                     const { httpCode, msg, data } = results.data;
@@ -317,29 +268,29 @@
                     }
                 });
             },
-            /**查看第三方评审详情*/
+            /**通用邮件页面：查看第三方评审详情*/
             viewReviewDetail(val) {
-                httpGet("/v1/authorization/review/expertinviterecord/list", {id: val}).then(results => {
-                    const { httpCode, msg, data } = results.data;
-                    if (httpCode == 200) {
-                        this.opinion = data.opinion;
-                        let userList = data.userList;
-                        for (let i of userList) {
-                            i.gmtCreate = specificDate(i.gmtCreate);
-                        }
-                        this.userList = userList;
-                    } else {
-                        this.typeList = [];
-                        errTips(msg);
-                    }
-                });
-                this.dialogChooseVisible = true;
+                // httpGet("/v1/authorization/review/expertinviterecord/list", {id: val}).then(results => {
+                //     const { httpCode, msg, data } = results.data;
+                //     if (httpCode == 200) {
+                //         this.opinion = data.opinion;
+                //         let userList = data.userList;
+                //         for (let i of userList) {
+                //             i.gmtCreate = specificDate(i.gmtCreate);
+                //         }
+                //         this.userList = userList;
+                //     } else {
+                //         this.typeList = [];
+                //         errTips(msg);
+                //     }
+                // });
+                // this.dialogChooseVisible = true;
             },
-            /**搜索列表*/
-            searchList() {
+            /**通用邮件页面：搜索列表*/
+            searchList(){
                 this.getView(this.searchData);
             },
-            /**改变管理员任务编号集合*/
+            /**通用邮件页面：改变管理员任务编号集合*/
             changeAdminMissionList(row){
                 if(row.isChoose===true){
                     this.adminMissionList.push(row.id);
@@ -348,85 +299,73 @@
                     this.adminMissionList.splice(index,1);
                 }
             },
-            /**是否允许点击下一步*/
+            /**通用邮件页面：是否允许点击下一步的条件判断*/
             nextIsOk(){
                 if(this.receiver===null){
                     errTips("请选择发送对象！");
-                    return ;
+                    return false;
                 }
                 if(this.receiver===2&&this.status===null){
                     errTips("请选择评审专家的评审状态！");
-                    return ;
+                    return false;
                 }
                 if(this.templateId===null){
                     errTips("请选择发送的模板！");
-                    return ;
+                    return false;
                 }
                 if(this.adminMissionList.length===0){
                     errTips("请选择相关的评审任务!");
-                    return;
+                    return false;
                 }
+                return true;
             },
-            /**点击下一步的操作*/
+            /**通用邮件页面：点击下一步的操作*/
             next(){
-                this.nextIsOk();
-                this.userList = [];//清空之前的
+                if(this.nextIsOk()===false){
+                    return false;
+                }
+                this.userList = [];//清空之前的待发送邮件的用户信息
                 let data = {
                     adminMissionList: this.adminMissionList,
                     receiver:parseInt(this.receiver),
                     status:parseInt(this.status),
                     templateId:this.templateId,
-                }
+                };
                 this.nextVisible = true;
                 this.userListLoading = true;
-                console.log("data",data);
                 httpPost("/v1/authorization/review/admincurrentemail/get",data).then(results=>{
                     const {httpCode,msg,data} = results.data;
                     if(httpCode===200){
-                        this.userList = data.userList;
+                        /*预先设定选择的每一个对象都是要发送的*/
+                        for(let item of data.userList){
+                            item.isInvite = true;
+                            item.duplicate = this.getInitDuplicate();
+                            item.emailConfig = null;
+                        }
+                        this.userList = data.userList;//待发送邮件的用户信息，在点击下一步后的对话框里显示，
+                                                      // 包含id : 管理员任务编号ID ,userId: 用户编号ID ,userName: 提交人/评审专家/评审发布者 用户名
                     }else{
                         errTips(msg);
                     }
                     this.userListLoading = false;
                 });
-
             },
-            /**定制信件对话框中的定制操作*/
-            customizeEmail(row){
-                console.log("row",row);
-                this.customizeVisible = true;
-                let data = {
-                    adminMissionId: row.id,
-                    receiver:parseInt(row.receiver),
-                    userId:row.userId,
-                }
-                httpPost("/v1/authorization/review/admincurrentemail/update",data).then(results=>{
-                    const {httpCode,msg,data} = results.data;
-                    if(httpCode===200){
-                        this.receiverName = data.userList[0];//在通用邮件的定制框中，一次只有一个收件人，在评审任务中点击的“发送邮件”可能是多个
-                        this.customizeUserList = data.userList;
-                        this.content = data.content;
-                        this.emailList = data.emailList;
-                        this.adminMissionId = data.adminMissionId;
-
-                        console.log("this.receiver",this.receiver,"data.receiver",data.receiver);
-                        console.log("this.status",this.status,"data.status",data.status);
-                        console.log("data.userList",data.userList);
-                        console.log("this.emailList",this.emailList);
-                    }else{
-                        errTips(msg);
-                    }
-                });
+            /**初始化duplicate*/
+            getInitDuplicate(){
+                return {
+                    isAdmin:false,//管理员
+                    isProjectUser:false,//发布者
+                };
             },
-            /**预览邮件内容*/
-            previewEmail(){
-
+            /**已选择对象对话框：关闭对话框*/
+            closeSelectedUserDialog(){
+                this.nextVisible=false
             },
-            handleCurrentChange(val) {
+            handleCurrentChange(val){
                 this.pageData.pageNo = val;
                 this.getView();
             },
-            rowClass() {
+            rowClass(){
                 return "background:#F4F6F9;";
             }
         }
