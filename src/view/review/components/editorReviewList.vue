@@ -9,7 +9,7 @@
         </div>
         <div class="header_top">
             <el-input v-model="searchData.title" placeholder="评审标题"></el-input>
-            <el-select v-model="searchData.type"  placeholder="请选择评审类型">
+            <el-select v-model="searchData.type"  clearable placeholder="请选择评审类型">
                 <el-option v-for="index in typeList" :label="typeList[index]" :value="index"></el-option>
             </el-select>
             <el-input v-model="searchData.projectUserName" placeholder="发布者"></el-input>
@@ -34,7 +34,7 @@
                     <el-button @click="handleClickDecisionAndOpinion(scope.row)" type="text" size="medium"><i
                             class="el-icon-refresh"></i>意见与决定
                     </el-button>
-                    <el-button @click="handleClickSubmit(scope.row)" type="text" size="medium"><i
+                    <el-button @click="handleClickSendEmail(scope.row.id)" type="text" size="medium"><i
                             class="el-icon-message"></i>发送邮件
                     </el-button>
                     <el-button @click="handleClickSubmit(scope.row)" type="text" size="medium"><i
@@ -124,7 +124,8 @@
                 </el-table-column>
             </el-table>
         </el-dialog>
-        <editor-view-detail :form="reviewDetail"  :dialogFormVisible="dialogFormVisible" @closeDialog="closeDialog"></editor-view-detail>
+        
+		<editor-view-detail :form="reviewDetail"  :dialogFormVisible="dialogFormVisible" @closeDialog="closeDialog"></editor-view-detail>
         <div class="bid_footer">
             <el-pagination @current-change="handleCurrentChange" :current-page.sync="pageData.pageNo" :total="totalPage"
                            layout="prev, pager, next, jumper"></el-pagination>
@@ -274,7 +275,7 @@
                         }
                         this.userList = userList;
                     } else {
-                        this.typeList = [];
+                        this.userList = [];
                         errTips(msg);
                     }
                 });
@@ -319,6 +320,12 @@
             handleClickDecisionAndOpinion(row){
                 this.$router.push({name:'editorOpinionAndDecision',params:{id:row.id,identification:row.identification}})
             },
+			handleClickSendEmail(val){
+				//alert("id:",val);
+				console.log(val);
+				this.$router.push({path: '/sendEmail', query: {id: val}});
+				//this.$router.push({name:'sendEmail',params:{id:val}});
+			},
             handleCurrentChange(val){
                 this.pageData.pageNo = val;
                 this.getView();
@@ -351,7 +358,8 @@
             rowClass() {
                 return "background:#F4F6F9;";
             }
-        }
+        
+		}
     };
 </script>
 

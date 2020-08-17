@@ -38,24 +38,32 @@
 
 		<el-table :data="expertUserList" :header-cell-style="rowClass" style="margin-top: 20px;" v-loading="loading">
 			<el-table-column prop="uName" label="姓名" align="center"></el-table-column>
-			<el-table-column prop="uJobTitle" label="性别" align="center"></el-table-column>
+			<el-table-column label="性别" align="center">
+				<template slot-scope="scope">
+					<span v-if = "scope.row.uSex === 1">男</span>
+					<span v-if = "scope.row.uSex === 2">女</span>
+					<span v-if = "scope.row.uSex === 3">其他</span>
+				</template>
+			</el-table-column>
 			
 			<el-table-column prop="uWorkUnit" label="单位" align="center"></el-table-column>
 			<el-table-column prop="uNation" label="国家" align="center"></el-table-column>
-			<el-table-column prop="uEmail" label="手机" align="center"></el-table-column>
+			<el-table-column prop="uPhone" label="手机" align="center"></el-table-column>
 			<el-table-column prop="uEmail" label="邮箱" align="center"></el-table-column>
 			
-			<el-table-column prop="typeList" label="角色" align="center"></el-table-column>
+		
 			<el-table-column label="操作" align="center" width="180px">
 				<template slot-scope="scope">
-					<el-button @click="reviewStatistics(scope.row)" type="text" size="medium"><i class="icon iconfont icon-yonghu"></i>专家信息
+					<el-button @click="reviewInformaition(scope.row.uId)" type="text" size="medium"><i class="icon iconfont icon-yonghu"></i>专家信息
 					</el-button>
-					<el-button @click="reviewStatistics(scope.row.id)" type="text" size="medium"><i class="el-icon-document"></i>评审统计
+					<el-button @click="reviewStatistics(scope.row.uId)" type="text" size="medium"><i class="el-icon-document"></i>评审统计
 					</el-button>
 				</template>
 			</el-table-column>
 			
 		</el-table>
+		<review-statistics :tableData="tableData" :dialogFormVisible="statisticView" @closeDialog="closeDialog"></review-statistics>
+		<expert-information :ruleForm="personalForm" :dialogFormVisible="informationView" @closeDialog="closeInformationDialog"></expert-information>
 		<el-dialog title="专家信息" :visible.sync="reviewStatisticsVisible" :close-on-click-modal="false" width="80%" >
 		
 			
@@ -80,147 +88,227 @@
 		httpGet,
 		httpDelete
 	} from "@/utils/http.js";
-
 	import {
 		message,
 		successTips,
 		errTips
 	} from "@/utils/tips.js";
-	import reviewDetailDialog from '@/view/review/components/reviewDetailDialog';
-	import submitReview from '@/view/review/components/submitReview';
-	import reviewOpinion from '@/view/review/components/reviewOpinion'
-	import {
-		specificDate
-	} from '@/utils/getDate.js';
+	import reviewStatistics from '@/view/review/components/reviewStatistics'
+	import expertInformation from '@/view/review/components/expertInformation'
+	import { specificDate } from '@/utils/getDate.js';
 
 	export default {
-		
+		components: {
+			reviewStatistics,
+			expertInformation
+		},
 		data() {
 			return {
-				expertUserList:[{uName:111}],
+				researchDirectionList:[],
+				personalForm:{},
+				informationView : false,//控制专家信息对话框
+				statisticView : false,//控制评审统计对话框
+				tableData:[],
+				expertUserList:[],
 				searchData: {
-					projectName: "",
-					startTime: null,
-					endTime: null,
-					parentId: null,
 					pageNo: 1,
-					typeId: null,
 					pageSize: 10,
-					orderType: "DESC",
-					orderBy: "id"
+					name: '',
+					jobTitle: '',
+					cruxId: null,
+					researchId: null,
+					workUnit: '',
+					department: '',
+					email: '',
+					education: null,
+					nation: '',
 				},
-				id: "",
-				submitTitle: '修改提交',
-				isShowSubmitHistory: true, //在修改提交评审的表单里是否显示提交历史
-				dialogFormVisible: false, //控制表单对话框是否显示
-				dialogSubmitVisible: false, //控制重新提交框是否显示
-				dialogOpinionVisible: false, //控制意见详情框是否显示
 				loading: false,
-				tableData: [],
 				pageData: {
 					pageNo: 1,
 					pageSize: 10,
-					orderBy: "id",
-					orderType: "DESC",
-					type:null,
-					submitterName:null,
-					projectUserName:null,
-					submitTimeStart:null,
-					submitTimeEnd:null,
-					expertAccomplishCount:null,
-					status:null,
-					statusExplain:null
+					name: '',
+					jobTitle: '',
+					cruxId: null,
+					researchId: null,
+					workUnit: '',
+					department: '',
+					email: '',
+					education: null,
+					nation: '',
 				},
 				totalPage: 0,
-				form: { //表单中的信息
-					name: '',
-					purpose: '',
-					date1: '',
-					date2: '',
-					content: '',
-					daysBeforeDeadline: '',
-					fileTable: [{
-						filename: '项目申请书',
-						url: ''
-					}],
-					delivery: false,
-					type: [],
-					resource: '',
-					desc: ''
-				},
 				reviewStatisticsVisible:false,
-				formLabelWidth: '100px' //控制表单中输入框的尺寸
+				ruleForm:{
+					accomplishReviewSum : null,
+					averageAccomplishReviewTime : null,
+					averagePostponeDay : null,
+					averageRespondInviteTime : null,
+					averageScore : null,
+					finallyAcceptReviewTime : null,
+					finallyAccomplishReviewTime : null,
+					inviteAccept : null,
+					inviteAcceptFront : null,
+					inviteAcceptRear : null,
+					inviteRefuse : null,
+					inviteSum : null,
+					inviteWithdraw : null,
+					modification : null,
+					onTimeAccomplishReview : null,
+					pass : null,
+					postponeAccomplishReview : null,
+					refuse : null,
+					underwayReview : null,
+					unfinishedReview : null,
+					warn : null,
+					withdrawAllocatedMission : null,
+					
+				},
+				cruxList:[],
 			};
 		},
 		created: function() {
-			this.id = this.$route.query.id;
-			this.pageData.expertAccomplishCount = this.id;
-			this.getView();
+			
+			this.getExpert();
+			this.getKeyWords();
+			this.getResearchList();
 		},
 		computed: {},
 		methods: {
+			searchList(){},
+			/*获取关键词*/
+			getKeyWords() {
+				// /v1/public/coreuser/crux/list
+				httpGet("/v1/public/coreuser/crux/list").then(results => {
+					const {
+						httpCode,
+						msg,
+						data
+					} = results.data;
+					if (httpCode == 200) {
+						this.cruxList = data.cruxList;
+					} else {
+						this.cruxList = [];
+						errTips(msg);
+					}
+					console.log(this.cruxList);
+				})
+			},
+			/*获取研究方向*/
+			getResearchList() {
+				//
+				httpGet("/v1/public/coreuser/list/research").then(results => {
+					const {
+						httpCode,
+						msg,
+						data
+					} = results.data;
+					if (httpCode == 200) {
+						this.researchDirectionList = data.researchDirectionList;
+					} else {
+						this.researchDirectionList = [];
+						errTips(msg);
+					}
+					console.log(this.researchDirectionList);
+				})
+			},
+			/*获取评审统计*/
 			reviewStatistics(val){
-				this.reviewStatisticsVisible=true;
+				console.log(val);
+				this.statisticView = true;
+				//get /v1/authorization/review/expertuser/get 
+				httpGet("/v1/authorization/review/expertuser/get", {id:val}).then(results => {
+					const {
+						httpCode,
+						msg,
+						data
+					} = results.data;
+					if (httpCode == 200) {
+						data.finallyAcceptReviewTime = specificDate(data.finallyAcceptReviewTime);
+						data.finallyAccomplishReviewTime = specificDate(data.finallyAccomplishReviewTime);
+						this.ruleForm=data;
+						// this.ruleForm.finallyAcceptReviewTime = specificDate(this.ruleForm.finallyAcceptReviewTime);
+						// this.ruleForm.finallyAccomplishReviewTime = specificDate(this.ruleForm.finallyAccomplishReviewTime);
+						this.tableData.push(this.ruleForm);
+					} else {
+						errTips(msg);
+					}
+				});
 				
 			},
-			
-			searchList(){
-				//alert('searchList');
-				this.getView(this.searchData);
+			/*获取评审人员资料*/
+			reviewInformaition(val){
+				this.informationView = true;
+				//get /v1/authorization/coreuser/reviewexpertuserinfo/get 
+				httpGet("/v1/authorization/coreuser/reviewexpertuserinfo/get", {id:val}).then(results => {
+					const {
+						httpCode,
+						msg,
+						data
+					} = results.data;
+					if (httpCode == 200) {
+						this.personalForm=data;
+						if (this.personalForm.sex === 1) this.personalForm.sex = '男';
+						if (this.personalForm.sex === 2) this.personalForm.sex = '女';
+						if (this.personalForm.sex === 3) this.personalForm.sex = '其他';
+						
+						if (this.personalForm.education === 1) this.personalForm.education = '高中';
+						if (this.personalForm.education === 2) this.personalForm.education = '大专';
+						if (this.personalForm.education === 3) this.personalForm.education = '本科';
+						if (this.personalForm.education === 4) this.personalForm.education = '研究生';
+						if (this.personalForm.education === 5) this.personalForm.education = '博士';
+						if (this.personalForm.education === 6) this.personalForm.education = '博士后';
+						if (this.personalForm.education === 7) this.personalForm.education = '院士';
+						
+						this.personalForm.province = this.personalForm.province + '/' + this.personalForm.city;
+						console.log("personalForm:",this.personalForm);
+					} else {
+						errTips(msg);
+					}
+				});
 			},
-			getView(val = this.pageData) {
-				
+			getExpert(val = this.pageData) {
 				this.loading = true;
-				//get /v1/authorization/review/admin/search 
-				httpGet("/v1/authorization/review/admin/search", val).then(results => {
-					const { httpCode,msg,data} = results.data;
+				//get /v1/authorization/review/expert/user
+				httpGet("/v1/authorization/review/expert/user", val).then(results => {
+					const {
+						httpCode,
+						msg,
+						data
+					} = results.data;
 					if (httpCode == 200) {
 						this.pageNo = data.pageNo;
-						this.totalPage = parseInt(data.totalPage + '0');
-
-						let list = data.adminMissionList ;
-						for (let i of list) {
-
-							i.gmtCreate = specificDate(i.gmtCreate);
-							i.submitTime = specificDate(i.submitTime);
-						}
+						this.totalPage = parseInt(data.totalPage + "0");
+						this.expertUserList = data.expertUserList;
+						console.log('expertUserList',this.expertUserList);
 						Object.assign(this.pageData, val);
-						this.$set(this, 'tableData', list);
+			
 					} else if (msg == "该条件暂无数据") {
-						this.tableData = [];
+						this.expertUserList = [];
 						message("该条件暂无数据");
 					} else if (httpCode !== 401) {
 						errTips(msg);
 					}
 					this.loading = false;
 				});
+			
 			},
-
-			handleCurrentChange(val) {
-				this.pageData.pageNo = val;
-				this.getView();
+			//关闭专家信息对话框
+			closeInformationDialog(){
+				this.informationView = false;
 			},
-			handleClickDetail(row) {
-				this.dialogFormVisible = true;
-			},
-			handleClickSubmit(row) {
-				this.dialogSubmitVisible = true;
-			},
-			handleClickOpinion(row) {
-				this.dialogOpinionVisible = true;
-			},
+			//关闭评审统计对话框
 			closeDialog() {
-				this.dialogFormVisible = false;
-			},
-			closeSubmitDialog() {
-				this.dialogSubmitVisible = false;
-			},
-			closeOpinionDialog() {
-				this.dialogOpinionVisible = false;
+				this.tableData = [];
+			    this.statisticView = false;
 			},
 			rowClass() {
 				return "background:#F4F6F9;";
-			}
+			},
+			handleCurrentChange(val){
+			    this.pageData.pageNo = val;
+			    this.getView();
+			},
 		}
 	};
 </script>

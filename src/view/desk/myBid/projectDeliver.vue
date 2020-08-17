@@ -13,39 +13,88 @@
 		<div class="container deskHeader">
 			<el-table :data="ReviewTable" style="width:900px;margin:50px auto;" :header-cell-style="rowClass" v-loading="loading">
 				<el-table-column label="评审状态" align="center">
-					<el-table-column fixed prop="title" label="评审标题" align="center">
+					<el-table-column fixed prop="typeName" label="评审流程" align="center">
+
+					</el-table-column>
+					<el-table-column prop="title" label="评审标题" align="center">
 						<template slot-scope="scope">
-							<el-tooltip class="item" effect="dark" :content="scope.row.title" placement="top-start">
+							<el-tooltip class="item" effect="dark" content="scope.row.title" placement="top-start">
 								<span class="tablehidden">{{ scope.row.title }}</span>
 							</el-tooltip>
 						</template>
 					</el-table-column>
-					<el-table-column prop="content" label="评审内容" align="center">
+					<el-table-column label="评审结果" align="center">
 						<template slot-scope="scope">
-							<el-tooltip class="item" effect="dark" :content="scope.row.content" placement="top-start">
-								<span class="tablehidden">{{ scope.row.content }}</span>
-							</el-tooltip>
+							<el-button @click="handleClickDetail(scope.row.id)" type="text" size="medium"><i class="el-icon-search"></i>查看详情
+							</el-button>
 						</template>
 					</el-table-column>
-
-					<el-table-column prop="result" label="状态" align="center">
+					<el-table-column prop="adminOpinion" label="管理员意见" align="center">
 						<template slot-scope="scope">
-							<span v-if="scope.row.result === true">通过</span>
-							<span v-if="scope.row.result === false">未通过</span>
-						</template>
-					</el-table-column>
-
-					<el-table-column label="操作" align="center" width="350">
-						<template slot-scope="scope">
-							<router-link :to="{ path: 'bidView', query: { id: scope.row.id } }">
-								<i class="el-icon-search"></i>
-								查看
-							</router-link>
+							<span v-if="scope.row.adminOpinion === 1">通过</span>
+							<span v-if="scope.row.adminOpinion === 2">未通过</span>
+							<span v-if="scope.row.adminOpinion === 3">拒绝</span>
+							<span v-if="scope.row.adminOpinion === 4">没有意见</span>
 						</template>
 					</el-table-column>
 				</el-table-column>
 			</el-table>
+			<el-dialog title="评审意见" :visible.sync="dialogVisible" width="60%" :close-on-click-modal="false">
+				<el-form :model="form">
+					<h2 class="header">管理员意见：</h2>
+					<el-row :gutter="20">
 
+						<el-col :span="6">
+							<el-form-item label="管理员决定" :label-width="formLabelWidth">
+								<el-input v-model="form.adminOpinion.opinion" auto-complete="off" :readonly="isReadOnly" />
+							</el-form-item>
+
+						</el-col>
+						<el-col :span="12">
+							<el-form-item label="管理员意见详情" :label-width="formLabelWidth">
+								<el-input type="textarea" v-model="form.adminOpinion.details" auto-complete="off" :readonly="isReadOnly" />
+							</el-form-item>
+						</el-col>
+						<el-col :span="6">
+							<el-button type="primary" size="medium">管理员意见附件</el-button>
+						</el-col>
+					</el-row>
+					<h2 class="header">评审专家意见：</h2>
+					<el-table :data="userList" :header-cell-style="rowClass">
+						<el-table-column prop="userName" label="评审专家" align="center"></el-table-column>
+						<el-table-column prop="totalScore" label="总分" align="center"></el-table-column>
+						<el-table-column prop="reviewScore" label="得分" align="center"></el-table-column>
+						<el-table-column label="评审结果" align="center">
+							<template slot-scope="scope">
+								<el-button @click="viewDetail(scope.row.expertiInviteId)" type="text" size="medium"><i class="el-icon-search"></i>详情
+								</el-button>
+							</template>
+						</el-table-column>
+					</el-table>
+					<h2 class="header">发布者意见：</h2>
+					<el-row :gutter="20">
+
+						<el-col :span="6">
+							<el-form-item label="发布者决定" :label-width="formLabelWidth">
+								<el-input v-model="form.projectOpinion.result" auto-complete="off" :readonly="isReadOnly" />
+							</el-form-item>
+
+						</el-col>
+						<el-col :span="6">
+							<el-form-item label="评审得分" :label-width="formLabelWidth">
+								<el-input v-model="form.projectOpinion.score" auto-complete="off" :readonly="isReadOnly" />
+							</el-form-item>
+						</el-col>
+						<el-col :span="12">
+							<el-form-item label="评价内容" :label-width="formLabelWidth">
+								<el-input type="textarea" v-model="form.projectOpinion.content" auto-complete="off" :readonly="isReadOnly" />
+							</el-form-item>
+						</el-col>
+					</el-row>
+
+				</el-form>
+
+			</el-dialog>
 			<p class="Tips">
 				<i class="el-icon-info"></i>
 				只有当前项目的所有评审通过才能进行交付；多次上传资源只保留最后一次的上传
@@ -81,19 +130,6 @@
 					<el-table-column label="操作" align="center" width="350">
 						<template slot-scope="scope">
 							<sourceUpload :uploadIndex="uploadIndex" :fileIndex="scope.row.id" v-on:setIdCard="setIdCard2(data=$event,id=scope.row.id)" />
-							<!-- <el-upload class="upload-demo"
-							ref="upload" action="localhost"
-							:on-preview="handlePreview"
-							:on-remove="handleRemove"
-							:file-list="fileList2"
-							list-type="picture"
-							:data="QQQ"
-							:limit="1"
-							:on-success="onSuccess"
-							:on-error="onError">
-							<el-button size="small" type="primary">点击上传图片</el-button>
-							<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-							</el-upload> -->
 						</template>
 					</el-table-column>
 				</el-table-column>
@@ -106,123 +142,217 @@
 	</div>
 </template>
 <script>
-import { httpGet, httpPost, httpDelete,httpPut } from '@/utils/http.js';
-import { mapGetters, mapMutations } from 'vuex';
-import { successTips, errTips } from '@/utils/tips.js';
-import { MessageBox } from 'element-ui';
-import sourceUpload from '@/common/upload/resourceUpload';
-export default {
-	components: {
-		sourceUpload
-	},
-	data() {
-		return {
-			uploadIndex:false,
-			resourceId:"",
-			resourceUrl:"",
-			resourceUrlList:[],
-			goUpload: true,
-			fileName: 'bidTask',
-			loading: false,
-			Id: '',
-			ReviewTable: [],
-			ResourceTable: [],
-			ReviewList: [],
-			ruleForm:{
-				resourceUrlList:[]
-			}
-		};
-	},
-
-	created: function() {
-		this.Id = this.$route.query.Id;
-		if (!this.Id) {
-			this.$router.push({ path: 'myBid' });
-			return false;
-		}
-		this.getView();
-	},
-	watch:{
-		resourceUrlList:function(val){
-			console.log('%s, %s',this.resourceUrlList.length,this.ResourceTable.length);
-
-			if (this.resourceUrlList.length==this.ResourceTable.length){
-
-				console.log(this.resourceUrlList);
-				for ( var i = 0;i<this.resourceUrlList.length;i++){
-					console.log(i,this.resourceUrlList[i].resourceUrl);
-					if(this.resourceUrlList[i].resourceUrl==null){
-						this.resourceUrlList[i].resourceUrl = this.ResourceTable[i].resourceUrl;
+	import {
+		httpGet,
+		httpPost,
+		httpDelete,
+		httpPut
+	} from '@/utils/http.js';
+	import {
+		mapGetters,
+		mapMutations
+	} from 'vuex';
+	import {
+		successTips,
+		errTips
+	} from '@/utils/tips.js';
+	import {
+		MessageBox
+	} from 'element-ui';
+	import sourceUpload from '@/common/upload/resourceUpload';
+	export default {
+		components: {
+			sourceUpload
+		},
+		data() {
+			return {
+				userList: [],
+				dialogVisible: false, //控制查看详情的对话框
+				uploadIndex: false,
+				resourceId: "",
+				resourceUrl: "",
+				resourceUrlList: [],
+				goUpload: true,
+				fileName: 'bidTask',
+				loading: false,
+				Id: null,
+				projectId: null,
+				ReviewTable: [],
+				ResourceTable: [],
+				ReviewList: [],
+				ruleForm: {
+					resourceUrlList: []
+				},
+				typeList: [],
+				form: {
+					adminOpinion:{
+						accessory: null,
+						details: null,
+						opinion: null
+					},
+					expertOpinionList :[],
+					projectOpinion :{
+						content: null,
+						result: null,
+						score: null
 					}
-				}
-				this.ruleForm.resourceUrlList=this.resourceUrlList;
-				httpPut(
-				  "/v1/authorization/review/team/update",
-				  this.ruleForm
-				).then(results => {
-				  const { msg, httpCode } = results.data;
-				  if (httpCode === 200) {
-				    successTips("提交成功");
-					this.$router.push({ path: './mybid' });
-				  } else {
-				//	this.uploadIndex=false;
-				    errTips(msg);
-				  }
+				},
+				formLabelWidth: '150px'
+			};
+		},
+
+		created: function() {
+			this.Id = this.$route.query.Id;
+			this.projectId = this.$route.query.projectId;
+			if (!this.Id) {
+				this.$router.push({
+					path: 'myBid'
 				});
+				return false;
 			}
-		}
-	},
-
-
-	methods: {
-		...mapMutations(['setCache']),
-		returnMybid() {
-			this.$router.push({ path: './mybid' });
+			this.getView();
+			this.getTypeList();
 		},
+		watch: {
+			resourceUrlList: function(val) {
+				console.log('%s, %s', this.resourceUrlList.length, this.ResourceTable.length);
 
-		sortBykey(arr,key){
-		  return arr.sort(function (a, b) {
-			let x = a[key]
-			let y = b[key]
-			return ((x < y) ? -1 : (x > y) ? 1 : 0)
-		  })
-		},
-		getView() {
-			this.loading = true;
-			//get /v1/authorization/review/team/list
+				if (this.resourceUrlList.length == this.ResourceTable.length) {
 
-			//get /v1/authorization/review/team/list
-			httpGet('/v1/authorization/review/team/list', {
-				id: this.Id
-			}).then(results => {
-				const { httpCode, msg, data } = results.data;
-				if (httpCode === 200) {
-					this.ReviewTable = data.reviewStatusList;
-					console.log("reviewTable:",this.ReviewTable);
-					this.ResourceTable = data.reviewTeamList;
-					this.loading = false;
-				} else if (httpCode === 400) {
-					this.setCache('myBid');
-				} else if (httpCode !== 401) {
-					errTips(msg);
+					console.log(this.resourceUrlList);
+					for (var i = 0; i < this.resourceUrlList.length; i++) {
+						console.log(i, this.resourceUrlList[i].resourceUrl);
+						if (this.resourceUrlList[i].resourceUrl == null) {
+							this.resourceUrlList[i].resourceUrl = this.ResourceTable[i].resourceUrl;
+						}
+					}
+					this.ruleForm.resourceUrlList = this.resourceUrlList;
+					httpPut(
+						"/v1/authorization/review/team/update",
+						this.ruleForm
+					).then(results => {
+						const {
+							msg,
+							httpCode
+						} = results.data;
+						if (httpCode === 200) {
+							successTips("提交成功");
+							this.$router.push({
+								path: './mybid'
+							});
+						} else {
+							//	this.uploadIndex=false;
+							errTips(msg);
+						}
+					});
 				}
-			});
+			}
 		},
-		setIdCard2(data,id) {
-			//console.log(this.uploadIndex);
-			//alert(22);
-			this.resourceUrl=data.fileName;
-			this.resourceId=id;
-			var item = {id:this.resourceId,resourceUrl:this.resourceUrl};
-			console.log(item);
-			this.resourceUrlList.push(item);
-			this.resourceUrlList = this.sortBykey(this.resourceUrlList,'id')
-		},
-		submitForm() {
-			this.uploadIndex=true;
 
-			//this.setIdCard2();
-			 // this.resourceUrl ? this.setIdCard2() : (this.uploadIndex = !this.uploadIndex);
+
+		methods: {
+			...mapMutations(['setCache']),
+			/*获取评审结果的详情*/
+			handleClickDetail(val) {
+				this.dialogVisible = true;
+				//get /v1/authorization/review/deliverydetails/get
+				httpGet("/v1/authorization/review/deliverydetails/get",{id:val}).then(results => {
+				    const { httpCode, msg, data } = results.data;
+				    if (httpCode == 200) {
+						this.form = data;
+						this.userList = data.expertOpinionList ;
+				    } else {
+
+				        errTips(msg);
+				    }
+				});
+			},
+			getTypeList() {
+				//get /v1/authorization/review/process/list 
+				httpGet("/v1/authorization/review/process/list", {
+					id: this.projectId
+				}).then(results => {
+					const {
+						httpCode,
+						msg,
+						data
+					} = results.data;
+					if (httpCode == 200) {
+						this.typeList = data.processList;
+						console.log("typeList:", this.typeList);
+					} else {
+						this.typeList = [];
+						errTips(msg);
+					}
+				});
+			},
+			returnMybid() {
+				this.$router.push({
+					path: './mybid'
+				});
+			},
+
+			sortBykey(arr, key) {
+				return arr.sort(function(a, b) {
+					let x = a[key]
+					let y = b[key]
+					return ((x < y) ? -1 : (x > y) ? 1 : 0)
+				})
+			},
+			getView() {
+				this.loading = true;
+				//get /v1/authorization/review/team/list
+
+				//get /v1/authorization/review/team/list
+				httpGet('/v1/authorization/review/team/list', {
+					id: this.Id
+				}).then(results => {
+					const {
+						httpCode,
+						msg,
+						data
+					} = results.data;
+					if (httpCode === 200) {
+						this.ReviewTable = data.reviewStatusList;
+						let list = this.ReviewTable;
+						for (let i of list) {
+							let index = i.type;
+							for (let j of this.typeList) {
+								if (j.id === index) {
+									i.typeName = j.processName;
+									break;
+								}
+							}
+							//i.typeName = this.typeList[index];
+						}
+						console.log("reviewTable:", this.ReviewTable);
+						this.ResourceTable = data.reviewTeamList;
+						this.loading = false;
+					} else if (httpCode === 400) {
+						this.setCache('myBid');
+					} else if (httpCode !== 401) {
+						errTips(msg);
+					}
+				});
+			},
+			setIdCard2(data, id) {
+				//console.log(this.uploadIndex);
+				//alert(22);
+				this.resourceUrl = data.fileName;
+				this.resourceId = id;
+				var item = {
+					id: this.resourceId,
+					resourceUrl: this.resourceUrl
+				};
+				console.log(item);
+				this.resourceUrlList.push(item);
+				this.resourceUrlList = this.sortBykey(this.resourceUrlList, 'id')
+			},
+			submitForm() {
+				this.uploadIndex = true;
+
+				//this.setIdCard2();
+				// this.resourceUrl ? this.setIdCard2() : (this.uploadIndex = !this.uploadIndex);
 				// alert(22);
 				// console.log(this.resourceUrlList);
 				// httpPut(
@@ -237,14 +367,19 @@ export default {
 				//     errTips(msg);
 				//   }
 				// });
+			}
 		}
-	}
-};
+	};
 </script>
 <style lang="scss">
-.Tips {
-	text-align: center;
-	margin-top: 15px;
-	color: #909399a8;
-}
+	.Tips {
+		text-align: center;
+		margin-top: 15px;
+		color: #909399a8;
+	}
+
+	.header {
+		font-weight: bolder;
+		margin-top: 15px;
+	}
 </style>

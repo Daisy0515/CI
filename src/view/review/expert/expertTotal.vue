@@ -270,6 +270,8 @@
 				const { httpCode, msg, data } = results.data;
 				if (httpCode == 200) {
 					this.ruleForm=data;
+					this.ruleForm.finallyAcceptReviewTime = specificDate(this.ruleForm.finallyAcceptReviewTime);
+					this.ruleForm.finallyAccomplishReviewTime = specificDate(this.ruleForm.finallyAccomplishReviewTime);
 					this.tableData.push(this.ruleForm);
 					console.log(this.ruleForm);
 				} else  {

@@ -3,8 +3,8 @@
 		<!-- <h1>publishercomplete</h1> -->
 		<div style="padding-left: 10px;">
 			<el-breadcrumb separator-class="el-icon-arrow-right" style="font-size: 130%;">
-				<el-breadcrumb-item :to="{ path: '/editorTodo' }">待处理任务</el-breadcrumb-item>
-				<el-breadcrumb-item :to="{ path: '/reviewTodo',query:{id:0} }">新任务</el-breadcrumb-item>
+				<el-breadcrumb-item><a class="Link" href="javascript:history.back(-1)">返回上一级</a></el-breadcrumb-item>
+				
 				<el-breadcrumb-item>邀请评审专家</el-breadcrumb-item>
 
 			</el-breadcrumb>
@@ -137,7 +137,7 @@
 								<span>{{emailForm.userName}}</span>
 							</el-form-item>
 							<el-form-item label="抄送">
-								<el-checkbox-group v-model="checkList">
+								<el-checkbox-group v-model="checkList" @change="selectCC">
 								    <el-checkbox label="管理员"></el-checkbox>
 								    <el-checkbox label="发布者"></el-checkbox>
 								    
@@ -353,6 +353,7 @@
 					userId:null,
 					userName: null,
 					index: null,
+					duplicate  : {isAdmin:false , isProjectUser:false},
 					config: {
 						content: null,
 						theme: null,
@@ -431,11 +432,23 @@
 		},
 		computed: {},
 		methods: {
+			 
+			selectCC(){
+				// console.log(this.checkList);
+				var item = {isAdmin:false , isProjectUser:false};
+				for (let i of this.checkList) {
+					if (i === "管理员") item.isAdmin = true;
+					if (i === "发布者") item.isProjectUser = true;
+				}
+				this.emailForm.duplicate = item;
+				console.log(this.emailForm.duplicate);
+			},
 			emailConfirm(){
 				let i = this.emailForm.index;
 				console.log("emailConfirm-emailForm:",this.emailForm);
 				console.log("infoList:",this.infoList)
 				this.infoList[i].emailConfig = this.emailForm.config;
+				this.infoList[i].duplicate = this.emailForm.duplicate;
 				//this.emailForm={};
 				this.emailSettingVisible = false;
 			},
@@ -514,10 +527,12 @@
 			emailSetting(val, index) {  //编辑邮件
 				this.emailSettingVisible = true;
 				console.log("scope.row", val);
+				this.checkList = [];
 				console.log("index", index);
 				//emailForm是显示邮件信息的列表
 				this.emailForm.userId = val.userId;
 				this.emailForm.userName = val.userName;
+				this.emailForm.duplicate = val.duplicate;
 				this.emailForm.index = index;
 				if (val.emailConfig != null)
 					this.emailForm.config = val.emailConfig;
@@ -609,6 +624,7 @@
 								for (let i of list) {
 									i.isInvite = true;
 									i.emailConfig = {theme:null,content:null};
+									i.duplicate = {isAdmin:false , isProjectUser:false};
 									i.restrictReviewTime = this.ruleForm.restrictReviewTime;
 								}
 								this.infoList = list;
@@ -777,6 +793,9 @@
 </script>
 
 <style lang="scss">
+	.Link{
+		color: black;
+	}
 	.title {
 		padding: 20px 0 0 0;
 		font-size: 30px;
