@@ -1,4 +1,7 @@
-<!--评审专家查看评价-->
+<!--功能：评审专家,管理员查看评价
+    调用:1.expert(评审专家：评审任务列表)
+         2.viewExpertReviewList(评审管理员，查看评审专家的评审状态列表)
+-->
 <template>
     <div>
         <el-row style="margin: 20px auto 0 0;">
@@ -44,7 +47,7 @@
     import reviewItemTemplate from '@/view/review/components/reviewItemTemplate';
 
     export default {
-        name: "readTemplateOpinion",
+        name: "readReviewTemplate",
         components: {
             formCreate: formCreate.$form(),
             reviewItemTemplate:reviewItemTemplate,

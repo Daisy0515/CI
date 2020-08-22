@@ -404,6 +404,9 @@
                     if (httpCode == 200) {
                         data.deadline = specificDate(data.deadline);
                         data.gmtCreate = specificDate(data.gmtCreate);
+                        for(let item of data.resourceList){
+                            item.gmtCreate = specificDate(item.gmtCreate);
+                        }
                         this.formReviewDetail = data;
                     } else if (msg == "该条件暂无数据") {
                         this.formReviewDetail = {};

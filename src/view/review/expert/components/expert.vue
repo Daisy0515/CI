@@ -19,7 +19,7 @@
                 <el-button type="primary" @click="searchList()">搜索</el-button>
             </div>
         </div>
-
+        <!--评审任务列表-->
         <el-table v-loading="loading" :data="tableData" style="width:1000px;margin:20px auto"
                   :header-cell-style="rowClass">
             <el-table-column fixed prop="title" label="评审标题" align="center">
@@ -112,7 +112,7 @@
                              @closeDialog="closeReadReviewDialog">
             </read-review-template><!--生成评审表单的组件-->
         </el-dialog>
-
+        <!--评审详情-->
         <ex-review-detail :form="formReviewDetail" :formLabelWidth="formLabelWidth" :dialogFormVisible="dialogFormVisible"
                           :loading="formReviewDetailLoading" @closeDialog="closeReviewDetailDialog">
         </ex-review-detail>
@@ -133,7 +133,7 @@
     import exReviewDetail from '@/view/review/components/exReviewDetail'
     import {MessageBox} from 'element-ui';
     import reviewTemplate from '@/view/review/components/reviewTemplate';
-    import readReviewTemplate from '@/view/review/expert/components/readReviewTemplate';
+    import readReviewTemplate from '@/view/review/components/readReviewTemplate';
     export default {
         components: {
             reviewDetailDialog,
@@ -238,7 +238,7 @@
                     this.postForm.id = val;
                     this.postForm.type = 1;
                     httpPut('/v1/authorization/review/expertinvite/update', this.postForm).then(results => {
-                        const {data, msg, httpCode} = results.data;
+                        const { msg, httpCode} = results.data;
                         if (httpCode === 200) {
                             successTips("已接受评审！");
                             this.getView();

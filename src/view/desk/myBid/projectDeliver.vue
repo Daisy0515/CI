@@ -66,7 +66,8 @@
 						<el-table-column prop="reviewScore" label="得分" align="center"></el-table-column>
 						<el-table-column label="评审结果" align="center">
 							<template slot-scope="scope">
-								<el-button @click="viewDetail(scope.row.expertiInviteId)" type="text" size="medium"><i class="el-icon-search"></i>详情
+								<el-button @click="viewExpertReview(scope.row.expertiInviteId)" type="text" size="medium">
+									<i class="el-icon-search"></i>详情
 								</el-button>
 							</template>
 						</el-table-column>
@@ -91,9 +92,13 @@
 							</el-form-item>
 						</el-col>
 					</el-row>
-
 				</el-form>
-
+				<el-dialog title="查看评价" :visible.sync="readReviewDialogVisible" width="80%"
+						   style="text-align:left; font-weight: bolder;" append-to-body>
+					<read-review-template-for-manger :templateConfigList="templateConfigList" :totalScore="totalScore"
+										  :result="result">
+					</read-review-template-for-manger><!--生成评审表单的组件-->
+				</el-dialog>
 			</el-dialog>
 			<p class="Tips">
 				<i class="el-icon-info"></i>
@@ -142,27 +147,15 @@
 	</div>
 </template>
 <script>
-	import {
-		httpGet,
-		httpPost,
-		httpDelete,
-		httpPut
-	} from '@/utils/http.js';
-	import {
-		mapGetters,
-		mapMutations
-	} from 'vuex';
-	import {
-		successTips,
-		errTips
-	} from '@/utils/tips.js';
-	import {
-		MessageBox
-	} from 'element-ui';
+	import { httpGet, httpPut } from '@/utils/http.js';
+	import { mapMutations } from 'vuex';
+	import { successTips, errTips } from '@/utils/tips.js';
 	import sourceUpload from '@/common/upload/resourceUpload';
+	import readReviewTemplateForManger from '@/view/desk/myBid/readReviewTemplateForManger';
 	export default {
 		components: {
-			sourceUpload
+			sourceUpload,
+			readReviewTemplateForManger,
 		},
 		data() {
 			return {
@@ -197,7 +190,12 @@
 						score: null
 					}
 				},
-				formLabelWidth: '150px'
+				formLabelWidth: '150px',
+				/*第三方专家评价*/
+				readReviewDialogVisible:false,//控制专家评价框的显示
+				templateConfigList:[],//评审模板配置列表
+				result:{},//评审结果
+
 			};
 		},
 
@@ -252,7 +250,8 @@
 
 		methods: {
 			...mapMutations(['setCache']),
-			/*获取评审结果的详情*/
+
+			/**获取评审结果的详情*/
 			handleClickDetail(val) {
 				this.dialogVisible = true;
 				//get /v1/authorization/review/deliverydetails/get
@@ -267,8 +266,22 @@
 				    }
 				});
 			},
+			/**查看单个专家的评审意见*/
+			viewExpertReview(row){
+				this.readReviewDialogVisible = true;
+				httpGet("/v1/authorization/review/experttemplateopinion/get",{id:row.id}).then(results => {
+					const { httpCode, msg, data } = results.data;
+					if (httpCode == 200){
+						this.templateConfigList = data.configList ;
+						this.result = data.result;
+						this.templateName = data.templateName;
+					} else {
+						errTips(msg);
+					}
+				});
+			},
 			getTypeList() {
-				//get /v1/authorization/review/process/list 
+				//get /v1/authorization/review/process/list
 				httpGet("/v1/authorization/review/process/list", {
 					id: this.projectId
 				}).then(results => {

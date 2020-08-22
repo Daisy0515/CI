@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-card class="editor-container">
-            <el-row style="margin-bottom: 10px;"><h1 style="text-align: left">发送邮件</h1></el-row>
+            <el-row style="margin-bottom: 10px;"><h1 style="text-align: left">定制与发送邮件</h1></el-row>
             <el-row>
                 <h3>说明：系统已经内置了几种常见的模板，请跟据需要选择合适的模板，然后点击“定制信件”进行下一步信息的填充</h3>
             </el-row>
@@ -20,24 +20,25 @@
                 <el-button type="primary" style="margin-left:30px;" @click="next">下一步</el-button>
             </el-row>
         </el-card>
-        <customize-expert-email-dialog :visible="nextVisible"  :templateId="templateId" :userList="userList"
+        <customize-email-dialog :visible="nextVisible"  :templateId="templateId" :userList="userList" usedBy="customizeAndSendEmail"
                                        :userListLoading="userListLoading" :templateList="templateList" @closeDialog="closeSelectedUserDialog">
-        </customize-expert-email-dialog>
+        </customize-email-dialog>
     </div>
 </template>
 
 <script>
     import {errTips} from "@/utils/tips.js";
     import {httpGet,httpPost} from "@/utils/http";
-    import customizeExpertEmailDialog from '@/view/review/editor/components/customizeExpertEmailDialog.vue'
+    import customizeEmailDialog from '@/view/review/editor/components/customizeEmailDialog';
     export default {
+        name:"customizeAndSendEmail",
         props:{
             expertIdList:{//已选择的评审专家
                 type:String,
             }
         },
         components:{
-            customizeExpertEmailDialog,
+            customizeEmailDialog,
         },
         data(){
             return {
@@ -101,7 +102,7 @@
                     if(httpCode===200){
                         /*预先设定选择的每一个对象都是要发送的*/
                         for(let item of data.infoList){
-                            item.isRemind = true;
+                            item.isSent = true;         //控制邮件是否发送true表示发送，false表示不发送
                             item.duplicate = this.getInitDuplicate();
                             item.emailConfig = null;
                         }

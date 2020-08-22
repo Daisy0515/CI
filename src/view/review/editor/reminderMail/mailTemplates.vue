@@ -12,7 +12,7 @@
         <el-row>
             <el-button type="primary" size="medium" style="margin-top: 20px;" @click="addNewEmailTemplate"> 添加个人模板</el-button>
         </el-row>
-        <el-dialog  :visible.sync="dialogEmailVisible" width="70%">
+        <el-dialog  :visible.sync="dialogEmailVisible" width="70%" :before-close="handleEvaluateDialogClose">
             <div slot="title" class="dialog-title">
                 <span v-if="isUpdate">修改邮件模板</span>
                 <span v-else>添加新的邮件模板</span>
@@ -53,7 +53,7 @@
                 </el-col>
             </el-row>
             <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogEmailVisible = false">取 消</el-button>
+                <el-button @click="handleEvaluateDialogClose">取 消</el-button>
                 <el-button type="primary" v-if="isUpdate" @click="updateEmailTemplate">更 新</el-button>
                 <el-button type="primary" v-else @click="insertNewEmailTemplate">提 交</el-button>
             </div>
@@ -121,7 +121,7 @@
                     "管理员：$[管理员名]\n",
             };
         },
-        created: function () {
+        created: function (){
             this.getEmailTemplate();
         },
         methods: {
@@ -174,6 +174,16 @@
                 this.isUpdate = true;
                 this.updateId = row.id;
             },
+            /**修改模板时直接关掉会带来的提示，以及防止对弹框外的区域的误触*/
+            handleEvaluateDialogClose(){
+                MessageBox.confirm("关闭后，新修改的数据将不会保存，确定要关闭窗口么？", "提示", {
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消",
+                    type: "warning"
+                }).then(() => {
+                    this.dialogEmailVisible = false;
+                });
+            },
             updateEmailTemplate(){
                 if(this.content===null||this.content.trim()===''){
                     errTips("信件主体内容不能为空！");
@@ -209,6 +219,7 @@
                     });
                 })
             },
+
             handleCurrentChange(val) { //对应分页栏的换页操作
                 this.pageData.pageNo = val;
                 this.getEmailTemplate();
@@ -220,7 +231,7 @@
 
 <style scoped>
     .dialog-footer {
-        margin-right: 36%;
+        margin-right: 45%;
         margin-top: 10px;
     }
 

@@ -441,7 +441,7 @@ const vueRouter = new Router({
 				title:'邀请评审专家',
 				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
 			}
-		
+
 		},
     	{
     		path:'/editorComplete',
@@ -900,7 +900,7 @@ const vueRouter = new Router({
 		},
 		{
 		  path: '/desk/viewOutlineDesign',
-		  name: 'editOutlineDesign',
+		  name: 'viewOutlineDesign',
 		  component: () => import('@/view/desk/myTask/viewOutlineDesign'),
 		  meta: {
 		    title: "我的任务",
@@ -922,19 +922,6 @@ const vueRouter = new Router({
 		    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
 		  },
 		},
-		{
-		  path: '/desk/viewDetailedDesign',
-		  name: 'viewDetailedDesign',
-		  component: () => import('@/view/desk/myTask/viewDetailedDesign'),
-		  meta: {
-		    title: "我的任务",
-		    routerIndex: "myTask",
-		    keepAlive: true,
-		    deepth: 2,
-		    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-		  },
-		},
-
 		{
 		  path: '/desk/kanBan',
 		  name: 'kanBan',
@@ -1223,11 +1210,11 @@ const vueRouter = new Router({
         },
         {
           path: '/desk/issueAdd',
-          name: 'issueManage',
+          name: 'issueAdd',
           component: () => import('@/view/desk/issueManage/issueAdd'),
           meta: {
             title: "缺陷管理",
-            routerIndex: "issueManage",
+            routerIndex: "issueAdd",
             keepAlive: true,
             deepth: 2,
             requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
@@ -1235,11 +1222,11 @@ const vueRouter = new Router({
         },
         {
           path: '/desk/issueEditAppoint',
-          name: 'issueManage',
+          name: 'issueEditAppoint',
           component: () => import('@/view/desk/issueManage/issueEditAppoint'),
           meta: {
             title: "缺陷管理",
-            routerIndex: "issueManage",
+            routerIndex: "issueEditAppoint",
             keepAlive: true,
             deepth: 2,
             requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
@@ -1247,11 +1234,11 @@ const vueRouter = new Router({
         },
         {
           path: '/desk/issueEditCreator',
-          name: 'issueManage',
+          name: 'issueEditCreator',
           component: () => import('@/view/desk/issueManage/issueEditCreator'),
           meta: {
             title: "缺陷管理",
-            routerIndex: "issueManage",
+            routerIndex: "issueEditCreator",
             keepAlive: true,
             deepth: 2,
             requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
@@ -1259,11 +1246,11 @@ const vueRouter = new Router({
         },
         {
           path: '/desk/viewHistory',
-          name: 'issueManage',
+          name: 'viewHistory',
           component: () => import('@/view/desk/issueManage/viewHistory'),
           meta: {
             title: "缺陷管理",
-            routerIndex: "issueManage",
+            routerIndex: "viewHistory",
             keepAlive: true,
             deepth: 2,
             requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
@@ -1271,11 +1258,11 @@ const vueRouter = new Router({
         },
 		{
 		  path: '/desk/issueVisualization',
-		  name: 'issueManage',
+		  name: 'issueVisualization',
 		  component: () => import('@/view/desk/issueManage/issueVisualization'),
 		  meta: {
 		    title: "缺陷管理",
-		    routerIndex: "issueManage",
+		    routerIndex: "issueVisualization",
 		    keepAlive: true,
 		    deepth: 2,
 		    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
@@ -1283,11 +1270,11 @@ const vueRouter = new Router({
 		},
 		{
 		  path: '/desk/documentOpinion',
-		  name: 'issueManage',
+		  name: 'documentOpinion',
 		  component: () => import('@/view/desk/issueManage/documentOpinion'),
 		  meta: {
 		    title: "缺陷管理",
-		    routerIndex: "issueManage",
+		    routerIndex: "documentOpinion",
 		    keepAlive: true,
 		    deepth: 2,
 		    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
@@ -1299,7 +1286,7 @@ const vueRouter = new Router({
 		  component: () => import('@/view/desk/myTask/editNeedDesign'),
 		  meta: {
 		    title: "缺陷管理",
-		    routerIndex: "issueManage",
+		    routerIndex: "editNeedDesign",
 		    keepAlive: true,
 		    deepth: 2,
 		    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
@@ -1311,7 +1298,7 @@ const vueRouter = new Router({
 		  component: () => import('@/view/desk/myTask/editOutlineDesign'),
 		  meta: {
 		    title: "缺陷管理",
-		    routerIndex: "issueManage",
+		    routerIndex: "editOutlineDesign",
 		    keepAlive: true,
 		    deepth: 2,
 		    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
@@ -1323,7 +1310,7 @@ const vueRouter = new Router({
 		  component: () => import('@/view/desk/myTask/editDetailedDesign'),
 		  meta: {
 		    title: "缺陷管理",
-		    routerIndex: "issueManage",
+		    routerIndex: "editDetailedDesign",
 		    keepAlive: true,
 		    deepth: 2,
 		    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
@@ -1335,7 +1322,7 @@ const vueRouter = new Router({
 		  component: () => import('@/view/desk/issueManage/opinionSum'),
 		  meta: {
 		    title: "缺陷管理",
-		    routerIndex: "issueManage",
+		    routerIndex: "opinionSum",
 		    keepAlive: true,
 		    deepth: 2,
 		    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
@@ -1343,11 +1330,11 @@ const vueRouter = new Router({
 		},
 		{
 		  path: '/desk/opinionAdd',
-		  name: 'issueManage',
+		  name: 'opinionAdd',
 		  component: () => import('@/view/desk/issueManage/opinionAdd'),
 		  meta: {
 		    title: "缺陷管理",
-		    routerIndex: "issueManage",
+		    routerIndex: "opinionAdd",
 		    keepAlive: true,
 		    deepth: 2,
 		    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
@@ -1355,7 +1342,7 @@ const vueRouter = new Router({
 		},
 		{
 		  path: '/desk/opinionView',
-		  name: 'issueManage',
+		  name: 'opinionView',
 		  component: () => import('@/view/desk/issueManage/opinionView'),
 		  meta: {
 		    title: "缺陷管理",
@@ -1719,20 +1706,20 @@ vueRouter.beforeEach((to, from, next) => {
             path: '/desk/yzPhone',
           })
         }
-      } else if (store.state.userData.role == '1') {
-        if (to.name == "changeCompany") {
+      } else if (store.state.userData.role === '1') {
+        if (to.name === "changeCompany") {
           next({
             path: '/desk/personal',
           })
         } else {
           next()
         }
-      } else if (store.state.userData.role == '2') {
-        if (to.name == "changePersonal") {
+      } else if (store.state.userData.role === '2') {
+        if (to.name === "changePersonal") {
           next({
             path: '/desk/changeCompany',
           })
-        } else if (to.name == "introduction") {
+        } else if (to.name === "introduction") {
           next({
             path: '/desk/changeCompany',
           })
@@ -1752,4 +1739,9 @@ vueRouter.beforeEach((to, from, next) => {
     next();
   }
 })
+/*解决导航栏重复点击出现的报错 Avoided redundant navigation to current location*/
+// const originalPush = vueRouter.prototype.push;
+// vueRouter.prototype.push = function push(location){
+// 	return originalPush.call(this, location).catch(err => err)
+// }
 export default vueRouter

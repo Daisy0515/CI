@@ -103,14 +103,14 @@
 			getView(){
 				httpGet("/v1/authorization/review/statusexplain/get").then(results => {
 					const { httpCode, msg, data } = results.data;
-					if (httpCode == 200) {
-						this.expertAccomplish=data.expertAccomplish;
-						this.extraExpert=data.extraExpert;
-						this.inviteNoReply=data.inviteNoReply ;
-						this.mission=data.mission ;
-						this.postpone=data.postpone;
-						this.underway=data.underway;
-					} else if (msg == "该条件暂无数据") {
+					if (httpCode === 200) {
+						this.expertAccomplish = data.expertAccomplish;
+						this.extraExpert = data.extraExpert;
+						this.inviteNoReply = data.inviteNoReply ;
+						this.mission = data.mission ;
+						this.postpone = data.postpone;
+						this.underway = data.underway;
+					} else if (msg === "该条件暂无数据") {
 						this.tableData = [];
 						message("该条件暂无数据");
 					} else if (httpCode !== 401) {

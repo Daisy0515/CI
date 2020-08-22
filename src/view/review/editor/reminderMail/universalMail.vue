@@ -116,13 +116,19 @@
                         <span v-show="scope.row.status==4">中止</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="statusExplain" label="评审状态" align="center">
+                <el-table-column prop="statusExplain" label="专家评审状态" align="center" width="120px;">
                     <template slot-scope="scope">
-                        <el-tooltip class="item" effect="dark" :content="scope.row.statusExplain">
-                            <span class="tablehidden" v-show="scope.row.status===1">{{ scope.row.statusExplain }}</span>
-                        </el-tooltip>
-                        <el-button v-show="scope.row.status > 1" @click="viewReviewDetail(scope.row.id)" type="text" size="medium">
-                            查看详情
+                        <span v-if="scope.row.status === 1">等待管理员分配</span>
+                        <template v-if="scope.row.status!==1">
+                            <span>共需要专家{{scope.row.statistics.needExpertInvite}}人<br></span>
+                            <span v-if="scope.row.statistics.finish!==0">已完成：{{scope.row.statistics.finish}}人<br></span>
+                            <span v-if="scope.row.statistics.inviteNoReply!==0">邀请未回复：{{scope.row.statistics.inviteNoReply}}人<br></span>
+                            <span v-if="scope.row.statistics.inviteRefuse!==0">已拒绝：{{scope.row.statistics.inviteRefuse}}人<br></span>
+                            <span v-if="scope.row.statistics.reviewUnderway!==0">评审中：{{scope.row.statistics.reviewUnderway}}人<br></span>
+                            <span v-if="scope.row.statistics.postpone!==0">评审延期：{{scope.row.statistics.postpone}}人<br></span>
+                        </template>
+                        <el-button v-if="scope.row.status===2||scope.row.status===3" @click="viewExpertReviewList(scope.row.id)"
+                                   type="text" size="medium">查看详情
                         </el-button>
                     </template>
                 </el-table-column>
@@ -146,7 +152,12 @@
                 <el-button type="primary" @click="next">下一步</el-button>
             </el-col>
         </el-row>
-        <customize-email-dialog :visible="nextVisible" :receiver="receiver" :templateId="templateId" :userList="userList"
+        <!--查看第三方评审意见-->
+        <el-dialog title="第三方评审意见" :visible.sync="expertReviewDialogVisible" width="80%" :before-close="closeExpertReviewDialog">
+            <view-expert-review-list :userList="expertReviewList" ></view-expert-review-list>
+        </el-dialog>
+        <!--定制信件对话框-->
+        <customize-email-dialog :visible="nextVisible" :receiver="receiver" :templateId="templateId" :userList="userList" usedBy="universalMail"
                                 :userListLoading="userListLoading" :templateList="templateList" @closeDialog="closeSelectedUserDialog">
         </customize-email-dialog>
     </div>
@@ -157,12 +168,14 @@
     import {httpGet, httpPost} from "@/utils/http.js";
     import {message, successTips, errTips} from "@/utils/tips.js";
     import {specificDate} from '@/utils/getDate.js';
-    import customizeEmailDialog from '@/view/review/editor/components/customizeEmailDialog'
+    import customizeEmailDialog from '@/view/review/editor/components/customizeEmailDialog';
+    import viewExpertReviewList from "@/view/review/editor/components/viewExpertReviewList";
     export default {
         name: "universalMail",
         mixins: [timeLimit],
         components:{
-            customizeEmailDialog:customizeEmailDialog,
+            customizeEmailDialog,
+            viewExpertReviewList
         },
         data() {
             return {
@@ -185,9 +198,10 @@
                 userList: [],//已选择的待发送邮件的用户信息
                 userListLoading:false,//获取userList时的加载提示
                 nextVisible:false,//下一步对应的谈话框是否显示
-
-                dialogChooseVisible: false,
-                id: "",
+                /*查看专家评审状态*/
+                expertReviewDialogVisible: false,
+                opinion:null,//管理员决定
+                expertReviewList:[],//评审专家的评审结果
 
                 reviewDetail: {},//查看详情的对话框
 
@@ -268,23 +282,27 @@
                     }
                 });
             },
-            /**通用邮件页面：查看第三方评审详情*/
-            viewReviewDetail(val) {
-                // httpGet("/v1/authorization/review/expertinviterecord/list", {id: val}).then(results => {
-                //     const { httpCode, msg, data } = results.data;
-                //     if (httpCode == 200) {
-                //         this.opinion = data.opinion;
-                //         let userList = data.userList;
-                //         for (let i of userList) {
-                //             i.gmtCreate = specificDate(i.gmtCreate);
-                //         }
-                //         this.userList = userList;
-                //     } else {
-                //         this.typeList = [];
-                //         errTips(msg);
-                //     }
-                // });
-                // this.dialogChooseVisible = true;
+            /**通用邮件页面：查看第三方专家的评审列表*/
+            viewExpertReviewList(val) {
+                httpGet("/v1/authorization/review/expertinviterecord/list", {id: val}).then(results => {
+                    const { httpCode, msg, data } = results.data;
+                    if (httpCode == 200) {
+                        this.opinion = data.opinion;
+                        let userList = data.userList;
+                        for (let i of userList) {
+                            i.gmtCreate = specificDate(i.gmtCreate);
+                        }
+                        this.expertReviewList = userList;
+                    } else {
+                        this.expertReviewList = [];
+                        errTips(msg);
+                    }
+                });
+                this.expertReviewDialogVisible = true;
+            },
+            /**通用邮件页面：关闭第三方专家的评审列表*/
+            closeExpertReviewDialog(){
+                this.expertReviewDialogVisible = false;
             },
             /**通用邮件页面：搜索列表*/
             searchList(){
@@ -338,9 +356,10 @@
                     if(httpCode===200){
                         /*预先设定选择的每一个对象都是要发送的*/
                         for(let item of data.userList){
-                            item.isInvite = true;
+                            item.isSent = true;             //控制邮件是否发送true表示发送，false表示不发送
                             item.duplicate = this.getInitDuplicate();
                             item.emailConfig = null;
+                            item.adminMissionId = item.id;  //后续任务的接口里用了adminMissionId来表示，故进行简单的转换，以便后续使用
                         }
                         this.userList = data.userList;//待发送邮件的用户信息，在点击下一步后的对话框里显示，
                                                       // 包含id : 管理员任务编号ID ,userId: 用户编号ID ,userName: 提交人/评审专家/评审发布者 用户名
