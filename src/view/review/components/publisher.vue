@@ -8,7 +8,7 @@
         </div>
         <div class="myTable">
             <div class="header_top">
-                <el-select v-model="searchData.projectId" placeholder="请选择项目" @change="projectChange">
+                <el-select v-model="searchData.projectId" clearable placeholder="请选择项目" @change="projectChange">
                     <el-option
                             v-for="project in projectList"
                             :key="project.projectId"
@@ -16,7 +16,7 @@
                             :value="project.projectId"
                     />
                 </el-select>
-                <el-select v-model="searchData.type" placeholder="请选择评审类型" :loading="processLoading"
+                <el-select v-model="searchData.type" clearable placeholder="请选择评审类型" :loading="processLoading"
                            @focus="getReviewProcessList(searchData.projectId)">
                     <el-option
                             v-for="process in reviewProcessList"

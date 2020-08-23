@@ -161,8 +161,16 @@
 					<el-table :data="infoList" :header-cell-style="rowClass" style="margin-top: 20px;">
 
 						<el-table-column prop="userName" label="评审专家姓名" align="center"></el-table-column>
-						<el-table-column label="信件" align="center">
+						<el-table-column label="信件" align="center" width="240px">
 							<template slot-scope="scope">
+								<el-select disabled placeholder="邀请专家模板">
+								    <el-option
+								   
+								      :key="邀请专家模板"
+								      :label="邀请专家模板"
+								      :value="邀请专家模板">
+								    </el-option>
+								  </el-select>
 								<el-button type="text" @click="emailSetting(scope.row,scope.$index)">编辑</el-button>
 							</template>
 						</el-table-column>
@@ -346,6 +354,7 @@
 		},
 		data() {
 			return {
+				templateId:null,
 				previewArea:null,
 				checkList:[],
 				reviewId:null,
@@ -537,7 +546,7 @@
 				if (val.emailConfig != null)
 					this.emailForm.config = val.emailConfig;
 				//post /v1/authorization/review/expertinviteemailconfig/update
-				let postEmailForm={adminMissionId:this.reviewId,receiver:2,userId:val.userId};
+				let postEmailForm={adminMissionId:this.id,receiver:2,userId:val.userId,templateId:this.templateId};
 				console.log('postEmailForm:',postEmailForm);
 				httpPost("/v1/authorization/review/expertinviteemailconfig/update", postEmailForm).then(results => {
 					const {
@@ -628,6 +637,7 @@
 									i.restrictReviewTime = this.ruleForm.restrictReviewTime;
 								}
 								this.infoList = list;
+								this.templateId = data.templateId;
 								//console.log(this.infoList);
 								this.dialogExpertVisible = false;
 								this.settingVisible = true;
