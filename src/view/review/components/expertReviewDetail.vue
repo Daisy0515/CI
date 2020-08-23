@@ -56,13 +56,13 @@
 				<el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
 			</div>
 		</el-dialog>
-	
-	
+
+
 </template>
 
 <script>
 	export default {
-	    name: "exReviewDetail",
+	    name: "expertReviewDetail",
 	    props:['form','dialogFormVisible','formLabelWidth','loading'],
 	    methods:{
 	        changeVisible(){

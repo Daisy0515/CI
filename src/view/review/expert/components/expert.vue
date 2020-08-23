@@ -113,9 +113,9 @@
             </read-review-template><!--生成评审表单的组件-->
         </el-dialog>
         <!--评审详情-->
-        <ex-review-detail :form="formReviewDetail" :formLabelWidth="formLabelWidth" :dialogFormVisible="dialogFormVisible"
+        <expert-review-detail :form="formReviewDetail" :formLabelWidth="formLabelWidth" :dialogFormVisible="dialogFormVisible"
                           :loading="formReviewDetailLoading" @closeDialog="closeReviewDetailDialog">
-        </ex-review-detail>
+        </expert-review-detail>
 
         <div class="bid_footer">
             <el-pagination @current-change="handleCurrentChange" :current-page.sync="pageData.pageNo"
@@ -130,14 +130,14 @@
     import {specificDate} from '@/utils/getDate.js';
     import {message, successTips, errTips} from "@/utils/tips.js";
     import reviewDetailDialog from '@/view/review/components/reviewDetailDialog';
-    import exReviewDetail from '@/view/review/components/exReviewDetail'
+    import expertReviewDetail from '@/view/review/components/expertReviewDetail'
     import {MessageBox} from 'element-ui';
     import reviewTemplate from '@/view/review/components/reviewTemplate';
     import readReviewTemplate from '@/view/review/components/readReviewTemplate';
     export default {
         components: {
             reviewDetailDialog,
-            exReviewDetail,
+            expertReviewDetail,
             reviewTemplate,
             readReviewTemplate
         },
