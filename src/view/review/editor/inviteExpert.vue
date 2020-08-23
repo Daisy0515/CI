@@ -163,14 +163,14 @@
 						<el-table-column prop="userName" label="评审专家姓名" align="center"></el-table-column>
 						<el-table-column label="信件" align="center" width="240px">
 							<template slot-scope="scope">
-								<el-select disabled placeholder="邀请专家模板">
+								<el-select v-model="templateId" placeholder="未选择模板" disabled>
 								    <el-option
-								   
-								      :key="邀请专家模板"
-								      :label="邀请专家模板"
-								      :value="邀请专家模板">
+								            v-for="item in templateList"
+								            :key="item.id"
+								            :label="item.templateName"
+								            :value="item.id">
 								    </el-option>
-								  </el-select>
+								</el-select>
 								<el-button type="text" @click="emailSetting(scope.row,scope.$index)">编辑</el-button>
 							</template>
 						</el-table-column>
@@ -428,19 +428,32 @@
 				templateNameList: [],
 				dataList: [],
 				emailePrviewVisible:false,
+				templateList:[], //邮件模板列表
 			};
 		},
 		created: function() {
-			this.id = this.$route.query.id;
-			this.reviewId = this.$route.query.reviewId;
+			this.id = this.$route.query.id; //管理员评审任务编号ID
+			this.reviewId = this.$route.query.reviewId; //主评审编号ID
 			this.postForm.id = this.id;
-			this.getView();
-			this.getKeyWords();
-			this.getResearchList();
+			this.getView(); //获取邀请页面数据
+			this.getKeyWords(); //获取关键词
+			this.getResearchList(); //获取研究方向
 			this.getTemplate();
+			this.getEmailTemplate();
 		},
 		computed: {},
 		methods: {
+			/**获取邮件模板，在中止未完成任务的对话框中展示用到的邮件*/
+			getEmailTemplate(){
+			    httpGet('/v1/authorization/review/emailtemplate/get').then(results=>{
+			        const {httpCode, msg, data} = results.data;
+			        if (httpCode == 200){
+			            this.templateList = data.templateList;
+			        } else {
+			            errTips(msg);
+			        }
+			    });
+			},
 			 
 			selectCC(){
 				// console.log(this.checkList);
@@ -570,6 +583,7 @@
 				let list = this.infoList;
 				for (let i of list) {
 					delete i.userName;
+					i.type = 1;
 				}
 				console.log("finalInvite-list:",list);
 				this.postForm.expertInviteList = list;
