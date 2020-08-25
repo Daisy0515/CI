@@ -1,12 +1,9 @@
 <template>
 	<div class="myTable">
-		<!-- <h1>publishercomplete</h1> -->
 		<div style="padding-left: 10px;">
 			<el-breadcrumb separator-class="el-icon-arrow-right" style="font-size: 130%;">
 				<el-breadcrumb-item><a class="Link" href="javascript:history.back(-1)">返回上一级</a></el-breadcrumb-item>
-				
 				<el-breadcrumb-item>邀请评审专家</el-breadcrumb-item>
-
 			</el-breadcrumb>
 			<h1 style="text-align: center;margin-top:20px">评审专家选择信息综合</h1>
 			<h2 style="text-align: center;font-weight: bolder;margin-top: 20px;">评审标题：
@@ -15,7 +12,6 @@
 
 			<h2 style="text-align: left;font-weight: bolder;margin-top: 2%;">评审专家搜索</h2>
 			<div class="header_top">
-				
 				<el-button type="primary" @click="searchExpert()">专家搜索</el-button>
 				<expert-search :dialogExpertVisible="dialogExpertVisible" :expertloading="loading" :reviewTitle="title" :params="expertSearchParam" @closeDialog="closeExpertSearchDialog"></expert-search>
 
@@ -27,43 +23,31 @@
 						<el-input v-model="ruleForm.number">
 							<template slot="append">人</template>
 						</el-input>
-
 					</el-form-item>
 					<el-form-item label="自动取消评审专家没有响应邀请的时间限制">
 						<el-input v-model="ruleForm.responseInvite">
 							<template slot="append">天</template>
 						</el-input>
-
 					</el-form-item>
 					<el-form-item label="邀请撤回前发送提醒邮件">
 						<el-input v-model="ruleForm.inviteRevocationFront ">
 							<template slot="append">天</template>
 						</el-input>
-					
 					</el-form-item>
 					<el-form-item label="专家接受任务后限定完成的时间">
 						<el-input v-model="ruleForm.restrictReviewTime">
 							<template slot="append">天</template>
 						</el-input>
-
 					</el-form-item>
-					<!-- <el-form-item label="自动取消评审专家未完成(接受后)任务的时间限制">
-						<el-input v-model="ruleForm.responseInvite">
-							<template slot="append">天</template>
-						</el-input>
-
-					</el-form-item> -->
 					<el-form-item label="截止日期后,在取消未完成任务前每隔固定天数发生提醒邮件">
 						<el-input v-model="ruleForm.deadlineRearEvery ">
 							<template slot="append">次</template>
 						</el-input>
-
 					</el-form-item>
 					<el-form-item label="评审截止日前发送提醒邮件">
 						<el-input v-model="ruleForm.deadline">
 							<template slot="append">天</template>
 						</el-input>
-
 					</el-form-item>
 					<el-form-item label="是否盲审">
 						<el-radio-group v-model="ruleForm.isBlindRial">
@@ -112,15 +96,9 @@
 							</el-tooltip>
 						</template>
 					</el-table-column>
-
 					<el-table-column prop="replyContent" label="回复" align="center">
-
 					</el-table-column>
-
-
-
 				</el-table>
-
 			</div>
 
 			<h2 style="text-align: left;font-weight: bolder;margin-top: 2%;">备选专家列表</h2>
@@ -143,28 +121,14 @@
 					</el-table-column>
 				</el-table>
 			</div>
-
 		</div>
-
 	</div>
-
 </template>
 
 <script>
-	import {
-		httpGet,
-		httpPut,
-		httpPost,
-		httpDelete
-	} from "@/utils/http.js";
-	import {
-		message,
-		successTips,
-		errTips
-	} from "@/utils/tips.js";
-	import {
-		specificDate
-	} from '@/utils/getDate.js';
+	import { httpGet, httpPut, httpPost } from "@/utils/http.js";
+	import { successTips, errTips } from "@/utils/tips.js";
+	import { specificDate } from '@/utils/getDate.js';
 	import expertSearch from '@/view/review/components/expertSearch';
 	export default {
 		props: ['type'], //type用来区分'新任务'，‘评审专家需要额外评审’，‘评审延期’，‘评审中’等类型
@@ -188,7 +152,7 @@
 						theme: null,
 					}
 				},
-				
+
 				totalPage: null,
 				radio: '1',
 				loading: false,
@@ -210,13 +174,11 @@
 				expertAlternativeList: [],
 
 				infoList: [],
-				
-				
-				//settingVisible: false, //控制邀请专家对话框
+
 				emailePrviewVisible:false, //控制邮件预览对话框
 				dialogExpertVisible: false, //控制评审专家搜索对话框
 				emailSettingVisible: false, //控制邮件编辑对话框
-				
+
 				templateList:[], //邮件模板列表
 				templateNameList: [], //打分模板列表
 				expertSearchParam:{
@@ -224,13 +186,11 @@
 					reviewId:null,
 					restrictReviewTime:null
 				},
-				//alertToInvited:[],
 			};
 		},
 		created: function() {
 			this.id = this.$route.query.id; //管理员评审任务编号ID
 			this.reviewId = this.$route.query.reviewId; //主评审编号ID
-			//this.postForm.id = this.id;
 			this.getView(); //获取邀请页面数据
 			this.getTemplate(); //评审打分模板
 		},
@@ -243,17 +203,16 @@
 			/**待修改*/
 			alterInvite(val) {
 				console.log("alterExpert:", val);
-				var item = {
+				let item = {
 					userId: val.userId,
 					type: 1,
 					isInvite: true
 				};
-				var arr = new Array();
+				let arr = new Array();
 				arr.push(item);
-				var postForm = {id :this.id, expertInviteList:arr}
+				let postForm = {id :this.id, expertInviteList:arr}
 				httpPost("/v1/authorization/review/expertinvite/insert", postForm).then(results => {
 					const {httpCode, msg, data} = results.data;
-					//console.log(httpCode);
 					if (httpCode === 200) {
 						successTips("已发出邀请");
 						this.getView();
@@ -292,17 +251,11 @@
 			},
 
 			submitForm() {
-				//put /v1/authorization/review/reviewdeploy/update
 				console.log("submitForm");
 				httpPut("/v1/authorization/review/reviewdeploy/update", this.ruleForm).then(results => {
-					const {
-						httpCode,
-						msg,
-						data
-					} = results.data;
+					const { httpCode, msg} = results.data;
 					console.log(httpCode);
 					if (httpCode === 200) {
-						//alert(111);
 						successTips("评审设置提交成功！");
 						this.getView();
 					} else {
@@ -311,15 +264,8 @@
 				})
 			},
 			getView() {
-				//console.log(1111);
-				httpGet("/v1/authorization/review/total/get", {
-					id: this.id
-				}).then(results => {
-					const {
-						httpCode,
-						msg,
-						data
-					} = results.data;
+				httpGet("/v1/authorization/review/total/get", {id: this.id}).then(results => {
+					const { httpCode, msg, data } = results.data;
 					if (httpCode == 200) {
 						this.ruleForm = data.adminDeployBean;
 						this.title = data.title;

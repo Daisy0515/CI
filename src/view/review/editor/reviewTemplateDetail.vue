@@ -16,19 +16,21 @@
                 <span style="font-size: large;">评审模板名称:<span style="font-weight: bolder;">{{templateName}}</span></span>
                 <span style="font-size: large; margin-left: 20px;"> 总分：{{totalScore}}分</span>
             </el-col>
-           <el-col :span="3">
-               <span style="font-size: large;">新的评分项</span>
-           </el-col>
-            <el-col :span="5" style="margin-top:-10px;">
-                <el-select v-model="selectedType" placeholder="请选择单个评审项">
-                    <el-option label="文本/分数选项域" value="scoreOption"></el-option>
-                    <el-option label="文本/分数输入域" value="scoreInput"></el-option>
-                    <el-option label="是或否选择域" value="yesOrNo"></el-option>
-                </el-select>
-            </el-col>
-            <el-col :span="2" :offset="1" style="margin-top:-10px;">
-                <el-button type="primary" size="medium" @click="handleCreateNewReviewItem">添加</el-button>
-            </el-col>
+            <template v-if="isEmploy===false">
+               <el-col :span="3">
+                   <span style="font-size: large;">新的评分项</span>
+               </el-col>
+                <el-col :span="5" style="margin-top:-10px;">
+                    <el-select v-model="selectedType" placeholder="请选择单个评审项">
+                        <el-option label="文本/分数选项域" value="scoreOption"></el-option>
+                        <el-option label="文本/分数输入域" value="scoreInput"></el-option>
+                        <el-option label="是或否选择域" value="yesOrNo"></el-option>
+                    </el-select>
+                </el-col>
+                <el-col :span="2" :offset="1" style="margin-top:-10px;">
+                    <el-button type="primary" size="medium" @click="handleCreateNewReviewItem">添加</el-button>
+                </el-col>
+            </template>
             <el-col :span="3" style="margin-top:-10px;">
                 <el-button  type="primary" size="medium" @click="createNewTemplateCopy">创建副本 </el-button>
             </el-col>
@@ -52,10 +54,10 @@
             </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                    <el-button @click="handleReadItem(scope.$index)" type="text" size="medium" v-if="isEmployInBoolean===true"
+                    <el-button @click="handleReadItem(scope.$index)" type="text" size="medium" v-if="isEmploy===true||isEmploy==='true'"
                     ><i class="el-icon-search"></i>详情
                     </el-button>
-                    <template v-if="isEmployInBoolean===false">
+                    <template v-if="isEmploy===false||isEmploy==='false'">
                         <el-button @click="handleEditItem(scope.$index)" type="text" size="medium"
                         ><i class="el-icon-search"></i>编辑
                         </el-button>
@@ -90,7 +92,7 @@
     export default {
         name: "reviewTemplateDetail",
         props: {
-            id: {//评审模板的id
+            templateId: {//评审模板的id
                 type:[Number,String],//解决用户浏览器刷新时，传递的参数变成String类型时，浏览器报错
                 default:null,
             },
@@ -102,19 +104,6 @@
         components: {
             reviewItemTemplate:reviewItemTemplate,
             reviewTemplate:reviewTemplate,
-        },
-        computed:{
-            isEmployInBoolean:function(){//解决用户浏览器刷新时，传递的参数变成String类型时的情况
-                if(typeof this.isEmploy === 'boolean'){
-                    return this.isEmploy;
-                }else if(this.isEmploy === 'true'){
-                    return true;
-                }else if(this.isEmploy === 'false'){
-                    return false;
-                }else{
-                    return false;
-                }
-            }
         },
         data() {
             return {
@@ -134,24 +123,41 @@
                 templateConfigList: [],//存储评审项的列表
                 templateName: '',//当前评审模板的名称
                 totalScore: 0,//评审模板的总分
-                templateId:null,//评审模板的id
+
             };
         },
         created: function (){
             this.getReviewTemplateDetail();
         },
+
+        beforeRouteEnter (to, from, next) {
+            /*设置模板的信息，包括模板模板id，模板是否被使用过isEmploy(true or false),其中isEmploy的取值比较敏感，影响了页面的显示，不能被用户修改*/
+            // 在渲染该组件的对应路由被 confirm 前调用 不！能！获取组件实例 `this`因为当守卫执行前，组件实例还没被创建
+            //to表示当前的路由，from表示上一个路由
+            console.log("to:",to);
+            console.log("from",from);
+            if(from.path!=='/'){       //不是刷新浏览器进入的当前页面
+                sessionStorage.setItem("reviewTemplateId",to.params.templateId);
+                sessionStorage.setItem("reviewTemplateIsEmploy",to.params.isEmploy);
+            }else{                   //刷新浏览器进入的当前页面
+                to.params.templateId = sessionStorage.getItem("reviewTemplateId");
+                to.params.isEmploy = sessionStorage.getItem("reviewTemplateIsEmploy");
+            }
+            next();
+        },
         methods: {
+
+            /**获取评审模板的单项配置列表*/
             getReviewTemplateDetail(){
                 this.configListLoading = true;
                 // console.log("this.id",this.id);
-                httpGet("/v1/authorization/review/templateconfig/list", {id: this.id}).then(results => {
+                httpGet("/v1/authorization/review/templateconfig/list", {id: this.templateId}).then(results => {
                     const {httpCode, msg, data} = results.data;
                     console.log("data", data);
                     if (httpCode === 200){
                         this.templateConfigList = data.templateConfigList;
                         this.totalScore = data.totalScore;
                         this.templateName = data.templateName;
-                        this.templateId = data.templateId;
                     }else if(httpCode !== 401){
                         errTips(msg);
                     }
