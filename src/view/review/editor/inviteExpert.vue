@@ -17,183 +17,7 @@
 			<div class="header_top">
 				
 				<el-button type="primary" @click="searchExpert()">专家搜索</el-button>
-				<el-dialog title="评审专家搜索" :visible.sync="dialogExpertVisible" :close-on-click-modal="false" width="80%" :before-close="clearList">
-
-					<h2 style="font-weight: bolder;text-align: center;">评审标题：<span>{{title}}</span></h2>
-					<div class="dialog_header_top">
-
-						<el-input v-model="searchData.name" placeholder="评审专家姓名"></el-input>
-						<el-input v-model="searchData.jobTitle" placeholder="职称"></el-input>
-						<el-select v-model="searchData.researchId" clearable placeholder="研究方向">
-							<el-option v-for="item in researchDirectionList" :label="item.researchDirection" :value="item.id"></el-option>
-						</el-select>
-						<el-input v-model="searchData.workUnit" placeholder="单位"></el-input>
-						<el-input v-model="searchData.department" placeholder="部门"></el-input>
-						<el-select v-model="searchData.cruxId" clearable placeholder="关键词">
-							<el-option v-for="item in cruxList" :label="item.crux" :value="item.id"></el-option>
-						</el-select>
-						<el-input v-model="searchData.email" placeholder="邮箱"></el-input>
-						<el-select v-model="searchData.education" placeholder="学历">
-							<el-option label="高中" value="1"></el-option>
-							<el-option label="大专" value="2"></el-option>
-							<el-option label="本科" value="3"></el-option>
-							<el-option label="研究生" value="4"></el-option>
-							<el-option label="博士" value="5"></el-option>
-							<el-option label="博士后" value="6"></el-option>
-							<el-option label="院士" value="7"></el-option>
-						</el-select>
-						<el-input v-model="searchData.nation" placeholder="国家"></el-input>
-
-
-						<el-button type="primary" @click="searchList">搜索</el-button>
-
-					</div>
-					<el-table :data="expertUserList" :header-cell-style="rowClass" style="margin-top: 20px;" v-loading="loading">
-						<el-table-column label="操作" align="center" width="160px">
-							<template slot-scope="scope">
-								<el-radio-group v-model="scope.row.radio" @change="invite(scope.row.uId,scope.row.radio)" >
-									<el-radio label="1">邀请</el-radio>
-									<el-radio label="2">备选</el-radio>
-								</el-radio-group>
-							</template>
-						</el-table-column>
-						<el-table-column prop="uName" label="评审专家姓名" align="center"></el-table-column>
-						<el-table-column label="个人信息" align="center" >
-							<template slot-scope="scope">
-								<span>职称：{{scope.row.uJobTitle}}</span></br>
-								<span>学历：</span>
-								<span v-if="scope.row.uEducation==1">高中</span>
-								<span v-if="scope.row.uEducation==2">大专</span>
-								<span v-if="scope.row.uEducation==3">本科</span>
-								<span v-if="scope.row.uEducation==4">研究生</span>
-								<span v-if="scope.row.uEducation==5">博士</span>
-								<span v-if="scope.row.uEducation==6">博士后</span>
-								<span v-if="scope.row.uEducation==7">院士</span>
-								</br>
-								<span>单位：{{scope.row.uWorkUnit}}</span></br>
-							</template>
-						</el-table-column>
-						
-						<el-table-column prop="uEmail" label="邮箱" align="center"></el-table-column>
-						<el-table-column prop="uNation" label="国家" align="center"></el-table-column>
-						<el-table-column prop="typeList" label="研究方向" align="center">
-							<template slot-scope="scope">
-								<span v-for="(item,index) in scope.row.typeList">
-									{{item}}&nbsp;
-								</span>
-							</template>
-						</el-table-column>
-						<el-table-column prop="review" label="评审统计(同意邀请)" align="center" width="280px">
-							<template slot-scope = "scope">
-								<span>评审中的任务：{{scope.row.review.underwayMission}}</span><br />
-								<span>已完成的评审任务：{{scope.row.review.finishedMission}}</span><br />
-								<span>撤回已分配任务：{{scope.row.review.revocationMisson}}</span><br />
-								<span>接受任务后中止：{{scope.row.review.discontinueMission}}</span><br />
-								<span>最近一次接受评审任务：{{scope.row.review.finallyAcceptMissionTime}}</span><br />
-								<span>最近一次评完成评审任务：{{scope.row.review.finallyFinishedMissionTime}}</span><br />
-								<span>平均评审时间（天）：{{scope.row.review.ageReviewTime }}</span><br />
-								<span>评审平均得分：{{scope.row.review.ageReviewScore }}</span><br />
-							</template>
-						</el-table-column>
-						<el-table-column prop="invite" label="邀请统计" align="center" width="280px">
-							<template slot-scope = "scope">
-								<span>最近一次邀请：{{scope.row.invite.finallyInvite }}</span><br />
-								<span>未回复的邀请：{{scope.row.invite.noReplyInvite }}</span><br />
-								<span>接受任务：{{scope.row.invite.acceptMission }}</span><br />
-								<span>拒绝任务：{{scope.row.invite.refuseMission }}</span><br />
-								<span>撤回邀请：{{scope.row.invite.revocationInvite }}</span><br />
-								<span>中止任务：{{scope.row.invite.withdrawMission }}</span><br />
-								<span>邀请总数：{{scope.row.invite.inviteSum }}</span><br />
-
-							</template>
-						</el-table-column>
-					</el-table>
-					<el-button type="primary" style="float: right;margin-top: 20px;" @click="postInvite()">提交邀请</el-button>
-					<div class="bid_footer">
-						<el-pagination @current-change="handleCurrentChange" :current-page.sync="pageData.pageNo" :total="totalPage"
-									   layout="prev, pager, next, jumper"></el-pagination>
-					</div>
-
-				</el-dialog>
-
-				<el-dialog title="邀请评审专家" :visible.sync="settingVisible" :close-on-click-modal="false" width="50%" :before-close="clearList1">
-					<el-dialog width="40%" title="邮件编辑" :visible.sync="emailSettingVisible" append-to-body>
-						<el-dialog width="40%" title="邮件预览" :visible.sync="emailePrviewVisible" append-to-body :before-close="showEmailSetting">
-							<!-- <el-input
-							  type="textarea"
-							  :rows="15"
-							  placeholder="请输入内容"
-							  v-model="previewArea">
-							</el-input> -->
-							<p v-html="previewArea"></p>
-							<!-- <div style="text-align: right;">
-								<el-button type="primary" style="margin-top: 20px;" @click="confirmEmail()">确定</el-button>
-							</div> -->
-						</el-dialog>
-
-						<el-form :label-position="'right'" label-width="100px" :model="emailForm">
-							
-							<el-form-item label="收件人">
-								<span>{{emailForm.userName}}</span>
-							</el-form-item>
-							<el-form-item label="抄送">
-								<el-checkbox-group v-model="checkList" @change="selectCC">
-								    <el-checkbox label="管理员"></el-checkbox>
-								    <el-checkbox label="发布者"></el-checkbox>
-								    
-								  </el-checkbox-group>
-							</el-form-item>
-							<el-form-item label="信件主题">
-								<el-input v-model="emailForm.config.theme" style="width: 90%;"></el-input>
-							</el-form-item>
-							<el-form-item label="信件内容">
-								<el-input type="textarea" v-model="emailForm.config.content" style="width: 90%;" rows="10">
-									
-								</el-input>
-							</el-form-item>
-						</el-form>
-						<div style="text-align: right;">
-							<el-button type="primary" style="margin-top: 20px;margin-right: 20px;" @click="preview()">预览</el-button>
-							<el-button type="primary" style="margin-top: 20px;" @click="emailConfirm()">确定</el-button>
-						</div>
-					</el-dialog>
-
-					<el-table :data="infoList" :header-cell-style="rowClass" style="margin-top: 20px;">
-
-						<el-table-column prop="userName" label="评审专家姓名" align="center"></el-table-column>
-						<el-table-column label="信件" align="center" width="240px">
-							<template slot-scope="scope">
-								<el-select v-model="templateId" placeholder="未选择模板" disabled>
-								    <el-option
-								            v-for="item in templateList"
-								            :key="item.id"
-								            :label="item.templateName"
-								            :value="item.id">
-								    </el-option>
-								</el-select>
-								<el-button type="text" @click="emailSetting(scope.row,scope.$index)">编辑</el-button>
-							</template>
-						</el-table-column>
-						<el-table-column prop="restrictReviewTime" label="限定评审的时间" align="center">
-							<template slot-scope="scope">
-								<el-input v-model.number="scope.row.restrictReviewTime" style="width: 50px;" size="mini">
-
-								</el-input>
-							</template>
-						</el-table-column>
-						<el-table-column label="邀请" align="center">
-							<template slot-scope="scope">
-								<el-checkbox v-model="scope.row.isInvite"></el-checkbox>
-								<!-- <el-button @click="scope.row.isInvite=false" type="text" v-if="scope.row.isInvite==true">取消</el-button>
-								<el-button type="text" v-if="scope.row.isInvite==false">已取消</el-button> -->
-							</template>
-						</el-table-column>
-					</el-table>
-					<div style="text-align: right;">
-						<el-button type="primary" style="margin-top: 20px;" @click="finalInvite()">确定邀请</el-button>
-					</div>
-				</el-dialog>
-
+				<expert-search :dialogExpertVisible="dialogExpertVisible" :expertloading="loading" :reviewTitle="title" :params="expertSearchParam" @closeDialog="closeExpertSearchDialog"></expert-search>
 
 			</div>
 			<h2 style="text-align: left;font-weight: bolder;margin-top: 2%;">评审设置</h2>
@@ -317,12 +141,7 @@
 							</el-button>
 						</template>
 					</el-table-column>
-
-
-
-
 				</el-table>
-
 			</div>
 
 		</div>
@@ -346,14 +165,15 @@
 	import {
 		specificDate
 	} from '@/utils/getDate.js';
-
+	import expertSearch from '@/view/review/components/expertSearch';
 	export default {
 		props: ['type'], //type用来区分'新任务'，‘评审专家需要额外评审’，‘评审延期’，‘评审中’等类型
 		components: {
-
+			expertSearch
 		},
 		data() {
 			return {
+				id:null,
 				templateId:null,
 				previewArea:null,
 				checkList:[],
@@ -368,38 +188,10 @@
 						theme: null,
 					}
 				},
-				emailSettingVisible: false,
+				
 				totalPage: null,
 				radio: '1',
 				loading: false,
-				expertUserList: [],
-				dialogExpertVisible: false,
-				pageData: {
-					pageNo: 1,
-					pageSize: 10,
-					name: '',
-					jobTitle: '',
-					cruxId: null,
-					researchId: null,
-					workUnit: '',
-					department: '',
-					email: '',
-					education: null,
-					nation: '',
-				},
-				searchData: {
-					pageNo: 1,
-					pageSize: 10,
-					name: '',
-					jobTitle: '',
-					cruxId: null,
-					researchId: null,
-					workUnit: '',
-					department: '',
-					email: '',
-					education: null,
-					nation: '',
-				},
 				ruleForm: {
 					deadline: null,
 					id: null,
@@ -416,82 +208,39 @@
 				title: "",
 				expertInviteList: [],
 				expertAlternativeList: [],
-				cruxList: [],
-				researchDirectionList: [],
-				postForm: {
-					alternativeList: [], //专家对象信息集合
-					expertInviteList: [], //邀请对象信息集合
-					id: null
-				},
+
 				infoList: [],
-				settingVisible: false,
-				templateNameList: [],
-				dataList: [],
-				emailePrviewVisible:false,
+				
+				
+				//settingVisible: false, //控制邀请专家对话框
+				emailePrviewVisible:false, //控制邮件预览对话框
+				dialogExpertVisible: false, //控制评审专家搜索对话框
+				emailSettingVisible: false, //控制邮件编辑对话框
+				
 				templateList:[], //邮件模板列表
+				templateNameList: [], //打分模板列表
+				expertSearchParam:{
+					id:null,
+					reviewId:null,
+					restrictReviewTime:null
+				},
+				//alertToInvited:[],
 			};
 		},
 		created: function() {
 			this.id = this.$route.query.id; //管理员评审任务编号ID
 			this.reviewId = this.$route.query.reviewId; //主评审编号ID
-			this.postForm.id = this.id;
+			//this.postForm.id = this.id;
 			this.getView(); //获取邀请页面数据
-			this.getKeyWords(); //获取关键词
-			this.getResearchList(); //获取研究方向
-			this.getTemplate();
-			this.getEmailTemplate();
+			this.getTemplate(); //评审打分模板
 		},
 		computed: {},
 		methods: {
-			/**获取邮件模板，在中止未完成任务的对话框中展示用到的邮件*/
-			getEmailTemplate(){
-			    httpGet('/v1/authorization/review/emailtemplate/get').then(results=>{
-			        const {httpCode, msg, data} = results.data;
-			        if (httpCode == 200){
-			            this.templateList = data.templateList;
-			        } else {
-			            errTips(msg);
-			        }
-			    });
-			},
-			 
-			selectCC(){
-				// console.log(this.checkList);
-				var item = {isAdmin:false , isProjectUser:false};
-				for (let i of this.checkList) {
-					if (i === "管理员") item.isAdmin = true;
-					if (i === "发布者") item.isProjectUser = true;
-				}
-				this.emailForm.duplicate = item;
-				console.log(this.emailForm.duplicate);
-			},
-			emailConfirm(){
-				let i = this.emailForm.index;
-				console.log("emailConfirm-emailForm:",this.emailForm);
-				console.log("infoList:",this.infoList)
-				this.infoList[i].emailConfig = this.emailForm.config;
-				this.infoList[i].duplicate = this.emailForm.duplicate;
-				//this.emailForm={};
-				this.emailSettingVisible = false;
-			},
-			showEmailSetting(){
-				this.emailSettingVisible=true;
-				this.emailePrviewVisible = false;
-			},
-			clearList1(){
-				//alert(11);
-				this.postForm.expertInviteList=[];
-				this.postForm.alternativeList=[];
-				this.settingVisible=false;
-				//settingVisible
-			}, 
-			clearList(){
-				//alert(11);
-				this.postForm.expertInviteList=[];
-				this.postForm.alternativeList=[];
+			closeExpertSearchDialog(){
 				this.dialogExpertVisible=false;
-				//settingVisible
-			},  
+				this.getView();
+			},
+			/**待修改*/
 			alterInvite(val) {
 				console.log("alterExpert:", val);
 				var item = {
@@ -499,117 +248,21 @@
 					type: 1,
 					isInvite: true
 				};
-				this.postForm.expertInviteList.push(item);
-				httpPost("/v1/authorization/review/expertinvite/insert", this.postForm).then(results => {
-					const {
-						httpCode,
-						msg,
-						data
-					} = results.data;
+				var arr = new Array();
+				arr.push(item);
+				var postForm = {id :this.id, expertInviteList:arr}
+				httpPost("/v1/authorization/review/expertinvite/insert", postForm).then(results => {
+					const {httpCode, msg, data} = results.data;
 					//console.log(httpCode);
 					if (httpCode === 200) {
-
-						this.settingVisible = false;
 						successTips("已发出邀请");
-						this.postForm.expertInviteList=[];
-						this.getView();
-					} else {
-						this.postForm.expertInviteList=[];
-						errTips(msg);
-					}
-				})
-			},
-			preview(val) {
-
-				this.emailePrviewVisible=true;
-				let previewForm={adminMissionId:this.id,userId:this.emailForm.userId,emailContent:this.emailForm.config.content};
-				//post /v1/authorization/review/expertinviteemailconfig/get 
-				httpPost("/v1/authorization/review/expertinviteemailconfig/get",previewForm).then(results => {
-					const {
-						httpCode,
-						msg,
-						data
-					} = results.data;
-					if (httpCode == 200) {
-						this.previewArea = data.content;
-
-					} else {
-
-						errTips(msg);
-					}
-
-				})
-				// let i = this.emailForm.index;
-				// this.infoList[i].emailConfig = this.emailForm.config;
-				// this.emailForm.config = 
-				//console.log("2:",this.infoList);
-				this.emailSettingVisible = false;
-				//this.emailForm.config = {};
-			},
-			emailSetting(val, index) {  //编辑邮件
-				this.emailSettingVisible = true;
-				console.log("scope.row", val);
-				this.checkList = [];
-				console.log("index", index);
-				//emailForm是显示邮件信息的列表
-				this.emailForm.userId = val.userId;
-				this.emailForm.userName = val.userName;
-				this.emailForm.duplicate = val.duplicate;
-				this.emailForm.index = index;
-				if (val.emailConfig != null)
-					this.emailForm.config = val.emailConfig;
-				//post /v1/authorization/review/expertinviteemailconfig/update
-				let postEmailForm={adminMissionId:this.id,receiver:2,userId:val.userId,templateId:this.templateId};
-				console.log('postEmailForm:',postEmailForm);
-				httpPost("/v1/authorization/review/expertinviteemailconfig/update", postEmailForm).then(results => {
-					const {
-						httpCode,
-						msg,
-						data
-					} = results.data;
-					//console.log(httpCode);
-					if (httpCode === 200) {
-						this.emailForm.config.content = data.content;
-					} else {
-						errTips(msg);
-					}
-				})
-
-				// this.emailForm.config = {content:null, theme:null};
-				//console.log(this.emailForm);
-			},
-			finalInvite() {
-				//console.log(this.infoList);
-				let list = this.infoList;
-				for (let i of list) {
-					delete i.userName;
-					i.type = 1;
-				}
-				console.log("finalInvite-list:",list);
-				this.postForm.expertInviteList = list;
-
-				console.log("finalInvite-postForm:",this.postForm);
-
-				httpPost("/v1/authorization/review/expertinvite/insert", this.postForm).then(results => {
-					const {
-						httpCode,
-						msg,
-						data
-					} = results.data;
-					//console.log(httpCode);
-					if (httpCode === 200) {
-
-						this.settingVisible = false;
-						successTips("已发出邀请");
-						this.postForm.expertInviteList=[];
-						this.postForm.alternativeList=[];
 						this.getView();
 					} else {
 						errTips(msg);
 					}
 				})
-
 			},
+
 			getTemplate() {
 				//get /v1/authorization/review/templatename/list
 				httpGet("/v1/authorization/review/templatename/list").then(results => {
@@ -628,140 +281,14 @@
 				})
 			},
 
-			postInvite() {
-				//alert(111);
-				console.log("postForm:", this.postForm);
-				if (this.postForm.alternativeList.length == 0 && this.postForm.expertInviteList.length == 0)
-					errTips("请选择评审专家！");
-				else {
-					httpPost("/v1/authorization/review/expertinvite/get", this.postForm).then(results => {
-							const {
-								httpCode,
-								msg,
-								data
-							} = results.data;
-					
-							if (httpCode === 200) {
-								//this.infoList = data.infoList;
-								let list = data.infoList;//邀请专家信息集合（含有专家的名字）
-								for (let i of list) {
-									i.isInvite = true;
-									i.emailConfig = {theme:null,content:null};
-									i.duplicate = {isAdmin:false , isProjectUser:false};
-									i.restrictReviewTime = this.ruleForm.restrictReviewTime;
-								}
-								this.infoList = list;
-								this.templateId = data.templateId;
-								//console.log(this.infoList);
-								this.dialogExpertVisible = false;
-								this.settingVisible = true;
-							} else {
-								errTips(msg);
-							}
-					})
-					
-				}
-			},
-			invite(id, val) {
-				//console.log(id,val);
-				val = parseInt(val);
-				var temp = {
-					emailConfig: null,
-					isInvite: true,
-					restrictReviewTime: this.ruleForm.restrictReviewTime,
-					type: val,
-					userId: id
-				}
-				if (val == 1) this.postForm.expertInviteList.push(temp);
-				if (val == 2) this.postForm.alternativeList.push(temp);
-
-				//console.log("post",this.postForm);
-			},
-
-			getKeyWords() {
-				// /v1/public/coreuser/crux/list
-				httpGet("/v1/public/coreuser/crux/list").then(results => {
-					const {
-						httpCode,
-						msg,
-						data
-					} = results.data;
-					if (httpCode == 200) {
-						this.cruxList = data.cruxList;
-					} else {
-						this.cruxList = [];
-						errTips(msg);
-					}
-					console.log(this.cruxList);
-				})
-			},
-			getResearchList() {
-				//
-				httpGet("/v1/public/coreuser/list/research").then(results => {
-					const {
-						httpCode,
-						msg,
-						data
-					} = results.data;
-					if (httpCode == 200) {
-						this.researchDirectionList = data.researchDirectionList;
-					} else {
-						this.researchDirectionList = [];
-						errTips(msg);
-					}
-					console.log(this.researchDirectionList);
-				})
-			},
-			searchList() {
-				this.getExpert(this.searchData);
-			},
+			/**专家搜索，调用组件*/
 			searchExpert() {
-				//alert(1);
+				//console.log(this.dialogExpertVisible);
+				this.expertSearchParam.id = this.id;
+				this.expertSearchParam.reviewId = this.reviewId;
+				this.expertSearchParam.restrictReviewTime = this.ruleForm.restrictReviewTime;
 				this.dialogExpertVisible = true;
-				this.getExpert();
-			},
-			handleCurrentChange(val) {
-				this.pageData.pageNo = val;
-				this.getView();
-			},
-			getExpert(val = this.pageData) {
-				this.loading = true;
-				//get /v1/authorization/review/expert/user
-				httpGet("/v1/authorization/review/expert/user", val).then(results => {
-					const {
-						httpCode,
-						msg,
-						data
-					} = results.data;
-					if (httpCode == 200) {
-						this.pageNo = data.pageNo;
-						this.totalPage = parseInt(data.totalPage + "0");
-						this.expertUserList = data.expertUserList;
-						console.log('expertUserList',this.expertUserList);
-						let list = this.expertUserList;
-
-						for (let i of list) {
-							i.invite.finallyInvite = specificDate(i.invite.finallyInvite);
-							i.review.finallyAcceptMissionTime = specificDate(i.review.finallyAcceptMissionTime);
-							i.review.finallyFinishedMissionTime = specificDate(i.review.finallyFinishedMissionTime);
-						}
-						this.expertUserList = list;
-						// let list2 = this.expertUserList.review;
-						// for (let i of list2) {
-						// 	i.finallyAcceptMissionTime = specificDate(i.finallyAcceptMissionTime);
-						// 	i.finallyFinishedMissionTime = specificDate(i.finallyFinishedMissionTime);
-						// }
-						// this.expertUserList.review = list2;
-						Object.assign(this.pageData, val);
-
-					} else if (msg == "该条件暂无数据") {
-						this.expertUserList = [];
-						message("该条件暂无数据");
-					} else if (httpCode !== 401) {
-						errTips(msg);
-					}
-					this.loading = false;
-				});
+				//console.log(this.dialogExpertVisible);
 			},
 
 			submitForm() {
@@ -784,7 +311,7 @@
 				})
 			},
 			getView() {
-				this.loading = true;
+				//console.log(1111);
 				httpGet("/v1/authorization/review/total/get", {
 					id: this.id
 				}).then(results => {
@@ -802,16 +329,17 @@
 							i.gmtModified = specificDate(i.gmtModified);
 						}
 						this.expertInviteList = expertInviteList;
-
+						console.log("getView:",this.ruleForm);
 					} else {
 						errTips(msg);
 					}
-					this.loading = false;
+					//this.loading = false;
 				});
 			},
 			rowClass() {
 				return "background:#F4F6F9;";
 			}
+
 		}
 	};
 </script>
