@@ -4,7 +4,7 @@
 		<div style="padding-left: 10px;">
 			<el-breadcrumb separator-class="el-icon-arrow-right" style="font-size: 130%;">
 				<el-breadcrumb-item><a class="Link" href="javascript:history.back(-1)">返回上一级</a></el-breadcrumb-item>
-				
+
 				<el-breadcrumb-item>邀请评审专家</el-breadcrumb-item>
 
 			</el-breadcrumb>
@@ -15,7 +15,7 @@
 
 			<h2 style="text-align: left;font-weight: bolder;margin-top: 2%;">评审专家搜索</h2>
 			<div class="header_top">
-				
+
 				<el-button type="primary" @click="searchExpert()">专家搜索</el-button>
 				<el-dialog title="评审专家搜索" :visible.sync="dialogExpertVisible" :close-on-click-modal="false" width="80%" :before-close="clearList">
 
@@ -73,7 +73,7 @@
 								<span>单位：{{scope.row.uWorkUnit}}</span></br>
 							</template>
 						</el-table-column>
-						
+
 						<el-table-column prop="uEmail" label="邮箱" align="center"></el-table-column>
 						<el-table-column prop="uNation" label="国家" align="center"></el-table-column>
 						<el-table-column prop="typeList" label="研究方向" align="center">
@@ -132,7 +132,7 @@
 						</el-dialog>
 
 						<el-form :label-position="'right'" label-width="100px" :model="emailForm">
-							
+
 							<el-form-item label="收件人">
 								<span>{{emailForm.userName}}</span>
 							</el-form-item>
@@ -140,7 +140,7 @@
 								<el-checkbox-group v-model="checkList" @change="selectCC">
 								    <el-checkbox label="管理员"></el-checkbox>
 								    <el-checkbox label="发布者"></el-checkbox>
-								    
+
 								  </el-checkbox-group>
 							</el-form-item>
 							<el-form-item label="信件主题">
@@ -148,7 +148,7 @@
 							</el-form-item>
 							<el-form-item label="信件内容">
 								<el-input type="textarea" v-model="emailForm.config.content" style="width: 90%;" rows="10">
-									
+
 								</el-input>
 							</el-form-item>
 						</el-form>
@@ -215,7 +215,7 @@
 						<el-input v-model="ruleForm.inviteRevocationFront ">
 							<template slot="append">天</template>
 						</el-input>
-					
+
 					</el-form-item>
 					<el-form-item label="专家接受任务后限定完成的时间">
 						<el-input v-model="ruleForm.restrictReviewTime">
@@ -454,7 +454,7 @@
 			        }
 			    });
 			},
-			 
+
 			selectCC(){
 				// console.log(this.checkList);
 				var item = {isAdmin:false , isProjectUser:false};
@@ -484,14 +484,14 @@
 				this.postForm.alternativeList=[];
 				this.settingVisible=false;
 				//settingVisible
-			}, 
+			},
 			clearList(){
 				//alert(11);
 				this.postForm.expertInviteList=[];
 				this.postForm.alternativeList=[];
 				this.dialogExpertVisible=false;
 				//settingVisible
-			},  
+			},
 			alterInvite(val) {
 				console.log("alterExpert:", val);
 				var item = {
@@ -523,7 +523,7 @@
 
 				this.emailePrviewVisible=true;
 				let previewForm={adminMissionId:this.id,userId:this.emailForm.userId,emailContent:this.emailForm.config.content};
-				//post /v1/authorization/review/expertinviteemailconfig/get 
+				//post /v1/authorization/review/expertinviteemailconfig/get
 				httpPost("/v1/authorization/review/expertinviteemailconfig/get",previewForm).then(results => {
 					const {
 						httpCode,
@@ -541,7 +541,7 @@
 				})
 				// let i = this.emailForm.index;
 				// this.infoList[i].emailConfig = this.emailForm.config;
-				// this.emailForm.config = 
+				// this.emailForm.config =
 				//console.log("2:",this.infoList);
 				this.emailSettingVisible = false;
 				//this.emailForm.config = {};
@@ -640,7 +640,7 @@
 								msg,
 								data
 							} = results.data;
-					
+
 							if (httpCode === 200) {
 								//this.infoList = data.infoList;
 								let list = data.infoList;//邀请专家信息集合（含有专家的名字）
@@ -659,7 +659,7 @@
 								errTips(msg);
 							}
 					})
-					
+
 				}
 			},
 			invite(id, val) {

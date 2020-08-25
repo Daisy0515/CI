@@ -220,8 +220,10 @@
             /**获取评审任务*/
             getView(val = this.pageData) {
                 this.loading = true;
+                console.log("val",val);
                 httpGet("/v1/authorization/review/admin/search", val).then(results => {
                     const {httpCode, msg, data} = results.data;
+                    console.log(" results.data", results.data);
                     if (httpCode == 200) {
                         this.pageNo = data.pageNo;
                         this.totalPage = parseInt(data.totalPage + '0');

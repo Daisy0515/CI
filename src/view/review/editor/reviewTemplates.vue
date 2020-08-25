@@ -1,3 +1,4 @@
+<!--评审模板详情页面-->
 <template>
     <div>
         <div style="padding-left: 10px;margin-buttom:30px;">
@@ -20,15 +21,14 @@
             </el-table-column>
             <el-table-column label="操作"  align="center">
                 <template slot-scope="scope">
-                    <router-link :to="{name:'editorReviewTemplateDetail',params:{id:scope.row.id,isEmploy:scope.row.isEmploy}}"
-                                 v-if="scope.row.isEmploy===true">
-                        <el-button  type="text" size="medium" ><i class="el-icon-search"></i>详情 </el-button>
-                    </router-link>
+                    <el-button @click="handleViewReviewTemplate(scope.row)" type="text" size="medium" >
+                            <i class="el-icon-search" v-if="scope.row.isEmploy===true">详情</i>
+                            <i class="el-icon-search" v-else>编辑</i>
+                    </el-button>
                     <template v-if="scope.row.isEmploy===false" >
-                        <router-link :to="{name:'editorReviewTemplateDetail',params:{id:scope.row.id,isEmploy:scope.row.isEmploy}}" >
-                            <el-button  type="text" size="medium" ><i class="el-icon-search"></i>编辑 </el-button>
-                        </router-link>
-                        <el-button @click="handleDeleteFormItem(scope.row.id)" type="text" size="medium" ><i class="el-icon-delete"></i>删除 </el-button>
+                        <el-button @click="handleDeleteReviewTemplate(scope.row.id)" type="text" size="medium" >
+                            <i class="el-icon-delete">删除</i>
+                        </el-button>
                     </template>
                 </template>
             </el-table-column>
@@ -59,6 +59,7 @@
             this.getReviewTemplates();
         },
         methods:{
+            /**获取评审模板*/
             getReviewTemplates(){
                 this.loading = true;
                 httpGet("/v1/authorization/review/templatename/list").then(results => {
@@ -77,7 +78,12 @@
                 });
             },
 
-            handleDeleteFormItem(id){
+            /**查看与编辑评审模板详情*/
+            handleViewReviewTemplate(row){
+                this.$router.push({name:'editorReviewTemplateDetail',params:{templateId:row.id,isEmploy:row.isEmploy}});
+            },
+            /**删除评审模板*/
+            handleDeleteReviewTemplate(id){
                 MessageBox.confirm("此操作将删除此评审模板, 是否继续?", "提示", {
                     confirmButtonText: "确定",
                     cancelButtonText: "取消",

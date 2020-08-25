@@ -565,7 +565,7 @@ const vueRouter = new Router({
 			}
 		},
 		{
-			path:'/editorReviewTemplateDetail/templateId/:id/isEmploy/:isEmploy',
+			path:'/editorReviewTemplateDetail',//实际进入这个页面需要传入模板id,templateId和模板是否被使用的isEmploy
 			name:'editorReviewTemplateDetail',
 			component:() => import('@/view/review/editor/reviewTemplateDetail'),
 			props:true,//将id,isEmploy视为组件的属性
