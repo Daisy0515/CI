@@ -4,36 +4,36 @@
 				<el-row :gutter="20">
 					<el-col :span="8">
 						<el-form-item label="评审标题" :label-width="formLabelWidth">
-							<el-input v-model="form.title" auto-complete="off" />
+							<el-input v-model="form.title" auto-complete="off" :readonly="isReadOnly"/>
 						</el-form-item>
 					</el-col>
 					<el-col :span="8">
 						<el-form-item label="评审类型" :label-width="formLabelWidth">
-							<el-input v-model="form.title" auto-complete="off" />
+							<el-input v-model="form.title" auto-complete="off" :readonly="isReadOnly"/>
 						</el-form-item>
 					</el-col>
 					<el-col :span="8">
 						<el-form-item label="提交人" :label-width="formLabelWidth">
-							<el-input v-model="form.submitName" auto-complete="off" />
+							<el-input v-model="form.submitName" auto-complete="off" :readonly="isReadOnly" />
 						</el-form-item>
 					</el-col>
 				</el-row>
 				<el-row :gutter="20">
 					<el-col :span="8">
 						<el-form-item label="邀请时间" :label-width="formLabelWidth">
-							<el-input v-model="form.gmtCreate" auto-complete="off" />
+							<el-input v-model="form.gmtCreate" auto-complete="off" :readonly="isReadOnly"/>
 						</el-form-item>
 					</el-col>
 					<el-col :span="8">
 						<el-form-item label="截止时间" :label-width="formLabelWidth">
-							<el-input v-model="form.deadline" auto-complete="off" />
+							<el-input v-model="form.deadline" auto-complete="off" :readonly="isReadOnly"/>
 						</el-form-item>
 					</el-col>
 				</el-row>
 				<el-row :gutter="20">
 					<el-col :span="12">
 						<el-form-item label="评审内容" :label-width="formLabelWidth">
-							<el-input type="textarea" class="input_textarea" v-model="form.content" :rows="10" style="width:87%;" auto-complete="off" />
+							<el-input type="textarea" class="input_textarea" v-model="form.content" :rows="10" style="width:87%;" auto-complete="off" :readonly="isReadOnly"/>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
