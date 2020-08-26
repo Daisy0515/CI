@@ -103,7 +103,8 @@
 			</el-table-column>
 		</el-table>
 		<el-button type="primary" style="float: right;margin-top: 20px;" @click="postInvite()">提交邀请</el-button>
-		<invited-expert-list :infoList="invitedExpertList" :invitedExpertVisible="invitedExpertVisible" :params="inviteExpertParams" @closeDialog="closeInvitedExpertDialog"></invited-expert-list>
+		<invited-expert-list :infoList="invitedExpertList" :invitedExpertVisible="invitedExpertVisible" :params="inviteExpertParams" @closeDialog="closeInvitedExpertDialog"
+		@clearInvitedExpert="clearInvitedExpert"></invited-expert-list>
 		<div class="bid_footer">
 			<el-pagination @current-change="handleCurrentChange" :current-page.sync="pageData.pageNo" :total="totalPage"
 						   layout="prev, pager, next, jumper"></el-pagination>
@@ -226,7 +227,7 @@
 							let list = data.infoList;//邀请专家信息集合（含有专家的名字）
 							for (let i of list) {
 								i.isInvite = true;
-								i.emailConfig = {theme:null,content:null};
+								//i.emailConfig = {theme:null,content:null};
 								i.duplicate = {isAdmin:false , isProjectUser:false};
 								i.restrictReviewTime = this.params.restrictReviewTime;
 							}
@@ -242,7 +243,11 @@
 
 				}
 			},
-
+			clearInvitedExpert(){
+				this.postForm.expertInviteList = [];
+				this.postForm.alternativeList = [];
+				this.getExpert();
+			},
 			/**邀请与备选触发的函数*/
 			inviteRadio(id, arr) {
 				//console.log(id,val);

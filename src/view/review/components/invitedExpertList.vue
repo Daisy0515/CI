@@ -117,7 +117,7 @@
                     this.getEmailTemplate(); //获取邮件模板();
                     this.templateId = this.params.templateId;
                     this.id = this.params.id;
-                    console.log(this.templateId);
+                    //console.log('infoList',this.infoList);
                 }
             }
         },
@@ -138,7 +138,8 @@
                 for (let i of list) {
                     delete i.userName;
                     delete i.index;
-                    //i.type = 1;
+                    delete i.config;
+                    i.type = 1;
                 }
                 console.log("finalInvite-list:",list);
                 //this.postForm.expertInviteList = list;
@@ -156,7 +157,7 @@
                     if (httpCode === 200) {
                         successTips("已发出邀请");
                         this.changeVisible();
-
+                        this.$emit("clearInvitedExpert");
                         //this.getView();
                     } else {
                         errTips(msg);
@@ -204,29 +205,26 @@
             /**编辑邮件*/
             emailEdit(val, index) {  //编辑邮件
                 console.log("val",val);
+                //console.log('emailForm:', this.emailForm);
                 this.emailEditVisible = true;
                 //console.log("scope.row", val);
                 this.cccheckList = [];
 
-                this.emailForm = val;
-
+                //this.emailForm = val;
+                this.emailForm.userName = val.userName;
                 this.emailForm.index = index;
 
-                if (val.emailConfig != null)
-                    this.emailForm.config = val.emailConfig;
-                console.log('emailForm:', this.emailForm);
+
+                //console.log('emailForm:', this.emailForm);
                 //post /v1/authorization/review/expertinviteemailconfig/update
                 let postEmailForm={adminMissionId:this.id,receiver:2,userId:val.userId,templateId:this.templateId};
                 console.log('postEmailForm:',postEmailForm);
                 httpPost("/v1/authorization/review/expertinviteemailconfig/update", postEmailForm).then(results => {
-                    const {
-                        httpCode,
-                        msg,
-                        data
-                    } = results.data;
+                    const {httpCode, msg, data} = results.data;
                     //console.log(httpCode);
                     if (httpCode === 200) {
                         this.emailForm.config.content = data.content;
+                        console.log('emailForm:', this.emailForm);
                     } else {
                         errTips(msg);
                     }
