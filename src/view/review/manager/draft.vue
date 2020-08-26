@@ -65,7 +65,8 @@
                        :loading="dialogLoading"
                        :projectList="projectList"
                        :reviewProcessList="reviewProcessList"
-                       @closeSubmitDialog="closeSubmitDialog"></submit-review>
+                       @closeSubmitDialog="closeSubmitDialog">
+        </submit-review>
     </div>
 </template>
 
@@ -74,7 +75,7 @@
     import {specificDate} from '@/utils/getDate.js';
     import {message, successTips, errTips} from '@/utils/tips.js';
     import sourceUpload from '@/common/upload/resourceUpload';
-    import submitReview from '@/view/review/components/submitReview';
+    import submitReview from '@/view/review/manager/components/submitReview';
     import { MessageBox } from "element-ui";
     export default {
         components: {

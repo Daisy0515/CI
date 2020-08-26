@@ -1,3 +1,4 @@
+<!--评审模板配置-->
 <template>
     <div>
         <div style="padding-left: 10px;margin-buttom:30px;">
@@ -92,12 +93,13 @@
 <script>
     import {errTips, successTips} from "@/utils/tips.js";
     import deepCopyObject from "@/utils/deepCopyObject.js";
-    import reviewItemTemplate from '@/view/review/components/reviewItemTemplate';
+    import reviewItemTemplate from '@/view/review/editor/reviewTemplate/reviewItemTemplate';
     import {httpPost,httpGet} from "@/utils/http.js";
 
-    //他们的位置就对应着type的数字表示（传递给后端的，前端为了更好的阅读体验用的字符串表示）
+    //reviewItemTypeStringToId中元素的小标就对应着type的数字表示（传递给后端的，前端为了更好的阅读体验用的字符串表示）
     const reviewItemTypeStringToId =["","scoreOption","yesOrNo","scoreInput"];
     export default {
+        name:"reviewTemplateConfig",
         components: {
             reviewItemTemplate
         },
@@ -135,7 +137,8 @@
             }
         },
         computed: {
-            scoreCompare: function () {//设定的总分与当前总分的比较
+            /**设定的总分与当前总分的比较*/
+            scoreCompare: function () {
                 if (this.expectedTotalScore > this.templateForm.totalScore) {//设定的总分大于当前总分
                     return -1;
                 } else if (this.expectedTotalScore === this.templateForm.totalScore) {//设定的总分等于当前总分
@@ -146,6 +149,7 @@
             }
         },
         watch: {
+            /**评审模板配置的、列表发生变化，评审模板的总分也要跟着变化*/
             configList: function () {
                 this.templateForm.totalScore = 0;
                 for (let item of this.configList) {
@@ -154,7 +158,8 @@
             }
         },
         methods: {
-            getReviewTemplateDetail(){//评审表单详情中点击创建副本 跳转到当前页面时调用。
+            /**评审表单详情中点击创建副本 跳转到当前页面时调用*/
+            getReviewTemplateDetail(){
                 httpGet("/v1/authorization/review/templateconfig/list", {id: this.templateId}).then(results => {
                     const {httpCode, msg, data} = results.data;
                     console.log("data", data);
@@ -170,7 +175,8 @@
                     }
                 });
             },
-            addFormItem() {//增加一个评审单项
+            /**增加一个评审单项*/
+            addFormItem() {
                 if (this.selectedType === null) {
                     errTips("请选择评审项");
                 } else {
@@ -178,16 +184,19 @@
                     this.formItemVisible = true;
                 }
             },
-            handleEditFormItem(index) { //编辑评审单项
+            /**编辑评审单项*/
+            handleEditFormItem(index) {
                 this.selectedType = reviewItemTypeStringToId[this.configList[index].type];
                 this.reviewItemForm = deepCopyObject(this.configList[index]);
                 this.itemIndex = index;
                 this.formItemVisible = true;
             },
-            handleDeleteFormItem(index) {//删除评审单项
+            /**删除评审单项*/
+            handleDeleteFormItem(index) {
                 this.configList.splice(index, 1);
             },
-            submitForm(formName) { //提交表单
+            /**提交评审模板配置*/
+            submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         if (this.isSetTotalScore === true) {
@@ -214,7 +223,7 @@
 
                         httpPost('/v1/authorization/review/template/insert', this.templateForm).then(results => {
                             console.log("this.templateForm", this.templateForm);
-                            const {data, msg, httpCode} = results.data;
+                            const {msg, httpCode} = results.data;
                             if (httpCode === 200) {
                                 successTips("添加成功！");
                                 this.$router.push('/editorReviewTemplates');
@@ -229,20 +238,19 @@
                 });
             },
 
-            getNewReviewItemForm(newReviewItemForm) {//存储评审单项组件提交的新的评审单项记录
+            /**存储评审单项组件提交的新的评审单项记录*/
+            getNewReviewItemForm(newReviewItemForm){
                 this.configList.push(newReviewItemForm);
             },
-            getUpdatedReviewItemForm(index, updatedReviewItemForm) {//存储评审单项组件提交的更新的评审单项记录
+            /**存储评审单项组件提交的更新的评审单项记录*/
+            getUpdatedReviewItemForm(index, updatedReviewItemForm) {
                 this.configList[index] = updatedReviewItemForm;
-                this.configList = deepCopyObject(this.configList);
-                // this.configList = [...this.configList];//多了这一步的原因是，this.configList本身的引用没有发生变化，所以已添加评审项对应的表格显示的内容不会变化
+                this.configList = deepCopyObject(this.configList);//多了这一步的原因是，上一步的this.configList本身的引用没有发生变化，所以已添加评审项对应的表格显示的内容不会变化
             },
-            closeReviewItemForm() {//关闭评审单项对话框
+            /**关闭评审单项对话框*/
+            closeReviewItemForm() {
                 this.formItemVisible = false;
             },
-            resetForm(formName) {
-                this.$refs[formName].resetFields();
-            }
         }
     }
 </script>

@@ -1,6 +1,6 @@
-<!--功能：评审专家,管理员查看评价
-    调用:1.expert(评审专家：评审任务列表)
-         2.viewExpertReviewList(评审管理员，查看评审专家的评审状态列表)
+<!--功能：评审专家,管理员查看专家的评价
+    调用页面: expert(评审专家：评审任务列表)
+              viewExpertReviewList(评审管理员：查看评审专家的评审状态列表)
 -->
 <template>
     <div>
@@ -44,13 +44,12 @@
     /*本组件采用formCreate组件来动态生成表单*/
     import formCreate from "@form-create/element-ui";
     import deepCopyObject from "@/utils/deepCopyObject";//深拷贝对象
-    import reviewItemTemplate from '@/view/review/components/reviewItemTemplate';
 
     export default {
-        name: "readReviewTemplate",
+        name: "readReviewResult",
         components: {
             formCreate: formCreate.$form(),
-            reviewItemTemplate:reviewItemTemplate,
+
         },
         props:{
             templateConfigList:{

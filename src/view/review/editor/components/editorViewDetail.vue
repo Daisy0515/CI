@@ -1,4 +1,6 @@
-<!--评审任务查看详情的对话框的组件-->
+<!--功能：评审管理员查看评审任务详情的对话框的组件
+    调用页面：editorReviewList
+              submissionSearch(评审管理员：评审搜索任务)-->
 <template>
     <el-dialog  title="查看详情" :visible.sync="dialogFormVisible" :before-close="changeVisible"
                style="width:100%;text-align:left; font-weight: bolder;">

@@ -548,7 +548,7 @@ const vueRouter = new Router({
 		{
 			path:'/editorReviewTemplateConfig',
 			name:'editorReviewTemplateConfig',
-			component:() => import('@/view/review/editor/reviewTemplateConfig'),
+			component:() => import('@/view/review/editor/reviewTemplate/reviewTemplateConfig'),
 			props: (route) => ({ templateId: route.query.templateId }),
 			meta:{
 				title:'评审模板配置',
@@ -558,7 +558,7 @@ const vueRouter = new Router({
 		{
 			path:'/editorReviewTemplates',
 			name:'editorReviewTemplates',
-			component:() => import('@/view/review/editor/reviewTemplates'),
+			component:() => import('@/view/review/editor/reviewTemplate/reviewTemplates'),
 			meta:{
 				title:'已有评审模板',
 				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
@@ -567,7 +567,7 @@ const vueRouter = new Router({
 		{
 			path:'/editorReviewTemplateDetail',//实际进入这个页面需要传入模板id,templateId和模板是否被使用的isEmploy
 			name:'editorReviewTemplateDetail',
-			component:() => import('@/view/review/editor/reviewTemplateDetail'),
+			component:() => import('@/view/review/editor/reviewTemplate/reviewTemplateDetail'),
 			props:true,//将id,isEmploy视为组件的属性
 			meta:{
 				title:'评审模板详情',

@@ -1,3 +1,4 @@
+<!--评审模板详情-->
 <template>
     <div>
         <div style="padding-left: 10px;margin-buttom:30px;">
@@ -83,7 +84,7 @@
     import {httpGet,httpDelete} from "@/utils/http.js";
     import deepCopyObject from "@/utils/deepCopyObject.js";//深拷贝对象
     import { MessageBox } from "element-ui";
-    import reviewItemTemplate from '@/view/review/components/reviewItemTemplate';
+    import reviewItemTemplate from '@/view/review/editor/reviewTemplate/reviewItemTemplate';
     import reviewTemplate from '@/view/review/components/reviewTemplate';
 
 

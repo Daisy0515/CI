@@ -1,9 +1,12 @@
+<!--功能：展示导航栏待处理页面各个子页面的评审任务，根据不同的参数来判断
+    调用页面:editorTodo(评审管理员：导航栏待处理)
+-->
 <template>
     <editor-review-list :status="status" :statusExplain="statusExplain"></editor-review-list>
 </template>
 <script>
 
-    import editorReviewList from '@/view/review/components/editorReviewList';
+    import editorReviewList from '@/view/review/editor/components/editorReviewList';
 
     export default {
         props: {

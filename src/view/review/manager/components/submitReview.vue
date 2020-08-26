@@ -114,6 +114,7 @@
     import sourceUpload from '@/common/upload/resourceUpload';
 
     export default {
+        name:"submitReview",
         components: {sourceUpload,},
         props:{
             title:{

@@ -1,3 +1,6 @@
+<!--功能：项目经理查看评审材料的意见
+    调用：manager(项目经理：)
+-->
 <template>
     <el-dialog title="评审材料意见" :visible.sync="dialogOpinionVisible" :before-close="changeVisible"
                style="width:100%;text-align:left; font-weight: bolder;">

@@ -3,7 +3,7 @@
 </template>
 
 <script>
-    import manager from '@/view/review/components/manager'
+    import manager from '@/view/review/manager/components/manager'
     export default {
         components:{manager},
         data() {

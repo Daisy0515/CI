@@ -69,7 +69,7 @@
 						</div>
 
 					</el-form>
-					
+
 	<!-- </div> -->
 	</el-card>
 	</el-col>
@@ -80,7 +80,6 @@
 </template>
 
 <script>
-	import submitReview from '@/view/review/components/submitReview';
 	import {
 		httpGet,
 		httpPost,
@@ -88,15 +87,12 @@
 		httpDelete
 	} from "@/utils/http.js";
 	import {
-		specificDate
-	} from '@/utils/getDate.js';
-	import {
 		message,
 		successTips,
 		errTips
 	} from "@/utils/tips.js";
 	import regular from "@/mixins/regular/registerNewUser.js";
-	
+
 	export default {
 		name: 'registerNewUser',
 		mixins: [regular],
@@ -148,7 +144,7 @@
 		},
 		methods: {
 			submitForm(formName) {
-			
+
 				console.log(this.ruleForm);
 				httpPost("/v1/authorization/coreuser/review/costmer", this.ruleForm).then(results => {
 					const {
@@ -163,12 +159,12 @@
 					this.keywords = "",
 						Object.assign(this.$ruleForm, this.$options.ruleForm())
 				})
-				
+
 
 			},
 			//注册已有用户为专家
 			chooseUser(val) {
-				
+
 				httpGet("/v1/authorization/coreuser/review/byidregister", {
 					id: val
 				}).then(results => {
@@ -177,7 +173,7 @@
 						msg,
 						data
 					} = results.data;
-				
+
 					if (httpCode === 200) {
 						this.ruleForm = data;
 						//console.log(this.ruleForm);
@@ -202,7 +198,7 @@
 					}
 					this.searchForm = true;
 				});
-				
+
 
 			},
 			searchUser() {

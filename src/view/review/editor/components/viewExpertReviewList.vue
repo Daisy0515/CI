@@ -18,9 +18,9 @@
         </el-table>
         <el-dialog title="查看评价" :visible.sync="readReviewDialogVisible" width="80%"
                    style="text-align:left; font-weight: bolder;" append-to-body>
-            <read-review-template :templateConfigList="templateConfigListForRead" :totalScore="totalScore"
+            <read-review-result :templateConfigList="templateConfigListForRead" :totalScore="totalScore"
                                   :result="result" >
-            </read-review-template><!--生成评审表单的组件-->
+            </read-review-result><!--生成评审表单的组件-->
         </el-dialog>
     </div>
 </template>
@@ -28,7 +28,7 @@
 <script>
     import { httpGet, } from "@/utils/http.js";
     import { message, successTips, errTips } from "@/utils/tips.js";
-    import readReviewTemplate from '@/view/review/components/readReviewTemplate';
+    import readReviewResult from '@/view/review/components/readReviewResult';
 
     export default {
         name: "viewExpertReviewList",
@@ -42,7 +42,7 @@
             }
         },
         components: {
-            readReviewTemplate
+            readReviewResult
         },
         data() {
             return {
