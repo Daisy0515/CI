@@ -1,4 +1,9 @@
-<!--评审任务查看详情的对话框的组件-->
+<!--功能：评审任务查看详情的对话框的组件
+    调用页面：manger(项目经理：)
+              publisher(发布者：)
+              submitReview(发布者：发起第三方评审)
+              viewReview(发布者：查看第三方评审)
+-->
 <template>
     <el-dialog  title="评审详情" :visible.sync="dialogFormVisible" :before-close="changeVisible"
                style="width:100%;text-align:left; font-weight: bolder;">

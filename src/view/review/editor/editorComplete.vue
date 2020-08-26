@@ -1,9 +1,10 @@
+<!--功能-->
 <template>
     <editor-review-list :status="status" ></editor-review-list>
 </template>
 <script>
 
-    import editorReviewList from '@/view/review/components/editorReviewList';
+    import editorReviewList from '@/view/review/editor/components/editorReviewList';
 
     export default {
         data(){

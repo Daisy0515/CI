@@ -4,7 +4,7 @@
 		<div style="padding-left: 10px;">
 			<el-breadcrumb separator-class="el-icon-arrow-right" style="font-size: 130%;">
 				<el-breadcrumb-item :to="{ path: '/editorIndex' }">首页</el-breadcrumb-item>
-				
+
 				<el-breadcrumb-item>评审任务搜索</el-breadcrumb-item>
 
 			</el-breadcrumb>
@@ -138,7 +138,7 @@
 		        </el-table-column>
 		    </el-table>
 		</el-dialog>
-		
+
 		<editor-view-detail :form="reviewDetail"  :dialogFormVisible="dialogFormVisible" @closeDialog="closeDialog"></editor-view-detail>
 		<div class="bid_footer">
 			<el-pagination @current-change="handleCurrentChange" :current-page.sync="pageData.pageNo" :total="totalPage" layout="prev, pager, next, jumper"></el-pagination>
@@ -150,18 +150,13 @@
 <script>
 	import { httpGet,  httpDelete } from "@/utils/http.js";
 	import { message, successTips, errTips } from "@/utils/tips.js";
-	import reviewDetailDialog from '@/view/review/components/reviewDetailDialog';
-	import submitReview from '@/view/review/components/submitReview';
-	import reviewOpinion from '@/view/review/components/reviewOpinion'
-	import editorViewDetail from '@/view/review/components/editorViewDetail'
+	import editorViewDetail from '@/view/review/editor/components/editorViewDetail';
 	import { specificDate } from '@/utils/getDate.js';
 	import timeLimit from "@/mixins/regular/timeLimitForReview.js";
 
 	export default {
+		name:"submissionSearch",
 		components: {
-			reviewDetailDialog,
-			submitReview,
-			reviewOpinion,
 			editorViewDetail
 		},
 		data() {
@@ -246,10 +241,10 @@
 			    });
 			    this.dialogChooseVisible = true;
 			},
-			
+
 			inviteExpert(val,reviewId) {
 			    this.$router.push({path: '/inviteExpert', query: {id: val,reviewId:reviewId}});
-			
+
 			},
 			/**搜索列表*/
 			searchList(){
@@ -311,18 +306,18 @@
 			                item.gmtCreate = specificDate(item.gmtCreate);
 			            }
 			            this.reviewDetail = data;
-			
+
 			        } else {
-			
+
 			            errTips(msg);
 			        }
 			    });
 			},
-			
+
 			closeDialog() {
 			    this.dialogFormVisible = false;
 			},
-			
+
 			rowClass() {
 			    return "background:#F4F6F9;";
 			}

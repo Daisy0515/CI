@@ -3,7 +3,7 @@
 </template>
 
 <script>
-    import publisher from '@/view/review/components/publisher'
+    import publisher from '@/view/review/publisher/components/publisher'
     export default {
         components:{publisher},
         data() {

@@ -1,3 +1,8 @@
+<!--功能：评审任务列表
+    调用页面：首页中的评审统计对应的所有页面，
+              reviewTodo (评审管理员：导航栏中待处理任务里对应的所有页面），
+              reviewStatistic(评审管理员：导航栏中评审完成对应的页面）
+-->
 <template>
     <div class="myTable">
         <div style="padding-left: 10px;">
@@ -116,16 +121,19 @@
                 </template>
             </el-table-column>
         </el-table>
+
         <!--查看第三方评审意见-->
         <el-dialog title="第三方评审意见" :visible.sync="expertReviewDialogVisible" width="80%" :before-close="closeExpertReviewDialog">
             <view-expert-review-list :userList="userList" :userListLoading="userListLoading"></view-expert-review-list>
         </el-dialog>
         <!--查看详情-->
         <editor-view-detail :form="reviewDetail" :dialogFormVisible="reviewDetailDialogVisible"
-                            @closeDialog="closeReviewDetailDialog"></editor-view-detail>
+                            @closeDialog="closeReviewDetailDialog">
+        </editor-view-detail>
         <div class="bid_footer">
             <el-pagination @current-change="handleCurrentChange" :current-page.sync="pageData.pageNo" :total="totalPage"
-                           layout="prev, pager, next, jumper"></el-pagination>
+                           layout="prev, pager, next, jumper">
+            </el-pagination>
         </div>
     </div>
 </template>
@@ -133,13 +141,13 @@
 <script>
     import {httpGet,} from "@/utils/http.js";
     import {message, errTips} from "@/utils/tips.js";
-    import reviewDetailDialog from '@/view/review/components/reviewDetailDialog';
-    import editorViewDetail from '@/view/review/components/editorViewDetail'
+    import editorViewDetail from '@/view/review/editor/components/editorViewDetail'
     import {specificDate} from '@/utils/getDate.js';
     import timeLimit from "@/mixins/regular/timeLimitForReview.js";
     import viewExpertReviewList from "@/view/review/editor/components/viewExpertReviewList";
 
     export default {
+        name:"editorReviewList",
         mixins: [timeLimit],
         props: {
             status: {//状态1待处理2评审中3完成4中止
@@ -156,7 +164,6 @@
             }
         },
         components: {
-            reviewDetailDialog,
             editorViewDetail,
             viewExpertReviewList
         },
@@ -189,35 +196,30 @@
             this.getAllReviewProcessList();
 
             this.intStatus = parseInt(this.status);
-            this.intStatusExplain = parseInt(this.intStatusExplain);
+            this.intStatusExplain = parseInt(this.statusExplain);
         },
         computed: {
             reviewTypes: function () {
-                if (this.intStatus === 1) {
+                if (this.intStatus === 1) {                 //对应等待管理员分配专家的新任务
                     return "新任务";
-                } else if (this.intStatus=== 2) {
+                } else if (this.intStatus=== 2) {           //评审中的新任务
                     switch ( this.intStatusExplain) {
-                        case 1:
-                            return "评审专家完成评审";
-                        case 2:
-                            return "需要额外评审专家";
-                        case 3:
-                            return "评审延期";
-                        case 4:
-                            return "评审邀请未回复";
-                        case null:
-                            return "评审中";
+                        case 1: return "评审专家完成评审";
+                        case 2: return "需要额外评审专家";
+                        case 3: return "评审延期";
+                        case 4: return "评审邀请未回复";
+                        default: return "评审中";
                     }
                 } else if ( this.intStatus === 3 ) {
                     return "评审完成";
                 }
-                if (this.expertAccomplishCount !== null) {
+                if (this.expertAccomplishCount !== null) {   //评审统计中的新任务
                     return this.expertAccomplishCount + "位专家已完成评审";
                 }
             }
         },
         methods: {
-            /**获取评审任务*/
+            /**获取评审任务列表*/
             getView(val = this.pageData) {
                 this.loading = true;
                 console.log("val",val);
@@ -246,6 +248,7 @@
                 });
             },
 
+            /**搜索栏和当前页数据的初始化*/
             getInitialPageOrSearchData() {
                 return {
                     pageNo: 1,

@@ -1,4 +1,7 @@
-<!--评审任务查看评价的对话框的组件-->
+<!--功能：评审任务查看评价的对话框的组件
+    调用页面：manager(项目经理：)
+              publisher(项目发布者:)
+-->
 <template>
     <el-dialog title="评价详情" :visible.sync="dialogEvaluationVisible" :before-close="changeVisible"
                style="width:100%;text-align:left; font-weight: bolder;">

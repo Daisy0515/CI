@@ -1,42 +1,45 @@
-<!--根据评审项属性的列表生成评审表单-->
+<!--功能：根据评审项配置属性的列表生成评审表单，
+    调用页面：expert(评审专家：对评审任务进行评价时调用)
+              reviewTemplateDetail(评审管理员：评审模板详情页面调用)
+-->
 <template>
     <div>
-    <el-row style="margin: 20px auto 0 0;">
-        <el-col :span="5">
-            <span style="font-size: large;font-weight: bolder;">评审表单(总分：{{totalScore}}分)</span>
-        </el-col>
-        <el-col :span="2" :offset="14">
-            <span style="font-size: large;font-weight: bolder;">评审得分:</span>
-        </el-col>
-        <el-col :span="3">
-            <el-input v-model="editorForm.reviewScore" size="medium" style="margin-top: -5px;" :readonly="true"></el-input>
-        </el-col>
-    </el-row>
-    <form-create v-model="fApi" :rule="rules" :option="option"/>
-    <el-form :model="editorForm" style="font-weight: bolder"  ref="editorForm" :rules="editorRules">
-        <el-form-item label="给作者的意见:" prop="commentsToAuthor">
-            <el-input type="textarea" :rows="5" v-model="editorForm.commentsToAuthor"
-                      placeholder="请输入对作者的意见，若内容较多，您也可以放在附件中，此处留下简单提示即可"></el-input>
-        </el-form-item>
-        <el-form-item label="给管理员的意见:" prop="commentsToEditor">
-            <el-input type="textarea" :rows="5" v-model="editorForm.commentsToEditor"
-                      placeholder="请输入对管理员的意见，若内容较多，您也可以放在附件中，此处留下简单提示即可"></el-input>
-        </el-form-item>
-        <el-form-item>
-            <sourceUpload style="margin-top: 30px;" :uploadIndex="uploadIndex" v-on:setIdCard="setIdCard($event)"/>
-        </el-form-item>
-    </el-form>
-    <el-row style="margin-top: 20px;">
-        <el-col :span="3" :offset="9">
-            <el-button type="primary" @click="submit" :loading="submitLoading">提交</el-button>
-        </el-col>
-        <el-col :span="2" :offset="7">
-            <span style="font-size: large;font-weight: bolder;">评审得分:</span>
-        </el-col>
-        <el-col :span="3">
-            <el-input v-model="editorForm.reviewScore" size="medium" style="margin-top: -5px;" :readonly="true"></el-input>
-        </el-col>
-    </el-row>
+        <el-row style="margin: 20px auto 0 0;">
+            <el-col :span="5">
+                <span style="font-size: large;font-weight: bolder;">评审表单(总分：{{totalScore}}分)</span>
+            </el-col>
+            <el-col :span="2" :offset="14">
+                <span style="font-size: large;font-weight: bolder;">评审得分:</span>
+            </el-col>
+            <el-col :span="3">
+                <el-input v-model="editorForm.reviewScore" size="medium" style="margin-top: -5px;" :readonly="true"></el-input>
+            </el-col>
+        </el-row>
+        <form-create v-model="fApi" :rule="rules" :option="option"/>
+        <el-form :model="editorForm" style="font-weight: bolder"  ref="editorForm" :rules="editorRules">
+            <el-form-item label="给作者的意见:" prop="commentsToAuthor">
+                <el-input type="textarea" :rows="5" v-model="editorForm.commentsToAuthor"
+                          placeholder="请输入对作者的意见，若内容较多，您也可以放在附件中，此处留下简单提示即可"></el-input>
+            </el-form-item>
+            <el-form-item label="给管理员的意见:" prop="commentsToEditor">
+                <el-input type="textarea" :rows="5" v-model="editorForm.commentsToEditor"
+                          placeholder="请输入对管理员的意见，若内容较多，您也可以放在附件中，此处留下简单提示即可"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <sourceUpload style="margin-top: 30px;" :uploadIndex="uploadIndex" v-on:setIdCard="setIdCard($event)"/>
+            </el-form-item>
+        </el-form>
+        <el-row style="margin-top: 20px;">
+            <el-col :span="3" :offset="9">
+                <el-button type="primary" @click="submit" :loading="submitLoading">提交</el-button>
+            </el-col>
+            <el-col :span="2" :offset="7">
+                <span style="font-size: large;font-weight: bolder;">评审得分:</span>
+            </el-col>
+            <el-col :span="3">
+                <el-input v-model="editorForm.reviewScore" size="medium" style="margin-top: -5px;" :readonly="true"></el-input>
+            </el-col>
+        </el-row>
     </div>
 </template>
 
@@ -44,7 +47,6 @@
     /*本组件采用formCreate组件来动态生成表单*/
     import formCreate from "@form-create/element-ui";
     import deepCopyObject from "@/utils/deepCopyObject";//深拷贝对象
-    import reviewItemTemplate from '@/view/review/components/reviewItemTemplate';
     import sourceUpload from '@/common/upload/resourceUpload';
     import { httpPost} from "@/utils/http.js";
     import { successTips, errTips } from "@/utils/tips.js";
@@ -52,7 +54,6 @@
         name: "reviewTemplate",
         components: {
             formCreate: formCreate.$form(),
-            reviewItemTemplate:reviewItemTemplate,
             sourceUpload:sourceUpload,
         },
         props:{

@@ -1,3 +1,6 @@
+<!--功能：项目发布者的评审任务列表组件
+    调用页面：项目发布者所包含的页面中涉及评审任务列表的均调用此组件
+-->
 <template>
     <div>
         <div style="padding-left: 10px;">
@@ -219,7 +222,7 @@
     import {message, successTips, errTips,} from "@/utils/tips.js";
     import {MessageBox} from 'element-ui';
     import reviewDetailDialog from '@/view/review/components/reviewDetailDialog';
-    import publisherReviewOpinion from '@/view/review/components/publisherReviewOpinion';
+    import publisherReviewOpinion from '@/view/review/publisher/components/publisherReviewOpinion';
     import reviewEvaluation from '@/view/review/components/reviewEvaluation';
     import timeLimit from "@/mixins/regular/timeLimit.js";
 

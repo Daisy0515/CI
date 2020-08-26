@@ -59,22 +59,22 @@
                        :dialogSubmitVisible="dialogSubmitVisible"
                        :projectList="projectList"
                        :isShowSubmitHistory="isShowSubmitHistory"
-                       @closeSubmitDialog="closeSubmitDialog"></submit-review>
+                       @closeSubmitDialog="closeSubmitDialog">
+        </submit-review>
 
     </div>
 </template>
 
 <script>
-    import submitReview from '@/view/review/components/submitReview';
-    import {httpGet, httpDelete} from "@/utils/http.js";
-    import {specificDate} from '@/utils/getDate.js';
-    import {message, successTips, errTips} from "@/utils/tips.js";
+    import submitReview from '@/view/review/manager/components/submitReview';
+    import {httpGet,} from "@/utils/http.js";
+    import {message, errTips} from "@/utils/tips.js";
 
     export default {
         components: {
             submitReview
         },
-        name: 'Dashboard',
+        name: 'managerIndex',
         data() {
             return {
                 role: 2,
@@ -106,7 +106,6 @@
         methods: {
 
             getView() {
-                //get /v1/authorization/review/summarizing/get
                 httpGet("/v1/authorization/review/summarizing/get", {role: this.role}).then(results => {
                     const {httpCode, msg, data} = results.data;
                     if (httpCode == 200) {

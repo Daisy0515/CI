@@ -40,13 +40,11 @@
     /*本组件采用formCreate组件来动态生成表单*/
     import formCreate from "@form-create/element-ui";
     import deepCopyObject from "@/utils/deepCopyObject";//深拷贝对象
-    import reviewItemTemplate from '@/view/review/components/reviewItemTemplate';
 
     export default {
         name:"readReviewTemplateForManger",
         components: {
             formCreate: formCreate.$form(),
-            reviewItemTemplate:reviewItemTemplate,
         },
         props:{
             templateConfigList:{

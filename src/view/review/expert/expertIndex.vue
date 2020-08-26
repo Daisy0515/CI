@@ -1,6 +1,6 @@
 <template>
 	<div class="manager-container" style="text-align: center;">
-	
+
 				<el-card class="left-card-menu" style="width: 70%;margin-left: 8%;">
 					<el-row style="margin-bottom: 20px;">
 						<h1 style="text-align: left">评审汇总</h1>
@@ -38,28 +38,26 @@
 						</el-col>
 					</el-row>
 				</el-card>
-	
+
 
 	</div>
 </template>
 
 <script>
-	import submitReview from '@/view/review/components/submitReview';
 	import { httpGet, httpDelete } from "@/utils/http.js";
-	import { specificDate } from '@/utils/getDate.js';
 	import { message, successTips, errTips } from "@/utils/tips.js";
-	
+
 	export default {
-		
+
 		data() {
 			return {
-				
+
 				dialogSubmitVisible: false, // 开启发起评审视窗
 				aboutTimeoutCount: 0, // 即将超时
 				acceptCount: 0, // 未接受
 				alreadyTimeoutCount: 0, // 已经超时
 				reviewCount: 0, // 评审中
-				
+
 			}
 		},
 		computed: {
@@ -69,7 +67,7 @@
 		},
 		methods: {
 			getView(){
-				//get /v1/authorization/review/summarizing/get 
+				//get /v1/authorization/review/summarizing/get
 				httpGet("/v1/authorization/review/expertsummarizing/get").then(results => {
 				  const { httpCode, msg, data } = results.data;
 				  if (httpCode == 200) {
@@ -83,10 +81,10 @@
 				  } else if (httpCode !== 401) {
 				    errTips(msg);
 				  }
-				  
+
 				});
 			},
-			
+
 		}
 	}
 </script>

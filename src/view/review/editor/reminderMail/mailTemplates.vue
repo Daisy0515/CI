@@ -97,7 +97,7 @@
     import {MessageBox} from "element-ui";
 
     export default {
-        name: "reviewTemplates",
+        name: "mailTemplates",
         data() {
             return {
                 loading: false,

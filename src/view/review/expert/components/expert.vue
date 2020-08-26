@@ -1,3 +1,5 @@
+<!--：功能：评审专家任务列表
+      调用页面：评审专家所包含的页面中涉及评审任务列表的均调用此组件-->
 <template>
     <div>
         <div style="padding-left: 10px;">
@@ -108,9 +110,9 @@
 
         <el-dialog title="查看评价" :visible.sync="dialogReadReviewVisible" width="80%"
                    style="text-align:left; font-weight: bolder;">
-            <read-review-template :templateConfigList="templateConfigListForRead" :totalScore="totalScore" :result="result"
+            <read-review-result :templateConfigList="templateConfigListForRead" :totalScore="totalScore" :result="result"
                              @closeDialog="closeReadReviewDialog">
-            </read-review-template><!--生成评审表单的组件-->
+            </read-review-result><!--生成评审表单的组件-->
         </el-dialog>
         <!--评审详情-->
         <expert-review-detail :form="formReviewDetail" :formLabelWidth="formLabelWidth" :dialogFormVisible="dialogFormVisible"
@@ -129,17 +131,15 @@
     import {httpGet, httpPut} from "@/utils/http.js";
     import {specificDate} from '@/utils/getDate.js';
     import {message, successTips, errTips} from "@/utils/tips.js";
-    import reviewDetailDialog from '@/view/review/components/reviewDetailDialog';
-    import expertReviewDetail from '@/view/review/components/expertReviewDetail'
+    import expertReviewDetail from '@/view/review/expert/components/expertReviewDetail'
     import {MessageBox} from 'element-ui';
     import reviewTemplate from '@/view/review/components/reviewTemplate';
-    import readReviewTemplate from '@/view/review/components/readReviewTemplate';
+    import readReviewResult from '@/view/review/components/readReviewResult';
     export default {
         components: {
-            reviewDetailDialog,
             expertReviewDetail,
             reviewTemplate,
-            readReviewTemplate
+            readReviewResult
         },
         props:{
             currentPage:{//1 待处理，2 评审中，3 已完成 4 已中止

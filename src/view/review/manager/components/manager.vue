@@ -1,3 +1,6 @@
+<!--功能：项目经理的评审任务列表组件
+    调用页面：项目经理所包含的页面中涉及评审任务列表的均调用此组件
+-->
 <template>
     <div>
         <div style="padding-left: 10px;">
@@ -116,25 +119,27 @@
         <review-detail-dialog :form="form" :formLabelWidth="formLabelWidth"
                               :dialogFormVisible="dialogFormVisible"
                               :loading="dialogLoading"
-                              @closeDialog="closeDialog"
-        ></review-detail-dialog>
+                              @closeDialog="closeDialog">
+        </review-detail-dialog>
         <review-opinion :form="formOpinion" :formLabelWidth="formLabelWidth"
                         :dialogOpinionVisible="dialogOpinionVisible"
                         :loading="dialogLoading"
                         @closeOpinionDialog="closeOpinionDialog"
-                        @updateOpinion="updateOpinion"></review-opinion>
+                        @updateOpinion="updateOpinion">
+        </review-opinion>
         <submit-review :form="formSubmit" :formLabelWidth="formLabelWidth" :title="submitTitle"
                        :isShowSubmitHistory="isShowSubmitHistory"
                        :dialogSubmitVisible="dialogSubmitVisible"
                        :loading="dialogLoading"
                        :projectList="projectList"
                        :reviewProcessList="reviewProcessList"
-                       @closeSubmitDialog="closeSubmitDialog"
-        ></submit-review>
+                       @closeSubmitDialog="closeSubmitDialog">
+        </submit-review>
         <review-evaluation :form="formEvaluation" :formLabelWidth="formLabelWidth"
                            :dialogEvaluationVisible="dialogEvaluationVisible"
                            :loading="dialogLoading"
-                           @closeEvaluationDialog="closeEvaluationDialog"></review-evaluation>
+                           @closeEvaluationDialog="closeEvaluationDialog">
+        </review-evaluation>
         <div class="bid_footer">
             <el-pagination
                     @current-change="handleCurrentChange"
@@ -151,8 +156,8 @@
     import {specificDate} from '@/utils/getDate.js';
     import {message, successTips, errTips} from "@/utils/tips.js";
     import reviewDetailDialog from '@/view/review/components/reviewDetailDialog';
-    import submitReview from '@/view/review/components/submitReview';
-    import reviewOpinion from '@/view/review/components/reviewOpinion';
+    import submitReview from '@/view/review/manager/components/submitReview';
+    import reviewOpinion from '@/view/review/manager/components/reviewOpinion';
     import reviewEvaluation from '@/view/review/components/reviewEvaluation'
     import timeLimit from "@/mixins/regular/timeLimitForReview.js";
     export default {
@@ -262,7 +267,8 @@
                     }
                 });
             },
-            getReviewProcessList(projectId) { /***获取用户当前项目的所有评审流程***/
+            /***各个页面通用：获取用户当前项目的所有评审流程***/
+            getReviewProcessList(projectId) {
                 this.processLoading = true;
                 httpGet("/v1/authorization/review/process/list", {id: projectId}).then(results => {
                     const {httpCode, msg, data} = results.data;
@@ -280,7 +286,8 @@
                     this.processLoading = false;
                 });
             },
-            getAllReviewProcessList(){ //获取整个系统中的所有评审与评审名字
+            /**各个页面通用：获取整个系统中的所有评审与评审名字*/
+            getAllReviewProcessList(){
                 httpGet("/v1/public/bid/process/list").then(results => {
                     const {httpCode, msg, data} = results.data;
                     if (httpCode == 200) {
@@ -292,7 +299,8 @@
                     }
                 });
             },
-            getView(val = this.pageData) {  //获取当前页面的评审信息
+            /**各个页面通用：获取当前页面的评审信息*/
+            getView(val = this.pageData) {
                 this.loading = true;
                 httpGet("/v1/authorization/review/review/search", val).then(results => {
                     const {httpCode, msg, data} = results.data;
@@ -322,7 +330,8 @@
                 this.pageData.pageNo = val;
                 this.getView();
             },
-            handleDetail(row) {//row里面存储的是当前行的信息，获取详细评审任务的详细信息
+            /**各个页面通用：获取详细评审任务的详细信息*/
+            handleDetail(row) {
                 this.dialogFormVisible = true;
                 this.dialogLoading = true;
                 httpGet("/v1/authorization/review/review/get", {"id": row.id}).then(results => {
@@ -343,7 +352,9 @@
                     this.dialogLoading = false; // 这一句不能写在.then()之外，否则没有加载转圈的显示，写在.then之外会先于.then（）执行，这是异步请求
                 });
             },
-            handleClickOpinion(row) { //点击查看意见触发，加载意见详情数据
+
+            /**打回中页面：点击查看意见触发，加载意见详情数据*/
+            handleClickOpinion(row) {
                 this.dialogOpinionVisible = true;
                 this.dialogLoading = true;
                 httpGet("/v1/authorization/review/opinion/list", {"id": row.id}).then(results => {
@@ -364,7 +375,9 @@
                     this.dialogLoading = false;
                 });
             },
-            handleClickSubmit(row) { //点击查看“（重新，修改）提交”触发，加载评审详情数据
+
+            /**打回中与评审中页面：点击查看“（重新，修改）提交”触发，加载评审详情数据*/
+            handleClickSubmit(row) {
                 this.dialogSubmitVisible = true;
                 this.dialogLoading = true;
                 this.getReviewProcessList(row.projectId);
@@ -386,6 +399,8 @@
                     this.dialogLoading = false;
                 });
             },
+
+            /**已完成页面：查看评价*/
             handleEvaluateDetail(row) {
                 this.dialogEvaluationVisible = true;
                 this.dialogLoading = true;
@@ -410,7 +425,9 @@
             closeDialog() {//关闭查看详情弹框，
                 this.dialogFormVisible = false;
             },
-            closeSubmitDialog(updateReviewList = false) {//关闭xx提交弹框，如果是重新提交，评审任务的状态就会变成未接受，所以要跳转到未接受页面
+
+            /**关闭xx提交弹框，如果是重新提交，评审任务的状态就会变成未接受，所以要跳转到未接受页面*/
+            closeSubmitDialog(updateReviewList = false) {
                 this.dialogSubmitVisible = false;
                 if (updateReviewList === true) {
                     this.$router.push('/managerNotAccept');
@@ -422,7 +439,8 @@
             closeEvaluationDialog() {//关闭评审评价弹框，
                 this.dialogEvaluationVisible = false;
             },
-            updateOpinion(row) { //添加完意见回复后，重新加载查看意见页面
+            /**打回中页面：添加完意见回复后，重新加载查看意见页面*/
+            updateOpinion(row) {
                 this.handleClickOpinion(row);
             },
 
