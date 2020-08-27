@@ -137,10 +137,10 @@
             //to表示当前的路由，from表示上一个路由
             console.log("to:",to);
             console.log("from",from);
-            if(from.path!=='/'){       //不是刷新浏览器进入的当前页面
+            if(from.path==='/editorReviewTemplates'){       //从已有评审模板页面进入的当前页面
                 sessionStorage.setItem("reviewTemplateId",to.params.templateId);
                 sessionStorage.setItem("reviewTemplateIsEmploy",to.params.isEmploy);
-            }else{                   //刷新浏览器进入的当前页面
+            }else{                   //刷新浏览器或者是从其他页面进入的当前页面
                 to.params.templateId = sessionStorage.getItem("reviewTemplateId");
                 to.params.isEmploy = sessionStorage.getItem("reviewTemplateIsEmploy");
             }

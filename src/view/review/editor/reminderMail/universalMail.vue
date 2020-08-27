@@ -15,22 +15,22 @@
                 </el-col>
                 <el-col :span="6">
                     <el-select v-model="receiver" placeholder="请选择发送对象" size="medium">
-                        <el-option label="提交人" value="1"></el-option>
-                        <el-option label="评审专家" value="2"></el-option>
-                        <el-option label="发布者" value="3"></el-option>
+                        <el-option label="提交人" :value="1"></el-option>
+                        <el-option label="评审专家" :value="2"></el-option>
+                        <el-option label="发布者" :value="3"></el-option>
                     </el-select>
                 </el-col>
                 <el-col :span="6">
-                    <el-select v-model="status" placeholder="请选择评审状态" size="medium" v-if="this.receiver==='2'">
-                        <el-option label="全部状态" value="1"></el-option>
-                        <el-option label="已完成" value="2"></el-option>
-                        <el-option label="已撤回评审" value="3"></el-option>
-                        <el-option label="评审中(已延期)" value="4"></el-option>
-                        <el-option label="评审中" value="5"></el-option>
-                        <el-option label="已撤回邀请" value="6"></el-option>
-                        <el-option label="已邀请未回复" value="7"></el-option>
-                        <el-option label="已拒绝" value="8"></el-option>
-                        <el-option label="已中止" value="9"></el-option>
+                    <el-select v-model="status" placeholder="请选择评审状态" size="medium" v-if="receiver===2">
+                        <el-option label="全部状态" :value="1"></el-option>
+                        <el-option label="已完成" :value="2"></el-option>
+                        <el-option label="已撤回评审" :value="3"></el-option>
+                        <el-option label="评审中(已延期)" :value="4"></el-option>
+                        <el-option label="评审中" :value="5"></el-option>
+                        <el-option label="已撤回邀请" :value="6"></el-option>
+                        <el-option label="已邀请未回复" :value="7"></el-option>
+                        <el-option label="已拒绝" :value="8"></el-option>
+                        <el-option label="已中止" :value="9"></el-option>
                     </el-select>
                 </el-col>
             </el-row>
@@ -323,7 +323,7 @@
                     errTips("请选择发送对象！");
                     return false;
                 }
-                if(this.receiver===2&&this.status===null){
+                if(this.receiver===2 && this.status===null){
                     errTips("请选择评审专家的评审状态！");
                     return false;
                 }
@@ -345,8 +345,8 @@
                 this.userList = [];//清空之前的待发送邮件的用户信息
                 let data = {
                     adminMissionList: this.adminMissionList,
-                    receiver:parseInt(this.receiver),
-                    status:parseInt(this.status),
+                    receiver:this.receiver,
+                    status:this.status,
                     templateId:this.templateId,
                 };
                 this.nextVisible = true;

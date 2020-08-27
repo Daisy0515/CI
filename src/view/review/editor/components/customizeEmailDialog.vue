@@ -47,26 +47,26 @@
             <el-row style="margin-top: 15px;">
                 <el-col :span="3"> 收件人：</el-col>
                 <el-col :span="10" style="margin-top: -10px;">
-                    <el-input v-model="receiverName" :readonly="true" size="medium"></el-input>
+                    <el-input v-model="emailInfo.receiverName" :readonly="true" size="medium"></el-input>
                 </el-col>
             </el-row>
             <el-row style="margin-top: 15px;">
                 <el-col :span="3"> 抄送：</el-col>
                 <el-col :span="10">
-                    <el-checkbox v-model="duplicate.isAdmin">管理员</el-checkbox>
-                    <el-checkbox v-model="duplicate.isProjectUser">发布者</el-checkbox>
+                    <el-checkbox v-model="emailInfo.duplicate.isAdmin">管理员</el-checkbox>
+                    <el-checkbox v-model="emailInfo.duplicate.isProjectUser">发布者</el-checkbox>
                 </el-col>
             </el-row>
             <el-row style="margin-top: 15px;">
                 <el-col :span="3"> 信件主题：</el-col>
                 <el-col :span="10" style="margin-top: -5px;">
-                    <el-input placeholder="请输入信件的主题" size="medium" v-model="emailConfig.theme"></el-input>
+                    <el-input placeholder="请输入信件的主题" size="medium" v-model="emailInfo.emailConfig.theme"></el-input>
                 </el-col>
             </el-row>
             <el-row style="margin-top: 15px;">
                 <el-col :span="3"><span>信件主体：</span></el-col>
                 <el-col :span="18">
-                    <el-input type="textarea" :rows="15" v-model="emailConfig.content"></el-input>
+                    <el-input type="textarea" :rows="15" v-model="emailInfo.emailConfig.content"></el-input>
                 </el-col>
             </el-row>
             <el-row style="margin-top: 15px;">
@@ -135,12 +135,15 @@
                 /*点击定制，定制信件对话框，用到的属性*/
                 selectedUserIndex: null,//定制的信件在已选择对象列表中的下标(index)
                 openedEmailInfo:{},//点击定制后，存储该封信件相关的信息,例如userId:用户编号，adminMissionId:管理员任务编号
-                duplicate: this.getInitDuplicate(),//邮件抄送的设置
-                emailConfig: this.getInitEmailConfig(),//信件需要定制的内容
+                globalCustomizeInfo:null,//存储全局定制的信息，第一次全局定制后，再次打开时，显示的信息
                 emailPreviewContent: null,//信件主体预览
-                receiverName: null,//收件人姓名
                 previewVisible: false,//控制预览页面的显示
                 global: false,//是否进行全局定制
+                emailInfo:{                                 //用于存储每一封信显示的内容
+                    receiverName: null,                     //收件人姓名
+                    duplicate: this.getInitDuplicate(),     //邮件抄送的设置
+                    emailConfig: this.getInitEmailConfig(), //信件需要定制的内容
+                }
             };
         },
         methods: {
@@ -161,6 +164,7 @@
             },
             /**已选择对象对话框：关闭对话框*/
             closeSelectedUserDialog() {
+                this.globalCustomizeInfo = null;//清除已经保存的全局定制信息
                 this.$emit("closeDialog");
             },
             /**定制信件对话框：关闭对话框*/
@@ -180,8 +184,8 @@
                 httpPost(url, data).then(results => {
                     const {httpCode, msg, data} = results.data;
                     if (httpCode === 200) {
-                        this.emailConfig.theme = null;
-                        this.emailConfig.content = data.content;
+                        this.emailInfo.emailConfig.theme = null;
+                        this.emailInfo.emailConfig.content = data.content;
                     } else {
                         errTips(msg);
                     }
@@ -189,8 +193,7 @@
             },
             /**universalMail页面调用，定制信件页面：获取信件模板等相关信息*/
             getEmailContentInfoForUniversalMail(row){
-                this.customizeVisible = true;
-                this.duplicate = deepCopyObject(row.duplicate);//初始化抄送选项
+                this.emailInfo.duplicate = deepCopyObject(row.duplicate);//初始化抄送选项
                 this.openedEmailInfo = deepCopyObject(row);//将当前打开的信件存储到openedEmailInfo，userId和adminMissionId在后续的查看预览里可以用到。
                 if (row.emailConfig === null){//定制信件框没有保存过内容
                     let data = {
@@ -203,13 +206,12 @@
                     let url = "/v1/authorization/review/admincurrentemail/update";
                     this.httpMethodForGetEmailContentInfo(url,data);
                 } else {     //定制信件保存过
-                    this.emailConfig = deepCopyObject(row.emailConfig);
+                    this.emailInfo.emailConfig = deepCopyObject(row.emailConfig);
                 }
             },
             /**CustomizeAndSendEmail页面调用，定制信件页面：获取信件模板等相关信息*/
             getEmailContentInfoForCustomizeAndSendEmail(row) {
-                this.customizeVisible = true;
-                this.duplicate = deepCopyObject(row.duplicate);//初始化抄送选项
+                this.emailInfo.duplicate = deepCopyObject(row.duplicate);//初始化抄送选项
 
                 if (row.emailConfig === null) {      //定制信件框没有保存过内容
                     let idList = [];                //评审专家邀请编号ID集合
@@ -223,13 +225,12 @@
                     let url = "/v1/authorization/review/expertemail/update";
                     this.httpMethodForGetEmailContentInfo(url,data);
                 } else {     //定制信件保存过
-                    this.emailConfig = deepCopyObject(row.emailConfig);
+                    this.emailInfo.emailConfig = deepCopyObject(row.emailConfig);
                 }
             },
             /**editorOpinionAndDecision页面调用，定制信件页面：获取信件模板等相关信息*/
             getEmailContentInfoForEditorOpinionAndDecision(row){
-                this.customizeVisible = true;
-                this.duplicate = deepCopyObject(row.duplicate);//初始化抄送选项
+                this.emailInfo.duplicate = deepCopyObject(row.duplicate);//初始化抄送选项
                 this.openedEmailInfo = deepCopyObject(row);//将当前打开的信件存储到openedEmailInfo，在预览信件内容的时候需要userId,adminMissionId
                 if (row.emailConfig === null) {//定制信件框没有保存过内容
                     let data = {
@@ -241,7 +242,7 @@
                     let url = "/v1/authorization/review/endmissionemailconfig/update";
                     this.httpMethodForGetEmailContentInfo(url,data);
                 } else {     //定制信件保存过
-                    this.emailConfig = deepCopyObject(row.emailConfig);
+                    this.emailInfo.emailConfig = deepCopyObject(row.emailConfig);
                 }
             },
             /**定制信件页面：获取信件模板等相关信息*/
@@ -255,25 +256,27 @@
                 }
             },
             /**已选择对象对话框：全局定制的数据显示*/
-            customizeEmailGlobally() {
+            customizeEmailGlobally(){
                 this.global = true;         //开启全局定制
                 let index = 0;              //考虑到发送的邮件最少只有1封，故index取最小值
-                let row = deepCopyObject(this.userList[index]);
-                let receiverNameList = '';  //全局定制的时候，设置所有邀请的收件人名
-                for (let item of this.userList) {
-                    if (item.isSent) {      //该信件的邀请是勾选上的
-                        receiverNameList += item.userName + "; ";
-                    }
+                let row = deepCopyObject(this.userList[index]); //第一次点开全局定制时，显示的内容为第一封信件后台返回的内容
+                this.emailInfo.receiverName = row.userName; //全局定制的时候，收件人姓名仅仅以第一个人的为例
+                this.customizeVisible = true;
+                if(this.globalCustomizeInfo===null){
+                    row.emailConfig = null;     //全局定制的数据第一次要从后端返回，
+                    this.getEmailContentInfo(row);
+                }else{                          //已经全局定制过信件，就展示上一次的信息
+                    this.openedEmailInfo = deepCopyObject(row);//将当前打开的信件存储到openedEmailInfo，在预览信件内容的时候需要userId,adminMissionId
+                    this.emailInfo = deepCopyObject(this.globalCustomizeInfo);
                 }
-                this.receiverName = receiverNameList; //重新设置userList,将userList中的所有专家赋值到receiverName中
-                row.emailConfig = null;     //全局定制的数据一定要从后端返回，
-                this.getEmailContentInfo(row);
+
             },
             /**已选择对象对话框：点击列表中的定制的内容显示，row：需要定制信件的已有信息，index：表示该邮件在列表中的下标*/
             customizeEmail(row, index) {
                 this.global = false;            //关闭全局定制
                 this.selectedUserIndex = index; //预先赋值，在保存信件内容的时候需要这个属性
-                this.receiverName = row.userName;
+                this.emailInfo.receiverName = row.userName;
+                this.customizeVisible = true;
                 this.getEmailContentInfo(row);
             },
 
@@ -282,14 +285,13 @@
             saveEmailInfo() {
                 if (this.global) {//全局定制为每一封信件设置相同的内容
                     for (let item of this.userList) {
-                        if (item.isSent) {//该信件的邀请是勾选上的
-                            item.duplicate = deepCopyObject(this.duplicate);
-                            item.emailConfig = deepCopyObject(this.emailConfig);
-                        }
+                        item.duplicate = deepCopyObject(this.emailInfo.duplicate);
+                        item.emailConfig = deepCopyObject(this.emailInfo.emailConfig);
                     }
+                    this.globalCustomizeInfo = deepCopyObject(this.emailInfo);//保存全局定制的结果
                 } else {
-                    this.userList[this.selectedUserIndex].duplicate = deepCopyObject(this.duplicate);
-                    this.userList[this.selectedUserIndex].emailConfig = deepCopyObject(this.emailConfig);
+                    this.userList[this.selectedUserIndex].duplicate = deepCopyObject(this.emailInfo.duplicate);
+                    this.userList[this.selectedUserIndex].emailConfig = deepCopyObject(this.emailInfo.emailConfig);
                 }
                 this.customizeVisible = false;
             },
@@ -363,7 +365,7 @@
             previewEmailForUniversalMail(){
                 let data = {
                     adminMissionId: this.openedEmailInfo.adminMissionId,
-                    emailContent: this.emailConfig.content,
+                    emailContent: this.emailInfo.emailConfig.content,
                     receiver: this.receiver,
                     userId: this.openedEmailInfo.userId,
                 };
@@ -380,7 +382,7 @@
                 }
                 let data = {
                     idList:idList,
-                    content: this.emailConfig.content,
+                    content: this.emailInfo.emailConfig.content,
                     templateId:this.templateId,
                 };
                 this.previewVisible = true;//预览信件框打开
@@ -391,7 +393,7 @@
             previewEmailForEditorOpinionAndDecision(){
                 let data = {
                     adminMissionId: this.openedEmailInfo.adminMissionId,
-                    emailContent: this.emailConfig.content,
+                    emailContent: this.emailInfo.emailConfig.content,
                     userId: this.openedEmailInfo.userId,
                 };
                 this.previewVisible = true;//预览信件框打开
@@ -429,7 +431,6 @@
                     }
                     this.$emit("closeDialog");
                 });
-                this.$emit("closeDialog");
             },
         }
     }
