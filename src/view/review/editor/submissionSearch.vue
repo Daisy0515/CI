@@ -97,9 +97,6 @@
 					<span v-show="scope.row.status==2">评审中</span>
 					<span v-show="scope.row.status==3">完成</span>
 					<span v-show="scope.row.status==4">中止</span>
-					<!-- <el-tooltip class="item" effect="dark" :content="scope.row.status">
-						<span class="tablehidden">{{ scope.row.status }}</span>
-					</el-tooltip> -->
 				</template>
 			</el-table-column>
 			<el-table-column prop="statusExplain" label="评审状态" align="center">
@@ -112,32 +109,16 @@
 			</el-table-column>
 			<el-table-column prop="opinion" label="管理员意见" align="center">
 				<template slot-scope="scope">
-					<el-tooltip class="item" effect="dark" content="scope.row.opinion">
-						<span class="tablehidden">{{ scope.row.opinion }}</span>
-					</el-tooltip>
+					<span v-if="scope.row.opinion===1">接受</span>
+					<span v-if="scope.row.opinion===2">需要修改</span>
+					<span v-if="scope.row.opinion===3">拒绝</span>
+					<span v-if="scope.row.opinion===4">没有意见 </span>
 				</template>
 			</el-table-column>
-
-
 		</el-table>
-		<el-dialog title="第三方评审意见" :visible.sync="dialogChooseVisible" width="80%">
-		    <div class="header_top">
-		        管理员意见：
-		        <span v-if="opinion===1">接受</span>
-		        <span v-if="opinion===2">需要修改</span>
-		        <span v-if="opinion===3">拒绝</span>
-		        <span v-if="opinion===4">没有意见 </span>
-		    </div>
-		    <el-table :data="userList" :header-cell-style="rowClass">
-		        <el-table-column prop="userName" label="评审专家" align="center"></el-table-column>
-		        <el-table-column prop="gmtCreate" label="邀请时间" align="center"></el-table-column>
-		        <el-table-column prop="status" label="状态" align="center"></el-table-column>
-		        <el-table-column label="评审结果" align="center">
-		            <template slot-scope="scope">
-		                <el-button @click="viewResultDetail(scope.row.id)" type="text" size="medium">详情</el-button>
-		            </template>
-		        </el-table-column>
-		    </el-table>
+		<!--查看第三方评审意见-->
+		<el-dialog title="第三方评审意见" :visible.sync="dialogChooseVisible" width="80%" :before-close="closeExpertReviewDialog">
+			<view-expert-review-list :userList="userList" ></view-expert-review-list>
 		</el-dialog>
 
 		<editor-view-detail :form="reviewDetail"  :dialogFormVisible="dialogFormVisible" @closeDialog="closeDialog"></editor-view-detail>
@@ -153,12 +134,13 @@
 	import { message, successTips, errTips } from "@/utils/tips.js";
 	import editorViewDetail from '@/view/review/editor/components/editorViewDetail';
 	import { specificDate } from '@/utils/getDate.js';
-	import timeLimit from "@/mixins/regular/timeLimitForReview.js";
+	import viewExpertReviewList from "@/view/review/editor/components/viewExpertReviewList";
 
 	export default {
 		name:"submissionSearch",
 		components: {
-			editorViewDetail
+			editorViewDetail,
+			viewExpertReviewList
 		},
 		data() {
 			return {
@@ -289,6 +271,10 @@
 				console.log(val);
 				this.$router.push({path: '/sendEmail', query: {id: val}});
 				//this.$router.push({name:'sendEmail',params:{id:val}});
+			},
+			/**关闭第三方专家的评审列表*/
+			closeExpertReviewDialog() {
+				this.dialogChooseVisible = false;
 			},
 			handleCurrentChange(val){
 			    this.pageData.pageNo = val;

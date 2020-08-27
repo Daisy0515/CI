@@ -100,7 +100,7 @@
         methods:{
             /**生成符合formCreate的生成表单的输入**/
             setCreateRule() {
-                let content = this.result.content;
+                let content = this.result.content;//专家的评价内容
                 let rules = [];
                 let rule = {};
                 rule.props = {};

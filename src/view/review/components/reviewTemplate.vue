@@ -244,7 +244,7 @@
                     commentsToAuthor:null,
                     commentsToEditor:null,
                     attachment:null,//评审专家上传的附件
-                    map:null,//评价内容
+                    content:null,//评价内容
                     id:null,//评审专家编号信息
                 }
             },
@@ -273,7 +273,7 @@
                         if (valid) {
                             console.log("有效的！");
                             console.log(formData);
-                            this.editorForm.map = formData;
+                            this.editorForm.content = JSON.stringify(formData);
                             if(this.editorForm.attachment!==null){//上传地址已经获取了
                                 this.setIdCard();
                             }else{

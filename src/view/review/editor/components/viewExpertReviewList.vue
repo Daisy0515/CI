@@ -18,8 +18,7 @@
         </el-table>
         <el-dialog title="查看评价" :visible.sync="readReviewDialogVisible" width="80%"
                    style="text-align:left; font-weight: bolder;" append-to-body>
-            <read-review-result :templateConfigList="templateConfigListForRead" :totalScore="totalScore"
-                                  :result="result" >
+            <read-review-result :templateConfigList="templateConfigListForRead" :totalScore="totalScore" :result="result" >
             </read-review-result><!--生成评审表单的组件-->
         </el-dialog>
     </div>
@@ -49,7 +48,7 @@
                 readReviewDialogVisible: false,//控制评审专家的评价框
                 templateConfigListForRead:[],  //评审模板配置列表
                 totalScore:null,               //模板总分
-                result:{},                     //专家评审结果
+                result:null,                     //专家评审结果
             }
         },
         methods:{
@@ -64,6 +63,7 @@
                     const { httpCode, msg, data } = results.data;
                     if (httpCode == 200){
                         this.templateConfigListForRead = data.configList ;
+                        data.result.content = JSON.parse(data.result.content);//将用户评价的JSON字符串转换为 JavaScript 对象
                         this.result = data.result;
                         this.templateName = data.templateName;
                     } else {
