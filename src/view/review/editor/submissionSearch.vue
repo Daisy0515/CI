@@ -1,6 +1,7 @@
+<!--评审任务搜索-->
 <template>
 	<div class="myTable">
-		<!-- <h1>publishercomplete</h1> -->
+
 		<div style="padding-left: 10px;">
 			<el-breadcrumb separator-class="el-icon-arrow-right" style="font-size: 130%;">
 				<el-breadcrumb-item :to="{ path: '/editorIndex' }">首页</el-breadcrumb-item>

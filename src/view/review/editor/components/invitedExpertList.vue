@@ -1,3 +1,7 @@
+<!--
+功能：显示已选择的专家，并编辑邮件
+调用页面：components/expertSearch
+-->
 <template>
     <el-dialog title="邀请评审专家" :visible.sync="invitedExpertVisible" :close-on-click-modal="false" width="50%" append-to-body :before-close="changeVisible">
         <el-dialog width="40%" title="邮件编辑" :visible.sync="emailEditVisible" append-to-body :before-close="closeEmailEdit">
@@ -63,6 +67,16 @@
                 </template>
             </el-table-column>
         </el-table>
+
+        <el-table :data="alterList" :header-cell-style="rowClass" style="margin-top: 20px;">
+
+            <el-table-column prop="uName" label="评审专家姓名" align="center"></el-table-column>
+
+            <el-table-column prop="uEmail" label="邮箱" align="center"></el-table-column>
+            <el-table-column prop="uPhone" label="手机" align="center"></el-table-column>
+
+        </el-table>
+
         <div style="text-align: right;">
             <el-button type="primary" style="margin-top: 20px;" @click="finalInvite()">确定邀请</el-button>
         </div>
@@ -76,7 +90,10 @@
     export default {
         name: "invitedExpertList",
         props:{
-            infoList:{
+            infoList:{ //邀请专家列表
+                type:Array,
+            },
+            alterList:{ //备选专家列表
                 type:Array,
             },
             invitedExpertVisible:{
@@ -117,7 +134,7 @@
                     this.getEmailTemplate(); //获取邮件模板();
                     this.templateId = this.params.templateId;
                     this.id = this.params.id;
-                    //console.log('infoList',this.infoList);
+                    console.log('alterList',this.alterList);
                 }
             }
         },
@@ -210,13 +227,9 @@
                 //console.log("scope.row", val);
                 this.cccheckList = [];
 
-                //this.emailForm = val;
                 this.emailForm.userName = val.userName;
                 this.emailForm.index = index;
 
-
-                //console.log('emailForm:', this.emailForm);
-                //post /v1/authorization/review/expertinviteemailconfig/update
                 let postEmailForm={adminMissionId:this.id,receiver:2,userId:val.userId,templateId:this.templateId};
                 console.log('postEmailForm:',postEmailForm);
                 httpPost("/v1/authorization/review/expertinviteemailconfig/update", postEmailForm).then(results => {
@@ -230,8 +243,6 @@
                     }
                 })
 
-                // this.emailForm.config = {content:null, theme:null};
-                //console.log(this.emailForm);
             },
 
             /**获取邮件模板，在中止未完成任务的对话框中展示用到的邮件*/
@@ -248,11 +259,7 @@
             changeVisible(){
                 this.$emit("closeDialog"); ////changeVisible事件触发后，自动触发closeDialog
             },
-            // closeInvitedExpertDialog(){
-            //     //this.postForm.expertInviteList=[];
-            //     //this.postForm.alternativeList=[];
-            //     this.invitedExpertVisible=false;
-            // },
+
             rowClass() {
                 return "background:#F4F6F9;";
             }

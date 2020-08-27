@@ -1,3 +1,6 @@
+<!--
+评审管理员的操作里的发送邮件功能
+-->
 <template>
 	<!-- 不用的页面 -->
 	<div class="myTableEmail">
@@ -82,26 +85,6 @@
 					</el-dialog>
 				</div>
 			</div>
-			<!-- <el-row :gutter="20">
-				<el-col :span="4">From:</el-col>
-				<el-col :span="20"></el-col>
-			</el-row>
-			<el-row :gutter="20">
-				<el-col :span="4">To:</el-col>
-				<el-col :span="20"></el-col>
-			</el-row>
-			<el-row :gutter="20">
-				<el-col :span="4">信件主题:</el-col>
-				<el-col :span="20"></el-col>
-			</el-row>
-			<el-row :gutter="20">
-				<el-col :span="4">抄送:</el-col>
-				<el-col :span="20"></el-col>
-			</el-row>
-			<el-row :gutter="20">
-				<el-col :span="4">信件主题:</el-col>
-				<el-col :span="20"></el-col>
-			</el-row> -->
 		</div>
 
 

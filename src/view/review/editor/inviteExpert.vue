@@ -129,7 +129,7 @@
 	import { httpGet, httpPut, httpPost } from "@/utils/http.js";
 	import { successTips, errTips } from "@/utils/tips.js";
 	import { specificDate } from '@/utils/getDate.js';
-	import expertSearch from '@/view/review/components/expertSearch';
+	import expertSearch from '@/view/review/editor/components/expertSearch';
 	export default {
 		props: ['type'], //type用来区分'新任务'，‘评审专家需要额外评审’，‘评审延期’，‘评审中’等类型
 		components: {
@@ -200,7 +200,7 @@
 				this.dialogExpertVisible=false;
 				this.getView();
 			},
-			/**待修改*/
+			/**邀请备选专家*/
 			alterInvite(val) {
 				console.log("alterExpert:", val);
 				let item = {
@@ -223,7 +223,7 @@
 			},
 
 			getTemplate() {
-				//get /v1/authorization/review/templatename/list
+
 				httpGet("/v1/authorization/review/templatename/list").then(results => {
 					const {
 						httpCode,
