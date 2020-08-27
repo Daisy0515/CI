@@ -1,10 +1,9 @@
+<!--评审专家搜索-->
 <template>
 	<div class="myTable">
-		<!-- <h1>publishercomplete</h1> -->
 		<div style="padding-left: 10px;">
 			<el-breadcrumb separator-class="el-icon-arrow-right" style="font-size: 130%;">
 				<el-breadcrumb-item :to="{ path: '/editorIndex' }">首页</el-breadcrumb-item>
-				
 				<el-breadcrumb-item>评审专家搜索</el-breadcrumb-item>
 
 			</el-breadcrumb>
@@ -22,13 +21,13 @@
 			</el-select>
 			<el-input v-model="searchData.email" placeholder="邮箱"></el-input>
 			<el-select v-model="searchData.education" placeholder="学历">
-				<el-option label="高中" value="1"></el-option>
-				<el-option label="大专" value="2"></el-option>
-				<el-option label="本科" value="3"></el-option>
-				<el-option label="研究生" value="4"></el-option>
-				<el-option label="博士" value="5"></el-option>
-				<el-option label="博士后" value="6"></el-option>
-				<el-option label="院士" value="7"></el-option>
+				<el-option label="高中" :value="1"></el-option>
+				<el-option label="大专" :value="2"></el-option>
+				<el-option label="本科" :value="3"></el-option>
+				<el-option label="研究生" :value="4"></el-option>
+				<el-option label="博士" :value="5"></el-option>
+				<el-option label="博士后" :value="6"></el-option>
+				<el-option label="院士" :value="7"></el-option>
 			</el-select>
 			<el-input v-model="searchData.nation" placeholder="国家"></el-input>
 			
@@ -64,12 +63,6 @@
 		</el-table>
 		<review-statistics :tableData="tableData" :dialogFormVisible="statisticView" @closeDialog="closeDialog"></review-statistics>
 		<expert-information :ruleForm="personalForm" :dialogFormVisible="informationView" @closeDialog="closeInformationDialog"></expert-information>
-		<el-dialog title="专家信息" :visible.sync="reviewStatisticsVisible" :close-on-click-modal="false" width="80%" >
-		
-			
-		
-		
-		</el-dialog>
 		
 		<div class="bid_footer">
 		  <el-pagination
@@ -84,17 +77,10 @@
 </template>
 
 <script>
-	import {
-		httpGet,
-		httpDelete
-	} from "@/utils/http.js";
-	import {
-		message,
-		successTips,
-		errTips
-	} from "@/utils/tips.js";
-	import reviewStatistics from '@/view/review/components/reviewStatistics'
-	import expertInformation from '@/view/review/components/expertInformation'
+	import {httpGet} from "@/utils/http.js";
+	import {message,errTips} from "@/utils/tips.js";
+	import reviewStatistics from '@/view/review/editor/components/reviewStatistics'
+	import expertInformation from '@/view/review/editor/components/expertInformation'
 	import { specificDate } from '@/utils/getDate.js';
 
 	export default {
@@ -247,20 +233,23 @@
 						data
 					} = results.data;
 					if (httpCode == 200) {
+
+						if (data.sex === 1) data.sex = '男';
+						if (data.sex === 2) data.sex = '女';
+						if (data.sex === 3) data.sex = '其他';
+						
+						if (data.education === 1) data.education = '高中';
+						if (data.education === 2) data.education = '大专';
+						if (data.education === 3) data.education = '本科';
+						if (data.education === 4) data.education = '研究生';
+						if (data.education === 5) data.education = '博士';
+						if (data.education === 6) data.education = '博士后';
+						if (data.education === 7) data.education = '院士';
+						let researchList = data.researchDirectionList.join(',');
+						data.researchDirectionList = researchList;
+						data.cruxList = data.cruxList.join(',');
+						data.province = data.province + '/' + data.city;
 						this.personalForm=data;
-						if (this.personalForm.sex === 1) this.personalForm.sex = '男';
-						if (this.personalForm.sex === 2) this.personalForm.sex = '女';
-						if (this.personalForm.sex === 3) this.personalForm.sex = '其他';
-						
-						if (this.personalForm.education === 1) this.personalForm.education = '高中';
-						if (this.personalForm.education === 2) this.personalForm.education = '大专';
-						if (this.personalForm.education === 3) this.personalForm.education = '本科';
-						if (this.personalForm.education === 4) this.personalForm.education = '研究生';
-						if (this.personalForm.education === 5) this.personalForm.education = '博士';
-						if (this.personalForm.education === 6) this.personalForm.education = '博士后';
-						if (this.personalForm.education === 7) this.personalForm.education = '院士';
-						
-						this.personalForm.province = this.personalForm.province + '/' + this.personalForm.city;
 						console.log("personalForm:",this.personalForm);
 					} else {
 						errTips(msg);

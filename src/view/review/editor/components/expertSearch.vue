@@ -1,6 +1,6 @@
 <!--功能：搜索评审专家并邀请
     调用页面：1.inviteExpert(评审管理员:邀请评审专家)，
-             
+
 -->
 <template>
 	<el-dialog title="评审专家搜索" :visible.sync="dialogExpertVisible" :close-on-click-modal="false" width="80%" :before-close="changeVisible">
@@ -45,7 +45,7 @@
 							v-model="scope.row.checkList"
 							:min="0"
 							:max="1"
-							@change="inviteRadio(scope.row.uId,scope.row.checkList)">
+							@change="inviteRadio(scope.row.uId,scope.row.checkList,scope.row)">
 						<el-checkbox label="邀请" value="邀请"></el-checkbox>
 						<el-checkbox label="备选" value="备选"></el-checkbox>
 					</el-checkbox-group>
@@ -103,7 +103,7 @@
 			</el-table-column>
 		</el-table>
 		<el-button type="primary" style="float: right;margin-top: 20px;" @click="postInvite()">提交邀请</el-button>
-		<invited-expert-list :infoList="invitedExpertList" :invitedExpertVisible="invitedExpertVisible" :params="inviteExpertParams" @closeDialog="closeInvitedExpertDialog"
+		<invited-expert-list :infoList="invitedExpertList" :alter-list="alterList" :invitedExpertVisible="invitedExpertVisible" :params="inviteExpertParams" @closeDialog="closeInvitedExpertDialog"
 		@clearInvitedExpert="clearInvitedExpert"></invited-expert-list>
 		<div class="bid_footer">
 			<el-pagination @current-change="handleCurrentChange" :current-page.sync="pageData.pageNo" :total="totalPage"
@@ -118,7 +118,6 @@
 	import { httpGet, httpPost} from "@/utils/http.js";
 	import { message, successTips, errTips } from "@/utils/tips.js";
 	import { specificDate } from '@/utils/getDate.js';
-	import invitedExpertList from '@/view/review/components/invitedExpertList';
 	import InvitedExpertList from "./invitedExpertList";
 	export default {
 	    name: "expertSearch",
@@ -186,6 +185,7 @@
 					//type : 1
 				},
 				invitedExpertList:[], //已邀请专家列表
+				alterList:[], //备选专家列表
 				templateId:null,
 				invitedExpertVisible:false, //控制已邀请专家对话框
 				inviteExpertParams:{
@@ -249,7 +249,7 @@
 				this.getExpert();
 			},
 			/**邀请与备选触发的函数*/
-			inviteRadio(id, arr) {
+			inviteRadio(id, arr, personalInfo) {
 				//console.log(id,val);
 				// val = parseInt(val);
 				var val;
@@ -264,12 +264,11 @@
 					type: val,
 					userId: id
 				}
-				// var arr = [];
-				// arr.push(val);
-				// this.expertUserList[index].checkList = arr;
-				// console.log(this.expertUserList[index]);
 				if (val == 1) this.postForm.expertInviteList.push(temp);
-				if (val == 2) this.postForm.alternativeList.push(temp);
+				if (val == 2) {
+					this.postForm.alternativeList.push(temp);
+					this.alterList.push(personalInfo);
+				}
 
 				//console.log("post",this.postForm);
 			},
@@ -332,12 +331,6 @@
 							i.checkList = [];
 						}
 						this.expertUserList = list;
-						// let list2 = this.expertUserList.review;
-						// for (let i of list2) {
-						// 	i.finallyAcceptMissionTime = specificDate(i.finallyAcceptMissionTime);
-						// 	i.finallyFinishedMissionTime = specificDate(i.finallyFinishedMissionTime);
-						// }
-						// this.expertUserList.review = list2;
 						Object.assign(this.pageData, val);
 
 					} else if (msg == "该条件暂无数据") {
@@ -359,13 +352,9 @@
 				this.pageData.pageNo = val;
 				this.getView();
 			},
-			// closeExpertSearchDialog(){
-			// 	// this.postForm.expertInviteList=[];
-			// 	// this.postForm.alternativeList=[];
-			// 	this.dialogExpertVisible=false;
-			// },
 			closeInvitedExpertDialog(){
 			    this.invitedExpertVisible=false;
+				Object.assign(this.$data, this.$options.data());
 			},
 			changeVisible(){
 	            this.$emit("closeDialog"); ////changeVisible事件触发后，自动触发closeDialog

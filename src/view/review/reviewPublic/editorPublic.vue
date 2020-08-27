@@ -1,3 +1,6 @@
+<!--
+管理员页面左侧工具栏
+-->
 <template>
   <div class="service">
 	<reviewHead/>
@@ -45,7 +48,6 @@
 import { mapGetters, mapMutations } from "vuex";
 import FooterIndex from "@/common/footer/footer";
 import reviewHead from "@/common/header/reviewLayout";
-// import { Menu, Submenu, MenuItem, MenuItemGroup,} from "element-ui";
 export default {
 	components: {
 	  FooterIndex,
@@ -63,17 +65,19 @@ export default {
     ...mapGetters(["getleftIndex"])
   },
   methods: {
-    ...mapMutations(["setLogin", "setLeft"]),
-    changeleft(item) {
-      this.setLeft(item.url);
-      this.$router.push(item.url);
-    },
-	handleOpen(key, keyPath) {
-	        console.log(key, keyPath);
-	      },
-	  handleClose(key, keyPath) {
-		console.log(key, keyPath);
-	  }
+
+    	...mapMutations(["setLogin", "setLeft"]),
+
+		changeleft(item) {
+		  this.setLeft(item.url);
+		  this.$router.push(item.url);
+		},
+		handleOpen(key, keyPath) {
+				console.log(key, keyPath);
+		},
+		  handleClose(key, keyPath) {
+			console.log(key, keyPath);
+		  }
   }
 };
 </script>
@@ -87,7 +91,6 @@ body,
 }
 .service {
   .left-scroll {
-   /* text-align: center; */
     width: 11%;
     float: left;
     height: 100%;
@@ -101,14 +104,6 @@ body,
     float: right;
     width: 85%;
     margin: 40px auto;
-   /* &::before {
-      content: "";
-      display: table;
-      clear: both;
-    }
-    h3 {
-      margin-bottom: 40px;
-    } */
   }
 }
 </style>
