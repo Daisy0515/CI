@@ -38,7 +38,7 @@
 
         <el-table :data="infoList" :header-cell-style="rowClass" style="margin-top: 20px;">
 
-            <el-table-column prop="userName" label="评审专家姓名" align="center"></el-table-column>
+            <el-table-column prop="name" label="评审专家姓名" align="center"></el-table-column>
             <el-table-column label="信件" align="center" width="350px">
                 <template slot-scope="scope">
                     <el-select v-model="templateId" placeholder="未选择模板" disabled>
