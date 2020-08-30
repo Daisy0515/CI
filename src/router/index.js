@@ -293,6 +293,24 @@ const vueRouter = new Router({
     		}
 
     	},
+		{
+			path:'/expertAboutTimeOut',
+			name:'expertAboutTimeOut',
+			component:() => import('@/view/review/expert/expertAboutTimeOut'),
+			meta:{
+				title:'即将超时',
+				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+			}
+		},
+		{
+			path:'/expertAlreadyTimeOut',
+			name:'expertAlreadyTimeOut',
+			component:() => import('@/view/review/expert/expertAlreadyTimeOut'),
+			meta:{
+				title:'已经超时',
+				requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+			}
+		},
     	{
     		path:'/expertComplete',
     		name:'expertComplete',

@@ -47,9 +47,9 @@
             </el-row>
         </el-form>
         <el-dialog width="30%" :visible.sync="innerVisible" append-to-body center>
-            <el-row gutter="10" style="margin-bottom: 30px;">
-                <el-col span="6"><span>回复截止日期:</span> </el-col>
-                <el-col span="18">
+            <el-row :gutter="10" style="margin-bottom: 30px;">
+                <el-col :span="6"><span>回复截止日期:</span> </el-col>
+                <el-col :span="18">
                     <el-date-picker
                             v-model="ruleForm.deadline"
                             type="date"
@@ -57,9 +57,9 @@
                     </el-date-picker>
                 </el-col>
             </el-row>
-            <el-row gutter="10">
-                <el-col span="6"><span>新的意见: </span></el-col>
-                <el-col span="18">
+            <el-row :gutter="10">
+                <el-col :span="6"><span>新的意见: </span></el-col>
+                <el-col :span="18">
                     <el-input
                             v-model="ruleForm.details"
                             type="textarea"
@@ -82,6 +82,7 @@
         name: "publisherReviewOpinion",
         data() {
             return {
+                formLabelWidth:'100px',
                 endDate:'',
                 innerVisible: false,
 				ruleForm:{
@@ -91,7 +92,20 @@
 				}
             }
         },
-        props: ['form', 'formLabelWidth', 'dialogOpinionVisible','loading'],
+        props:{
+            form:{
+                type:Object,
+                default:{}
+            },
+            dialogOpinionVisible:{
+                type:Boolean,
+                default:false,
+            },
+            loading:{
+                type:Boolean,
+                default:false,
+            }
+        },
         methods: {
             changeVisible() {
                 this.$emit('closeOpinionDialog');
@@ -108,16 +122,13 @@
 						successTips("新增意见成功！");
 						this.ruleForm="";
 						this.innerVisible = false;
-						this.dialogOpinionVisible = false;
+						this.changeVisible();
 					} else {
 						errTips(msg);
 					}
 				})
 
                 //提交意见
-            },
-            handleClickFile(row) {
-
             },
 			rowClass() {
 			    return "background:#F4F6F9;";

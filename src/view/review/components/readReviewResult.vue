@@ -69,17 +69,16 @@
 
         data() {
             return {
-                templateName: '',//当前评审模板的名称
-                templateId:null,//评审模板的id
-                readonly:true,//查看评价的所有页面都不能编辑
+                templateName: '',       //当前评审模板的名称
+                templateId:null,        //评审模板的id
+                readonly:true,          //查看评价的所有页面都不能编辑
 
-                fApi:{},//生成表单所必要的属性，表单生成后，关于表单相关的属性和操作都在fApi中
-                rules: [],       //生成评审表单的规则
+                fApi:{},                //生成表单所必要的属性，表单生成后，关于表单相关的属性和操作都在fApi中
+                rules: [],              //生成评审表单的规则
                 option: {
-                    submitBtn : false,//隐藏提交按钮
-                    resetBtn: false,// //隐藏表单重置按钮
+                    submitBtn : false,  //隐藏提交按钮
+                    resetBtn: false,    //隐藏表单重置按钮
                 },
-
                 editorRules:{
                     commentsToAuthor:[{required:true,message:"请输入对作者的意见",trigger: 'blur'}],
                     commentsToEditor:[{required:true,message:"请输入对管理员的意见",trigger: 'blur'}]
@@ -90,7 +89,7 @@
             /*templateConfigList发生更新就重新生成评审表单*/
             templateConfigList:function(){
                 this.setCreateRule();
-            }
+            },
         },
         computed:{
             editorForm:function(){

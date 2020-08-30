@@ -142,19 +142,31 @@
             readReviewResult
         },
         props:{
-            currentPage:{//1 待处理，2 评审中，3 已完成 4 已中止
+            currentPage:{           //1 待处理，2 评审中，3 已完成 4 已中止
+                type:[String,Number],
+                default:null,
+            },
+            timeStatus:{            //时间状态 1即将超时 2已经超时
                 type:[String,Number],
                 default:null,
             }
         },
         computed:{
             currentPageName:function(){
-                switch(parseInt(this.currentPage)){
-                    case 1: return "待处理";
-                    case 2 :return "评审中";
-                    case 3 :return "已完成";
-                    case 4 :return "已中止";
-                    case 5 :return "已拒绝";
+                if(this.timeStatus===null){
+                    switch(parseInt(this.currentPage)){
+                        case 1: return "待处理";
+                        case 2 :return "评审中";
+                        case 3 :return "已完成";
+                        case 4 :return "已中止";
+                        case 5 :return "已拒绝";
+                    }
+                }else{
+                    if(parseInt(this.timeStatus)===1){
+                        return "即将超时";
+                    }else{
+                        return "已经超时";
+                    }
                 }
             }
         },
@@ -244,7 +256,6 @@
                         }
                     });
                 });
-
             },
             /**评审中页面：评价*/
             handleEvaluate(id){

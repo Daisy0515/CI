@@ -31,9 +31,9 @@
                 <el-form-item label="分数相关设置：" v-if="localForm.isScore">
                     <br>
                     <div style="margin-left: 70px;">
-                        <el-checkbox v-model="localForm.isScoreSubmitVisible  "><span
-                                style=" font-weight: bolder;">对作者可见</span></el-checkbox>
-                        <br>
+<!--                        <el-checkbox v-model="localForm.isScoreSubmitVisible  "><span-->
+<!--                                style=" font-weight: bolder;">对作者可见</span></el-checkbox>-->
+<!--                        <br>-->
                         <el-checkbox v-model="localForm.isScoreRequired  "><span
                                 style=" font-weight: bolder;">评审者必须要完成</span></el-checkbox>
                         <br>
@@ -221,7 +221,7 @@
 
                     isScore: null,//是否有分值选项 1是0否
                     isScoreRequired: null,//分值选项专家必选 1是0否
-                    isScoreSubmitVisible: null,//对作者是否可见 1是0否
+                    isScoreSubmitVisible: true,//对作者是否可见 ,默认可见，否则前端的显示很奇怪
                     scoreWeight: 1,//分值选项权重
                     scoreExplainList: [],//分值选项说明(文本分数选项域)
                     value: {

@@ -95,9 +95,9 @@
 				</el-form>
 				<el-dialog title="查看评价" :visible.sync="readReviewDialogVisible" width="80%"
 						   style="text-align:left; font-weight: bolder;" append-to-body>
-					<read-review-template-for-manger :templateConfigList="templateConfigList" :totalScore="totalScore"
+					<read-review-result-for-manger :templateConfigList="templateConfigList" :totalScore="totalScore"
 										  :result="result">
-					</read-review-template-for-manger><!--生成评审表单的组件-->
+					</read-review-result-for-manger><!--生成评审表单的组件-->
 				</el-dialog>
 			</el-dialog>
 			<p class="Tips">
@@ -151,11 +151,11 @@
 	import { mapMutations } from 'vuex';
 	import { successTips, errTips } from '@/utils/tips.js';
 	import sourceUpload from '@/common/upload/resourceUpload';
-	import readReviewTemplateForManger from '@/view/desk/myBid/readReviewTemplateForManger';
+	import readReviewResultForManger from '@/view/desk/myBid/readReviewResultForManger';
 	export default {
 		components: {
 			sourceUpload,
-			readReviewTemplateForManger,
+			readReviewResultForManger,
 		},
 		data() {
 			return {
