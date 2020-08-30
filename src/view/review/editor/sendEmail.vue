@@ -231,11 +231,7 @@
 				this.userNameList = [];
 				this.checkList = [];
 				httpGet("/v1/authorization/review/adminmissionemailtemplate/update", this.searchData).then(results => {
-					const {
-						httpCode,
-						msg,
-						data
-					} = results.data;
+					const {httpCode, msg, data} = results.data;
 					if (httpCode == 200) {
 						this.emailForm.adminMissionId = data.adminMissionId;
 						this.emailForm.emailConfig.content = data.content;
