@@ -4,7 +4,7 @@
 		<el-breadcrumb separator-class="el-icon-arrow-right" style="font-size: 130%;margin-bottom: 20px;">
 		  <el-breadcrumb-item :to="{ path: '/expertInformation' }">信息维护</el-breadcrumb-item>
 		  <el-breadcrumb-item>专家信息</el-breadcrumb-item>
-		
+
 		</el-breadcrumb>
 		</div>
 		<el-row :gutter="40">
@@ -32,7 +32,7 @@
 								<div style="text-align: center;">
 								<Avatar></Avatar>
 								</div>
-								
+
 							</el-col>
 						</el-row>
 						<el-row :gutter="20">
@@ -46,7 +46,7 @@
 									<el-input v-model="ruleForm.phone" :disabled="true"></el-input>
 								</el-form-item>
 							</el-col>
-					
+
 						</el-row>
 						<el-row :gutter="20">
 							<el-col :span="9">
@@ -67,7 +67,7 @@
 									<el-input v-model="ruleForm.position" ></el-input>
 								</el-form-item>
 							</el-col>
-					
+
 						</el-row>
 						<el-row :gutter="20">
 							<el-col :span="9">
@@ -80,10 +80,10 @@
 									<el-input v-model="ruleForm.homepage" ></el-input>
 								</el-form-item>
 							</el-col>
-					
+
 						</el-row>
 						<el-row :gutter="20">
-					
+
 							<el-col :span="9">
 								<el-form-item label="工作单位" :label-width="formLabelWidth">
 									<el-input v-model="ruleForm.workUnit" ></el-input>
@@ -113,8 +113,8 @@
 									></el-cascader>
 								</el-form-item>
 							</el-col>
-					
-					
+
+
 						</el-row>
 						<el-row :gutter="20">
 							<el-col :span="9">
@@ -122,22 +122,22 @@
 									<el-input v-model="ruleForm.contactAddress" ></el-input>
 								</el-form-item>
 							</el-col>
-					
-					
+
+
 							<hr style="width: 100%; color: #303133;">
 						</el-row>
 						<h2 style="text-align: left;font-weight: bolder;margin-top: 2%;margin-bottom: 2%;">研究兴趣</h2>
 						<el-row :gutter="20">
-							
+
 							<el-form-item label="研究方向":label-width="formLabelWidth" prop="researchDirection">
 								<el-input v-model="researchName" style="width: 300px"></el-input>
 								<el-button  type="text" @click="keywordsVisible = true" class="add" ><i class="el-icon-plus"></i>添加</el-button>
 							</el-form-item>
-				
-							<el-dialog title="请选择个人研究方向" :visible.sync="keywordsVisible" style="text-align: left;" width="30%">
+
+							<el-dialog title="请选择个人研究方向" :visible.sync="keywordsVisible" style="text-align: left;" width="40%">
 								<div style="margin-left: 60px;">
 								<el-transfer
-								
+
 								 v-model="value"
 								 :data="data">
 							   </el-transfer>
@@ -147,8 +147,8 @@
 								<el-button type="primary" @click="printValue">确 定</el-button>
 							  </div>
 							</el-dialog>
-			
-					
+
+
 						</el-row>
 						<el-row :gutter="20">
 							<el-form-item label="个人关键词" :label-width="formLabelWidth">
@@ -159,19 +159,19 @@
 										<el-button size="mini" type="text" @click="visible = false">取消</el-button>
 										<el-button type="primary" size="mini" @click="addMission">确定</el-button>
 									</div>
-								
+
 									<span class="add" slot="reference">
 										<i class="el-icon-plus"></i>
 										新建关键词
 									</span>
 								</el-popover>
 							</el-form-item>
-							
-							
-						
+
+
+
 						</el-row>
-							
-						
+
+
 					</el-form>
 					</div>
 					<div style="text-align: center;">
@@ -183,13 +183,13 @@
 				<el-card class="right-card-menu">
 					<el-row style="margin-bottom: 20px;">
 						<h1 style="text-align: center">密码管理</h1>
-						
+
 					</el-row>
 					<el-row style="margin-bottom: 25px;text-align: center">
 						<el-card>
 						<router-link to>
 							<span>修改密码</span>
-							
+
 						</router-link>
 						</el-card>
 					</el-row>
@@ -203,7 +203,7 @@
 				</el-card>
 			</el-col>
 		</el-row>
-	
+
 
 	</div>
 </template>
@@ -273,16 +273,16 @@
 					sex :null,
 					workUnit :"",
 				},
-				
+
 			}
 		},
 		computed: {
 		},
 		created: function() {
-		  
+
 		  this.getResearchList();
 		  this.getView();
-		  
+
 		},
 		methods: {
 			submitForm(formName){
@@ -321,7 +321,7 @@
 					this.interest="";
 					this.visible=false;
 				}
-				
+
 			},
 			getResearchList(){
 				httpGet("/v1/public/coreuser/list/research").then(results => {
@@ -344,7 +344,7 @@
 				})
 			},
 			getView(){
-				
+
 				httpGet("/v1/authorization/coreuser/reviewexpert/get").then(results => {
 				  const { httpCode, msg, data } = results.data;
 				  if (httpCode == 200) {
@@ -356,7 +356,7 @@
 					} else {
 						this.ruleForm.sex='未知';
 					}
-					
+
 					this.ruleForm.education = this.ED[this.ruleForm.education];
 					this.Nation = {value:this.ruleForm.nation, label:this.ruleForm.nation};
 					this.researchName = this.ruleForm.researchDirectionList;
@@ -367,11 +367,11 @@
 						this.value.push(index);
 					}
 					console.log("value:",this.value);
-					
+
 				  } else {
 				    errTips(msg);
 				  }
-				  
+
 				});
 			},
 			handleChange(file, fileList) {
@@ -389,16 +389,16 @@
 	.el-input {
 		//display: inline-block;
 		width: 200px;
-		
+
 	}
-	
+
 }
 .container{
 	.add {
-		
+
 		cursor: pointer;
 		color: #8c8c8c;
-		
+
 		&:hover {
 			color: #3e76b8;
 		}

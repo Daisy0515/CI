@@ -31,7 +31,8 @@
         </el-form>
         <el-row style="margin-top: 20px;">
             <el-col :span="3" :offset="9">
-                <el-button type="primary" @click="submit" :loading="submitLoading">提交</el-button>
+                <el-button type="primary" @click="submit" v-if="showSubmit" :loading="submitLoading">提交</el-button>
+                <el-button  @click="goBack" v-else >返回上一级</el-button>
             </el-col>
             <el-col :span="2" :offset="7">
                 <span style="font-size: large;font-weight: bolder;">评审得分:</span>
@@ -59,16 +60,21 @@
         props:{
             templateConfigList:{
                 type:Array,
-                default:()=>[],//对象或者数组的默认值需要由工厂函数来返回
+                default:()=>[],     //对象或者数组的默认值需要由工厂函数来返回
             },
-            totalScore:{//评审模板的总分
+            totalScore:{            //评审模板的总分
                 type:Number,
                 default:0,
             },
-            id:{//评审专家邀请信息编号ID
+            id:{                    //评审专家邀请信息编号ID
                 type:Number,
                 default:0,
+            },
+            showSubmit:{             //显示提交按钮
+                type:Boolean,
+                default:true,
             }
+
         },
 
         data() {
@@ -286,7 +292,13 @@
                     });
                 })
             },
+
+            goBack(){
+                this.$router.go(-1);
+            }
         }
+
+
     }
 </script>
 
