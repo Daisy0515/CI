@@ -189,6 +189,7 @@
             /**邮件预览*/
             preview(){
                 this.emailePrviewVisible=true;
+                console.log(this.emailForm);
                 let previewForm={adminMissionId:this.id,userId:this.emailForm.userId,emailContent:this.emailForm.config.content};
                 //post /v1/authorization/review/expertinviteemailconfig/get
                 httpPost("/v1/authorization/review/expertinviteemailconfig/get",previewForm).then(results => {
@@ -227,9 +228,10 @@
                 //console.log("scope.row", val);
                 this.cccheckList = [];
 
-                this.emailForm.userName = val.userName;
+                this.emailForm.userName = val.name;
                 this.emailForm.index = index;
-
+                this.emailForm.userId = val.userId;
+                console.log('123emailForm:', this.emailForm);
                 let postEmailForm={adminMissionId:this.id,receiver:2,userId:val.userId,templateId:this.templateId};
                 console.log('postEmailForm:',postEmailForm);
                 httpPost("/v1/authorization/review/expertinviteemailconfig/update", postEmailForm).then(results => {

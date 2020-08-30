@@ -350,13 +350,7 @@
 			},
 			closeInvitedExpertDialog(){
 			    this.invitedExpertVisible=false;
-				// //Object.assign(this.$data, this.$options.data());
-				//
-				// this.getExpert();
-				// //Object.assign(this.inviteExpertParams, this.$options.inviteExpertParams);
-				// // let list = this.expertUserList;
-				// // this.dataTable = list;
-				// console.log('1111',this.inviteExpertParams);
+
 			},
 			changeVisible(){
 	            this.$emit("closeDialog"); ////changeVisible事件触发后，自动触发closeDialog
