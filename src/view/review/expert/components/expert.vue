@@ -149,15 +149,12 @@
         },
         computed:{
             currentPageName:function(){
-                switch(this.currentPage){
-                    case 1:
-                    case '1':return "待处理";
-                    case 2:
-                    case '2':return "评审中";
-                    case 3:
-                    case '3':return "已完成";
-                    case 4:
-                    case '4':return "已中止";
+                switch(parseInt(this.currentPage)){
+                    case 1: return "待处理";
+                    case 2 :return "评审中";
+                    case 3 :return "已完成";
+                    case 4 :return "已中止";
+                    case 5 :return "已拒绝";
                 }
             }
         },
@@ -255,7 +252,6 @@
                 /*评审中页面：获取评价模板的详细信息*/
                 httpGet("/v1/authorization/review/experttemplateconfig/list", {id: id}).then(results => {
                     const {httpCode, msg, data} = results.data;
-                    console.log("data", data);
                     if (httpCode === 200){
                         this.templateConfigList = data.configList;
                         this.totalScore = data.totalScore;
@@ -287,13 +283,12 @@
                 this.dialogReadReviewVisible = true;
                 httpGet("/v1/authorization/review/experttemplateopinion/get", {id: id}).then(results => {
                     const {httpCode, msg, data} = results.data;
-                    console.log("data", data);
                     if (httpCode === 200){
+                        data.result.content = JSON.parse(data.result.content);
                         this.result = data.result;//评审专家评价结果
                         this.templateConfigListForRead = data.configList;
                         this.totalScore = data.totalScore;
                         this.templateName = data.templateName;
-                        console.log("result",this.result);
                     }else if(httpCode !== 401){
                         errTips(msg);
                     }
