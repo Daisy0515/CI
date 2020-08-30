@@ -394,6 +394,6 @@
     };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     @import "@/assets/scss/myTable.scss";
 </style>
