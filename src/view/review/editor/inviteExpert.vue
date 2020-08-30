@@ -225,11 +225,7 @@
 			getTemplate() {
 
 				httpGet("/v1/authorization/review/templatename/list").then(results => {
-					const {
-						httpCode,
-						msg,
-						data
-					} = results.data;
+					const {httpCode, msg, data} = results.data;
 					if (httpCode == 200) {
 						this.templateNameList = data.templateNameList;
 					} else {

@@ -34,13 +34,9 @@
 			<el-button type="primary" @click="searchList">搜索</el-button>
 
 		</div>
-		<el-table :data="expertUserList" :header-cell-style="rowClass" style="margin-top: 20px;" v-loading="expertloading">
+		<el-table :data="dataTable" :header-cell-style="rowClass" style="margin-top: 20px;" v-loading="expertloading">
 			<el-table-column label="操作" align="center" width="160px">
 				<template slot-scope="scope">
-<!--					<el-radio-group v-model="scope.row.radio" @change="inviteRadio(scope.row.uId,scope.row.radio)" >-->
-<!--						<el-radio label="1">邀请</el-radio>-->
-<!--						<el-radio label="2">备选</el-radio>-->
-<!--					</el-radio-group>-->
 					<el-checkbox-group
 							v-model="scope.row.checkList"
 							:min="0"
@@ -191,9 +187,9 @@
 				inviteExpertParams:{
 					templateId:null,
 					id:null,
-					expertInviteList:[],
-					alternativeList:[],
-				}
+					alternativeList:[]
+				},
+				dataTable:[],
 	        }
 	    },
 	    watch:{
@@ -250,8 +246,6 @@
 			},
 			/**邀请与备选触发的函数*/
 			inviteRadio(id, arr, personalInfo) {
-				//console.log(id,val);
-				// val = parseInt(val);
 				var val;
 				if (arr[0] === "邀请")
 					val = 1;
@@ -269,7 +263,6 @@
 					this.postForm.alternativeList.push(temp);
 					this.alterList.push(personalInfo);
 				}
-
 				//console.log("post",this.postForm);
 			},
 	    	/**获取关键词*/
@@ -308,6 +301,8 @@
 			},
 	    	/**获取专家列表*/
 			getExpert(val = this.pageData) {
+				this.invitedExpertList = [];
+				this.alterList = [];
 				//console.log(222);
 				this.loading = true;
 				//get /v1/authorization/review/expert/user
@@ -331,6 +326,7 @@
 							i.checkList = [];
 						}
 						this.expertUserList = list;
+						this.dataTable = list;
 						Object.assign(this.pageData, val);
 
 					} else if (msg == "该条件暂无数据") {
@@ -354,7 +350,13 @@
 			},
 			closeInvitedExpertDialog(){
 			    this.invitedExpertVisible=false;
-				Object.assign(this.$data, this.$options.data());
+				// //Object.assign(this.$data, this.$options.data());
+				//
+				// this.getExpert();
+				// //Object.assign(this.inviteExpertParams, this.$options.inviteExpertParams);
+				// // let list = this.expertUserList;
+				// // this.dataTable = list;
+				// console.log('1111',this.inviteExpertParams);
 			},
 			changeVisible(){
 	            this.$emit("closeDialog"); ////changeVisible事件触发后，自动触发closeDialog
