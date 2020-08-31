@@ -20,14 +20,14 @@
 		</router-link>
 			
 		
-      <el-dialog :title="title" :visible.sync="diaIndex" width="30%">
-        <p
-          style="word-wrap:break-word;width:100%;display:inline-block"
-        >{{content}}</p>
-        <span slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="diaIndex = false">确 定</el-button>
-        </span>
-      </el-dialog>
+<!--      <el-dialog :title="title" :visible.sync="diaIndex" width="30%">-->
+<!--        <p-->
+<!--          style="word-wrap:break-word;width:100%;display:inline-block"-->
+<!--        >{{content}}</p>-->
+<!--        <span slot="footer" class="dialog-footer">-->
+<!--          <el-button type="primary" @click="diaIndex = false">确 定</el-button>-->
+<!--        </span>-->
+<!--      </el-dialog>-->
       <div class="header_top">
         <el-select v-model="searchData.projectId" clearable placeholder="请选择项目名称" @change="changeProject">
             <el-option v-for="item in projectList" :key="item.projectId" :label="item.projectName" :value="item.projectId"></el-option>
@@ -104,7 +104,7 @@
 		    <el-tooltip
 		      class="item"
 		      effect="dark"
-		      :content="scope.row.documentsType"
+		      :content="String(scope.row.documentsType)"
 		      placement="top-start"
 		    >
 			<span class="tablehidden" v-if="scope.row.documentsType===1">需求设计</span>
@@ -280,11 +280,11 @@ export default {
     rowClass() {
       return "background:#F4F6F9;";
     },
-    openDia(content,title) {
-      this.diaIndex = !this.diaIndex;
-      this.content = content;
-      this.title = title
-    },
+    // openDia(content,title) {
+    //   this.diaIndex = !this.diaIndex;
+    //   this.content = content;
+    //   this.title = title
+    // },
     //新增缺陷
     newAdd(){
 

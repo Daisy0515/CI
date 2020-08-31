@@ -197,7 +197,7 @@ export default {
       editorOption: {},
       uploadIndex: false,
       statusList:[],
-      ruleForm:[],
+      ruleForm:null,
       ruleForm2: {
         id:null,
         status:"",

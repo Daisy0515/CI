@@ -176,7 +176,7 @@
 					const { msg, data, httpCode } = results.data;
 					if (httpCode === 200) {
 						this.typeList = data.reviewProcessList;
-						//console.log(this.typeList);
+						console.log("typeList",this.typeList);
 						this.getView();
 					} else {
 						errTips(msg);
@@ -261,22 +261,21 @@
 					const { httpCode, msg, data } = results.data;
 					if (httpCode === 200) {
 						this.totalPage = parseInt(data.totalPage + "0");
-						let {
-							reviewInfoList
-						} = data;
+						let {reviewInfoList} = data;
 
 						for (let i of reviewInfoList) {
 							i.deadline = specificDate(i.deadline);
 							i.gmtCreate = specificDate(i.gmtCreate);
-							var typeArr = this.typeList.filter(function(item) {
-								return item.id == i.type;
-							})
-							//console.log(typeArr);
-							i.typeName = typeArr[0].processName;
+							// var typeArr = this.typeList.filter(function(item) {
+							// 	return item.id == i.type;
+							// })
+							// //console.log(typeArr);
+							// i.typeName = typeArr[0].processName;
 							//console.log(i.typeName);
 						}
 
 						this.$set(this, "tableData", reviewInfoList);
+						console.log("tableData",this.tableData);
 						Object.assign(this.pageData, val);
 					} else {
 						this.tableData = [];

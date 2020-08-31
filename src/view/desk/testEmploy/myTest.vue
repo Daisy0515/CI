@@ -194,20 +194,7 @@ export default {
 	methods: {
 		...mapMutations(['setCache']),
 		...mapActions(['GETNORMALTYPE']),
-		// changeProgress(){
-		// 		//console.log(ruleForm);
-		// 	//put /v1/authorization/test/testinfo/update 
-		// 	httpPut('/v1/authorization/test/testinfo/update', this.ruleForm).then(results => {
-		// 		const { msg, httpCode } = results.data;
-		// 		if (httpCode === 200) {
-		// 			successTips('修改测试成功！');
-		// 			this.getView()
-		// 		} else if (httpCode !== 401) {
-		// 			errTips(msg);
-		// 		}
-		// 	});
-			
-		// },
+
 		getTestUser(Id){
 			//get /v1/authorization/test/update/testinfo 
 			//alert(Id);
