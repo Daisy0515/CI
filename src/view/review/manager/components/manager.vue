@@ -279,7 +279,7 @@
                             this.reviewProcessList = data.processList;
                         }
                     } else if (msg === "请求参数出错") {
-                        errTips("请先选择项目！");
+                        message("请先选择项目！");
                     } else if (httpCode !== 401) {
                         errTips(msg);
                     }
