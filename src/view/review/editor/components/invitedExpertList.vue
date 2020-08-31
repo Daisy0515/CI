@@ -44,43 +44,6 @@
             </div>
         </el-dialog>
 
-<!--        <el-dialog width="40%" title="邮件编辑" :visible.sync="globalEmailEditVisible" append-to-body :before-close="closeEmailEdit">-->
-<!--            <el-dialog width="40%" title="邮件预览" :visible.sync="emailePrviewVisible" append-to-body :before-close="closeEmailPreview">-->
-<!--                <p v-html="previewArea"></p>-->
-<!--            </el-dialog>-->
-
-<!--            <el-form :label-position="'right'" label-width="100px" :model="emailForm">-->
-
-<!--                <el-form-item label="收件人">-->
-<!--                    <el-checkbox-group v-model="userList" >-->
-<!--                        <el-checkbox v-for="item in infoList" :label="item.name" disabled></el-checkbox>-->
-<!--                    </el-checkbox-group>-->
-<!--                </el-form-item>-->
-
-<!--                <el-form-item label="信件主题">-->
-<!--                    <el-input v-model="emailForm.config.theme" style="width: 90%;"></el-input>-->
-<!--                </el-form-item>-->
-
-<!--                <el-form-item label="抄送">-->
-<!--                    <el-checkbox-group v-model="cccheckList" @change="selectCC">-->
-<!--                        <el-checkbox label="管理员"></el-checkbox>-->
-<!--                        <el-checkbox label="发布者"></el-checkbox>-->
-
-<!--                    </el-checkbox-group>-->
-<!--                </el-form-item>-->
-
-<!--                <el-form-item label="信件内容">-->
-<!--                    <el-input type="textarea" v-model="emailForm.config.content" style="width: 90%;" rows="10">-->
-
-<!--                    </el-input>-->
-<!--                </el-form-item>-->
-<!--            </el-form>-->
-<!--            <div style="text-align: right;">-->
-<!--                <el-button type="primary" style="margin-top: 20px;margin-right: 20px;" @click="preview()">预览</el-button>-->
-<!--                <el-button type="primary" style="margin-top: 20px;" @click="globalEmailConfirm()">确定</el-button>-->
-<!--            </div>-->
-<!--        </el-dialog>-->
-
         <el-table :data="infoList" :header-cell-style="rowClass" style="margin-top: 20px;">
 
             <el-table-column prop="name" label="评审专家姓名" align="center"></el-table-column>
