@@ -134,6 +134,7 @@
 <script>
     import { httpGet, httpPost} from "@/utils/http.js";
     import { errTips, successTips } from "@/utils/tips.js";
+    import deepCopyObject from "@/utils/deepCopyObject";
     export default {
         name: "invitedExpertList",
         props:{
@@ -221,22 +222,12 @@
 
             /**完成邮件编辑*/
             emailConfirm(){
-                console.log(this.userList);
-                /*
-                单个定制的内容
-                 */
-                if (this.globalEmailEditVisible === true) {
-                    for (let i of this.infoList) {
-                        i.emailConfig = this.emailForm.config;
-                        i.duplicate = this.emailForm.duplicate;
-                    }
-                } else {
-                    let i = this.emailForm.index;
-                    console.log("emailConfirm-emailForm:",this.emailForm);
-                    console.log("infoList:",this.infoList)
-                    this.infoList[i].emailConfig = this.emailForm.config;
-                    this.infoList[i].duplicate = this.emailForm.duplicate;
-                }
+
+                let i = this.emailForm.index;
+                console.log("emailConfirm-emailForm:",this.emailForm);
+                console.log("infoList:",this.infoList)
+                this.infoList[i].emailConfig = deepCopyObject(this.emailForm.config);
+                this.infoList[i].duplicate = deepCopyObject(this.emailForm.duplicate);
 
                 //this.emailForm={};
                 this.globalEmailEditVisible = false;
@@ -344,6 +335,8 @@
                         errTips(msg);
                     }
                 })
+               // if (val.emailConfig.content != null)
+               //     this.emailForm.config.content = val.emailConfig.content;
 
             },
 

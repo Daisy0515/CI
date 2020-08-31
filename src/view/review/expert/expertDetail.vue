@@ -8,7 +8,7 @@
 		</el-breadcrumb>
 		</div>
 		<el-row :gutter="40">
-			<el-col :span="16">
+			<el-col :span="20">
 				<el-card class="left-card-menu">
 					<h1 style="text-align: center">专家信息</h1>
 					<hr style="width: 100%; color: #303133;">
@@ -16,7 +16,7 @@
 					<div class="detail">
 					<el-form :model="ruleForm" style="margin-top: 2%;" ref="ruleForm" class="demo-ruleForm">
 						<el-row :gutter="20">
-							<el-col :span="9">
+							<el-col :span="10">
 								<el-form-item label="姓名" :label-width="formLabelWidth" prop="name">
 									<el-input v-model="ruleForm.name" ></el-input>
 								</el-form-item>
@@ -28,7 +28,7 @@
 									</el-select>
 								</el-form-item>
 							</el-col>
-							<el-col :span="9">
+							<el-col :span="10">
 								<div style="text-align: center;">
 								<Avatar></Avatar>
 								</div>
@@ -36,12 +36,12 @@
 							</el-col>
 						</el-row>
 						<el-row :gutter="20">
-							<el-col :span="9">
+							<el-col :span="10">
 								<el-form-item label="邮箱" :label-width="formLabelWidth">
 									<el-input v-model="ruleForm.email" :disabled="true"></el-input>
 								</el-form-item>
 							</el-col>
-							<el-col :span="9">
+							<el-col :span="10">
 								<el-form-item label="手机" :label-width="formLabelWidth">
 									<el-input v-model="ruleForm.phone" :disabled="true"></el-input>
 								</el-form-item>
@@ -49,7 +49,7 @@
 
 						</el-row>
 						<el-row :gutter="20">
-							<el-col :span="9">
+							<el-col :span="10">
 								<el-form-item label="学历" :label-width="formLabelWidth">
 									<el-select v-model="ruleForm.education" placeholder="请选择学历" style="width: 100%;">
 										<el-option label="高中" value="1"></el-option>
@@ -62,7 +62,7 @@
 									</el-select>
 								</el-form-item>
 							</el-col>
-							<el-col :span="9">
+							<el-col :span="10">
 								<el-form-item label="职位" :label-width="formLabelWidth">
 									<el-input v-model="ruleForm.position" ></el-input>
 								</el-form-item>
@@ -70,12 +70,12 @@
 
 						</el-row>
 						<el-row :gutter="20">
-							<el-col :span="9">
+							<el-col :span="10">
 								<el-form-item label="职称" :label-width="formLabelWidth">
 									<el-input v-model="ruleForm.jobTitle" ></el-input>
 								</el-form-item>
 							</el-col>
-							<el-col :span="9">
+							<el-col :span="10">
 								<el-form-item label="个人主页" :label-width="formLabelWidth">
 									<el-input v-model="ruleForm.homepage" ></el-input>
 								</el-form-item>
@@ -84,25 +84,27 @@
 						</el-row>
 						<el-row :gutter="20">
 
-							<el-col :span="9">
+					
+							<el-col :span="10">
+
 								<el-form-item label="工作单位" :label-width="formLabelWidth">
 									<el-input v-model="ruleForm.workUnit" ></el-input>
 								</el-form-item>
 							</el-col>
-							<el-col :span="9">
+							<el-col :span="10">
 								<el-form-item label="部门" :label-width="formLabelWidth">
 									<el-input v-model="ruleForm.department" ></el-input>
 								</el-form-item>
 							</el-col>
 						</el-row>
 						<el-row :gutter="20">
-							<el-col :span="9">
+							<el-col :span="10">
 								<el-form-item label="国家" :label-width="formLabelWidth">
 									<!-- <el-input v-model="ruleForm.nation" ></el-input> -->
 									<foreign-area :selected="ruleForm.nation" selectBg="selectGray" groupBg="groupGray" @selectCountry="selectCountry"></foreign-area>
 								</el-form-item>
 							</el-col>
-							<el-col :span="9">
+							<el-col :span="10">
 								<el-form-item label="省市/自治区":label-width="formLabelWidth">
 									<el-cascader
 									  size="large"
@@ -117,7 +119,7 @@
 
 						</el-row>
 						<el-row :gutter="20">
-							<el-col :span="9">
+							<el-col :span="10">
 								<el-form-item label="通讯地址" :label-width="formLabelWidth">
 									<el-input v-model="ruleForm.contactAddress" ></el-input>
 								</el-form-item>
@@ -130,12 +132,14 @@
 						<el-row :gutter="20">
 
 							<el-form-item label="研究方向":label-width="formLabelWidth" prop="researchDirection">
-								<el-input v-model="researchName" style="width: 300px"></el-input>
+								<el-input v-model="researchName" style="width: 70%" readonly="true"></el-input>
 								<el-button  type="text" @click="keywordsVisible = true" class="add" ><i class="el-icon-plus"></i>添加</el-button>
 							</el-form-item>
 
-							<el-dialog title="请选择个人研究方向" :visible.sync="keywordsVisible" style="text-align: left;" width="40%">
-								<div style="margin-left: 60px;">
+				
+							<el-dialog title="请选择个人研究方向" :visible.sync="keywordsVisible" style="text-align: left;" width="50%">
+								<div style="margin: 0 auto">
+
 								<el-transfer
 
 								 v-model="value"
@@ -152,7 +156,7 @@
 						</el-row>
 						<el-row :gutter="20">
 							<el-form-item label="个人关键词" :label-width="formLabelWidth">
-								<el-input v-model="ruleForm.cruxList" ></el-input>
+								<el-input v-model="ruleForm.cruxList" style="width: 70%" readonly="true"></el-input>
 								<el-popover placement="right" v-model="visible" width="200">
 									<el-input placeholder="关键词" v-model="interest"></el-input>
 									<div style="text-align: right; margin-top: 10px">
@@ -179,29 +183,7 @@
 					</div>
 				</el-card>
 			</el-col>
-			<el-col :span="6">
-				<el-card class="right-card-menu">
-					<el-row style="margin-bottom: 20px;">
-						<h1 style="text-align: center">密码管理</h1>
 
-					</el-row>
-					<el-row style="margin-bottom: 25px;text-align: center">
-						<el-card>
-						<router-link to>
-							<span>修改密码</span>
-
-						</router-link>
-						</el-card>
-					</el-row>
-					<el-row style="margin-bottom: 15px;text-align: center">
-						<el-card>
-							<router-link to>
-							<span>忘记密码</span>
-							</router-link>
-						</el-card>
-					</el-row>
-				</el-card>
-			</el-col>
 		</el-row>
 
 
@@ -388,9 +370,14 @@
 .detail{
 	.el-input {
 		//display: inline-block;
-		width: 200px;
 
+		width: 240px;
+		
 	}
+	.el-select{
+		width: 240px;
+	}
+	
 
 }
 .container{
@@ -398,6 +385,8 @@
 
 		cursor: pointer;
 		color: #8c8c8c;
+
+		margin-left: 10px;
 
 		&:hover {
 			color: #3e76b8;
