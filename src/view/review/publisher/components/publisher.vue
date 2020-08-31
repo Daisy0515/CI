@@ -136,7 +136,7 @@
         <review-evaluation :form="formEvaluationDetail" :formLabelWidth="formLabelWidth"
                            :dialogEvaluationVisible="dialogEvaluationDetailVisible"
                            :loading="evaluateDetailLoading"
-                           @closeEvaluationDialog="closeEvaluationDeatilDialog"></review-evaluation>
+                           @closeEvaluationDialog="closeEvaluationDetailDialog"></review-evaluation>
         <el-dialog title="打回评审" :visible.sync="dialogRollbackVisible"  style="text-align:left; font-weight: bolder;">
             <el-form :model="form">
                 <el-row>
@@ -166,8 +166,9 @@
                 <el-button type="primary" @click="submitRollback" v-prevent-click>确 定</el-button>
             </div>
         </el-dialog>
-        <el-dialog title="tips:提交评价，代表本次评审结束，感谢您的评审" :visible.sync="dialogEvaluateVisible"  style="width:100%;text-align:left; font-weight: bolder;" center>
-            <el-form :model="form2">
+        <el-dialog title="tips:提交评价，代表本次评审结束，感谢您的评审" :visible.sync="dialogEvaluateVisible"
+                   style="width:100%;text-align:left; font-weight: bolder;" center :before-close="closeReviewDialog">
+            <el-form :model="reviewForm" :rules="rulesReviewForm" ref="reviewForm">
                 <el-row :gutter="20">
                     <el-col :span="10">
                         <el-form-item label="评审标题" :label-width="formLabelWidth">
@@ -175,22 +176,24 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="10">
-                        <el-form-item label="是否通过" :label-width="formLabelWidth">
-                            <el-radio v-model="form2.result" label="true">通过</el-radio>
-                            <el-radio v-model="form2.result" label="false">未通过</el-radio>
+                        <el-form-item label="是否通过" :label-width="formLabelWidth" prop="result">
+                            <el-radio-group v-model="reviewForm.result">
+                                <el-radio  :label="true">通过</el-radio>
+                                <el-radio  :label="false">未通过</el-radio>
+                            </el-radio-group>
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="10">
-                        <el-form-item label="评审得分" :label-width="formLabelWidth">
-                            <el-input v-model="form2.score" auto-complete="off"/>
+                        <el-form-item label="评审得分" :label-width="formLabelWidth" prop="score">
+                            <el-input v-model.number="reviewForm.score" auto-complete="off"/>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="评价内容" :label-width="formLabelWidth">
+                        <el-form-item label="评价内容" :label-width="formLabelWidth" prop="content">
                             <el-input
-                                    v-model="form2.content"
+                                    v-model="reviewForm.content"
                                     type="textarea"
                                     :rows="3"
                                     placeholder="请输入内容"
@@ -201,7 +204,7 @@
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogEvaluateVisible = false" style="margin-right: 30px;">取 消</el-button>
-                <el-button type="primary" @click="submitEvaluate" v-prevent-click>提交</el-button>
+                <el-button type="primary" @click="submitEvaluate('reviewForm')" v-prevent-click>提交</el-button>
             </div>
         </el-dialog>
 
@@ -258,12 +261,11 @@
                 evaluateTitle: "",
                 formLabelWidth: '100px',
                 formReviewDetail: {},//用于存储评审打详情内容
-                form2: { //用于保存评价时填写的内容
-                    content: "",
-                    result: null,
-                    reviewInfoId: null,
-                    score: null,
-
+                reviewForm:this.getInitReviewForm() ,
+                rulesReviewForm:{ //填写评价的表单验证
+                    result:[{required: true, message: '请选择是否通过', trigger: 'change' }],
+                    score: [{type: 'number',required: true,  message: '请输入分数', trigger: 'blur' }],
+                    content:[{required: true, message: '请输入评价内容', trigger: 'blur' }],
                 },
                 form: {//表单中的信息，保存打回评审时填写的信息
                     details: "",
@@ -317,14 +319,18 @@
         },
         computed: {},
         methods: {
-            projectChange() {//当项目发生变化时，旁边的评审流程也要及时变化
+
+            /**搜索栏：当项目发生变化时，旁边的评审流程也要及时变化*/
+            projectChange() {
                 this.reviewProcessList = [];
                 this.searchData.type = null;
             },
+            /**搜索栏：搜索*/
             searchList() {//点击搜索按钮触发的事件
                 this.getView(this.searchData);
             },
-            getUserProjectList() { //获取当前用户参与的项目
+            /**搜索栏：获取当前用户参与的项目*/
+            getUserProjectList() {
                 httpGet("/v1/authorization/mission/promulgator/get").then(results => {
                     const {httpCode, msg, data} = results.data;
                     if (httpCode == 200) {
@@ -334,10 +340,10 @@
                     }
                 });
             },
+            /**搜索栏：获取用户当前项目的所有评审流程*/
             getReviewProcessList(projectId) {
                 this.processLoading = true;
                 console.log("projectId:", projectId);
-                /***获取用户当前项目的所有评审流程***/
                 httpGet("/v1/authorization/review/process/list", {id: projectId}).then(results => {
                     const {httpCode, msg, data} = results.data;
                     console.log("data:", data);
@@ -355,6 +361,8 @@
                     this.processLoading = false;
                 });
             },
+
+            /**所有页面：获取所有整个系统所有的评审流程*/
             getAllReviewProcessList() {
                 httpGet("/v1/public/bid/process/list").then(results => {
                     const {httpCode, msg, data} = results.data;
@@ -367,6 +375,7 @@
                     }
                 });
             },
+            /**所有页面：获取评审列表*/
             getView(val = this.pageData) {
                 this.loading = true;
                 httpGet("/v1/authorization/review/review/search", val).then(results => {
@@ -393,15 +402,15 @@
                     this.loading = false;
                 });
             },
-
+            /**所有页面：处理页面变化*/
             handleCurrentChange(val) {
                 this.pageData.pageNo = val;
                 this.getView();
             },
+            /**所有页面：查看详情*/
             handleClickDetail(val) {//点击查看详情
                 this.dialogFormVisible = true;
                 this.formReviewDetailLoading = true;
-                //get /v1/authorization/review/review/get
                 httpGet("/v1/authorization/review/review/get", {id: val}).then(results => {
                     const {httpCode, msg, data} = results.data;
                     if (httpCode == 200) {
@@ -420,10 +429,48 @@
                     this.formReviewDetailLoading = false;
                 });
             },
+
+            /**未接受：打回*/
             handleRollBack(val) {//点击查看打回中
                 this.dialogRollbackVisible = true;
                 this.form.reviewInfoId = val;
             },
+            /**未接受：提交打回内容*/
+            submitRollback() {//提交打回信息
+                httpPost('/v1/authorization/review/opinion/insert', this.form).then(results => {
+                    const {msg, httpCode} = results.data;
+                    if (httpCode === 200) {
+                        successTips("已打回评审！");
+                        this.form.details = "";
+                        this.form.reviewInfoId = "";
+                        this.form.deadline = "";
+                        this.getView();
+                        this.dialogRollbackVisible = false;
+                    } else {
+                        errTips(msg);
+                    }
+                })
+            },
+            /**未接受/打回中：接受*/
+            handleAccept(val) {
+                MessageBox.confirm("接受任务将进入评审中状态，是否接受？", "提示", {
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消",
+                    type: "warning"
+                }).then(() => {
+                    httpPut('/v1/authorization/review/status/update', {id: val}).then(results => {
+                        const { msg, httpCode} = results.data;
+                        if (httpCode === 200) {
+                            successTips("已接受评审！");
+                            this.getView();
+                        } else {
+                            errTips(msg);
+                        }
+                    });
+                }) .catch(() => {});
+
+            },
+            /**未接受：意见回复 --- 评审中：意见*/
             handleClickOpinion(val) { //点击查看意见详情
                 this.dialogOpinionVisible = true;
                 this.formOpinionLoading = true;
@@ -450,34 +497,57 @@
                     this.formOpinionLoading = false;
                 });
             },
-            handleClickEvaluate(val, title) {//点击进行评价
-                this.dialogEvaluateVisible = true;
-                //post /v1/authorization/review/evaluate/insert
-                this.form2.reviewInfoId = val;
-                this.evaluateTitle = title;
+
+            /**评审中：用于保存评价时填写的内容*/
+            getInitReviewForm(){
+                return {
+                    content: null,
+                    result: null,
+                    reviewInfoId: null,
+                    score: null,
+
+                };
             },
-            handleAccept(val) {
-                MessageBox.confirm("接受任务将进入评审中状态，是否接受？", "提示", {
-                    confirmButtonText: "确定",
-                    cancelButtonText: "取消",
-                    type: "warning"
-                }).then(() => {
-                        httpPut('/v1/authorization/review/status/update', {id: val}).then(results => {
-                            const {data, msg, httpCode} = results.data;
+            /**评审中：评价*/
+            handleClickEvaluate(val, title) {
+                this.dialogEvaluateVisible = true;
+                this.reviewForm.reviewInfoId = val;
+                this.evaluateTitle = title;
+                this.reviewForm = this.getInitReviewForm(); //清空之前填过的评价内容
+                console.log("here");
+                console.log("this.reviewForm",this.reviewForm);
+            },
+            /**评审中：关闭评价框*/
+            closeReviewDialog(){
+
+            },
+            /**评审中页面：提交评价*/
+            submitEvaluate(formName) {//提交评价
+                this.$refs[formName].validate((valid)=>{
+                    if (valid) {
+                        httpPost('/v1/authorization/review/evaluate/insert', this.reviewForm).then(results => {
+                            const {msg, httpCode} = results.data;
                             if (httpCode === 200) {
-                                successTips("已接受评审！");
+                                successTips("评价结束");
                                 this.getView();
+                                this.evaluateTitle = null;
+                                this.reviewForm = this.getInitReviewForm();
+                                this.$router.push('/publisherComplete')
                             } else {
                                 errTips(msg);
                             }
-                        });
-                    }) .catch(() => {});
-
+                            this.dialogEvaluateVisible = false;
+                        })
+                    } else {  //表格验证不通过
+                        return false;
+                    }
+                });
             },
+
+            /**已完成：查看评价*/
             handleEvaluateDetail(val) {//查看评价内容
                 this.dialogEvaluationDetailVisible = true;
                 this.evaluateDetailLoading = true;
-                //get /v1/authorization/review/evaluate/get
                 httpGet("/v1/authorization/review/evaluate/get", {id: val}).then(results => {
                     const {httpCode, msg, data} = results.data;
                     if (httpCode == 200) {
@@ -495,54 +565,17 @@
                     this.evaluateDetailLoading = false;
                 });
             },
+
             closeDialog() {
                 this.dialogFormVisible = false;
             },
             closeOpinionDialog() {
                 this.dialogOpinionVisible = false;
             },
-            closeEvaluateDialog() {
-                this.dialogEvaluateVisible = false;
-            },
-            closeEvaluationDeatilDialog() {
+            closeEvaluationDetailDialog() {
                 this.dialogEvaluationDetailVisible = false;
             },
-            submitRollback() {//提交打回信息
-                httpPost('/v1/authorization/review/opinion/insert', this.form).then(results => {
-                    const {data, msg, httpCode} = results.data;
-                    if (httpCode === 200) {
-                        successTips("已打回评审！");
-                        this.form.details = "";
-                        this.form.reviewInfoId = "";
-                        this.form.deadline = "";
-                        this.getView();
-                        this.dialogRollbackVisible = false;
-                    } else {
-                        errTips(msg);
-                    }
-                })
-            },
-            submitEvaluate() {//提交评价
-                httpPost('/v1/authorization/review/evaluate/insert', this.form2).then(results => {
-                    const {data, msg, httpCode} = results.data;
-                    if (httpCode === 200) {
-                        successTips("评价结束");
-                        this.getView();
-                        this.evaluateTitle = "";
-                        this.form2.content = "";
-                        //content:"",
-                        this.form2.result = "";
-                        this.form2.reviewInfoId = "";
-                        this.form2.score = "";
-                        this.$router.push('/publisherComplete')
-                    } else {
-                        errTips(msg);
-                    }
-                })
 
-                this.dialogEvaluateVisible = false;
-
-            },
             rowClass() {
                 return "background:#F4F6F9;";
             }

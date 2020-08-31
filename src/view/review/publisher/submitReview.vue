@@ -167,18 +167,13 @@
 			this.getType();
 			this.getProjectList();
 			this.getAdmin();
-			//	this.getView();
+			this.getView();
 		},
 		methods: {
 			...mapMutations(["setCache"]),
 			getType() {
-				//get /v1/public/bid/process/list
 				httpGet('/v1/public/bid/process/list').then(results => {
-					const {
-						msg,
-						data,
-						httpCode
-					} = results.data;
+					const { msg, data, httpCode } = results.data;
 					if (httpCode === 200) {
 						this.typeList = data.reviewProcessList;
 						//console.log(this.typeList);
@@ -189,13 +184,8 @@
 				});
 			},
 			getAdmin(val = this.pageAdmin){
-				//get /v1/authorization/review/admin/user
 				httpGet("/v1/authorization/review/admin/user", val).then(results => {
-					const {
-						httpCode,
-						msg,
-						data
-					} = results.data;
+					const { httpCode, msg, data } = results.data;
 					if (httpCode === 200) {
 						this.totalPageAdmin = parseInt(data.totalPage + "0");
 						this.adminList = data.adminList;
@@ -218,14 +208,8 @@
 			handleClickDetail(val) {
 				this.dialogFormVisible = true;
 				this.form1Loading = true;
-				httpGet("/v1/authorization/review/thirdparty/get", {
-					id: val
-				}).then(results => {
-					const {
-						httpCode,
-						msg,
-						data
-					} = results.data;
+				httpGet("/v1/authorization/review/thirdparty/get", { id: val }).then(results => {
+					const { httpCode, msg, data } = results.data;
 					if (httpCode == 200) {
 						this.form1 = data;
 						this.form1.deadline = specificDate(this.form1.deadline);
@@ -243,7 +227,6 @@
 					}
 					this.form1Loading = false;
 				});
-				//console.log(this.form1);
 			},
 			closeDialog() {
 				this.dialogFormVisible = false;
@@ -251,11 +234,7 @@
 
 			getProjectList() {
 				httpGet('/v1/authorization/mission/promulgator/get').then(results => {
-					const {
-						msg,
-						data,
-						httpCode
-					} = results.data;
+					const { msg, data, httpCode } = results.data;
 					if (httpCode === 200) {
 						this.projectList = data.projectList;
 					} else {
@@ -264,14 +243,8 @@
 				});
 			},
 			changeProject: function(value) {
-				httpGet('/v1/authorization/review/process/list', {
-					id: value
-				}).then(results => {
-					const {
-						msg,
-						data,
-						httpCode
-					} = results.data;
+				httpGet('/v1/authorization/review/process/list', { id: value }).then(results => {
+					const { msg, data, httpCode } = results.data;
 					if (httpCode === 200) {
 						this.processList = data.processList;
 					} else {
@@ -285,11 +258,7 @@
 			getView(val = this.pageData) {
 				this.loading = true;
 				httpGet("/v1/authorization/review/thirdparty/search", val).then(results => {
-					const {
-						httpCode,
-						msg,
-						data
-					} = results.data;
+					const { httpCode, msg, data } = results.data;
 					if (httpCode === 200) {
 						this.totalPage = parseInt(data.totalPage + "0");
 						let {
@@ -324,10 +293,7 @@
 					errTips("至少选择一个评审");
 				}
 				else {
-					httpPost(
-						"/v1/authorization/review/admin/insert",
-						this.adminArr
-					).then(results => {
+					httpPost( "/v1/authorization/review/admin/insert", this.adminArr ).then(results => {
 						const {httpCode,msg} = results.data;
 						if (httpCode === 200) {
 							successTips("选择评审管理员成功");
@@ -346,20 +312,12 @@
 			choice() {
 				this.centerDialogVisible = true;
 				this.loading = true;
-				httpPut(
-					"/v1/authorization/bid/teamstatus/update",
-					this.adminArr
-				).then(results => {
-					const {
-						httpCode,
-						msg
-					} = results.data;
+				httpPut( "/v1/authorization/bid/teamstatus/update", this.adminArr ).then(results => {
+					const { httpCode, msg} = results.data;
 					if (httpCode === 200) {
 						this.centerDialogVisible = false;
 						this.loading = false;
 						successTips("选择团队成功");
-						this.setCache("myDemand");
-						// this.setCache("myDemand");
 					} else if (msg === "至少选择一个项目组") {
 						errTips("至少选择一个项目组");
 					} else if (msg === "执行中项目数量超限") {
@@ -377,13 +335,7 @@
 				this.adminArr.idList = newVal;
 				console.log(this.adminArr);
 			},
-			// handleAdminChange(val) {
-			// 	const newVal = val.map(item => {
-			// 		return item.id;
-			// 	});
-			// 	this.adminArr.idList = newVal;
-			// 	console.log(this.adminArr);
-			// },
+
 			rowClass() {
 				return "background:#F4F6F9;";
 			},
