@@ -55,10 +55,8 @@
                 </el-card>
             </el-col>
         </el-row>
-        <submit-review :form="form" :formLabelWidth="formLabelWidth" :title="submitTitle"
-                       :dialogSubmitVisible="dialogSubmitVisible"
-                       :projectList="projectList"
-                       :isShowSubmitHistory="isShowSubmitHistory"
+        <submit-review :form="form"  :title="submitTitle" :dialogSubmitVisible="dialogSubmitVisible"
+                       :projectList="projectList":isShowSubmitHistory="isShowSubmitHistory"
                        @closeSubmitDialog="closeSubmitDialog">
         </submit-review>
 
@@ -81,21 +79,12 @@
                 submitTitle: "发起评审",
                 dialogSubmitVisible: false, // 开启发起评审视窗
                 isShowSubmitHistory: false, // 是否显示附件的提交历史，在发起评审里面不用显示，设置为false
-                aboutTimeoutCount: 0, // 即将超时
-                acceptCount: 0, // 未接受
-                alreadyTimeoutCount: 0, // 已经超时
-                reviewCount: 0, // 评审中
-                form: {
-                    content: "",
-                    deadline: "",
-                    projectId: null,
-                    purpose: "",
-                    resourceList: [],
-                    title: "",
-                    type: null,
-                },
-                projectList: [],//当前用户所竞标的项目列表，发起评审时，用于项目选择
-                formLabelWidth: '100px'
+                aboutTimeoutCount: 0,       // 即将超时
+                acceptCount: 0,             // 未接受
+                alreadyTimeoutCount: 0,     // 已经超时
+                reviewCount: 0,             // 评审中
+                form: this.getInitForm(),   //发起评审用到的表单
+                projectList: [],            //当前用户所竞标的项目列表，发起评审时，用于项目选择
             }
         },
         computed: {},
@@ -134,9 +123,21 @@
             getTips(){
                 message("暂未开放，敬请期待！");
             },
+            getInitForm(){
+                return {
+                    content: "",
+                    deadline: "",
+                    projectId: null,
+                    purpose: "",
+                    resourceList: [],
+                    title: "",
+                    type: null,
+                };
+            },
             closeSubmitDialog() {
                 this.dialogSubmitVisible = false;
-                // this.$router.push('/managerNotAccept');
+                this.form = this.getInitForm();//初始化form
+
             },
         }
     }

@@ -52,10 +52,10 @@
                 <el-form-item label="管理员决定" style="margin:20px 0 0 35%" prop="opinion">
                     <el-col :span="6">
                         <el-select v-model="localForm.opinion" placeholder="请选择">
-                            <el-option label="通过" value="1"></el-option>
-                            <el-option label="修改后通过" value="2"></el-option>
-                            <el-option label="不通过" value="3"></el-option>
-                            <el-option label="没有意见" value="4"></el-option>
+                            <el-option label="通过" :value="1"></el-option>
+                            <el-option label="修改后通过" :value="2"></el-option>
+                            <el-option label="不通过" :value="3"></el-option>
+                            <el-option label="没有意见" :value="4"></el-option>
                         </el-select>
                     </el-col>
                 </el-form-item>
@@ -120,11 +120,11 @@
             <el-form :model="localForm"  v-if="intIdentification===3">
                 <el-form-item label="管理员决定" style="margin:20px 0 0 35%" prop="opinion">
                     <el-col :span="6">
-                        <el-select v-model="localForm.opinion" placeholder="请选择" disabled>
-                            <el-option label="通过" value="1"></el-option>
-                            <el-option label="修改后通过" value="2"></el-option>
-                            <el-option label="不通过" value="3"></el-option>
-                            <el-option label="没有意见" value="4"></el-option>
+                        <el-select v-model="localForm.opinion" placeholder="未选择" disabled>
+                            <el-option label="通过" :value="1"></el-option>
+                            <el-option label="修改后通过" :value="2"></el-option>
+                            <el-option label="不通过" :value="3"></el-option>
+                            <el-option label="没有意见" :value="4"></el-option>
                         </el-select>
                     </el-col>
                 </el-form-item>
@@ -275,10 +275,10 @@
                             item.gmtCreate = specificDate(item.gmtCreate);
                         }
                         this.userList = data.userList;
-                        this.localForm.id = data.id;//管理员任务编号ID ,
-                        this.templateId = data.templateId;//中止任务中需要用到
-                        this.localForm.opinion = data.adminOpinion + '';//查看意见时用到，管理员意见 1接受2需要修改3拒绝4没有意见 ,
-                                                                        // 这里的opinion需要是字符串，否则下拉框那里显示不正常
+                        this.localForm.id = data.id;                    //管理员任务编号ID ,
+                        this.templateId = data.templateId;              //中止任务中需要用到
+                        this.localForm.opinion = data.adminOpinion;     //查看意见时用到，管理员意见 1接受2需要修改3拒绝4没有意见 ,
+                        this.localForm.details = data.adminDetails;     //管理员的评审详情意见
                     } else if (httpCode !== 401){
                         errTips(msg);
                     }

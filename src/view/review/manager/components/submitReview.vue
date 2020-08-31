@@ -112,6 +112,7 @@
     import {httpGet, httpPost, httpPut} from "@/utils/http.js";
     import {errTips, successTips} from "@/utils/tips.js";
     import sourceUpload from '@/common/upload/resourceUpload';
+    import { MessageBox } from "element-ui";
 
     export default {
         name:"submitReview",
@@ -122,7 +123,7 @@
                 default:"编辑评审任务",
             },
             form:Object,
-            formLabelWidth:String,
+
             dialogSubmitVisible:Boolean,
             isShowSubmitHistory:{
                 type:Boolean,
@@ -133,7 +134,7 @@
             reviewProcessList:Array,
         },
         data() {
-            var validateType = (rule, value, callback) => {
+            let validateType = (rule, value, callback) => {
                 if (value === null) {
                     callback(new Error('请选择评审类型！'));
                 } else if (value === '-1') {
@@ -142,7 +143,7 @@
                     callback();
                 }
             };
-            var validateDeadline = (rule, value, callback) => {
+            let validateDeadline = (rule, value, callback) => {
                 if (value == null) {
                     callback(new Error('请选择截止日期！'));
                 } else if (Date.parse(value) <= new Date().getTime() - 8.64e6) {
@@ -151,7 +152,7 @@
                     callback();
                 }
             };
-            var validateWarn = (rule, value, callback) => {
+            let validateWarn = (rule, value, callback) => {
                 if (value == null) {
                     callback(new Error('请输入截止前提醒天数！'));
                 }else if(typeof(value)!=="number"||Math.floor(value)!==value){
@@ -177,6 +178,7 @@
                 buttonLoading:false,//提交按钮对应的加载框
                 uploadIndex: false, //用于开启上传文件 true时开启上传，false停止
                 isDraft: false,// 是否按照缓存提交
+                formLabelWidth:"100px",
                 localForm:this.form,//localForm与为父组件传递的form内容保持一致
                 rules: {
                     content: [
@@ -207,7 +209,7 @@
         },
         computed: {
             isUpdateReview: function () { //只有当页面是发起评审时才有缓存按钮，当页面是重新提交时或者修改(更新update)提交时，没有缓存按钮，只有取消按钮
-                if (this.title != "发起评审") {
+                if (this.title !== "发起评审") {
                     return true;
                 } else {
                     return false;
@@ -360,7 +362,13 @@
                 });
             },
             changeSubmitVisible() {//通过点击弹框右上角的 X的方式 关掉页面，需要传递消息给父组件，用过父组件关掉弹框
-                this.$emit('closeSubmitDialog');
+                MessageBox.confirm("直接关闭将不保存已填写的内容, 是否继续?", "提示", {
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消",
+                    type: "warning"
+                }).then(() => {
+                    this.$emit('closeSubmitDialog');
+                });
             },
             storeReviewDraft() {//暂存评审
                 this.isDraft = true;

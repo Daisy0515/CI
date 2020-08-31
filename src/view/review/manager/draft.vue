@@ -237,10 +237,10 @@
                     ).then(results => {
                         const {msg, httpCode} = results.data;
                         if (httpCode === 200) {
-                            this.getView();
+                            // this.getView();
                         } else if (httpCode === 400) {
                             errTips("页面丟失");
-                        } else if (httpCode != 500 && httpCode != 401) {
+                        } else if (httpCode !== 500 && httpCode !== 401) {
                             errTips(msg);
                         }
                     });
