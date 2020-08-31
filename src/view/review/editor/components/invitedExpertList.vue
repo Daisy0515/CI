@@ -87,6 +87,7 @@
 <script>
     import { httpGet, httpPost} from "@/utils/http.js";
     import { errTips, successTips } from "@/utils/tips.js";
+    import deepCopyObject from "@/utils/deepCopyObject";
     export default {
         name: "invitedExpertList",
         props:{
@@ -144,8 +145,8 @@
                 let i = this.emailForm.index;
                 console.log("emailConfirm-emailForm:",this.emailForm);
                 console.log("infoList:",this.infoList)
-                this.infoList[i].emailConfig = this.emailForm.config;
-                this.infoList[i].duplicate = this.emailForm.duplicate;
+                this.infoList[i].emailConfig = deepCopyObject(this.emailForm.config);
+                this.infoList[i].duplicate = deepCopyObject(this.emailForm.duplicate);
                 //this.emailForm={};
                 this.emailEditVisible = false;
             },
@@ -244,6 +245,8 @@
                         errTips(msg);
                     }
                 })
+               // if (val.emailConfig.content != null)
+               //     this.emailForm.config.content = val.emailConfig.content;
 
             },
 
