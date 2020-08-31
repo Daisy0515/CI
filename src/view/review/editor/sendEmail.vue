@@ -23,7 +23,8 @@
 				<el-option label="评审专家" value="2"></el-option>
 				<el-option label="评审发布者" value="3"></el-option>
 			</el-select>
-			<el-select v-model="searchData.status" clearable placeholder="评审专家状态" style="margin-left: 20px;margin-right: 20px;">
+
+			<el-select v-model="searchData.status" clearable placeholder="评审专家状态" style="margin-left: 20px" v-if="searchData.receiver==='2'">
 				<el-option label="全部状态" value="1"></el-option>
 				<el-option label="已完成" value="2"></el-option>
 				<el-option label="已撤回评审" value="3"></el-option>
@@ -34,7 +35,8 @@
 				<el-option label="已拒绝" value="8"></el-option>
 				<el-option label="已中止" value="9"></el-option>
 			</el-select>
-			<el-button type="primary" @click="editEmail">定制邮件</el-button>
+
+			<el-button type="primary" @click="editEmail" style="margin-left: 20px">定制邮件</el-button>
 		</div>
 		<div v-if="containerShow === true">
 			<h2 style="text-align: center;margin-top:20px">

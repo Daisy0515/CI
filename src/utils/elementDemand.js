@@ -39,11 +39,12 @@ import {
 	MenuItemGroup,
 	Transfer,
 	Upload,
-	
+	Tag,
 
 } from 'element-ui';
 const getElement = {
     install(Vue) {
+        Vue.use(Tag);
 		Vue.use(Upload);
 		Vue.use(Transfer);
         Vue.use(Row);

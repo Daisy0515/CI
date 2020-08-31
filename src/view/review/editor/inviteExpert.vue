@@ -10,12 +10,7 @@
 				<span style="font-weight: 400;">{{title}}</span>
 			</h2>
 
-			<h2 style="text-align: left;font-weight: bolder;margin-top: 2%;">评审专家搜索</h2>
-			<div class="header_top">
-				<el-button type="primary" @click="searchExpert()">专家搜索</el-button>
-				<expert-search :dialogExpertVisible="dialogExpertVisible" :expertloading="loading" :reviewTitle="title" :params="expertSearchParam" @closeDialog="closeExpertSearchDialog"></expert-search>
 
-			</div>
 			<h2 style="text-align: left;font-weight: bolder;margin-top: 2%;">评审设置</h2>
 			<div class="setting">
 				<el-form :label-position="'right'" label-width="350px" :model="ruleForm">
@@ -70,6 +65,12 @@
 				<div style="text-align: center;">
 					<el-button type="primary" @click="submitForm()">提交</el-button>
 				</div>
+			</div>
+			<h2 style="text-align: left;font-weight: bolder;margin-top: 2%;">评审专家搜索</h2>
+			<div class="header_top">
+				<el-button type="primary" @click="searchExpert()">专家搜索</el-button>
+				<expert-search :dialogExpertVisible="dialogExpertVisible" :expertloading="loading" :reviewTitle="title" :params="expertSearchParam" @closeDialog="closeExpertSearchDialog"></expert-search>
+
 			</div>
 			<h2 style="text-align: left;font-weight: bolder;margin-top: 2%;">已邀请专家列表</h2>
 			<div>
