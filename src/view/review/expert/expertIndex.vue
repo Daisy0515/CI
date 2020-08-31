@@ -24,7 +24,7 @@
 						</el-col>
 						<el-col :span="6">
 							<el-card>
-								<router-link to="/expertTodo">
+								<router-link to="/expertAboutTimeOut">
 									<h1>{{ aboutTimeoutCount }}</h1>
 									<el-button type="text">即将超时</el-button>
 								</router-link>
@@ -32,8 +32,10 @@
 						</el-col>
 						<el-col :span="6">
 							<el-card>
-								<h1>{{ alreadyTimeoutCount }}</h1>
-								<el-button type="text">已经超时</el-button>
+								<router-link to="/expertAlreadyTimeOut">
+									<h1>{{ alreadyTimeoutCount }}</h1>
+									<el-button type="text">已经超时</el-button>
+								</router-link>
 							</el-card>
 						</el-col>
 					</el-row>

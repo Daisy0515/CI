@@ -1,6 +1,7 @@
 <!--功能：项目经理，发布者查看评审专家的评价
-    调用：1.projectDeliver(我的投标/评审任务中的交付)
-
+    调用页面：
+            projectDeliver(我的投标/评审任务中的交付)
+            viewExpertReviewList(项目发布者查看第三方评审意见时会用到)
 -->
 <template>
     <div>
@@ -42,7 +43,7 @@
     import deepCopyObject from "@/utils/deepCopyObject";//深拷贝对象
 
     export default {
-        name:"readReviewTemplateForManger",
+        name:"readReviewResultForManger",
         components: {
             formCreate: formCreate.$form(),
         },
@@ -114,7 +115,7 @@
                         },
                     });
                     /*存在分数相关的设置且该分数选项允许提交人看见**/
-                    if (item.isScore === true&&item.isScoreSubmitVisible === true) {
+                    if (item.isScore === true) {//&&item.isScoreSubmitVisible === true
                         /**生成得分范围**/
                         rules.push({
                             type: "h3",

@@ -16,11 +16,17 @@
                 </template>
             </el-table-column>
         </el-table>
-        <el-dialog title="查看评价" :visible.sync="readReviewDialogVisible" width="80%"
+        <el-dialog title="查看评价" :visible.sync="readReviewDialogVisible" width="80%" v-if="usedBy==='viewReview'"
+                   style="text-align:left; font-weight: bolder;" append-to-body>
+            <read-review-result-for-manager :templateConfigList="templateConfigListForRead" :totalScore="totalScore" :result="result" >
+            </read-review-result-for-manager><!--生成评审表单的组件-->
+        </el-dialog>
+        <el-dialog title="查看评价" :visible.sync="readReviewDialogVisible" width="80%" v-else
                    style="text-align:left; font-weight: bolder;" append-to-body>
             <read-review-result :templateConfigList="templateConfigListForRead" :totalScore="totalScore" :result="result" >
             </read-review-result><!--生成评审表单的组件-->
         </el-dialog>
+
     </div>
 </template>
 
@@ -28,7 +34,7 @@
     import { httpGet, } from "@/utils/http.js";
     import { message, successTips, errTips } from "@/utils/tips.js";
     import readReviewResult from '@/view/review/components/readReviewResult';
-
+    import readReviewResultForManager from '@/view/desk/myBid/readReviewResultForManger';
     export default {
         name: "viewExpertReviewList",
         props: {
@@ -38,17 +44,22 @@
             userListLoading:{
                 type:Boolean,
                 default:false,
+            },
+            usedBy:{//当前组件的调用页面
+                type:String,
+                default:null
             }
         },
         components: {
-            readReviewResult
+            readReviewResult,
+            readReviewResultForManager
         },
         data() {
             return {
                 readReviewDialogVisible: false,//控制评审专家的评价框
                 templateConfigListForRead:[],  //评审模板配置列表
                 totalScore:null,               //模板总分
-                result:null,                     //专家评审结果
+                result:{},                     //专家评审结果
             }
         },
         methods:{
@@ -65,7 +76,9 @@
                         this.templateConfigListForRead = data.configList ;
                         data.result.content = JSON.parse(data.result.content);//将用户评价的JSON字符串转换为 JavaScript 对象
                         this.result = data.result;
+                        this.totalScore = data.totalScore;
                         this.templateName = data.templateName;
+                        console.log("result",this.result);
                     } else {
                         errTips(msg);
                     }

@@ -74,7 +74,7 @@
                 :formItemVisible="formItemVisible" :readOnly="readOnly" :newTemplate="newTemplate"
                 @closeReviewItemForm="closeReviewItemForm" @getReviewTemplateDetail="getReviewTemplateDetail">
         </review-item-template>
-        <review-template :templateConfigList="templateConfigList" :totalScore="totalScore"></review-template><!--生成评审表单的组件-->
+        <review-template :templateConfigList="templateConfigList" :totalScore="totalScore" :showSubmit="false"></review-template><!--生成评审表单的组件-->
     </div>
 </template>
 

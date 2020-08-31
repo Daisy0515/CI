@@ -3,9 +3,7 @@
 		<div style="padding-left: 10px;">
 			<el-breadcrumb separator-class="el-icon-arrow-right" style="font-size: 130%;">
 				<el-breadcrumb-item :to="{ path: '/publisherIndex' }">首页</el-breadcrumb-item>
-
 				<el-breadcrumb-item>发起第三方评审</el-breadcrumb-item>
-
 			</el-breadcrumb>
 		</div>
 
@@ -16,8 +14,6 @@
 			<el-select v-model="searchData.type" clearable placeholder="请选择评审类型">
 				<el-option v-for="item in processList" :key="item.id" :label="item.processName" :value="item.id"></el-option>
 			</el-select>
-			<!-- <el-input v-model="searchData.projectId" placeholder="项目名称"></el-input> -->
-			<!-- 	<el-input v-model="searchData.type" placeholder="评审类型"></el-input> -->
 			<el-input v-model="searchData.title" placeholder="评审标题"></el-input>
 			<el-input v-model="searchData.userName" placeholder="提交人"></el-input>
 			<el-date-picker v-model="searchData.gmtCreateStart" type="date" style="width: 140px;" placeholder="提交时间"
@@ -25,58 +21,36 @@
 			<span style="margin-right: 10px;margin-left: 10px;">到</span>
 			<el-date-picker style="width: 140px;" v-model="searchData.gmtCreateEnd" :picker-options="endDatePicker" type="date"
 			 placeholder="提交时间" value-format="yyyy-MM-dd"></el-date-picker>
-
-
-			<!-- <el-select v-model="selestate" clearable placeholder="请选择状态">
-		    <el-option label="中标" value="中标"></el-option>
-		    <el-option label="投标中" value="投标中"></el-option>
-		    <el-option label="失败" value="失败"></el-option>
-		    <el-option label="结束" value="结束"></el-option>
-		  </el-select> -->
-
 			<el-button type="primary" @click="searchList()">搜索</el-button>
-
 		</div>
-
-
 		<el-table :data="tableData" style="width: 100%" :header-cell-style="rowClass" v-loading="loading" @selection-change="handleSelectionChange">
 			<el-table-column type="selection" align="center"></el-table-column>
 			<el-table-column prop="projectName" label="项目名称" align="center"></el-table-column>
 			<el-table-column prop="title" label="评审任务标题" align="center"></el-table-column>
-			<el-table-column prop="typeName" label="评审任务类型" align="center">
-
-			</el-table-column>
+			<el-table-column prop="typeName" label="评审任务类型" align="center"></el-table-column>
 			<el-table-column prop="gmtCreate" label="提交时间" align="center"></el-table-column>
 			<el-table-column prop="deadline" label="截止时间" align="center"></el-table-column>
 			<el-table-column prop="submitName" label="提交人" align="center"></el-table-column>
 			<el-table-column label="操作" prop="province" align="center" width="300px">
 				<template slot-scope="scope">
-					<el-button @click="handleClickDetail(scope.row.id)" type="text" size="medium"><i class="el-icon-search"></i>查看详情
+					<el-button @click="handleClickDetail(scope.row.id)" type="text" size="medium">
+						<i class="el-icon-search"></i>查看详情
 					</el-button>
-
 					<el-button @click="handleClickChoose(scope.row.id)" type="text" size="medium">
-						<i class="icon iconfont icon-yonghu"></i>
-						选择评审管理员
+						<i class="icon iconfont icon-yonghu"></i>选择评审管理员
 					</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
 		<review-detail-dialog :form="form1" :formLabelWidth="formLabelWidth" :dialogFormVisible="dialogFormVisible" :loading="form1Loading"
 		 @closeDialog="closeDialog"></review-detail-dialog>
-
 		<el-dialog title="选择管理员" :visible.sync="dialogChooseVisible" style="width:100%;text-align:left; font-weight: bolder;">
-
 			<div class="header_top" >
-
 				<el-input v-model="searchAdmin.name" placeholder="姓名"></el-input>
 				<el-input v-model="searchAdmin.workUnit" placeholder="单位"></el-input>
-
-
 				<el-button type="primary" @click="searchAdminList()">搜索</el-button>
-
 			</div>
 			<el-table :data="adminList" :header-cell-style="rowClass" >
-				
 				<el-table-column prop="name" label="评审管理员" align="center"></el-table-column>
 				<el-table-column prop="workUnit" label="单位" align="center"></el-table-column>
 				<el-table-column label="操作" align="center">
@@ -90,14 +64,8 @@
 			<div class="bid_footer">
 				<el-pagination @current-change="handleCurrentChangeAdmin" :current-page.sync="pageAdmin.pageNo" :total="totalPageAdmin" layout="prev, pager, next, jumper"></el-pagination>
 			</div>
-
 		</el-dialog>
-
-
 		<el-button type="primary" @click="dialogChooseVisible=true" style="float: right;margin: 10px 0 10px 0;">批量选择评审管理员</el-button>
-
-
-
 		<div class="bid_footer">
 			<el-pagination @current-change="handleCurrentChange" :current-page.sync="pageData.pageNo" :total="totalPage" layout="prev, pager, next, jumper"></el-pagination>
 		</div>
@@ -110,11 +78,12 @@
 	import {mapMutations} from "vuex";
 	import {specificDate} from "@/utils/getDate.js";
 	import reviewDetailDialog from '@/view/review/components/reviewDetailDialog';
-
+	import timeLimit from "@/mixins/regular/timeLimit.js";
 	export default {
 		components: {
 			reviewDetailDialog
 		},
+		mixins: [timeLimit],
 		data() {
 			return {
 				form1Loading: false,
@@ -188,7 +157,9 @@
 				adminArr: {
 				  idList: [],
 				  userId:null,
-				}
+				},
+				totalPage:null,
+				totalPageAdmin:null,
 			};
 		},
 		created: function() {
@@ -201,7 +172,7 @@
 		methods: {
 			...mapMutations(["setCache"]),
 			getType() {
-				//get /v1/public/bid/process/list 
+				//get /v1/public/bid/process/list
 				httpGet('/v1/public/bid/process/list').then(results => {
 					const {
 						msg,
@@ -218,7 +189,7 @@
 				});
 			},
 			getAdmin(val = this.pageAdmin){
-				//get /v1/authorization/review/admin/user 
+				//get /v1/authorization/review/admin/user
 				httpGet("/v1/authorization/review/admin/user", val).then(results => {
 					const {
 						httpCode,
@@ -233,9 +204,9 @@
 						this.adminList = [];
 						errTips(msg);
 					}
-					
+
 				});
-							
+
 			},
 			searchAdminList(){
 				this.getAdmin(this.searchAdmin)
@@ -277,7 +248,7 @@
 			closeDialog() {
 				this.dialogFormVisible = false;
 			},
-			
+
 			getProjectList() {
 				httpGet('/v1/authorization/mission/promulgator/get').then(results => {
 					const {
@@ -344,9 +315,9 @@
 					}
 					this.loading = false;
 				});
-			
+
 			},
-		
+
 			submitList(val){
 				this.adminArr.userId=val;
 				if (this.adminArr.idList.length==0){
@@ -369,7 +340,7 @@
 						this.getView();
 					});
 				}
-				
+
 			},
 			//确定选择团队
 			choice() {

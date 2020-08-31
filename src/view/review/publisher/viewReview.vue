@@ -62,10 +62,10 @@
 					<el-col :span="12">
 						<span>管理员决定：</span>
 						<el-select v-model="opinion" placeholder="管理员未决定" disabled>
-							<el-option label="通过" value="1"></el-option>
-							<el-option label="修改后通过" value="2"></el-option>
-							<el-option label="不通过" value="3"></el-option>
-							<el-option label="没有意见" value="4"></el-option>
+							<el-option label="通过" :value="1"></el-option>
+							<el-option label="修改后通过" :value="2"></el-option>
+							<el-option label="不通过" :value="3"></el-option>
+							<el-option label="没有意见" :value="4"></el-option>
 						</el-select>
 					</el-col>
 					<el-col :span="6">
@@ -84,7 +84,7 @@
 					</el-col>
 				</el-row>
 			</div>
-			<view-expert-review-list :userList="userList"></view-expert-review-list>
+			<view-expert-review-list :userList="userList" usedBy="viewReview"></view-expert-review-list>
 			<div class="third_part_opinion_footer">
 				<el-pagination @current-change="handleCurrentChangeAdmin" :current-page.sync="pageAdmin.pageNo" :total="totalPageAdmin" layout="prev, pager, next, jumper"></el-pagination>
 			</div>
@@ -103,11 +103,13 @@
 	import {specificDate} from "@/utils/getDate.js";
 	import reviewDetailDialog from '@/view/review/components/reviewDetailDialog';
 	import viewExpertReviewList from "@/view/review/editor/components/viewExpertReviewList";
+	import timeLimit from "@/mixins/regular/timeLimit.js";
 	export default {
 		components: {
 			reviewDetailDialog,
 			viewExpertReviewList
 		},
+		mixins: [timeLimit],
 		data() {
 			return {
 				opinion:null,//管理员意见(决定) 1接受2需要修改3拒绝4没有意见 ,
@@ -186,7 +188,9 @@
 				adminArr: {
 				  idList: [],
 				  userId:null,
-				}
+				},
+				totalPage:null,
+				totalPageAdmin:null,
 			};
 		},
 		created: function() {
@@ -231,33 +235,26 @@
 						this.adminList = [];
 						errTips(msg);
 					}
-
 				});
-
 			},
 			searchAdminList(){
 				this.getAdmin(this.searchAdmin)
 			},
 			handleClickChoose(val) {
-				//get /v1/authorization/review/thirdparty/list
 				console.log("id",val);
-				httpGet("/v1/authorization/review/thirdparty/list", {
-					id: val
-				}).then(results => {
-					const {
-						httpCode,
-						msg,
-						data
-					} = results.data;
+				httpGet("/v1/authorization/review/thirdparty/list", { id: val }).then(results => {
+					const { httpCode, msg, data } = results.data;
 					if (httpCode == 200) {
-						this.opinion = data.opinion + ""; //管理员意见 1接受2需要修改3拒绝4没有意见 ,String型的opinion在select组件里能正常显示数值对应的label
+						this.opinion = data.opinion; //管理员意见 1接受2需要修改3拒绝4没有意见
 						this.accessory = data.accessory; //意见附件
 						this.details = data.details;	 //意见详情
-						let userList = data.userList;	 //专家记录信息集合
-						for (let i of userList) {
+						let userList = [];	 //专家记录信息集合
+						for (let i of data.userList) {
 							i.gmtCreate = specificDate(i.gmtCreate);
+							if(i.status==="完成"){    //项目发布者能看到的评审信息和项目经理一致
+								userList.push(i);
+							}
 						}
-
 						this.userList = userList;
 					} else if (msg === "该条件暂无数据") {
 
@@ -277,11 +274,7 @@
 				httpGet("/v1/authorization/review/thirdparty/get", {
 					id: val
 				}).then(results => {
-					const {
-						httpCode,
-						msg,
-						data
-					} = results.data;
+					const { httpCode, msg, data } = results.data;
 					if (httpCode == 200) {
 						this.form1 = data;
 						this.form1.deadline = specificDate(this.form1.deadline);
@@ -300,7 +293,6 @@
 					this.form1Loading = false;
 				});
 
-				//console.log(this.form1);
 			},
 			closeDialog() {
 				this.dialogFormVisible = false;
@@ -308,11 +300,7 @@
 
 			getProjectList() {
 				httpGet('/v1/authorization/mission/promulgator/get').then(results => {
-					const {
-						msg,
-						data,
-						httpCode
-					} = results.data;
+					const { msg, data, httpCode } = results.data;
 					if (httpCode === 200) {
 						this.projectList = data.projectList;
 					} else {
@@ -324,11 +312,7 @@
 				httpGet('/v1/authorization/review/process/list', {
 					id: value
 				}).then(results => {
-					const {
-						msg,
-						data,
-						httpCode
-					} = results.data;
+					const { msg, data, httpCode } = results.data;
 					if (httpCode === 200) {
 						this.processList = data.processList;
 					} else {
@@ -342,28 +326,19 @@
 			getView(val = this.pageData) {
 				this.loading = true;
 				httpGet("/v1/authorization/review/thirdparty/search", val).then(results => {
-					const {
-						httpCode,
-						msg,
-						data
-					} = results.data;
+					const { httpCode, msg, data } = results.data;
 					if (httpCode === 200) {
 						this.totalPage = parseInt(data.totalPage + "0");
-						let {
-							reviewInfoList
-						} = data;
+						let { reviewInfoList } = data;
 
 						for (let i of reviewInfoList) {
 							i.deadline = specificDate(i.deadline);
 							i.gmtCreate = specificDate(i.gmtCreate);
-							var typeArr = this.typeList.filter(function(item) {
+							let typeArr = this.typeList.filter(function(item) {
 								return item.id == i.type;
 							})
-							//console.log(typeArr);
 							i.typeName = typeArr[0].processName;
-							//console.log(i.typeName);
 						}
-
 						this.$set(this, "tableData", reviewInfoList);
 						Object.assign(this.pageData, val);
 					} else {
@@ -381,10 +356,7 @@
 					errTips("至少选择一个评审");
 				}
 				else {
-					httpPost(
-						"/v1/authorization/review/admin/insert",
-						this.adminArr
-					).then(results => {
+					httpPost( "/v1/authorization/review/admin/insert", this.adminArr ).then(results => {
 						const {httpCode,msg} = results.data;
 						if (httpCode === 200) {
 							successTips("选择评审管理员成功");
@@ -403,20 +375,13 @@
 			choice() {
 				this.centerDialogVisible = true;
 				this.loading = true;
-				httpPut(
-					"/v1/authorization/bid/teamstatus/update",
-					this.adminArr
-				).then(results => {
-					const {
-						httpCode,
-						msg
-					} = results.data;
+				httpPut( "/v1/authorization/bid/teamstatus/update", this.adminArr ).then(results => {
+					const { httpCode, msg, data } = results.data;
 					if (httpCode === 200) {
 						this.centerDialogVisible = false;
 						this.loading = false;
 						successTips("选择团队成功");
 						this.setCache("myDemand");
-						// this.setCache("myDemand");
 					} else if (msg === "至少选择一个项目组") {
 						errTips("至少选择一个项目组");
 					} else if (msg === "执行中项目数量超限") {
@@ -434,13 +399,6 @@
 				this.adminArr.idList = newVal;
 				console.log(this.adminArr);
 			},
-			// handleAdminChange(val) {
-			// 	const newVal = val.map(item => {
-			// 		return item.id;
-			// 	});
-			// 	this.adminArr.idList = newVal;
-			// 	console.log(this.adminArr);
-			// },
 			rowClass() {
 				return "background:#F4F6F9;";
 			},

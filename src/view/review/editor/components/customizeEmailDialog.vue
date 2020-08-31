@@ -31,8 +31,8 @@
                 </template>
             </el-table-column>
         </el-table>
-        <el-row style="margin-top: 15px;">
-            <el-button style="margin-left:33%;" @click="closeSelectedUserDialog">关闭</el-button>
+        <div style="text-align:center;margin: 15px auto;" >
+            <el-button  @click="closeSelectedUserDialog">关闭</el-button>
             <el-button type="primary" style="margin-left:30px;" @click="customizeEmailGlobally">全局定制</el-button>
             <el-button type="primary" style="margin-left:30px;" v-if="usedBy!=='editorOpinionAndDecision'"
                        @click="sendAllEmail" :loading="sendAllEmailLoading">发送邮件
@@ -41,7 +41,7 @@
                 <el-button type="primary" style="margin-left:30px;" @click="suspendAndSendEmail(1)">中止任务</el-button>
                 <el-button type="primary" style="margin-left:30px;" @click="suspendAndSendEmail(2)">中止任务发送邮件</el-button>
             </template>
-        </el-row>
+        </div>
         <el-dialog width="60%" title="定制信件" :visible.sync="customizeVisible" append-to-body
                    :before-close="closeCustomizeDialog">
             <el-row style="margin-top: 15px;">
@@ -69,11 +69,11 @@
                     <el-input type="textarea" :rows="15" v-model="emailInfo.emailConfig.content"></el-input>
                 </el-col>
             </el-row>
-            <el-row style="margin-top: 15px;">
-                <el-button style="margin-left:33%;" @click="closeCustomizeDialog">关闭</el-button>
+            <div style="text-align:center;margin: 15px auto;">
+                <el-button @click="closeCustomizeDialog">关闭</el-button>
                 <el-button type="primary" style="margin-left:30px;" @click="saveEmailInfo">保存</el-button>
                 <el-button type="primary" style="margin-left:30px;" @click="previewEmail">预览</el-button>
-            </el-row>
+            </div>
             <!-- 定制邮件框中预览信件的对话框-->
             <el-dialog width="60%" title="预览信件" :visible.sync="previewVisible" append-to-body>
                 <el-row>
@@ -212,7 +212,7 @@
             /**CustomizeAndSendEmail页面调用，定制信件页面：获取信件模板等相关信息*/
             getEmailContentInfoForCustomizeAndSendEmail(row) {
                 this.emailInfo.duplicate = deepCopyObject(row.duplicate);//初始化抄送选项
-
+                this.openedEmailInfo = deepCopyObject(row);//将当前打开的信件存储到openedEmailInfo，在预览信件内容的时候需要用户的id,adminMissionId
                 if (row.emailConfig === null) {      //定制信件框没有保存过内容
                     let idList = [];                //评审专家邀请编号ID集合
                     for(let item of this.userList){
@@ -376,15 +376,14 @@
             },
             /**customizeAndSendEmail页面调用，定制信件对话框：预览邮件内容*/
             previewEmailForCustomizeAndSendEmail() {
-                let idList = [];//评审专家邀请编号ID集合
-                for(let item of this.userList){
-                    idList.push(item.id);
-                }
+                let idList = [];                        //评审专家邀请编号ID集合
+                idList.push(this.openedEmailInfo.id);   //在预览的时候只要传递一个id就可以了，这块是后台设计的不是很好，应该传1个id就可以了
                 let data = {
                     idList:idList,
                     content: this.emailInfo.emailConfig.content,
                     templateId:this.templateId,
                 };
+                console.log("customize data:",data);
                 this.previewVisible = true;//预览信件框打开
                 let url = "/v1/authorization/review/expertemailpreview/get";
                 this.httpMethodForPreviewEmail(url, data)

@@ -14,7 +14,7 @@
         </div>
         <div class="header_top">
             <el-input v-model="searchData.title" placeholder="评审标题"></el-input>
-            <el-select v-model="searchData.type" clearable placeholder="请选择评审类型">
+            <el-select v-model="searchData.type" clearable placeholder="请选择评审类型" style="width: 150px;margin-right: 15px;">
                 <el-option v-for="index in typeList" :label="typeList[index]" :value="index"></el-option>
             </el-select>
             <el-input v-model="searchData.projectUserName" placeholder="发布者"></el-input>
