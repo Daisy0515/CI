@@ -266,6 +266,7 @@
 						for (let i of reviewInfoList) {
 							i.deadline = specificDate(i.deadline);
 							i.gmtCreate = specificDate(i.gmtCreate);
+
 							// var typeArr = this.typeList.filter(function(item) {
 							// 	return item.id == i.type;
 							// })
