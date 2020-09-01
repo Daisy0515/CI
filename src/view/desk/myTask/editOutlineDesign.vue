@@ -1,3 +1,7 @@
+<!--
+功能：编辑概要设计文档
+引用：文档意见的编辑文档
+-->
 <template>
 	<div class="applicationView">
 		<div class="header">
@@ -16,7 +20,7 @@
 				<br />
 				<br />
 
-				<el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
+				<el-form :model="ruleForm" ref="ruleForm" class="demo-ruleForm">
 					<el-form-item class="cancel">
 						<div style="float: right;">
 						<a target="_Blank" :href="ruleForm.sourceFile" style="display:inline;font-size: 20px;">
@@ -45,7 +49,7 @@
 
 					<el-form-item label="原文件" prop="sourceFile">
 						<!-- <p>{{saveData.fileName}}</p> -->
-						<div style="margin-left: 110px;"><source-Upload :fileName="fileName" :uploadIndex="uploadIndex" v-on:setIdCard="setIdCard($event)" /></div>
+						<div style="margin-left: 110px;"><source-Upload :uploadIndex="uploadIndex" v-on:setIdCard="setIdCard($event)" /></div>
 					</el-form-item>
 
 					<el-form-item class="cancel">

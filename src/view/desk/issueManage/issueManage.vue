@@ -19,15 +19,15 @@
 		</span>
 		</router-link>
 			
-		
-      <el-dialog :title="title" :visible.sync="diaIndex" width="30%">
-        <p
-          style="word-wrap:break-word;width:100%;display:inline-block"
-        >{{content}}</p>
-        <span slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="diaIndex = false">确 定</el-button>
-        </span>
-      </el-dialog>
+<!--		-->
+<!--      <el-dialog :title="title" :visible.sync="diaIndex" width="30%">-->
+<!--        <p-->
+<!--          style="word-wrap:break-word;width:100%;display:inline-block"-->
+<!--        >{{content}}</p>-->
+<!--        <span slot="footer" class="dialog-footer">-->
+<!--          <el-button type="primary" @click="diaIndex = false">确 定</el-button>-->
+<!--        </span>-->
+<!--      </el-dialog>-->
       <div class="header_top">
         <el-input v-model="searchData.projectName" placeholder="请输入项目名称"></el-input>
         <el-select v-model="searchData.level" clearable placeholder="请选择缺陷等级">
@@ -223,11 +223,11 @@ export default {
     rowClass() {
       return "background:#F4F6F9;";
     },
-    openDia(content,title) {
-      this.diaIndex = !this.diaIndex;
-      this.content = content;
-      this.title = title
-    },
+    // openDia(content,title) {
+    //   this.diaIndex = !this.diaIndex;
+    //   this.content = content;
+    //   this.title = title
+    // },
     //新增缺陷
     newAdd(){
 

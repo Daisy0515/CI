@@ -46,7 +46,7 @@
 			<div class="ganttHeader_main" v-show="watchIndex">
 				<div style="width:100%">
 				<div style="width: 45%; display: inline-table;">
-					<el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
+					<el-form :model="ruleForm" ref="ruleForm" class="demo-ruleForm">
 						<el-form-item label="任务名称" prop="titleId">
 							<el-select v-model="ruleForm.titleId" placeholder="请选择任务" @change="getSubList">
 								<el-option v-for="item in missionList" :key="item.id" :label="item.title" :value="item.id"></el-option>
@@ -153,16 +153,10 @@
 							
 							<el-table-column prop="operation" label="删除任务" align="center">
 								<template slot-scope="scope">
-									<!-- <span style="color: #4c83c3;" @click.native="deleteMission(scope.row.id)"  > -->
 									  <i style="cursor: pointer;" @click="deleteMission(scope.row.id)" class="el-icon-error"></i>
-									  
 								</template>
 							</el-table-column>
-
-							
 						</el-table>
-
-						
 					</el-card>
 				</div>
 				</div>
@@ -298,20 +292,16 @@ export default {
 		$route() {
 			this.watchIndex = false;
 			this.showIndex = true;
-			// this.typeIndex = 0;
 		}
 	},
 	methods: {
 		...mapMutations(['settaskList', 'setResource', 'setCache']),
 		
 		deleteMission(id) {
-			//alert(this.watchIndex);
 			httpDelete(`/v1/authorization/mission/missionsubtitle/delete/${id}`).then(results => {
 				const { httpCode, msg } = results.data;
-				//alert(222);
 				if (httpCode === 200) {
 					successTips('删除成功');
-					//alert(111);
 				} else {
 					errTips(msg);
 				}
@@ -323,10 +313,8 @@ export default {
 			this.selected = this.missionList.find(item => {
 				return item.id === value;
 			}).title;
-			//alert(this.selected);
 			this.titleId = value;
 			this.loading = true;
-			//get /v1/authorization/mission/subtitle/list
 			httpGet('/v1/authorization/mission/subtitle/list', { teamId: this.teamId, titleId: value }).then(results => {
 				const { msg, data, httpCode } = results.data;
 				if (httpCode == 200) {
@@ -344,19 +332,16 @@ export default {
 				this.visible=false;
 				return false;
 			}
-			// post /v1/authorization/mission/missiontitle/insert
 			httpPost('/v1/authorization/mission/missiontitle/insert', this.missionForm).then(results => {
 				const { msg, httpCode, data } = results.data;
 				if (httpCode === 200) {
 					successTips('添加任务成功！');
-					// this.setCache("");
 				} else {
 					errTips(msg);
 				}
 				this.getMissionList(this.teamId);
 				this.missionForm.title = '';
 				this.visible=false;
-				//this.testUploadIndex = false;
 			});
 		},
 		addType() {
@@ -366,25 +351,20 @@ export default {
 				this.visible1=false;
 				return false;
 			}
-			
-			//post /v1/authorization/mission/missiontype/insert
 			httpPost('/v1/authorization/mission/missiontype/insert', this.typeForm).then(results => {
 				const { msg, httpCode, data } = results.data;
 				if (httpCode === 200) {
 					successTips('添加任务类型成功！');
-					// this.setCache("");
 				} else {
 					errTips(msg);
 				}
 				this.getMissionType(this.teamId);
 				this.typeForm.missionName = '';
 				this.visible1=false;
-				//this.testUploadIndex = false;
 			});
 		},
+		//获取任务列表（标题列表）
 		getMissionList(val) {
-			//获取任务列表（标题列表）
-			//get /v1/authorization/mission/missiontitle/list
 			httpGet('/v1/authorization/mission/missiontitle/list', { teamId: val }).then(results => {
 				const { msg, data, httpCode } = results.data;
 				if (httpCode == 200) {
@@ -394,9 +374,8 @@ export default {
 				}
 			});
 		},
+		//获取任务列表（标题列表）
 		getMissionType(val) {
-			//获取任务列表（标题列表）
-			//get /v1/authorization/mission/missiontype/list
 			httpGet('/v1/authorization/mission/missiontype/list', { teamId: val }).then(results => {
 				const { msg, data, httpCode } = results.data;
 				if (httpCode == 200) {
@@ -408,7 +387,6 @@ export default {
 		},
 		//上传资源
 		setIdCard(data) {
-			//alert(333333);
 			httpGet('/v1/authorization/bids/resource/upload', {
 				castId: this.projectId,
 				uploadResource: data.fileName
@@ -432,12 +410,14 @@ export default {
 			});
 			clipboard.on('success', e => {
 				console.log('复制成功');
+				successTips('复制git地址成功');
 				// 释放内存
 				clipboard.destroy();
 			});
 			clipboard.on('error', e => {
 				// 不支持复制
 				console.log('该浏览器不支持自动复制');
+				errTips('该浏览器不支持自动复制');
 				// 释放内存
 				clipboard.destroy();
 			});
@@ -476,7 +456,6 @@ export default {
 							endTime: item.endTime,
 							id: item.id,
 							startTime: item.startTime
-							// userId: item.userId
 						};
 					});
 					this.settaskList(taskList);
@@ -506,14 +485,11 @@ export default {
 		},
 
 		setIdCard2(data) {
-			//alert(222222);
 			data && (this.ruleForm.sourceFile = data.fileName);
-
 			httpPost('/v1/authorization/bids/missioninfo/add', this.ruleForm).then(results => {
 				const { msg, httpCode, data } = results.data;
 				if (httpCode === 200) {
 					successTips('添加任务成功！');
-					// this.setCache("");
 				} else {
 					errTips(msg);
 				}
@@ -528,10 +504,9 @@ export default {
 				this.ruleForm.startTime = '';
 				this.ruleForm.subtitle = '';
 				this.ruleForm.titleId = '';
-				//this.ruleForm.titleId='';
-				//this.testUploadIndex = false;
 			});
 		},
+
 		//添加任务
 		submitForm(formName) {
 			//alert(1111111);
@@ -540,15 +515,12 @@ export default {
 				return false;
 			}
 			this.ruleForm.castId = this.$route.query.projectId;
-
 			this.ruleForm.sourceFile ? this.setIdCard2() : (this.testUploadIndex = !this.testUploadIndex);
-			// this.setIdCard2();
 		},
 		returnSquare() {
 			this.$router.push({ path: './myBid' });
 		},
 		rowClass() {
-			// background:#619cdf;color:white;font-weight:400
 			return 'background:#F4F6F9;';
 		}
 	}

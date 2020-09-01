@@ -1,3 +1,7 @@
+<!--
+功能：第一次提交详细设计文档（不用获取文档内容）
+引用：我的任务的提交文档
+-->
 <template>
 	<div class="applicationView">
 		<div class="header">
@@ -17,7 +21,7 @@
 				<br />
 
 				<el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
-					<el-button type="primary" @click="returnSquare" size="large" style="width:150px;margin-left:85%">下载模板</el-button>
+					<el-button type="primary" size="large" style="width:150px;margin-left:85%">下载模板</el-button>
 					<br />
 					<br />
 
@@ -34,7 +38,6 @@
 					</el-form-item>
 
 					<el-form-item label="原文件" prop="sourceFile">
-						<!-- <p>{{saveData.fileName}}</p> -->
 						<div style="margin-left: 110px;"><sourceUpload :uploadIndex="uploadIndex" v-on:setIdCard="setIdCard($event)" /></div>
 					</el-form-item>
 
@@ -110,7 +113,8 @@ export default {
 					return false;
 				}
 			});
-		}
+		},
+
 	}
 };
 </script>

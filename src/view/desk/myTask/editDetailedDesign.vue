@@ -1,3 +1,7 @@
+<!--
+功能：编辑详细设计文档
+引用：文档意见的编辑文档
+-->
 <template>
 	<div class="applicationView">
 		<div class="header">
@@ -84,6 +88,9 @@ export default {
 				missionId: null, //get??
 				remark: '', //备注
 				sourceFile: '' //原文件
+			},
+			rules: {
+				remark: [{ required: true, message: '请输入此次编辑备注', trigger: 'blur' }]
 			}
 		};
 	},

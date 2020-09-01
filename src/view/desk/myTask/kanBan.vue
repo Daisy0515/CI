@@ -1,3 +1,7 @@
+<!--
+功能：查看所参与的正在进行中的项目的进度
+引用：我的任务的看板
+-->
 <template>
 	<div class="square">
 		<div class="responsive resp">
@@ -254,14 +258,12 @@ export default {
 		...mapActions(['GETNORMALTYPE']),
 		
 		getMissionType(){
-			//get /v1/public/bid/missiontypeall/all 
 			httpGet(`/v1/public/bid/missiontypeall/all`).then(results => {
 				const { data, msg,httpCode } = results.data;
 				if (httpCode === 200) {
 					this.missionTypeName = data.missionTypeList;
 				} else {
 					errTips(msg);
-					//this.setCache('documentOpinion');
 				}
 			});
 			
@@ -271,29 +273,20 @@ export default {
 			return httpGet('/v1/authorization/mission/projectid/get');
 		},
 		getProTypeList(val) {
-			//alert(val);
 			return httpGet('/v1/authorization/mission/missiontype/get', { projectId: val });
 		},
 
 		async getProjectTypeList() {
-			//alert("type");
 			let results = await this.getProList();
-			// alert(results.data.httpCode);
 			if (results.data.httpCode === 200) {
 				this.projectList = results.data.data.projectList;
 				var len = this.projectList.length;
 				this.loadingTypes=true;
 				for (var i = 0; i < len; i++) {
-					// alert(this.projectList[i].projectId);
 					let type = await this.getProTypeList(this.projectList[i].projectId);
 					this.projectTypeList[i] = type.data.data.typeList;
-					//this.progressDetailList[i].typelist = this.projectTypeList[i];
-					console.log(this.projectTypeList[i]);
 				}
 				this.loadingTypes=false;
-				//console.log(this.progressDetailList);
-				//alert(111);
-				//alert(this.projectList.length);
 			}
 		},
 		showProgress(){
@@ -305,7 +298,6 @@ export default {
 			this.kbRight=true;
 			this.seleValue = item.projectName;
 			this.getViewP(item.projectId);
-			//{ path: 'opinionView', query: { id: scope.row.id } }"
 		},
 		getViewP(val) {
 			this.loading = true;
@@ -317,12 +309,6 @@ export default {
 					this.missionPendingList = data.missionPendingList;
 					this.missionTestList = data.missionTestList;
 					this.missionTrackingList = data.missionTrackingList;
-					// for (var i = 0; i < this.missionTypeName.length; i++) {
-					// 	//console.log(this.missionTypeName[i]);
-					// 	if (this.missionTypeName[i].id == this.ruleForm.missionTypeId) {
-					// 		this.missionType=this.missionTypeName[i].missionName;
-					// 	}
-					// }
 					this.loading = false;
 					Object.assign(this.pageData, val);
 				} else {
@@ -339,7 +325,6 @@ export default {
 
 		getView(val) {
 			this.loading = true;
-			// !value && (value = "所有");
 			httpGet('/v1/authorization/mission/projectprogress/get', val).then(results => {
 				let getData = results.data;
 				if (getData.httpCode === 200) {
