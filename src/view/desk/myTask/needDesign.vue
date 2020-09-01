@@ -1,3 +1,7 @@
+<!--
+功能：第一次提交需求设计文档（不用获取文档内容）
+引用：我的任务的提交文档
+-->
 <template>
 	<div class="applicationView">
 		<div class="header">
@@ -17,7 +21,7 @@
 				<br />
 
 				<el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
-					<el-button type="primary" @click="returnSquare" size="large" style="width:150px;margin-left:85%">下载模板</el-button>
+					<el-button type="primary" size="large" style="width:150px;margin-left:85%">下载模板</el-button>
 					<br />
 					<br />
 
@@ -38,7 +42,6 @@
 					</el-form-item>
 
 					<el-form-item label="原文件">
-						<!--Q：这里如何绑定 是否可以使用v-model?-->
 						<div style="margin-left:8%; float: left;">
 							<sourceUpload :uploadIndex="uploadIndex" v-on:setIdCard="setIdCard($event)" />
 						</div>
@@ -55,9 +58,8 @@
 </template>
 
 <script>
-import { httpGet,httpPut, httpPost } from '@/utils/http.js';
-import { errTips, successTips } from '@/utils/tips.js';
-import { mapMutations, mapActions, mapGetters } from 'vuex';
+import { httpPut } from '@/utils/http.js';
+import { errTips } from '@/utils/tips.js';
 import sourceUpload from '@/common/upload/resourceUpload';
 export default {
 	components: {
@@ -91,22 +93,16 @@ export default {
 		this.ruleForm.id = this.$route.query.id;
 	},
 	methods: {
-		...mapMutations(['setCache']),
-	
-
 		returnMyTask() {
 			this.$router.push({ path: './myTask' });
 		},
-		// 提交ruleFrom不知道对不对
+
 		setIdCard(data) {
 			data && (this.ruleForm.sourceFile = data);
-			//alert(1);
-			//console.log(this.ruleForm);
+
 			httpPut('/v1/authorization/mission/missioncommit/update', this.ruleForm).then(results => {
 				const {  msg, httpCode } = results.data;
 				if (httpCode === 200) {
-					//alert(this.ruleForm.sourceFile);
-					//successTips('提交需求设计成功');
 					this.setCache('myTask');
 				} else if (httpCode !== 401) {
 					errTips(msg);

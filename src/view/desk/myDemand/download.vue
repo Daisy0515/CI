@@ -6,7 +6,8 @@
         <h4>
           您的位置：
           <router-link to="myDemand">我的需求</router-link>>
-          <router-link :to="{path:'caseSelect', query:{projectId:teamId}}">案例选择</router-link>>
+          <el-button type="text" @click="$router.go(-1)">案例选择</el-button>>
+<!--          <router-link :to="{path:'caseSelect', query:{projectId:teamId}}">案例选择</router-link>>-->
           <span class="active">资源下载</span>
         </h4>
       </div>
@@ -15,7 +16,6 @@
  
     <div class="myTable" style="margin-top:20px">
       <el-table
-        v-loading="loading"
         :data="tableData"
         style="width:1200px;margin:0 auto;"
         :header-cell-style="rowClass"
@@ -119,7 +119,7 @@ export default {
     //获取项目类型数据
     this.teamId=this.$route.query.id;
     this.getView();
-    this.use(LightTimeline);
+    //this.use(LightTimeline);
   },
  
   methods: {   

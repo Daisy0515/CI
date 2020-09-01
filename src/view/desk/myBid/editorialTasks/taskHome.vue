@@ -1,3 +1,4 @@
+
 <template>
 	<div class="ganttIndex" style="width:100%">
 		<ul class="taskMain">

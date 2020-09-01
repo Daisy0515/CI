@@ -1,3 +1,6 @@
+<!--
+我的投标的交付，包括上传资源和查看评审结果
+-->
 <template>
 	<div class="editorialTeam">
 		<div class="Crumbs">
@@ -18,7 +21,7 @@
 					</el-table-column>
 					<el-table-column prop="title" label="评审标题" align="center">
 						<template slot-scope="scope">
-							<el-tooltip class="item" effect="dark" content="scope.row.title" placement="top-start">
+							<el-tooltip class="item" effect="dark" :content="scope.row.title" placement="top-start">
 								<span class="tablehidden">{{ scope.row.title }}</span>
 							</el-tooltip>
 						</template>
@@ -108,7 +111,7 @@
 				<el-table-column label="资源上传" align="center">
 					<el-table-column prop="id" label="编号" align="center">
 						<template slot-scope="scope">
-							<el-tooltip class="item" effect="dark" :content="scope.row.id" placement="top-start">
+							<el-tooltip class="item" effect="dark" placement="top-start">
 								<span class="tablehidden">{{ scope.row.id }}</span>
 							</el-tooltip>
 						</template>
@@ -159,6 +162,7 @@
 		},
 		data() {
 			return {
+				isReadOnly:true,
 				userList: [],
 				dialogVisible: false, //控制查看详情的对话框
 				uploadIndex: false,
@@ -213,13 +217,13 @@
 		},
 		watch: {
 			resourceUrlList: function(val) {
-				console.log('%s, %s', this.resourceUrlList.length, this.ResourceTable.length);
+				//console.log('%s, %s', this.resourceUrlList.length, this.ResourceTable.length);
 
 				if (this.resourceUrlList.length == this.ResourceTable.length) {
 
-					console.log(this.resourceUrlList);
+					//console.log(this.resourceUrlList);
 					for (var i = 0; i < this.resourceUrlList.length; i++) {
-						console.log(i, this.resourceUrlList[i].resourceUrl);
+						//console.log(i, this.resourceUrlList[i].resourceUrl);
 						if (this.resourceUrlList[i].resourceUrl == null) {
 							this.resourceUrlList[i].resourceUrl = this.ResourceTable[i].resourceUrl;
 						}
@@ -292,7 +296,7 @@
 					} = results.data;
 					if (httpCode == 200) {
 						this.typeList = data.processList;
-						console.log("typeList:", this.typeList);
+						//console.log("typeList:", this.typeList);
 					} else {
 						this.typeList = [];
 						errTips(msg);
@@ -338,7 +342,7 @@
 							}
 							//i.typeName = this.typeList[index];
 						}
-						console.log("reviewTable:", this.ReviewTable);
+						//console.log("reviewTable:", this.ReviewTable);
 						this.ResourceTable = data.reviewTeamList;
 						this.loading = false;
 					} else if (httpCode === 400) {
@@ -357,29 +361,15 @@
 					id: this.resourceId,
 					resourceUrl: this.resourceUrl
 				};
-				console.log(item);
+				//console.log(item);
 				this.resourceUrlList.push(item);
 				this.resourceUrlList = this.sortBykey(this.resourceUrlList, 'id')
 			},
 			submitForm() {
 				this.uploadIndex = true;
-
-				//this.setIdCard2();
-				// this.resourceUrl ? this.setIdCard2() : (this.uploadIndex = !this.uploadIndex);
-				// alert(22);
-				// console.log(this.resourceUrlList);
-				// httpPut(
-				//   "/v1/authorization/review/team/update",
-				//   this.resourceUrlList
-				// ).then(results => {
-				//   const { msg, httpCode } = results.data;
-				//   if (httpCode === 200) {
-				//     successTips("提交成功");
-				// 	this.$router.push({ path: './mybid' });
-				//   } else {
-				//     errTips(msg);
-				//   }
-				// });
+			},
+			rowClass() {
+				return 'background:#F4F6F9;';
 			}
 		}
 	};

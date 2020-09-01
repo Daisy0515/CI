@@ -49,26 +49,14 @@
 			<el-table-column prop="statusName" label="状态" align="center"></el-table-column>
 			<el-table-column prop="accomplishProgress" label="操作" align="center" width="400">
 				<template slot-scope="scope" class="operation">
-					<!-- <span class="tablehidden">{{scope.row.missionTypeId}}</span> -->
-					<!-- <el-slider
-						class="slider"
-						@change="sliderChange(scope.row)"
-						v-model="scope.row.accomplishProgress"
-						:disabled="scope.row.progress === 100 || scope.row.statusName === '结束'"
-						width="50"
-					></el-slider> -->
 					<el-button type="primary" size="mini" class="btn" :data-clipboard-text="scope.row.httpUrlToRepo" v-on:click="copyAddress()">复制git地址</el-button>
-
-					<!-- 记得改path             -->
 					<router-link
 						class="temClass"
-						
 						:to="{ path: 'viewTask', query: { id: scope.row.id } }"
 					>
 						<i class="el-icon-document"></i>
 						查看任务
 					</router-link>
-					
 					<router-link class="temClass" :to="{ path: 'needDesign', query: { id: scope.row.id } }" v-show="scope.row.missionTypeId === 1">
 						<i class="el-icon-edit"></i>
 						提交文档
@@ -81,23 +69,10 @@
 						<i class="el-icon-edit"></i>
 						提交文档
 					</router-link>
-					
-					<!-- 
-					<router-link to class="temClass" v-show="!(scope.row.missionTypeId === 3 || scope.row.missionTypeId === 1 || scope.row.missionTypeId === 2)"  >
-						<i class="el-icon-upload2"></i>
-						上传资源
-					</router-link> -->
-					
-					
-					
-
-					
-
 					<router-link class="temClass" v-show="scope.row.progress === 100" :to="{ path: 'resourceManagement', query: { id: scope.row.id } }">
 						<i class="el-icon-search"></i>
 						资源明细
 					</router-link>
-					<!-- <span class="tablehidden">{{scope.row.progress}}</span> -->
 					<router-link to class="temClass" v-show="scope.row.progress != 100" @click.native="sliderChange(scope.row)" >
 						<i class="el-icon-success"></i>
 						完成
@@ -213,9 +188,7 @@ export default {
 			this.$router.push({ path: 'needDesign' });
 		},
 		formatType: function(row, column) {
-			//alert(row.missionTypeId);
 			for (var i = 0; i < this.missionTypeName.length; i++) {
-				console.log(this.missionTypeName[i]);
 				if (this.missionTypeName[i].id == row.missionTypeId) {
 					return this.missionTypeName[i].missionName;
 				}
@@ -227,12 +200,14 @@ export default {
 			var clipboard = new Clipboard('.btn');
 			clipboard.on('success', e => {
 				console.log('复制成功');
+				successTips('复制git地址成功');
 				// 释放内存
 				clipboard.destroy();
 			});
 			clipboard.on('error', e => {
 				// 不支持复制
 				console.log('该浏览器不支持自动复制');
+				errTips('该浏览器不支持自动复制');
 				// 释放内存
 				clipboard.destroy();
 			});
@@ -270,8 +245,6 @@ export default {
 					let { typeList, missList: list } = data;
 					this.typeList = typeList;
 					this.missionTypeName = data.missionTypeList;
-					//alert(this.missionTypeName[0].missionName);
-					// console.log(this.missionTypeName);
 					for (let i of list) {
 						for (let p of typeList) {
 							if (i.parentId === p.id) {
@@ -323,7 +296,6 @@ export default {
 			});
 		},
 		rowClass() {
-			// background:#619cdf;color:white;font-weight:400
 			return 'background:#F4F6F9;';
 		}
 	}

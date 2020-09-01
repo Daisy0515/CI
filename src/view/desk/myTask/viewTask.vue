@@ -1,3 +1,6 @@
+<!--
+功能：我的任务下的查看任务
+-->
 <template>
 	<div class="applicationView">
 		<div class="header">
@@ -12,7 +15,7 @@
 		</div>
 		<div class="container">
 			<el-card class="box-card0" style="text-align: left">
-				<el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
+				<el-form :model="ruleForm" ref="ruleForm" class="demo-ruleForm">
 					<el-form-item label="项目名称:">
 						<span>{{ ruleForm.projectName }}</span>
 					</el-form-item>
@@ -53,10 +56,9 @@
 </template>
 
 <script>
-import { httpGet, httpPost } from '@/utils/http.js';
+import { httpGet} from '@/utils/http.js';
 import { specificDate } from "@/utils/getDate.js";
-import { errTips, successTips } from '@/utils/tips.js';
-import { mapMutations, mapActions, mapGetters } from 'vuex';
+import { errTips } from '@/utils/tips.js';
 import sourceUpload from '@/common/upload/resourceUpload';
 export default {
 	components: {
@@ -83,22 +85,17 @@ export default {
 
 	methods: {
 		getMissionType(){
-			//get /v1/public/bid/missiontypeall/all 
 			httpGet(`/v1/public/bid/missiontypeall/all`).then(results => {
 				const { data, msg,httpCode } = results.data;
 				if (httpCode === 200) {
 					this.missionTypeName = data.missionTypeList;
 				} else {
 					errTips(msg);
-					//this.setCache('documentOpinion');
 				}
 			});
 			
 		},
 		getView() {
-			//alert(this.id);
-			
-//get /v1/authorization/mission/getInfo/get 
 			httpGet(`/v1/authorization/mission/getInfo/get?id=${this.id}`).then(results => {
 				const { data, httpCode } = results.data;
 				if (httpCode === 200) {
