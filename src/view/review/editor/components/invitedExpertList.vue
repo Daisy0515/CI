@@ -12,15 +12,7 @@
             <el-form :label-position="'right'" label-width="100px" :model="emailForm">
 
                 <el-form-item label="收件人">
-                    <div v-if="globalEmailEditVisible === true">
-                        <el-checkbox-group v-model="userList" >
-                            <el-checkbox v-for="item in infoList" :label="item.name" disabled></el-checkbox>
-                        </el-checkbox-group>
-                    </div>
-                    <div v-if="globalEmailEditVisible === false">
                         <span>{{emailForm.userName}}</span>
-                    </div>
-
                 </el-form-item>
                 <el-form-item label="抄送">
                     <el-checkbox-group v-model="cccheckList" @change="selectCC">
@@ -70,14 +62,9 @@
             <el-table-column label="邀请" align="center">
                 <template slot-scope="scope">
                     <el-checkbox v-model="scope.row.isInvite"></el-checkbox>
-                    <!-- <el-button @click="scope.row.isInvite=false" type="text" v-if="scope.row.isInvite==true">取消</el-button>
-                    <el-button type="text" v-if="scope.row.isInvite==false">已取消</el-button> -->
                 </template>
             </el-table-column>
         </el-table>
-        <div style="text-align: right;">
-            <el-button type="primary" style="margin-top: 20px;" @click="globalEmailEdit()">邮件编辑</el-button>
-        </div>
         <el-table :data="alterList" :header-cell-style="rowClass" style="margin-top: 20px;">
 
             <el-table-column prop="uName" label="评审专家姓名" align="center"></el-table-column>
@@ -122,7 +109,6 @@
                 templateList:[],
                 templateId:null,
                 emailEditVisible:false, //控制邮件编辑对话框
-                globalEmailEditVisible:false, //控制全局邮件编辑对话框
                 emailePrviewVisible:false, //控制邮件预览对话框
                 cccheckList:[], //存储抄送对象
                 emailForm: { //显示邮件信息的对象（表单）
@@ -147,56 +133,17 @@
                     this.getEmailTemplate(); //获取邮件模板();
                     this.templateId = this.params.templateId;
                     this.id = this.params.id;
-                    console.log('alterList',this.alterList);
+
                 }
             }
         },
         methods:{
-
-            globalEmailConfirm(){
-
-                for (let i of this.infoList) {
-                    i.emailConfig = this.emailForm.config;
-                    i.duplicate = this.emailForm.duplicate;
-                }
-                this.globalEmailEditVisible = false;
-            },
-            /**邮件全局定制*/
-            globalEmailEdit(){
-                for (let i of this.infoList) {
-                    this.userList.push(i.name);
-                }
-                this.cccheckList = [];
-                this.globalEmailEditVisible = true;
-                this.emailEditVisible = true;
-                let postEmailForm={adminMissionId:this.id,receiver:2,userId:this.infoList[0].userId,templateId:this.templateId};
-                httpPost("/v1/authorization/review/expertinviteemailconfig/update", postEmailForm).then(results => {
-                    const {httpCode, msg, data} = results.data;
-                    //console.log(httpCode);
-                    if (httpCode === 200) {
-                        this.emailForm.config.content = data.content;
-                        this.emailForm.config.theme = null;
-                        console.log('emailForm:', this.emailForm);
-                    } else {
-                        errTips(msg);
-                    }
-                })
-            },
-
             /**完成邮件编辑*/
             emailConfirm(){
-
                 let i = this.emailForm.index;
-                console.log("emailConfirm-emailForm:",this.emailForm);
-                console.log("infoList:",this.infoList)
                 this.infoList[i].emailConfig = deepCopyObject(this.emailForm.config);
                 this.infoList[i].duplicate = deepCopyObject(this.emailForm.duplicate);
-
-                //this.emailForm={};
-                this.globalEmailEditVisible = false;
                 this.emailEditVisible = false;
-
-
             },
             /**发出邀请*/
             finalInvite(){
@@ -207,24 +154,13 @@
                     delete i.config;
                     i.type = 1;
                 }
-                console.log("finalInvite-list:",list);
-                //this.postForm.expertInviteList = list;
-
-                var postForm = {expertInviteList:list,id:parseInt(this.id),alternativeList:this.params.alternativeList}
-                console.log("finalInvite-postForm:",postForm);
-
+                let postForm = {expertInviteList:list,id:parseInt(this.id),alternativeList:this.params.alternativeList}
                 httpPost("/v1/authorization/review/expertinvite/insert", postForm).then(results => {
-                    const {
-                        httpCode,
-                        msg,
-                        data
-                    } = results.data;
-                    //console.log(httpCode);
+                    const {httpCode, msg} = results.data;
                     if (httpCode === 200) {
                         successTips("已发出邀请");
                         this.changeVisible();
                         this.$emit("clearInvitedExpert");
-                        //this.getView();
                     } else {
                         errTips(msg);
                     }
@@ -238,69 +174,56 @@
             /**邮件预览*/
             preview(){
                 this.emailePrviewVisible=true;
-                console.log(this.emailForm);
-                if (this.globalEmailEditVisible === true) {
-                    this.emailForm.userId = this.infoList[0].userId;
-                }
                 let previewForm={adminMissionId:this.id,userId:this.emailForm.userId,emailContent:this.emailForm.config.content};
-                //post /v1/authorization/review/expertinviteemailconfig/get
                 httpPost("/v1/authorization/review/expertinviteemailconfig/get",previewForm).then(results => {
                     const { httpCode, msg, data } = results.data;
                     if (httpCode == 200) {
                         this.previewArea = data.content;
-
                     } else {
                         errTips(msg);
                     }
                 })
-
-
             },
             /**关闭邮件编辑对话框*/
             closeEmailEdit(){
-                this.globalEmailEditVisible = false;
                 this.emailEditVisible = false;
             },
             /**选择抄送对象*/
             selectCC(){
-                // console.log(this.checkList);
-                var item = {isAdmin:false , isProjectUser:false};
+                let item = {isAdmin:false , isProjectUser:false};
                 for (let i of this.cccheckList) {
                     if (i === "管理员") item.isAdmin = true;
                     if (i === "发布者") item.isProjectUser = true;
                 }
-                this.emailForm.duplicate = item;
-                console.log(this.emailForm.duplicate);
+                this.emailForm.duplicate = deepCopyObject(item);
             },
 
             /**编辑邮件*/
             emailEdit(val, index) {  //编辑邮件
-                console.log("val",val);
-                //console.log('emailForm:', this.emailForm);
                 this.emailEditVisible = true;
-                //console.log("scope.row", val);
                 this.cccheckList = [];
-
+                if (val.duplicate.isAdmin === true)
+                    this.cccheckList.push("管理员");
+                if (val.duplicate.isProjectUser === true)
+                    this.cccheckList.push("发布者");
                 this.emailForm.userName = val.name;
                 this.emailForm.index = index;
                 this.emailForm.userId = val.userId;
-                console.log('123emailForm:', this.emailForm);
-                let postEmailForm={adminMissionId:this.id,receiver:2,userId:val.userId,templateId:this.templateId};
-                console.log('postEmailForm:',postEmailForm);
-                httpPost("/v1/authorization/review/expertinviteemailconfig/update", postEmailForm).then(results => {
-                    const {httpCode, msg, data} = results.data;
-                    //console.log(httpCode);
-                    if (httpCode === 200) {
-                        this.emailForm.config.content = data.content;
-                        this.emailForm.config.theme = null;
-                        console.log('emailForm:', this.emailForm);
-                    } else {
-                        errTips(msg);
-                    }
-                })
-               // if (val.emailConfig.content != null)
-               //     this.emailForm.config.content = val.emailConfig.content;
-
+                if (val.hasOwnProperty('emailConfig') === true) {
+                    this.emailForm.config.content = val.emailConfig.content;
+                    this.emailForm.config.theme = val.emailConfig.theme;
+                } else {
+                    let postEmailForm={adminMissionId:this.id,receiver:2,userId:val.userId,templateId:this.templateId};
+                    httpPost("/v1/authorization/review/expertinviteemailconfig/update", postEmailForm).then(results => {
+                        const {httpCode, msg, data} = results.data;
+                        if (httpCode === 200) {
+                            this.emailForm.config.content = data.content;
+                            this.emailForm.config.theme = null;
+                        } else {
+                            errTips(msg);
+                        }
+                    })
+                }
             },
 
             /**获取邮件模板，在中止未完成任务的对话框中展示用到的邮件*/

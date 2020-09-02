@@ -173,7 +173,6 @@
     import IndexHeader from "@/common/header/userHeader";
     import Footer from "@/common/footer/footer";
     import {httpGet, httpPut} from "@/utils/http.js";
-    import codeBtn from "@/common/sendCode/sendPhoneCode";
     import regular from "@/mixins/regular/companyRegister.js";
     import foreignArea from "@/view/loginRegister/register/components/foreignArea";
     import Avatar from "@/common/upload/Avatar";
@@ -186,31 +185,19 @@
             foreignArea,
             IndexHeader,
             Footer,
-            codeBtn,
             Avatar,
             addKeyWords
         },
         //表单验证
         mixins: [regular],
         data() {
-            const generateData = _ => {
-                const data = [];
-                for (let i = 1; i <= 4; i++) {
-                    data.push({
-                        key: i,
-                        label: `备选项 ${i}`
-                    })
-                }
-                return data;
-            };
-
             return {
                 rules: {
                     name: [{required: true, message: '请输入姓名', trigger: 'blur'}],
                     researchDirection: [{required: true, message: '请选择研究方向', trigger: 'blur'}],
 
                 },
-                data: generateData(),
+                data: null,
                 value: [],
                 filterMethod(query, item) {
                     return item.pinyin.indexOf(query) > -1;
@@ -273,7 +260,7 @@
             printValue() {
                 this.researchName = null;
                 let arr = [];
-                for (var i = 0; i < this.value.length; i++) {
+                for (let i = 0; i < this.value.length; i++) {
                     arr.push(this.researchList[this.value[i] - 1].researchDirection);
                 }
                 this.researchName = arr.join();
@@ -321,7 +308,7 @@
                 })
             },
 
-            submitForm(formName) {
+            submitForm() {
                 this.ruleForm.province = this.newcity[this.selectedOptions[0]];
                 this.ruleForm.city = this.newcity[this.selectedOptions[1]];
                 this.ruleForm.researchDirectionList = this.value;

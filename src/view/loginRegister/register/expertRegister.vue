@@ -180,8 +180,7 @@
     import {provinceAndCityData, CodeToText} from "element-china-area-data";
     import IndexHeader from "@/common/header/userHeader";
     import Footer from "@/common/footer/footer";
-    import {httpPost, httpGet, httpPut} from "@/utils/http.js";
-    import codeBtn from "@/common/sendCode/sendPhoneCode";
+    import {httpGet, httpPut} from "@/utils/http.js";
     import regular from "@/mixins/regular/companyRegister.js";
     import foreignArea from "@/view/loginRegister/register/components/foreignArea";
     import Avatar from "@/common/upload/Avatar";
@@ -194,26 +193,12 @@
             foreignArea,
             IndexHeader,
             Footer,
-            codeBtn,
             Avatar,
             addKeyWords
         },
         //表单验证
         mixins: [regular],
         data() {
-            const generateData = _ => {
-                const data = [];
-                //  const cities = ['上海', '北京', '广州', '深圳', '南京', '西安', '成都'];
-                //  const pinyin = ['shanghai', 'beijing', 'guangzhou', 'shenzhen', 'nanjing', 'xian', 'chengdu'];
-                for (let i = 1; i <= 4; i++) {
-                    data.push({
-                        key: i,
-                        label: `备选项 ${i}`
-                    })
-                }
-                return data;
-            };
-
             return {
                 rules: {
                     name: [{required: true, message: '请输入姓名', trigger: 'blur'}],
@@ -221,7 +206,7 @@
                     //researchName: [{ required: true, message: '请选择研究方向', trigger: 'blur' }],
                     //design: [{ required: true, message: '请输入模块设计说明', trigger: 'blur' }]
                 },
-                data: generateData(),
+                data: null,
                 value: [],
                 filterMethod(query, item) {
                     return item.pinyin.indexOf(query) > -1;
@@ -282,7 +267,6 @@
                 this.ruleForm.cruxList = val;
             },
             printValue() {
-				console.log(this.value);
 				this.researchName = null;
 				let arr = [];
 				for (var i = 0; i < this.value.length; i++) {
@@ -309,7 +293,6 @@
             //表单提交
 
             selectCountry(val) {
-                //console.log(val);
                 this.ruleForm.nation = val;
             },
 
@@ -318,7 +301,6 @@
                     const {httpCode, msg, data} = results.data;
                     if (httpCode === 200) {
                         this.researchList = data.researchDirectionList;
-                        console.log(this.researchList);
                         this.data = [];
                         for (var i = 0; i < this.researchList.length; i++) {
                             this.data.push({
@@ -327,19 +309,16 @@
                                 //   pinyin: pinyin[index]
                             });
                         }
-                        console.log(this.data);
                     } else {
                         errTips(msg);
                     }
                 })
             },
 
-            submitForm(formName) {
+            submitForm() {
                 this.ruleForm.province = this.newcity[this.selectedOptions[0]];
                 this.ruleForm.city = this.newcity[this.selectedOptions[1]];
                 this.ruleForm.researchDirectionList = this.value;
-                //console.log(this.researchObject);
-                console.log(this.ruleForm);
                 httpPut("/v1/authorization/coreuser/review/user", this.ruleForm).then(results => {
                     const {httpCode, msg} = results.data;
                     if (httpCode === 200) {
