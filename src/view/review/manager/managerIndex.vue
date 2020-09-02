@@ -114,10 +114,9 @@
                     const {httpCode, msg, data} = results.data;
                     if (httpCode == 200) {
                         this.projectList = data.projectList;
-                    } else if (httpCode !== 401) {
+                    } else if (httpCode !== 400) { //400 "该用户暂无参与执行中项目"
                         errTips(msg);
                     }
-
                 });
             },
             getTips(){

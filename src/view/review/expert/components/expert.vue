@@ -217,7 +217,7 @@
             /**待处理页面：提交拒绝理由*/
             submitRollback(){
                 httpPut('/v1/authorization/review/expertinvite/update', this.postForm).then(results => {
-                    const {data, msg, httpCode} = results.data;
+                    const {msg, httpCode} = results.data;
                     if (httpCode === 200) {
                         successTips("已拒绝评审！");
                         this.postForm.id = null;
@@ -318,6 +318,9 @@
                     if (httpCode == 200) {
                         data.deadline = specificDate(data.deadline);
                         data.gmtCreate = specificDate(data.gmtCreate);
+                        for(let item of data.resourceList ){
+                            item.gmtCreate = specificDate(item.gmtCreate);
+                        }
                         this.formReviewDetail = data;
                     } else if (msg == "该条件暂无数据") {
                         this.formReviewDetail = {};

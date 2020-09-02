@@ -31,28 +31,26 @@
 					</el-col>
 				</el-row>
 				<el-row :gutter="20">
-					<el-col :span="12">
 						<el-form-item label="评审内容" :label-width="formLabelWidth">
 							<el-input type="textarea" class="input_textarea" v-model="form.content" :rows="10" style="width:87%;" auto-complete="off" :readonly="isReadOnly"/>
 						</el-form-item>
-					</el-col>
-					<el-col :span="12">
+				</el-row>
+				<el-row>
 						<el-form-item label="附件下载" :label-width="formLabelWidth" style="text-align: center">
-						    <el-table :data="form.resourceList" :header-cell-style="rowClass">
-						        <el-table-column prop="resourceName" label="附件名称" align="center" ></el-table-column>
-						        <el-table-column  prop="gmtCreate" label="上传时间" align="center"></el-table-column>
-						        <el-table-column label="操作" align="center" >
-						            <template slot-scope="scope">
+							<el-table :data="form.resourceList" :header-cell-style="rowClass">
+								<el-table-column prop="resourceName" label="附件名称" align="center" :show-overflow-tooltip="true" ></el-table-column>
+								<el-table-column  prop="gmtCreate" label="上传时间" align="center"></el-table-column>
+								<el-table-column label="操作" align="center" >
+									<template slot-scope="scope">
 										<a target="_Blank" :href="scope.row.resourceUrl" > 下载 </a>
-						            </template>
-						        </el-table-column>
-						    </el-table>
+									</template>
+								</el-table-column>
+							</el-table>
 						</el-form-item>
-					</el-col>
 				</el-row>
 		</el-form>
 			<div slot="footer" style="text-align: center;">
-				<el-button @click="dialogFormVisible = false" style="margin-right: 10%">取 消</el-button>
+				<el-button @click="changeVisible" style="margin-right: 10%">取 消</el-button>
 				<el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
 			</div>
 		</el-dialog>
