@@ -136,13 +136,9 @@
 				default:null
 			}
 	    },
-	    // components: {
-	    //     readReviewTemplate
-	    // },
+
 	    data() {
 	        return {
-
-				//expertloading : false,
 				expertUserList : [],
 				cruxList : [],
 				researchDirectionList : [],
@@ -246,24 +242,38 @@
 			},
 			/**邀请与备选触发的函数*/
 			inviteRadio(id, arr, personalInfo) {
-				var val;
-				if (arr[0] === "邀请")
-					val = 1;
-				if (arr[0] === "备选")
-					val = 2;
-				var temp = {
-					emailConfig: null,
-					isInvite: true,
-					restrictReviewTime: this.params.restrictReviewTime,
-					type: val,
-					userId: id
+				let val;
+				console.log("id",id);
+				console.log(this.postForm.expertInviteList);
+				console.log(this.postForm.alternativeList);
+				if (arr.length === 0) {
+					let index = this.postForm.expertInviteList.findIndex(item => item.userId === id);
+					if (index != -1)
+						this.postForm.expertInviteList.splice(index, 1);
+					index = this.postForm.alternativeList.findIndex(item => item.userId === id);
+					if (index != -1) {
+						this.postForm.alternativeList.splice(index, 1);
+						this.alterList.splice(index, 1);
+					}
+
+				} else {
+					if (arr[0] === "邀请")
+						val = 1;
+					if (arr[0] === "备选")
+						val = 2;
+					let temp = {
+						emailConfig: null,
+						isInvite: true,
+						restrictReviewTime: this.params.restrictReviewTime,
+						type: val,
+						userId: id
+					}
+					if (val == 1) this.postForm.expertInviteList.push(temp);
+					if (val == 2) {
+						this.postForm.alternativeList.push(temp);
+						this.alterList.push(personalInfo);
+					}
 				}
-				if (val == 1) this.postForm.expertInviteList.push(temp);
-				if (val == 2) {
-					this.postForm.alternativeList.push(temp);
-					this.alterList.push(personalInfo);
-				}
-				//console.log("post",this.postForm);
 			},
 	    	/**获取关键词*/
 			getKeyWords() {
