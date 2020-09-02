@@ -12,7 +12,8 @@
             <el-table-column prop="status" label="状态" align="center"></el-table-column>
             <el-table-column label="评审结果" align="center">
                 <template slot-scope="scope">
-                    <el-button @click="viewExpertReview(scope.row)" type="text" size="medium">详情</el-button>
+                    <el-button @click="viewExpertReview(scope.row)" type="text" size="medium" v-if="scope.row.status==='完成'">详情</el-button>
+                    <span v-else>无</span>
                 </template>
             </el-table-column>
         </el-table>
@@ -65,10 +66,6 @@
         methods:{
             /**查看单个专家的评审意见*/
             viewExpertReview(row){
-                if(row.status!=="完成"){
-                    message("专家未完成评审");
-                    return;
-                }
                 this.readReviewDialogVisible = true;
                 httpGet("/v1/authorization/review/experttemplateopinion/get",{id:row.id}).then(results => {
                     const { httpCode, msg, data } = results.data;
