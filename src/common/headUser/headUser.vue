@@ -21,6 +21,7 @@
       </el-popover>
       <el-popover placement="top-start" width="200" trigger="hover" popper-class="useCard_two">
         <ul class="Userremind">
+          <li  class="UserNameItem">Hi, {{getuserData.userName}}!</li>
           <router-link :to="{name:'desk'}">
             <li class="UserremindItem">工作台</li>
           </router-link>
@@ -43,9 +44,6 @@ export default {
       messageList: []
     };
   },
-  // created: function() {
-  //   this.GETMESSAGE();
-  // },
   computed: {
     ...mapGetters(["getnoImg", "getuserData", "getMessageList"])
   },
@@ -146,6 +144,12 @@ export default {
       &:hover {
         background: #e8e8e8;
       }
+    }
+    .UserNameItem {
+      color: #000;
+      font-weight:bold;
+      padding: 10px 0 10px 20px;
+      cursor: pointer;
     }
   }
 }

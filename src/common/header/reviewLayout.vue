@@ -15,7 +15,6 @@
           </el-select>
           </div>
           <div class="c-header__logowrap">
-
             <router-link :to="indexUrl">
               <div id="topnav-gurulogo" v-bind:href="indexUrl" style="display:block">
                 <title id="logo-title">{{title}}</title>
@@ -23,16 +22,6 @@
               </div>
             </router-link>
           </div>
-          <!-- <ul class="c-header__navigation clearfix">
-            <li class="c-header__navigation__item" v-for="item in items" :key="item.title">
-              <router-link
-                ondragstart="return false"
-                @click.native="setHeader(item.url)"
-                :class="getHeader===item.url?'header_active':''"
-                :to="item.url"
-              >{{item.title}}</router-link>
-            </li>
-          </ul> -->
           <HeadUser/>
         </div>
       </div>
@@ -51,19 +40,19 @@ export default {
   data: function() {
     return {
       permissionList: [{
-        id: '1',
+        id: 1,
         name: '项目发布者'
       }, {
-        id: '2',
+        id: 2,
         name: '项目经理'
       }, {
-        id: '3',
+        id: 3,
         name: '评审专家'
       }, {
-        id: '4',
+        id: 4,
         name: '评审管理员'
       }],
-      value: '1',
+      value: 1,
       title: "群智化平台",
       logoUrl: require("@/assets/img/homepage/logo.png"),
       indexUrl: "/index",
@@ -100,13 +89,13 @@ export default {
     /*通过地址栏进入页面时，根据路由判断角色*/
     let currentRouteName = this.$route.name;
     if(currentRouteName.indexOf('publisher')>=0){
-      this.value = '1';
+      this.value = 1;
     }else if(currentRouteName.indexOf('manager')>=0){
-      this.value = '2';
+      this.value = 2;
     }else if(currentRouteName.indexOf('expert')>=0){
-      this.value = '3';
+      this.value = 3;
     }else if(currentRouteName.indexOf('editor')>=0){
-      this.value = '4';
+      this.value = 4;
     }
     let routerName = this.$router.currentRoute.meta.routerIndex;
     this.setHeader(routerName);
@@ -126,11 +115,11 @@ export default {
     },
     roleChange() {//角色切换
       let role = this.value;
-      if(role==1){//跳转项目发布者
+      if(role===1){//跳转项目发布者
         this.$router.push('/publisherIndex');
-      }else if(role==2){//跳转项目经理
+      }else if(role===2){//跳转项目经理
         this.$router.push('/managerIndex');
-      }else if(role==3){ //跳转评审专家
+      }else if(role===3){ //跳转评审专家
 		this.$router.push('/expertIndex');
       }else{ //跳转评审管理员
 		this.$router.push('/editorIndex');
