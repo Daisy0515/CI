@@ -166,7 +166,7 @@
     import {mapMutations} from 'vuex';
     import {successTips, errTips} from '@/utils/tips.js';
     import sourceUpload from '@/common/upload/resourceUpload';
-    import readReviewResultForManger from '@/view/desk/myBid/readReviewResultForManger';
+    import readReviewResultForManger from '@/view/review/components/readReviewResultForManger';
 
     export default {
         components: {
