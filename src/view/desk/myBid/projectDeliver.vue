@@ -17,7 +17,6 @@
 			<el-table :data="ReviewTable" style="width:900px;margin:50px auto;" :header-cell-style="rowClass" v-loading="loading">
 				<el-table-column label="评审状态" align="center">
 					<el-table-column fixed prop="typeName" label="评审流程" align="center">
-
 					</el-table-column>
 					<el-table-column prop="title" label="评审标题" align="center">
 						<template slot-scope="scope">
@@ -46,12 +45,10 @@
 				<el-form :model="form">
 					<h2 class="header">管理员意见：</h2>
 					<el-row :gutter="20">
-
 						<el-col :span="6">
 							<el-form-item label="管理员决定" :label-width="formLabelWidth">
 								<el-input v-model="form.adminOpinion.opinion" auto-complete="off" :readonly="isReadOnly" />
 							</el-form-item>
-
 						</el-col>
 						<el-col :span="12">
 							<el-form-item label="管理员意见详情" :label-width="formLabelWidth">
@@ -69,7 +66,7 @@
 						<el-table-column prop="reviewScore" label="得分" align="center"></el-table-column>
 						<el-table-column label="评审结果" align="center">
 							<template slot-scope="scope">
-								<el-button @click="viewExpertReview(scope.row.expertiInviteId)" type="text" size="medium">
+								<el-button @click="viewExpertReview(scope.row.expertiInviteId )" type="text" size="medium">
 									<i class="el-icon-search"></i>详情
 								</el-button>
 							</template>
@@ -154,7 +151,7 @@
 	import { mapMutations } from 'vuex';
 	import { successTips, errTips } from '@/utils/tips.js';
 	import sourceUpload from '@/common/upload/resourceUpload';
-	import readReviewResultForManger from '@/view/desk/myBid/readReviewResultForManger';
+	import readReviewResultForManger from '@/view/review/components/readReviewResultForManger';
 	export default {
 		components: {
 			sourceUpload,

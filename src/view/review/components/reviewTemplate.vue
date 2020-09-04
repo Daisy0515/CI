@@ -18,12 +18,14 @@
         <form-create v-model="fApi" :rule="rules" :option="option"/>
         <el-form :model="editorForm" style="font-weight: bolder"  ref="editorForm" :rules="editorRules">
             <el-form-item label="给作者的意见:" prop="commentsToAuthor">
-                <el-input type="textarea" :rows="5" v-model="editorForm.commentsToAuthor"
-                          placeholder="请输入对作者的意见，若内容较多，您也可以放在附件中，此处留下简单提示即可"></el-input>
+                <el-input type="textarea" :rows="5" v-model="editorForm.commentsToAuthor" maxlength="500" show-word-limit
+                          placeholder="请输入对作者的意见，若内容较多，您也可以放在附件中，此处留下简单提示即可">
+                </el-input>
             </el-form-item>
             <el-form-item label="给管理员的意见:" prop="commentsToEditor">
-                <el-input type="textarea" :rows="5" v-model="editorForm.commentsToEditor"
-                          placeholder="请输入对管理员的意见，若内容较多，您也可以放在附件中，此处留下简单提示即可"></el-input>
+                <el-input type="textarea" :rows="5" v-model="editorForm.commentsToEditor" maxlength="500" show-word-limit
+                          placeholder="请输入对管理员的意见，若内容较多，您也可以放在附件中，此处留下简单提示即可">
+                </el-input>
             </el-form-item>
             <el-form-item>
                 <sourceUpload style="margin-top: 30px;" :uploadIndex="uploadIndex" v-on:setIdCard="setIdCard($event)"/>
@@ -219,6 +221,9 @@
                         rule.props = {
                             type: "textarea",
                             rows: 5,
+                            placeholder:"最多输入500字",
+                            maxlength:500,
+                            showWordLimit:true,
                         };
                         rule.col = {
                             span: 16

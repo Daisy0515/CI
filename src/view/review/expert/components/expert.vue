@@ -203,6 +203,13 @@
         },
         methods: {
             getInitPageOrSearchData(){
+                let status = null;
+                let timeStatus = null;
+                if(this.timeStatus===null){
+                    status = parseInt(this.currentPage);
+                }else{
+                    timeStatus = parseInt(this.timeStatus);
+                }
                 return {
                     pageNo: 1,
                     pageSize: 10,
@@ -211,7 +218,8 @@
                     type: null,
                     submitTimeStart: null,
                     submitTimeEnd: null,
-                    status: parseInt(this.currentPage),
+                    status: status,
+                    timeStatus:timeStatus,
                 };
             },
             /**待处理页面：提交拒绝理由*/
@@ -351,6 +359,7 @@
             },
             /**所有页面：获取列表数据*/
             getView(val = this.pageData) {
+                console.log(" this.pageData", this.pageData);
                 this.pageData.type = this.setPropertyNull(this.pageData.type);
                 this.pageData.submitTimeStart = this.setPropertyNull(this.pageData.submitTimeStart);
                 this.pageData.submitTimeEnd = this.setPropertyNull(this.pageData.submitTimeEnd);
@@ -392,7 +401,7 @@
 
 </script>
 
-<style lang='scss'>
+<style lang='scss' scoped>
     @import "@/assets/scss/myTable.scss";
 
     .bid_footer {

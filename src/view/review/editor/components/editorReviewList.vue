@@ -4,7 +4,7 @@
               reviewStatistic(评审管理员：导航栏中评审完成对应的页面）
 -->
 <template>
-    <div class="myTable">
+    <div style="width:110%;">
         <div style="padding-left: 10px;">
             <el-breadcrumb separator-class="el-icon-arrow-right" style="font-size: 130%;">
                 <el-breadcrumb-item v-if="expertAccomplishCount!==null">评审统计</el-breadcrumb-item>
@@ -12,23 +12,24 @@
                 <el-breadcrumb-item>{{reviewTypes}}</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
-        <div class="header_top">
-            <el-input v-model="searchData.title" placeholder="评审标题"></el-input>
-            <el-select v-model="searchData.type" clearable placeholder="请选择评审类型" style="width: 150px;margin-right: 15px;">
-                <el-option v-for="index in typeList" :label="typeList[index]" :value="index"></el-option>
-            </el-select>
-            <el-input v-model="searchData.projectUserName" placeholder="发布者"></el-input>
-            <el-input v-model="searchData.submitterName" placeholder="提交人"></el-input>
-            <el-date-picker v-model="searchData.submitTimeStart" type="date" style="width: 150px;" placeholder="提交开始时间"
-                            value-format="yyyy-MM-dd" :picker-options="startDatePicker"></el-date-picker>
-            <span style="margin-right: 15px;">到</span>
-            <el-date-picker v-model="searchData.submitTimeEnd" type="date" style="width: 150px;" placeholder="提交结束时间"
-                            value-format="yyyy-MM-dd" :picker-options="endDatePicker"></el-date-picker>
-            <el-button type="primary" @click="searchList">搜索</el-button>
+        <div class="myTable">
+            <div class="header_top">
+                <el-input v-model="searchData.title" placeholder="评审标题"></el-input>
+                <el-select v-model="searchData.type" clearable placeholder="请选择评审类型" style="width: 150px;margin-right: 15px;">
+                    <el-option v-for="index in typeList" :label="typeList[index]" :value="index"></el-option>
+                </el-select>
+                <el-input v-model="searchData.projectUserName" placeholder="发布者"></el-input>
+                <el-input v-model="searchData.submitterName" placeholder="提交人"></el-input>
+                <el-date-picker v-model="searchData.submitTimeStart" type="date" style="width: 150px;" placeholder="提交开始时间"
+                                value-format="yyyy-MM-dd" :picker-options="startDatePicker"></el-date-picker>
+                <span style="margin-right: 15px;">到</span>
+                <el-date-picker v-model="searchData.submitTimeEnd" type="date" style="width: 150px;" placeholder="提交结束时间"
+                                value-format="yyyy-MM-dd" :picker-options="endDatePicker"></el-date-picker>
+                <el-button type="primary" @click="searchList">搜索</el-button>
+            </div>
         </div>
-
-        <el-table v-loading="loading" :data="tableData" style="margin:20px auto" :header-cell-style="rowClass">
-            <el-table-column label="操作" align="center" width="280px">
+        <el-table v-loading="loading" :data="tableData" style="margin:20px auto;width:2000px;" :header-cell-style="rowClass" >
+            <el-table-column label="操作" align="center" width="230px">
                 <template slot-scope="scope">
                     <el-button @click="handleClickDetail(scope.row.reviewId )" type="text" size="medium">
                         <i class="el-icon-search"></i>查看详情
@@ -78,6 +79,13 @@
                     </el-tooltip>
                 </template>
             </el-table-column>
+            <el-table-column prop="projectUserName" label="发布者" align="center">
+                <template slot-scope="scope">
+                    <el-tooltip class="item" effect="dark" :content="scope.row.projectUserName" placement="top-start">
+                        <span class="tablehidden">{{ scope.row.projectUserName }}</span>
+                    </el-tooltip>
+                </template>
+            </el-table-column>
             <el-table-column prop="submitterName" label="提交人" align="center">
                 <template slot-scope="scope">
                     <el-tooltip class="item" effect="dark" :content="scope.row.submitterName" placement="top-start">
@@ -95,7 +103,7 @@
                     <span v-show="scope.row.status==4">中止</span>
                 </template>
             </el-table-column>
-            <el-table-column prop="statusExplain" label="专家评审状态" align="center" width="120px;">
+            <el-table-column prop="statusExplain" label="专家评审状态" align="center" width="130px;">
                 <template slot-scope="scope">
                     <span v-if="scope.row.status === 1">等待管理员分配</span>
                     <template v-if="scope.row.status!==1">
@@ -114,6 +122,7 @@
             </el-table-column>
             <el-table-column prop="opinion" label="管理员意见" align="center">
                 <template slot-scope="scope">
+                    <span v-if="scope.row.opinion===null">未提出意见</span>
                     <span v-if="scope.row.opinion===1">接受</span>
                     <span v-if="scope.row.opinion===2">需要修改</span>
                     <span v-if="scope.row.opinion===3">拒绝</span>
@@ -396,4 +405,7 @@
 
 <style lang="scss" scoped>
     @import "@/assets/scss/myTable.scss";
+    .bid_footer{
+        text-align: center;
+    }
 </style>

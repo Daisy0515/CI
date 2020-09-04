@@ -89,9 +89,9 @@
                 <el-table-column prop="gmtModified" label="更新时间" align="center"></el-table-column>
                 <el-table-column prop="status" label="评审状态" align="center" v-if="timeStatus===1||timeStatus===2">
                     <template slot-scope="scope">
-                        <span v-if="scope.row.status==1">未接受</span>
-                        <span v-if="scope.row.status==2">评审中</span>
-                        <span v-if="scope.row.status==3">打回中</span>
+                        <span v-if="scope.row.status===1">未接受</span>
+                        <span v-if="scope.row.status===2">评审中</span>
+                        <span v-if="scope.row.status===3">打回中</span>
                     </template>
                 </el-table-column>
                 <el-table-column prop="accomplishProgress" label="操作" align="center" width="280px">
@@ -167,8 +167,8 @@
             </div>
         </el-dialog>
         <el-dialog title="tips:提交评价，代表本次评审结束，感谢您的评审" :visible.sync="dialogEvaluateVisible"
-                   style="width:100%;text-align:left; font-weight: bolder;" center :before-close="closeReviewDialog">
-            <el-form :model="reviewForm" :rules="rulesReviewForm" ref="reviewForm">
+                   style="width:100%;text-align:left; font-weight: bolder;" center :before-close="closeEvaluateDialog">
+            <el-form :model="evaluateForm" :rules="rulesEvaluateForm" ref="evaluateForm">
                 <el-row :gutter="20">
                     <el-col :span="10">
                         <el-form-item label="评审标题" :label-width="formLabelWidth">
@@ -177,7 +177,7 @@
                     </el-col>
                     <el-col :span="10">
                         <el-form-item label="是否通过" :label-width="formLabelWidth" prop="result">
-                            <el-radio-group v-model="reviewForm.result">
+                            <el-radio-group v-model="evaluateForm.result">
                                 <el-radio  :label="true">通过</el-radio>
                                 <el-radio  :label="false">未通过</el-radio>
                             </el-radio-group>
@@ -187,13 +187,13 @@
                 <el-row :gutter="20">
                     <el-col :span="10">
                         <el-form-item label="评审得分" :label-width="formLabelWidth" prop="score">
-                            <el-input v-model.number="reviewForm.score" auto-complete="off"/>
+                            <el-input v-model.number="evaluateForm.score" auto-complete="off"/>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
                         <el-form-item label="评价内容" :label-width="formLabelWidth" prop="content">
                             <el-input
-                                    v-model="reviewForm.content"
+                                    v-model="evaluateForm.content"
                                     type="textarea"
                                     :rows="3"
                                     placeholder="请输入内容"
@@ -203,8 +203,8 @@
                 </el-row>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogEvaluateVisible = false" style="margin-right: 30px;">取 消</el-button>
-                <el-button type="primary" @click="submitEvaluate('reviewForm')" v-prevent-click>提交</el-button>
+                <el-button @click="" style="margin-right: 30px;">取 消</el-button>
+                <el-button type="primary" @click="submitEvaluate('evaluateForm')" v-prevent-click>提交</el-button>
             </div>
         </el-dialog>
 
@@ -261,8 +261,8 @@
                 evaluateTitle: "",
                 formLabelWidth: '100px',
                 formReviewDetail: {},//用于存储评审打详情内容
-                reviewForm:this.getInitReviewForm() ,
-                rulesReviewForm:{ //填写评价的表单验证
+                evaluateForm:this.getInitEvaluateForm() ,
+                rulesEvaluateForm:{ //填写评价的表单验证
                     result:[{required: true, message: '请选择是否通过', trigger: 'change' }],
                     score: [{type: 'number',required: true,  message: '请输入分数', trigger: 'blur' }],
                     content:[{required: true, message: '请输入评价内容', trigger: 'blur' }],
@@ -499,7 +499,7 @@
             },
 
             /**评审中：用于保存评价时填写的内容*/
-            getInitReviewForm(){
+            getInitEvaluateForm(){
                 return {
                     content: null,
                     result: null,
@@ -509,30 +509,28 @@
                 };
             },
             /**评审中：评价*/
-            handleClickEvaluate(val, title) {
+            handleClickEvaluate(id, title) {
                 this.dialogEvaluateVisible = true;
-                this.reviewForm.reviewInfoId = val;
+                this.evaluateForm = this.getInitEvaluateForm(); //清空之前填过的评价内容
                 this.evaluateTitle = title;
-                this.reviewForm = this.getInitReviewForm(); //清空之前填过的评价内容
-                console.log("here");
-                console.log("this.reviewForm",this.reviewForm);
+                this.evaluateForm.reviewInfoId = id;
             },
             /**评审中：关闭评价框*/
-            closeReviewDialog(){
-
+            closeEvaluateDialog(){
+                this.dialogEvaluateVisible = false
             },
             /**评审中页面：提交评价*/
             submitEvaluate(formName) {//提交评价
                 this.$refs[formName].validate((valid)=>{
                     if (valid) {
-                        httpPost('/v1/authorization/review/evaluate/insert', this.reviewForm).then(results => {
+                        httpPost('/v1/authorization/review/evaluate/insert', this.evaluateForm).then(results => {
                             const {msg, httpCode} = results.data;
                             if (httpCode === 200) {
                                 successTips("评价结束");
                                 this.getView();
                                 this.evaluateTitle = null;
-                                this.reviewForm = this.getInitReviewForm();
-                                this.$router.push('/publisherComplete')
+                                this.evaluateForm = this.getInitEvaluateForm();
+                                this.$router.push('/publisherComplete');
                             } else {
                                 errTips(msg);
                             }

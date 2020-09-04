@@ -30,8 +30,8 @@
 				<el-option label="院士" :value="7"></el-option>
 			</el-select>
 			<el-input v-model="searchData.nation" placeholder="国家"></el-input>
-			
-			
+
+
 			<el-button type="primary" @click="searchList">搜索</el-button>
 		</div>
 
@@ -44,13 +44,13 @@
 					<span v-if = "scope.row.uSex === 3">其他</span>
 				</template>
 			</el-table-column>
-			
+
 			<el-table-column prop="uWorkUnit" label="单位" align="center"></el-table-column>
 			<el-table-column prop="uNation" label="国家" align="center"></el-table-column>
 			<el-table-column prop="uPhone" label="手机" align="center"></el-table-column>
 			<el-table-column prop="uEmail" label="邮箱" align="center"></el-table-column>
-			
-		
+
+
 			<el-table-column label="操作" align="center" width="180px">
 				<template slot-scope="scope">
 					<el-button @click="reviewInformaition(scope.row.uId)" type="text" size="medium"><i class="icon iconfont icon-yonghu"></i>专家信息
@@ -59,11 +59,11 @@
 					</el-button>
 				</template>
 			</el-table-column>
-			
+
 		</el-table>
 		<review-statistics :tableData="tableData" :dialogFormVisible="statisticView" @closeDialog="closeDialog"></review-statistics>
 		<expert-information :ruleForm="personalForm" :dialogFormVisible="informationView" @closeDialog="closeInformationDialog"></expert-information>
-		
+
 		<div class="bid_footer">
 		  <el-pagination
 		    @current-change="handleCurrentChange"
@@ -148,13 +148,13 @@
 					unfinishedReview : null,
 					warn : null,
 					withdrawAllocatedMission : null,
-					
+
 				},
 				cruxList:[],
 			};
 		},
 		created: function() {
-			
+
 			this.getExpert();
 			this.getKeyWords();
 			this.getResearchList();
@@ -202,7 +202,7 @@
 			reviewStatistics(val){
 				console.log(val);
 				this.statisticView = true;
-				//get /v1/authorization/review/expertuser/get 
+				//get /v1/authorization/review/expertuser/get
 				httpGet("/v1/authorization/review/expertuser/get", {id:val}).then(results => {
 					const {
 						httpCode,
@@ -220,12 +220,12 @@
 						errTips(msg);
 					}
 				});
-				
+
 			},
 			/*获取评审人员资料*/
 			reviewInformaition(val){
 				this.informationView = true;
-				//get /v1/authorization/coreuser/reviewexpertuserinfo/get 
+				//get /v1/authorization/coreuser/reviewexpertuserinfo/get
 				httpGet("/v1/authorization/coreuser/reviewexpertuserinfo/get", {id:val}).then(results => {
 					const {
 						httpCode,
@@ -237,7 +237,7 @@
 						if (data.sex === 1) data.sex = '男';
 						if (data.sex === 2) data.sex = '女';
 						if (data.sex === 3) data.sex = '其他';
-						
+
 						if (data.education === 1) data.education = '高中';
 						if (data.education === 2) data.education = '大专';
 						if (data.education === 3) data.education = '本科';
@@ -271,7 +271,7 @@
 						this.expertUserList = data.expertUserList;
 						console.log('expertUserList',this.expertUserList);
 						Object.assign(this.pageData, val);
-			
+
 					} else if (msg == "该条件暂无数据") {
 						this.expertUserList = [];
 						message("该条件暂无数据");
@@ -280,7 +280,7 @@
 					}
 					this.loading = false;
 				});
-			
+
 			},
 			//关闭专家信息对话框
 			closeInformationDialog(){

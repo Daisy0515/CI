@@ -67,10 +67,11 @@
 				</div>
 			</div>
 			<h2 style="text-align: left;font-weight: bolder;margin-top: 2%;">评审专家搜索</h2>
-			<div class="header_top">
+			<div>
 				<el-button type="primary" @click="searchExpert()">专家搜索</el-button>
-				<expert-search :dialogExpertVisible="dialogExpertVisible" :expertloading="loading" :reviewTitle="title" :params="expertSearchParam" @closeDialog="closeExpertSearchDialog"></expert-search>
-
+				<expert-search :dialogExpertVisible="dialogExpertVisible" :expertloading="loading" :reviewTitle="title"
+							   :params="expertSearchParam" @closeDialog="closeExpertSearchDialog">
+				</expert-search>
 			</div>
 			<h2 style="text-align: left;font-weight: bolder;margin-top: 2%;">已邀请专家列表</h2>
 			<div>
@@ -287,7 +288,7 @@
 	};
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 	.Link{
 		color: black;
 	}

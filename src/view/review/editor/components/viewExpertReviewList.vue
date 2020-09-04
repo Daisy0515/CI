@@ -9,7 +9,7 @@
         <el-table :data="userList" :header-cell-style="rowClass" v-loading="userListLoading">
             <el-table-column prop="userName" label="评审专家" align="center"></el-table-column>
             <el-table-column prop="gmtCreate" label="邀请时间" align="center"></el-table-column>
-            <el-table-column prop="status" label="状态" align="center"></el-table-column>
+            <el-table-column prop="status" label="状态" align="center" :show-overflow-tooltip="true"></el-table-column>
             <el-table-column label="评审结果" align="center">
                 <template slot-scope="scope">
                     <el-button @click="viewExpertReview(scope.row)" type="text" size="medium" v-if="scope.row.status==='完成'">详情</el-button>
@@ -35,7 +35,7 @@
     import { httpGet, } from "@/utils/http.js";
     import { message, successTips, errTips } from "@/utils/tips.js";
     import readReviewResult from '@/view/review/components/readReviewResult';
-    import readReviewResultForManager from '@/view/desk/myBid/readReviewResultForManger';
+    import readReviewResultForManager from '@/view/review/components/readReviewResultForManger';
     export default {
         name: "viewExpertReviewList",
         props: {
