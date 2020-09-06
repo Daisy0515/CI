@@ -146,6 +146,8 @@
                                     v-model="form.details"
                                     type="textarea"
                                     :rows="3"
+                                    maxlength="100"
+                                    show-word-limit
                                     placeholder="请输入内容"
                             />
                         </el-form-item>
@@ -196,6 +198,8 @@
                                     v-model="evaluateForm.content"
                                     type="textarea"
                                     :rows="3"
+                                    maxlength="200"
+                                    show-word-limit
                                     placeholder="请输入内容"
                             />
                         </el-form-item>
@@ -227,7 +231,7 @@
     import reviewDetailDialog from '@/view/review/components/reviewDetailDialog';
     import publisherReviewOpinion from '@/view/review/publisher/components/publisherReviewOpinion';
     import reviewEvaluation from '@/view/review/components/reviewEvaluation';
-    import timeLimit from "@/mixins/regular/timeLimit.js";
+    import timeLimit from "@/mixins/regular/timeLimitForReview.js";
 
     export default {
         props: {

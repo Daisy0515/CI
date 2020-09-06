@@ -4,7 +4,7 @@
 -->
 <template>
 	<el-dialog title="评审专家搜索" :visible.sync="dialogExpertVisible" :close-on-click-modal="false" width="80%" :before-close="changeVisible">
-	
+
 		<h2 style="font-weight: bolder;text-align: center;">评审标题：<span>{{reviewTitle}}</span></h2>
 		<div class="dialog_header_top">
 
@@ -63,7 +63,7 @@
 					<span>单位：{{scope.row.uWorkUnit}}</span></br>
 				</template>
 			</el-table-column>
-			
+
 			<el-table-column prop="uEmail" label="邮箱" align="center"></el-table-column>
 			<el-table-column prop="uNation" label="国家" align="center"></el-table-column>
 			<el-table-column prop="typeList" label="研究方向" align="center">
@@ -94,7 +94,7 @@
 					<span>撤回邀请：{{scope.row.invite.revocationInvite }}</span><br />
 					<span>中止任务：{{scope.row.invite.withdrawMission }}</span><br />
 					<span>邀请总数：{{scope.row.invite.inviteSum }}</span><br />
-	
+
 				</template>
 			</el-table-column>
 		</el-table>
@@ -105,9 +105,9 @@
 			<el-pagination @current-change="handleCurrentChange" :current-page.sync="pageData.pageNo" :total="totalPage"
 						   layout="prev, pager, next, jumper"></el-pagination>
 		</div>
-	
+
 	</el-dialog>
-	
+
 </template>
 
 <script>
@@ -123,7 +123,7 @@
 	            type:Boolean,
 	            default:false,
 	        },
-			expertloading:{ 
+			expertloading:{
 				type:Boolean,
 				default:false,
 			},
@@ -372,5 +372,16 @@
 	}
 </script>
 
-<style>
+<style lang="scss" scoped>
+	.dialog_header_top{
+		.el-input, .el-select{
+			display: inline-block;
+			width: 150px;
+			margin:15px 15px 15px 0;
+		}
+	}
+	.bid_footer{
+		margin: 15px auto;
+		text-align:center;
+	}
 </style>

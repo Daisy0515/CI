@@ -14,10 +14,12 @@
                 <el-input v-model="searchData.type" placeholder="请输入评审类型"></el-input>
                 <el-input v-model="searchData.title" placeholder="请输入评审标题"></el-input>
                 <el-date-picker v-model="searchData.gmtCreateStart" type="date" placeholder="邀请开始时间"
-                                value-format="yyyy-MM-dd"></el-date-picker>
+                                :picker-options="startDatePicker" value-format="yyyy-MM-dd">
+                </el-date-picker>
                 <span style="margin-right:15px">到</span>
                 <el-date-picker v-model="searchData.gmtCreateEnd" type="date" placeholder="邀请结束时间"
-                                value-format="yyyy-MM-dd"></el-date-picker>
+                                :picker-options="endDatePicker" value-format="yyyy-MM-dd">
+                </el-date-picker>
                 <el-button type="primary" @click="searchList()">搜索</el-button>
             </div>
         </div>
@@ -135,6 +137,8 @@
     import {MessageBox} from 'element-ui';
     import reviewTemplate from '@/view/review/components/reviewTemplate';
     import readReviewResult from '@/view/review/components/readReviewResult';
+    import timeLimit from "@/mixins/regular/timeLimitForReview.js";
+
     export default {
         components: {
             expertReviewDetail,
@@ -151,6 +155,7 @@
                 default:null,
             }
         },
+        mixins: [timeLimit],
         computed:{
             currentPageName:function(){
                 if(this.timeStatus===null){

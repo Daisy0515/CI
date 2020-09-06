@@ -76,10 +76,10 @@
 			<h2 style="text-align: left;font-weight: bolder;margin-top: 2%;">已邀请专家列表</h2>
 			<div>
 				<el-table :data="expertInviteList" style="width:700px;margin:50px auto;" :header-cell-style="rowClass" v-loading="loading">
-					<el-table-column prop="userName" label="评审专家" align="center">
+					<el-table-column prop="name" label="评审专家" align="center">
 						<template slot-scope="scope">
-							<el-tooltip class="item" effect="dark" :content="scope.row.userName" placement="top-start">
-								<span class="tablehidden">{{ scope.row.userName }}</span>
+							<el-tooltip class="item" effect="dark" :content="scope.row.name" placement="top-start">
+								<span class="tablehidden">{{ scope.row.name }}</span>
 							</el-tooltip>
 						</template>
 					</el-table-column>
@@ -107,10 +107,10 @@
 			<div>
 				<el-table :data="expertAlternativeList" style="width:500px;margin:50px auto;" :header-cell-style="rowClass"
 						  v-loading="loading">
-					<el-table-column prop="userName" label="评审专家" align="center">
+					<el-table-column prop="name" label="评审专家" align="center">
 						<template slot-scope="scope">
-							<el-tooltip class="item" effect="dark" :content="scope.row.userName" placement="top-start">
-								<span class="tablehidden">{{ scope.row.userName }}</span>
+							<el-tooltip class="item" effect="dark" :content="scope.row.name" placement="top-start">
+								<span class="tablehidden">{{ scope.row.name }}</span>
 							</el-tooltip>
 						</template>
 					</el-table-column>

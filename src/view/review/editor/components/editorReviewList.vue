@@ -28,7 +28,7 @@
                 <el-button type="primary" @click="searchList">搜索</el-button>
             </div>
         </div>
-        <el-table v-loading="loading" :data="tableData" style="margin:20px auto;width:2000px;" :header-cell-style="rowClass" >
+        <el-table v-loading="loading" :data="tableData" style="margin:20px auto;" :header-cell-style="rowClass" >
             <el-table-column label="操作" align="center" width="230px">
                 <template slot-scope="scope">
                     <el-button @click="handleClickDetail(scope.row.reviewId )" type="text" size="medium">

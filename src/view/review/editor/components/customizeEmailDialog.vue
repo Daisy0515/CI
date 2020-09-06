@@ -6,7 +6,7 @@
 <template>
     <el-dialog title="已选择对象" :visible.sync="visible" width="80%" :before-close="closeSelectedUserDialog">
         <el-table :data="userList" v-loading="userListLoading">
-            <el-table-column property="userName" label="发送对象"></el-table-column>
+            <el-table-column property="name" label="发送对象"></el-table-column>
             <el-table-column property="title" label="评审标题" v-if="usedBy!=='editorOpinionAndDecision'"></el-table-column>
             <el-table-column property="status" label="评审状态" v-if="usedBy==='editorOpinionAndDecision'"></el-table-column>
             <el-table-column property="id" label="评审编号"></el-table-column>

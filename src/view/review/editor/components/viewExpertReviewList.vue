@@ -7,7 +7,7 @@
 <template>
     <div style="margin:10px 0;">
         <el-table :data="userList" :header-cell-style="rowClass" v-loading="userListLoading">
-            <el-table-column prop="userName" label="评审专家" align="center"></el-table-column>
+            <el-table-column prop="name" label="评审专家" align="center"></el-table-column>
             <el-table-column prop="gmtCreate" label="邀请时间" align="center"></el-table-column>
             <el-table-column prop="status" label="状态" align="center" :show-overflow-tooltip="true"></el-table-column>
             <el-table-column label="评审结果" align="center">

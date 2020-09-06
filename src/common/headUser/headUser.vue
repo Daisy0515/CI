@@ -59,6 +59,7 @@ export default {
   float: right;
 }
 .userImg {
+  margin: auto 0;
   .icon-xiaoxi {
     cursor: pointer;
     font-size: 26px;
@@ -69,6 +70,9 @@ export default {
     &:hover {
       color: #7ea3ce;
     }
+  }
+  .badge{
+    margin-top: -20px;
   }
   img {
     margin: 3px 0 0 10px;
