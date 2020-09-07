@@ -1,3 +1,4 @@
+<!--路由组件的顶层路由-->
 <template>
   <div id="app">
     <router-view v-if="isRouterAlive"></router-view>
