@@ -41,11 +41,11 @@
             </el-row>
             <div>
                 <h3>给作者的意见:</h3>
-                <el-input type="textarea" :rows="5" v-model="commentsToAuthor" :readonly="true"></el-input>
+                <el-input type="textarea" :rows="5" v-model="commentsToAuthor" :readonly="true" :autosize="{minRows: 5, maxRows: 12 }"></el-input>
             </div><br>
             <div>
                 <h3>给管理员的意见:</h3>
-                <el-input type="textarea" :rows="5" v-model="commentsToEditor" :readonly="true"></el-input>
+                <el-input type="textarea" :rows="5" v-model="commentsToEditor" :readonly="true" :autosize="{minRows: 5, maxRows: 12 }"></el-input>
             </div><br>
             <!--管理员提交意见-->
             <el-form :model="localForm" ref="editorOpinionForm" :rules="editorOpinionFormRules" v-if="intIdentification===1">
@@ -61,13 +61,15 @@
                 </el-form-item>
                 <el-form-item prop="details">
                     <h3><span style="color:red;">*</span>管理员的意见:</h3>
-                    <el-input v-model="localForm.details" type="textarea" :rows="5" placeholder="请输入管理员意见！"></el-input>
+                    <el-input v-model="localForm.details" type="textarea" :rows="5" placeholder="请输入管理员意见！"
+                              maxlength="1000" show-word-limit>
+                    </el-input>
                 </el-form-item>
                 <el-row>
                     <el-col :span="12">
                         <el-form-item>
                             <el-table :data="localForm.attachmentList" style="margin-top: 20px;" border>
-                                <el-table-column property="attachmentName" label="附件名" align="center"></el-table-column>
+                                <el-table-column property="attachmentName" label="附件名" align="center" :show-overflow-tooltip="true"></el-table-column>
                                 <el-table-column property="userName" label="上传者" align="center"></el-table-column>
                                 <el-table-column label="操作" align="center">
                                     <template slot-scope="scope">
@@ -101,7 +103,7 @@
                 <el-row >
                     <el-col :span="12">
                         <el-table :data="localForm.attachmentList" style="margin-top: 20px;" border>
-                            <el-table-column property="attachmentName" label="附件名" align="center"></el-table-column>
+                            <el-table-column property="attachmentName" label="附件名" align="center" :show-overflow-tooltip="true"></el-table-column>
                             <el-table-column property="userName" label="上传者" align="center"></el-table-column>
                             <el-table-column label="操作" align="center">
                                 <template slot-scope="scope">
@@ -130,13 +132,13 @@
                 </el-form-item>
                 <el-form-item prop="details">
                     <h3><span style="color:red;">*</span>管理员的意见:</h3>
-                    <el-input v-model="localForm.details" type="textarea" :rows="5" :readonly="true"></el-input>
+                    <el-input v-model="localForm.details" type="textarea" :rows="5" :readonly="true" :autosize="{minRows: 5, maxRows: 10 }"></el-input>
                 </el-form-item>
                 <el-row>
                     <el-col :span="12">
                         <el-form-item>
                             <el-table :data="localForm.attachmentList" style="margin-top: 20px;" border>
-                                <el-table-column property="attachmentName" label="附件名" align="center"></el-table-column>
+                                <el-table-column property="attachmentName" label="附件名" align="center" :show-overflow-tooltip="true"></el-table-column>
                                 <el-table-column property="userName" label="上传者" align="center"></el-table-column>
                                 <el-table-column label="操作" align="center">
                                     <template slot-scope="scope">
@@ -251,7 +253,6 @@
             getView(){
                 this.userListLoading = true;
                 let url = "";
-                console.log()
                 if(this.intIdentification === 1){   //没有未完成任务的评审专家，提交意见
                     url = "/v1/authorization/review/adminopinion/get";
                 }else if(this.intIdentification === 2 ){   //存在未完成任务的评审专家，中止任务
@@ -266,8 +267,14 @@
                         this.title = data.title;
                         this.authorList = data.authorList;
                         this.editorList = data.editorList;
-                        for(let item of data.attachmentList){
-                            item.attachmentName = item.attachment.split('/').pop();//附件名在附件地址的末尾处
+                        let attachList = data.attachmentList;
+                        for(let i=0;i<attachList.length;i++){
+                            if(null === attachList[i].attachment){
+                                attachList.splice(i,1);
+                                i--;
+                            }else{
+                                attachList[i].attachmentName = attachList[i].attachment.split('/').pop();//附件名在附件地址的末尾处
+                            }
                         }
                         this.localForm.attachmentList = data.attachmentList;
                         this.number = data.number;
@@ -319,7 +326,6 @@
                     }
                     this.submitLoading = false;
                 });
-
             },
             /**上传文件控制与提交意见*/
             setIdCard(data){ //发起评审时调用的，data 表示上传文件的地址
@@ -330,6 +336,7 @@
                     const {msg, httpCode} = results.data;
                     if (httpCode === 200) {
                         successTips('提交意见成功,评审任务已完成！');
+                        this.$router.replace({name:"editorComplete"});
                     } else if (httpCode !== 401) {
                         errTips(msg);
                     } else {
@@ -337,7 +344,6 @@
                     }
                     this.submitLoading = false;
                 });
-
             },
 
             /*---------------中止任务相关------------------*/
@@ -381,12 +387,13 @@
                 let params = deepCopyObject(this.$route.params);
                 params.identification = 1;//中止完任务后，希望将当前页面切换成提交意见的界面
                 this.$router.replace({name:this.$route.name,params:params});//采用replace是为了替换掉本身的中止页面，点击返回上一级的时候，可以返回评审任务列表
+                this.$router.go(0);   //加这一句是因为上一句只变换了地址栏，但是没有加载
             },
 
         },
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped >
 
 </style>

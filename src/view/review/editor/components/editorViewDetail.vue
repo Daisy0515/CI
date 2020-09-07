@@ -48,9 +48,9 @@
             </el-row>
             <el-row >
                 <el-col :span="20">
-                    <el-table :data="form.resourceList" border>
+                    <el-table :data="form.resourceList" border :header-cell-style="rowClass" >
                         <el-table-column prop="gmtCreate" label="上传时间"></el-table-column>
-                        <el-table-column prop="resourceName" label="附件名称"></el-table-column>
+                        <el-table-column prop="resourceName" label="附件名称" :show-overflow-tooltip="true"></el-table-column>
                         <el-table-column label="操作">
                             <template slot-scope="scope">
                                 <a target="_Blank" :href="scope.row.resourceUrl" > 下载 </a>

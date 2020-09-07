@@ -18,17 +18,20 @@
         <form-create v-model="fApi" :rule="rules" :option="option"/>
         <el-form :model="editorForm" style="font-weight: bolder"  ref="editorForm" :rules="editorRules">
             <el-form-item label="给作者的意见:" prop="commentsToAuthor">
-                <el-input type="textarea" :rows="5" v-model="editorForm.commentsToAuthor" :readonly="readonly"
-                          placeholder="请输入对作者的意见，若内容较多，您也可以放在附件中，此处留下简单提示即可"></el-input>
+                <el-input type="textarea" :rows="5" v-model="editorForm.commentsToAuthor" :readonly="readonly" :autosize="{minRows: 5, maxRows: 10 }"
+                          placeholder="请输入对作者的意见，若内容较多，您也可以放在附件中，此处留下简单提示即可">
+                </el-input>
             </el-form-item>
             <el-form-item label="给管理员的意见:" prop="commentsToEditor">
-                <el-input type="textarea" :rows="5" v-model="editorForm.commentsToEditor" :readonly="readonly"
-                          placeholder="请输入对管理员的意见，若内容较多，您也可以放在附件中，此处留下简单提示即可"></el-input>
+                <el-input type="textarea" :rows="5" v-model="editorForm.commentsToEditor" :readonly="readonly" :autosize="{minRows: 5, maxRows: 10}"
+                          placeholder="请输入对管理员的意见，若内容较多，您也可以放在附件中，此处留下简单提示即可">
+                </el-input>
             </el-form-item>
         </el-form>
         <el-row style="margin-top: 20px;">
             <el-col :span="3">
-                <a target="_Blank" :href="editorForm.attachment" > 下载 </a>
+                <a target="_Blank" :href="editorForm.attachment" v-if="editorForm.attachment!==null"> 下载 </a>
+                <span v-else>暂无附件</span>
             </el-col>
             <el-col :span="2" :offset="16">
                 <span style="font-size: large;font-weight: bolder;">评审得分:</span>
@@ -194,6 +197,7 @@
                         rule.props = {
                             type: "textarea",
                             rows: 5,
+                            autosize:{minRows: 5, maxRows: 10},
                             readonly:true,
                         };
                         rule.col = {

@@ -14,10 +14,12 @@
                 <el-input v-model="searchData.type" placeholder="请输入评审类型"></el-input>
                 <el-input v-model="searchData.title" placeholder="请输入评审标题"></el-input>
                 <el-date-picker v-model="searchData.gmtCreateStart" type="date" placeholder="邀请开始时间"
-                                value-format="yyyy-MM-dd"></el-date-picker>
+                                :picker-options="startDatePicker" value-format="yyyy-MM-dd">
+                </el-date-picker>
                 <span style="margin-right:15px">到</span>
                 <el-date-picker v-model="searchData.gmtCreateEnd" type="date" placeholder="邀请结束时间"
-                                value-format="yyyy-MM-dd"></el-date-picker>
+                                :picker-options="endDatePicker" value-format="yyyy-MM-dd">
+                </el-date-picker>
                 <el-button type="primary" @click="searchList()">搜索</el-button>
             </div>
         </div>
@@ -135,6 +137,8 @@
     import {MessageBox} from 'element-ui';
     import reviewTemplate from '@/view/review/components/reviewTemplate';
     import readReviewResult from '@/view/review/components/readReviewResult';
+    import timeLimit from "@/mixins/regular/timeLimitForReview.js";
+
     export default {
         components: {
             expertReviewDetail,
@@ -151,6 +155,7 @@
                 default:null,
             }
         },
+        mixins: [timeLimit],
         computed:{
             currentPageName:function(){
                 if(this.timeStatus===null){
@@ -203,6 +208,13 @@
         },
         methods: {
             getInitPageOrSearchData(){
+                let status = null;
+                let timeStatus = null;
+                if(this.timeStatus===null){
+                    status = parseInt(this.currentPage);
+                }else{
+                    timeStatus = parseInt(this.timeStatus);
+                }
                 return {
                     pageNo: 1,
                     pageSize: 10,
@@ -211,7 +223,8 @@
                     type: null,
                     submitTimeStart: null,
                     submitTimeEnd: null,
-                    status: parseInt(this.currentPage),
+                    status: status,
+                    timeStatus:timeStatus,
                 };
             },
             /**待处理页面：提交拒绝理由*/
@@ -351,6 +364,7 @@
             },
             /**所有页面：获取列表数据*/
             getView(val = this.pageData) {
+                console.log(" this.pageData", this.pageData);
                 this.pageData.type = this.setPropertyNull(this.pageData.type);
                 this.pageData.submitTimeStart = this.setPropertyNull(this.pageData.submitTimeStart);
                 this.pageData.submitTimeEnd = this.setPropertyNull(this.pageData.submitTimeEnd);
@@ -392,7 +406,7 @@
 
 </script>
 
-<style lang='scss'>
+<style lang='scss' scoped>
     @import "@/assets/scss/myTable.scss";
 
     .bid_footer {

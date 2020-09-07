@@ -81,15 +81,15 @@
                 <el-table-column prop="gmtModified" label="更新时间" align="center"></el-table-column>
                 <el-table-column prop="result" label="结果" align="center" v-if="status===4">
                     <template slot-scope="scope">
-                        <span v-if="scope.row.result==1">通过</span>
-                        <span v-if="scope.row.result==0">未通过</span>
+                        <span v-if="scope.row.result===1">通过</span>
+                        <span v-if="scope.row.result===0">未通过</span>
                     </template>
                 </el-table-column>
                 <el-table-column prop="status" label="评审状态" align="center" v-if="timeStatus===1||timeStatus===2">
                     <template slot-scope="scope">
-                        <span v-if="scope.row.status==1">未接受</span>
-                        <span v-if="scope.row.status==2">评审中</span>
-                        <span v-if="scope.row.status==3">打回中</span>
+                        <span v-if="scope.row.status===1">未接受</span>
+                        <span v-if="scope.row.status===2">评审中</span>
+                        <span v-if="scope.row.status===3">打回中</span>
                     </template>
                 </el-table-column>
                 <el-table-column prop="accomplishProgress" label="操作" align="center" width="280px">

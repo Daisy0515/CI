@@ -67,18 +67,19 @@
 				</div>
 			</div>
 			<h2 style="text-align: left;font-weight: bolder;margin-top: 2%;">评审专家搜索</h2>
-			<div class="header_top">
+			<div>
 				<el-button type="primary" @click="searchExpert()">专家搜索</el-button>
-				<expert-search :dialogExpertVisible="dialogExpertVisible" :expertloading="loading" :reviewTitle="title" :params="expertSearchParam" @closeDialog="closeExpertSearchDialog"></expert-search>
-
+				<expert-search :dialogExpertVisible="dialogExpertVisible" :expertloading="loading" :reviewTitle="title"
+							   :params="expertSearchParam" @closeDialog="closeExpertSearchDialog">
+				</expert-search>
 			</div>
 			<h2 style="text-align: left;font-weight: bolder;margin-top: 2%;">已邀请专家列表</h2>
 			<div>
 				<el-table :data="expertInviteList" style="width:700px;margin:50px auto;" :header-cell-style="rowClass" v-loading="loading">
-					<el-table-column prop="userName" label="评审专家" align="center">
+					<el-table-column prop="name" label="评审专家" align="center">
 						<template slot-scope="scope">
-							<el-tooltip class="item" effect="dark" :content="scope.row.userName" placement="top-start">
-								<span class="tablehidden">{{ scope.row.userName }}</span>
+							<el-tooltip class="item" effect="dark" :content="scope.row.name" placement="top-start">
+								<span class="tablehidden">{{ scope.row.name }}</span>
 							</el-tooltip>
 						</template>
 					</el-table-column>
@@ -106,10 +107,10 @@
 			<div>
 				<el-table :data="expertAlternativeList" style="width:500px;margin:50px auto;" :header-cell-style="rowClass"
 						  v-loading="loading">
-					<el-table-column prop="userName" label="评审专家" align="center">
+					<el-table-column prop="name" label="评审专家" align="center">
 						<template slot-scope="scope">
-							<el-tooltip class="item" effect="dark" :content="scope.row.userName" placement="top-start">
-								<span class="tablehidden">{{ scope.row.userName }}</span>
+							<el-tooltip class="item" effect="dark" :content="scope.row.name" placement="top-start">
+								<span class="tablehidden">{{ scope.row.name }}</span>
 							</el-tooltip>
 						</template>
 					</el-table-column>
@@ -287,7 +288,7 @@
 	};
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 	.Link{
 		color: black;
 	}

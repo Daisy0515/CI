@@ -21,7 +21,7 @@
                     <el-checkbox v-model="scope.row.isChoose" @change="idListChange(scope.row)"></el-checkbox>
                 </template>
             </el-table-column>
-            <el-table-column prop="userName" label="评审专家" align="center"></el-table-column>
+            <el-table-column prop="name" label="评审专家" align="center"></el-table-column>
             <el-table-column prop="loginTime" label="上次登录" align="center" width="100px;"></el-table-column>
             <el-table-column prop="title" label="相关评审任务" align="center"></el-table-column>
             <el-table-column prop="gmtCreate" label="评审邀请时间" align="center" width="100px;"></el-table-column>
@@ -94,6 +94,7 @@
                 searchData = Object.assign(this.pageData,searchData);//searchData和pageData会合并在一起，两者都发生改变
                 httpGet("v1/authorization/review/byadminmission/search", searchData).then(results => {
                     const {httpCode, msg, data} = results.data;
+                    console.log("searchResultData:",data);
                     if (httpCode == 200) {
                         for(let item of data.expertList){
                             item.deadline = specificDate(item.deadline);

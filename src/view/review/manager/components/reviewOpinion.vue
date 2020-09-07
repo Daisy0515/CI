@@ -34,8 +34,8 @@
                     <el-table-column prop="id" label="意见编号" > </el-table-column>
                     <el-table-column prop="submitTime" label="提交日期"></el-table-column>
                     <el-table-column prop="deadline" label="回复截止日期"></el-table-column>
-                    <el-table-column prop="details" label="意见详情"></el-table-column>
-                    <el-table-column prop="writeBack" label="回复详情"></el-table-column>
+                    <el-table-column prop="details" label="意见详情" width="250px"></el-table-column>
+                    <el-table-column prop="writeBack" label="回复详情" width="250px"></el-table-column>
                     <el-table-column label="操作">
                         <template slot-scope="scope" style="display: inline">
                             <el-button @click="insertReply(scope.row)" type="text" size="medium" style="margin-left: 30%"
@@ -50,7 +50,8 @@
             <el-row :gutter="10">
                 <el-col :span="4"><span>回复内容: </span></el-col>
                 <el-col :span="20">
-                    <el-input v-model="OpinionReply" type="textarea" :rows="2" placeholder="请输入内容"/>
+                    <el-input v-model="OpinionReply" type="textarea" :rows="2" placeholder="请输入内容"
+                              maxlength="100" show-word-limit/>
                 </el-col>
             </el-row>
             <div slot="footer" class="dialog-footer">

@@ -19,7 +19,9 @@
         <form-create v-model="fApi" :rule="rules" :option="option"/>
         <el-form :model="editorForm" style="font-weight: bolder"  ref="editorForm" :rules="editorRules">
             <el-form-item label="给作者的意见:" prop="commentsToAuthor">
-                <el-input type="textarea" :rows="5" v-model="editorForm.commentsToAuthor" :readonly="readonly"></el-input>
+                <el-input type="textarea" :rows="5" v-model="editorForm.commentsToAuthor" :readonly="readonly"
+                          :autosize="{minRows: 5, maxRows: 10 }">
+                </el-input>
             </el-form-item>
         </el-form>
         <el-row style="margin-top: 20px;">
@@ -190,6 +192,7 @@
                         rule.props = {
                             type: "textarea",
                             rows: 5,
+                            autosize:{minRows: 5, maxRows: 10},
                             readonly:true,
                         };
                         rule.col = {

@@ -81,7 +81,6 @@
                     </el-table>
                     <h2 class="header">发布者意见：</h2>
                     <el-row :gutter="20">
-
                         <el-col :span="6">
                             <el-form-item label="发布者决定" :label-width="formLabelWidth">
                                 <el-input v-model="form.projectOpinion.result" auto-complete="off"
@@ -162,11 +161,12 @@
     </div>
 </template>
 <script>
+
     import {httpGet, httpPut} from '@/utils/http.js';
     import {mapMutations} from 'vuex';
     import {successTips, errTips} from '@/utils/tips.js';
     import sourceUpload from '@/common/upload/resourceUpload';
-    import readReviewResultForManger from '@/view/desk/myBid/readReviewResultForManger';
+    import readReviewResultForManger from '@/view/review/components/readReviewResultForManger';
 
     export default {
         components: {

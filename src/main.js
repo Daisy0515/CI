@@ -14,7 +14,8 @@ Vue.use(preventClick)
 Vue.config.productionTip = false;
 import assign from 'object-assign';
 assign({}, {});
-import '@/assets/scss/public.scss'
+import '@/assets/scss/public.scss';
+import  '@/assets/scss/element-variables.scss';
 new Vue({
   router,
   store,

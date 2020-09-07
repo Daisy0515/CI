@@ -64,6 +64,8 @@
                             v-model="ruleForm.details"
                             type="textarea"
                             :rows="2"
+                            maxlength="100"
+                            show-word-limit
                             placeholder="请输入内容"/>
                 </el-col>
             </el-row>
