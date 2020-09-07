@@ -260,7 +260,7 @@
                 this.global = true;         //开启全局定制
                 let index = 0;              //考虑到发送的邮件最少只有1封，故index取最小值
                 let row = deepCopyObject(this.userList[index]); //第一次点开全局定制时，显示的内容为第一封信件后台返回的内容
-                this.emailInfo.receiverName = row.userName; //全局定制的时候，收件人姓名仅仅以第一个人的为例
+                this.emailInfo.receiverName = row.name; //全局定制的时候，收件人姓名仅仅以第一个人的为例
                 this.customizeVisible = true;
                 if(this.globalCustomizeInfo===null){
                     row.emailConfig = null;     //全局定制的数据第一次要从后端返回，
@@ -275,7 +275,7 @@
             customizeEmail(row, index) {
                 this.global = false;            //关闭全局定制
                 this.selectedUserIndex = index; //预先赋值，在保存信件内容的时候需要这个属性
-                this.emailInfo.receiverName = row.userName;
+                this.emailInfo.receiverName = row.name;
                 this.customizeVisible = true;
                 this.getEmailContentInfo(row);
             },

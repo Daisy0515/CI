@@ -19,29 +19,29 @@
                     </el-radio-group>
                 </el-col>
                 <el-col :span="20">
-                    <el-row style="font-size: large;margin-top: 8px;margin-left: -3px;">
-                        <el-col :span="6">显示所有在截止日期</el-col>
+                    <el-row style="font-size: large;margin-top: 8px;margin-left: 2px;">
+                        <el-col :span="3">显示需要在</el-col>
                         <el-col :span="4">
                             <el-input size="small" style="margin-top: -5px" v-model="aboutTimeout"/>
                         </el-col>
-                        <el-col :span="5">天内的评审专家</el-col>
+                        <el-col :span="6">天内提交评审结果的专家</el-col>
                     </el-row>
                     <el-row style="font-size: large;margin-top: 12px;margin-left: -3px;">
-                        <el-col :span="7">显示所有比截止日期晚了</el-col>
+                        <el-col :span="6">显示已过评审截止日期</el-col>
                         <el-col :span="4">
                             <el-input size="small" style="margin-top: -5px" v-model="postpone"/>
                         </el-col>
-                        <el-col :span="5">天内的评审专家</el-col>
+                        <el-col :span="6">天还未完成任务的专家</el-col>
                     </el-row>
                     <el-row style="font-size: large;margin-top: 12px;">
-                        <span style="margin-left:13px;">显示评审截止日期在
+                        <span style="margin-left:-105px;">显示需在
                         <el-date-picker
                                 v-model="submitTimeStart"
                                 :picker-options="startDatePicker"
                                 type="date"
                                 placeholder="选择开始时间"
                                 value-format="yyyy-MM-dd"
-                        ></el-date-picker>和
+                        ></el-date-picker>至
                         <el-date-picker
                                 v-model="submitTimeEnd"
                                 :picker-options="endDatePicker"
@@ -49,7 +49,7 @@
                                 placeholder="选择结束时间"
                                 value-format="yyyy-MM-dd"
                         ></el-date-picker>
-                        之间的所有评审者
+                       内完成评审的专家
                         </span>
                     </el-row>
                 </el-col>

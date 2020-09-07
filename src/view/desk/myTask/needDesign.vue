@@ -77,7 +77,7 @@ export default {
 				sourceFile: "" ,//原文件
 				documentsId:"",
 				remark:""
-				
+
 			},
 			// 表单验证
 			rules: {
