@@ -18,7 +18,7 @@
         </el-row>
         <form-create v-model="fApi" :rule="rules" :option="option"/>
         <el-form :model="editorForm" style="font-weight: bolder"  ref="editorForm" :rules="editorRules">
-            <el-form-item label="给作者的意见:" prop="commentsToAuthor">
+            <el-form-item label="给评审提交人的意见:" prop="commentsToAuthor">
                 <el-input type="textarea" :rows="5" v-model="editorForm.commentsToAuthor" :readonly="readonly"
                           :autosize="{minRows: 5, maxRows: 10 }">
                 </el-input>
@@ -79,7 +79,7 @@
                 },
 
                 editorRules:{
-                    commentsToAuthor:[{required:true,message:"对作者暂无意见",trigger: 'blur'}],
+                    commentsToAuthor:[{required:true,message:"对评审提交人暂无意见",trigger: 'blur'}],
                 },
             };
         },
@@ -131,7 +131,7 @@
                         /*生成本题得分框**/
                         rules.push({
                             type: "input",
-                            title: "本题得分:",
+                            title: "本项得分:",
                             field: item.fieldOne + "-1",//一般为 i-1-1
                             value: content[item.fieldOne + "-1"],
                             props: {

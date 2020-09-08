@@ -42,8 +42,7 @@
                 <el-button type="primary" style="margin-left:30px;" @click="suspendAndSendEmail(2)">中止任务发送邮件</el-button>
             </template>
         </div>
-        <el-dialog width="60%" title="定制信件" :visible.sync="customizeVisible" append-to-body
-                   :before-close="closeCustomizeDialog">
+        <el-dialog width="60%" title="定制信件" :visible.sync="customizeVisible" append-to-body :before-close="closeCustomizeDialog">
             <el-row style="margin-top: 15px;">
                 <el-col :span="3"> 收件人：</el-col>
                 <el-col :span="10" style="margin-top: -10px;">
@@ -428,7 +427,7 @@
                     }else{
                         errTips(msg);
                     }
-                    this.$emit("closeDialog");
+                    this.$emit("closeDialog",true); //true表明用户中止了任务，对于关闭对话框后页面的跳转有影响
                 });
             },
         }

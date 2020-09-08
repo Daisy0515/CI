@@ -23,7 +23,7 @@
                 <template slot-scope="scope">
                     <el-button @click="handleViewReviewTemplate(scope.row)" type="text" size="medium" >
                             <i class="el-icon-search" v-if="scope.row.isEmploy===true">详情</i>
-                            <i class="el-icon-search" v-else>编辑</i>
+                            <i class="el-icon-edit" v-else>编辑</i>
                     </el-button>
                     <template v-if="scope.row.isEmploy===false" >
                         <el-button @click="handleDeleteReviewTemplate(scope.row.id)" type="text" size="medium" >
