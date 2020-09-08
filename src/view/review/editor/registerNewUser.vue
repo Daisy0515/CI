@@ -12,7 +12,7 @@
 
 				<el-card class="left-card-menu">
 					<!-- <h1 style="text-align: center">注册新用户</h1> -->
-					<el-form :rules="rules" :model="ruleForm" :label-position="left" label-width="120px" style="margin-top: 2%;" ref="ruleForm"
+					<el-form :rules="rules" :model="ruleForm" label-position="left" label-width="120px" style="margin-top: 2%;" ref="ruleForm"
 					 class="demo-ruleForm" status-icon>
 						<el-form-item label="由本平台进行专家资格校验" label-width="200px">
 							<label v-for="(item, index) in isSee" :key="index">
@@ -46,8 +46,9 @@
 								</el-table-column>
 							</el-table>
 						</div>
+
 						<div v-show="haveUser == false">
-							<h2 style="text-align: left;font-weight: bolder;margin-top: 2%;margin-bottom: 2%;">登录新用户</h2>
+							<h2 style="text-align: left;font-weight: bolder;margin-top: 2%;margin-bottom: 2%;">注册新用户</h2>
 							<el-form-item label="请输入用户名" prop="userName" :error="errorList.userError">
 								<el-input v-model="ruleForm.userName" style="width:40%" autocomplete="off"></el-input>
 							</el-form-item>
@@ -70,7 +71,6 @@
 
 					</el-form>
 
-	<!-- </div> -->
 	</el-card>
 	</el-col>
 	</el-row>
@@ -84,10 +84,8 @@
 		httpGet,
 		httpPost,
 		httpPut,
-		httpDelete
 	} from "@/utils/http.js";
 	import {
-		message,
 		successTips,
 		errTips
 	} from "@/utils/tips.js";
@@ -110,47 +108,36 @@
 				haveUser: true,
 				imageUrl: '',
 				ruleForm: {
-					checkPass: "",
+					checkPass: null,
 					checkedValue: "否",
-					address: "",
-					city: "",
-					//contactAddress: "",
+					address: null,
+					city: null,
 					cruxList: [],
-					department: "",
+					department: null,
 					education: null,
-					email: "",
-					headurl: "",
-					homepage: "",
-					//id:null,
-					jobTitle: "",
-					//name:"",
-					nation: "",
-					password: "",
-					phone: "",
-					position: "",
-					province: "",
+					email: null,
+					headurl: null,
+					homepage: null,
+					jobTitle: null,
+					nation: null,
+					password: null,
+					phone: null,
+					position: null,
+					province: null,
 					researchDirectionList: [],
 					role: 4,
-					school: "",
+					school: null,
 					sex: null,
-					userName: "",
-					workUnit: "",
+					userName: null,
+					workUnit: null,
 				},
 			}
 		},
-		computed: {},
-		created: function() {
-			// this.getView();
-		},
 		methods: {
-			submitForm(formName) {
-
+			submitForm() {
 				console.log(this.ruleForm);
 				httpPost("/v1/authorization/coreuser/review/costmer", this.ruleForm).then(results => {
-					const {
-						httpCode,
-						msg
-					} = results.data;
+					const {httpCode, msg} = results.data;
 					if (httpCode === 200) {
 						successTips('注册新用户成功');
 					} else {
@@ -164,32 +151,23 @@
 			},
 			//注册已有用户为专家
 			chooseUser(val) {
-
 				httpGet("/v1/authorization/coreuser/review/byidregister", {
 					id: val
 				}).then(results => {
-					const {
-						httpCode,
-						msg,
-						data
-					} = results.data;
-
+					const {httpCode, msg, data} = results.data;
 					if (httpCode === 200) {
-						this.ruleForm = data;
-						//console.log(this.ruleForm);
-						httpPut("/v1/authorization/coreuser/review/user", this.ruleForm).then(results => {
-							const {
-								httpCode,
-								msg
-							} = results.data;
+						let PutForm = data;
+						PutForm.role = 3;
+						console.log()
+						httpPut("/v1/authorization/coreuser/review/user", PutForm).then(results => {
+							const {httpCode, msg} = results.data;
 							if (httpCode === 200) {
 								successTips('用户已变为专家');
 							} else {
 								errTips(msg);
 							}
-							this.keywords = "",
-							Object.assign(this.$ruleForm, this.$options.ruleForm())
-							//console.log(this.ruleForm);
+							//this.keywords = "",
+							//Object.assign(this.$ruleForm, this.$options.ruleForm())
 						})
 					} else {
 						this.searchData = [];

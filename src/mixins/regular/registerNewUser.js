@@ -47,7 +47,7 @@ const mixinRegular = {
                 callback(new Error("请再次输入密码"));
             } else if (!myReg.test(value)) {
                 callback(new Error("数字字母下划线，长度为8-32位"));
-            } else if (value !== this.personalForm.password) {
+            } else if (value !== this.ruleForm.password) {
                 callback(new Error("两次输入密码不一致!"));
             } else {
                 callback();
@@ -81,7 +81,7 @@ const mixinRegular = {
                     validator: validatePhone,
                     trigger: "blur"
                 }],
-                
+
             }
         };
     },

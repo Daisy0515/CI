@@ -25,7 +25,7 @@
                             </el-col>
                             <el-col :span="12">
                                 <div style="text-align: center;">
-                                    <Avatar></Avatar>
+                                    <Avatar v-on:setIdCard="setIdCard($event)"></Avatar>
                                 </div>
 
                             </el-col>
@@ -263,6 +263,10 @@
             this.getPersonalInfo();
         },
         methods: {
+            setIdCard(data){
+              console.log(data);
+              this.ruleForm.headurl = data;
+            },
             addKeyWords(val) {
                 this.ruleForm.cruxList = val;
             },
