@@ -5,9 +5,9 @@
         <div style="width: 70%; margin: 0 auto;">
             <el-row :gutter="40">
             	<el-col >
-            		
+
             			<h2 style="text-align: left;font-weight: bolder;margin-top: 2%;">基本资料</h2>
-            		
+
             			<el-form :model="ruleForm" style="margin-top: 2%;" ref="ruleForm" class="demo-ruleForm">
             				<el-row :gutter="20">
             					<el-col :span="12">
@@ -23,7 +23,7 @@
             						<div style="text-align: center;">
             						<img :src="ruleForm.headurl" class="rounded-circle">
             						</div>
-            						
+
             					</el-col>
             				</el-row>
             				<el-row :gutter="20">
@@ -37,7 +37,7 @@
             							<el-input v-model="ruleForm.phone" :readonly="true"></el-input>
             						</el-form-item>
             					</el-col>
-            			
+
             				</el-row>
             				<el-row :gutter="20">
             					<el-col :span="12">
@@ -50,7 +50,7 @@
             							<el-input v-model="ruleForm.position" :readonly="true"></el-input>
             						</el-form-item>
             					</el-col>
-            			
+
             				</el-row>
             				<el-row :gutter="20">
             					<el-col :span="12">
@@ -63,10 +63,10 @@
             							<el-input v-model="ruleForm.homepage" :readonly="true"></el-input>
             						</el-form-item>
             					</el-col>
-            			
+
             				</el-row>
             				<el-row :gutter="20">
-            			
+
             					<el-col :span="12">
             						<el-form-item label="工作单位" :label-width="formLabelWidth">
             							<el-input v-model="ruleForm.workUnit" :readonly="true"></el-input>
@@ -102,7 +102,7 @@
             				<el-row :gutter="20">
             					<el-form-item label="研究方向":label-width="formLabelWidth" prop="researchDirection">
             						<el-input v-model="ruleForm.researchDirectionList" style="width: 100%" :readonly="true"></el-input>
-            						
+
             					</el-form-item>
             				</el-row>
             				<el-row :gutter="20">
@@ -111,14 +111,14 @@
             					</el-form-item>
             				</el-row>
             			</el-form>
-            	
-            
-            		
+
+
+
             	</el-col>
-     
+
             </el-row>
           </div>
-	
+
     </el-dialog>
 </template>
 
@@ -153,5 +153,9 @@
 </script>
 
 <style scoped>
-
+.rounded-circle {
+	width: 90px;
+	height: 90px;
+	border: 1px solid #f0f0f0;
+}
 </style>

@@ -112,6 +112,7 @@ export default {
               newuserData.headurl = `http://sjy.lingdatech.net/${
                 this.qiniuData.key
               }`;
+              this.$emit('setIdCard', `http://sjy.lingdatech.net/${this.qiniuData.key}`);
               sessionStorage.setItem("userData", JSON.stringify(newuserData));
               this.setLogin();
             } else if (httpCode !== 401) {

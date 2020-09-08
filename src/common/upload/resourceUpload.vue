@@ -92,7 +92,7 @@ export default {
 	components: {
 		FileUpload
 	},
-	props: ['uploadIndex', 'fileName', 'goUpload', 'fileIndex'],  //uploadIndex 用于开启上传文件
+	props: ['uploadIndex', 'fileName', 'goUpload', 'fileIndex'],  //uploadIndex 用于开启上传文件，fileIndex用来区分上传组件
 	data() {
 		return {
 			files: [],

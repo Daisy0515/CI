@@ -61,6 +61,7 @@
 import { httpPut } from '@/utils/http.js';
 import { errTips } from '@/utils/tips.js';
 import sourceUpload from '@/common/upload/resourceUpload';
+import {mapMutations} from "vuex";
 export default {
 	components: {
 		sourceUpload
@@ -93,6 +94,7 @@ export default {
 		this.ruleForm.id = this.$route.query.id;
 	},
 	methods: {
+		...mapMutations(['setCache']),
 		returnMyTask() {
 			this.$router.push({ path: './myTask' });
 		},

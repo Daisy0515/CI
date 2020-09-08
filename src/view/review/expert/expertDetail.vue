@@ -30,7 +30,7 @@
                                 </el-col>
                                 <el-col :span="10">
                                     <div style="text-align: center;">
-                                        <Avatar></Avatar>
+                                        <Avatar v-on:setIdCard="setIdCard($event)"></Avatar>
                                     </div>
 
                                 </el-col>
@@ -201,10 +201,6 @@
         },
         data() {
             return {
-				// dynamicTags: ['标签一', '标签二', '标签三'],
-				// inputVisible: false,
-				// inputValue: '',
-                // data: generateData(),
                 selectedOptions: [],
                 researchName: null,
                 data: [],
@@ -255,6 +251,10 @@
 
         },
         methods: {
+            setIdCard(data){
+                console.log(data);
+                this.ruleForm.headurl = data;
+            },
             addKeyWords(val){
               this.ruleForm.cruxList = val;
             },
