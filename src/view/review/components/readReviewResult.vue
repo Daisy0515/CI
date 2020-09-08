@@ -17,9 +17,9 @@
         </el-row>
         <form-create v-model="fApi" :rule="rules" :option="option"/>
         <el-form :model="editorForm" style="font-weight: bolder"  ref="editorForm" :rules="editorRules">
-            <el-form-item label="给作者的意见:" prop="commentsToAuthor">
+            <el-form-item label="给评审提交人的意见:" prop="commentsToAuthor">
                 <el-input type="textarea" :rows="5" v-model="editorForm.commentsToAuthor" :readonly="readonly" :autosize="{minRows: 5, maxRows: 10 }"
-                          placeholder="请输入对作者的意见，若内容较多，您也可以放在附件中，此处留下简单提示即可">
+                          placeholder="请输入对评审提交人的意见，若内容较多，您也可以放在附件中，此处留下简单提示即可">
                 </el-input>
             </el-form-item>
             <el-form-item label="给管理员的意见:" prop="commentsToEditor">
@@ -83,7 +83,7 @@
                     resetBtn: false,    //隐藏表单重置按钮
                 },
                 editorRules:{
-                    commentsToAuthor:[{required:true,message:"请输入对作者的意见",trigger: 'blur'}],
+                    commentsToAuthor:[{required:true,message:"请输入对评审提交人的意见",trigger: 'blur'}],
                     commentsToEditor:[{required:true,message:"请输入对管理员的意见",trigger: 'blur'}]
                 },
             };

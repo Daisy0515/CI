@@ -17,9 +17,9 @@
         </el-row>
         <form-create v-model="fApi" :rule="rules" :option="option"/>
         <el-form :model="editorForm" style="font-weight: bolder"  ref="editorForm" :rules="editorRules">
-            <el-form-item label="给作者的意见:" prop="commentsToAuthor">
+            <el-form-item label="给评审提交人的意见:" prop="commentsToAuthor">
                 <el-input type="textarea" :rows="5" v-model="editorForm.commentsToAuthor" maxlength="500" show-word-limit
-                          placeholder="请输入对作者的意见，若内容较多，您也可以放在附件中，此处留下简单提示即可">
+                          placeholder="请输入对评审提交人的意见，若内容较多，您也可以放在附件中，此处留下简单提示即可">
                 </el-input>
             </el-form-item>
             <el-form-item label="给管理员的意见:" prop="commentsToEditor">
@@ -28,19 +28,21 @@
                 </el-input>
             </el-form-item>
             <el-form-item>
-                <sourceUpload style="margin-top: 30px;" :uploadIndex="uploadIndex" v-on:setIdCard="setIdCard($event)"/>
+                <el-col :span="3">
+                    <sourceUpload  :uploadIndex="uploadIndex" v-on:setIdCard="setIdCard($event)"/>
+                </el-col>
+                <el-col :span="2" :offset="16">
+                    <span style="font-size: large;font-weight: bolder;">评审得分:</span>
+                </el-col>
+                <el-col :span="3">
+                    <el-input v-model="editorForm.reviewScore" size="medium" style="margin-top: -5px;" :readonly="true"></el-input>
+                </el-col>
             </el-form-item>
         </el-form>
         <el-row style="margin-top: 20px;">
             <el-col :span="3" :offset="9">
                 <el-button type="primary" @click="submit" v-if="showSubmit" :loading="submitLoading">提交</el-button>
                 <el-button  @click="goBack" v-else >返回上一级</el-button>
-            </el-col>
-            <el-col :span="2" :offset="7">
-                <span style="font-size: large;font-weight: bolder;">评审得分:</span>
-            </el-col>
-            <el-col :span="3">
-                <el-input v-model="editorForm.reviewScore" size="medium" style="margin-top: -5px;" :readonly="true"></el-input>
             </el-col>
         </el-row>
     </div>
@@ -94,7 +96,7 @@
                 },
 
                 editorRules:{
-                    commentsToAuthor:[{required:true,message:"请输入对作者的意见",trigger: 'blur'}],
+                    commentsToAuthor:[{required:true,message:"请输入对评审提交人的意见",trigger: 'blur'}],
                     commentsToEditor:[{required:true,message:"请输入对管理员的意见",trigger: 'blur'}]
                 },
                 editorForm:this.getInitEditorForm(),
@@ -157,7 +159,7 @@
                         /**生成本题得分框**/
                         rules.push({
                             type: "input",
-                            title: "本题得分:",
+                            title: "本项得分:",
                             field: item.fieldOne + "-1",//一般为 i-1-1
                             value: null,
                             props: {

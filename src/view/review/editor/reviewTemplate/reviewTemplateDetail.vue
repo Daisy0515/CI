@@ -9,8 +9,10 @@
             </el-breadcrumb>
         </div>
         <el-row style="margin: 20px 0">
-            <span>说明：已经被使用过的评审模板不支持任何的修改，只能查看，如果想要在现有的模板进行一些较大的更改，
-                建议点击创建副本，可以在现有的基础上创建新的模板！</span>
+            <p class="Tips">
+                <i class="el-icon-info"></i>说明：已经被使用过的评审模板不支持任何的修改，只能查看，如果想要在现有的模板进行一些较大的更改，
+                建议点击复制模板，可以在现有的基础上创建新的模板！
+            </p>
         </el-row>
         <el-row style="margin: 20px auto;">
             <el-col :span="9">
@@ -33,7 +35,7 @@
                 </el-col>
             </template>
             <el-col :span="3" style="margin-top:-10px;">
-                <el-button  type="primary" size="medium" @click="createNewTemplateCopy">创建副本 </el-button>
+                <el-button  type="primary" size="medium" @click="createNewTemplateCopy">复制模板</el-button>
             </el-col>
         </el-row>
         <el-table :data="templateConfigList" style="margin-top: 20px;" border v-loading="configListLoading">
@@ -41,9 +43,9 @@
             <el-table-column property="hint" label="提示" align="center"></el-table-column>
             <el-table-column property="type" label="类型" align="center">
                 <template slot-scope="scope">
-                    <span v-if="scope.row.type==1">文本/分数选项域</span>
-                    <span v-if="scope.row.type==2">是或否选择域</span>
-                    <span v-if="scope.row.type==3">文本/分数输入域</span>
+                    <span v-if="scope.row.type===1">分数选项/文本域</span>
+                    <span v-if="scope.row.type===2">是或否选择域</span>
+                    <span v-if="scope.row.type===3">分数输入/文本域</span>
                 </template>
             </el-table-column>
             <el-table-column label="得分范围" align="center">
@@ -60,7 +62,7 @@
                     </el-button>
                     <template v-if="isEmploy===false||isEmploy==='false'">
                         <el-button @click="handleEditItem(scope.$index)" type="text" size="medium"
-                        ><i class="el-icon-search"></i>编辑
+                        ><i class="el-icon-edit"></i>编辑
                         </el-button>
                         <el-button @click="handleDeleteFormItem(scope.row.id)" type="text" size="medium"
                         ><i class="el-icon-delete"></i>删除
@@ -137,12 +139,15 @@
             //to表示当前的路由，from表示上一个路由
             console.log("to:",to);
             console.log("from",from);
-            if(from.path==='/editorReviewTemplates'){       //从已有评审模板页面进入的当前页面
+            console.log("from.params的属性个数}:",Object.keys(to.params).length );
+            if(from.path==='/editorReviewTemplates'&& Object.keys(to.params).length !==0){
+                // 从已有评审模板页面点击详情进入的当前页面
+                //Object.keys(obj).length ===0是判断一个对象是否是空对象
                 sessionStorage.setItem("reviewTemplateId",to.params.templateId);
-                sessionStorage.setItem("reviewTemplateIsEmploy",to.params.isEmploy);
+                sessionStorage.setItem(to.params.templateId+"-"+"reviewTemplateIsEmploy",to.params.isEmploy);
             }else{                   //刷新浏览器或者是从其他页面进入的当前页面
                 to.params.templateId = sessionStorage.getItem("reviewTemplateId");
-                to.params.isEmploy = sessionStorage.getItem("reviewTemplateIsEmploy");
+                to.params.isEmploy = sessionStorage.getItem(to.params.templateId+"-"+"reviewTemplateIsEmploy");
             }
             next();
         },
@@ -151,7 +156,6 @@
             /**获取评审模板的单项配置列表*/
             getReviewTemplateDetail(){
                 this.configListLoading = true;
-                // console.log("this.id",this.id);
                 httpGet("/v1/authorization/review/templateconfig/list", {id: this.templateId}).then(results => {
                     const {httpCode, msg, data} = results.data;
                     console.log("data", data);
@@ -229,4 +233,11 @@
         }
     }
 </script>
+<style lang="scss" scoped>
+    .Tips {
+        text-align: center;
+        margin-top: 15px;
+        color: #909399a8;
+    }
+</style>
 

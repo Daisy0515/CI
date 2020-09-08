@@ -17,16 +17,21 @@
             </el-form-item>
             <el-form-item style="margin-left: -8%;">
                 <el-col :span="4">
-                    <el-checkbox v-model="isSetTotalScore ">是否需要设定总分</el-checkbox>
+                    <el-checkbox v-model="isSetTotalScore ">设定预期总分</el-checkbox>
                 </el-col>
                 <el-col :span="5" v-if="isSetTotalScore">
                     <el-input v-model.number="expectedTotalScore " placeholder="请输入模板的总分"></el-input>
                 </el-col>
+                <el-col :span="13" v-if="!isSetTotalScore">
+                    <p class="Tips">
+                        <i class="el-icon-info"></i>设定预期的总分可以帮助您与当前的总分进行比较，保证只创建符合预期总分的模板
+                    </p>
+                </el-col>
             </el-form-item>
             <el-form-item label="请选择">
                 <el-select v-model="selectedType" placeholder="请选择单个评审项">
-                    <el-option label="文本/分数选项域" value="scoreOption"></el-option>
-                    <el-option label="文本/分数输入域" value="scoreInput"></el-option>
+                    <el-option label="分数选项/文本域" value="scoreOption"></el-option>
+                    <el-option label="分数输入/文本域" value="scoreInput"></el-option>
                     <el-option label="是或否选择域" value="yesOrNo"></el-option>
                 </el-select>
                 <el-button type="primary" style="margin-left: 20px;" @click="addFormItem">添加</el-button>
@@ -254,3 +259,10 @@
         }
     }
 </script>
+<style lang="scss" scoped>
+    .Tips {
+        text-align: center;
+        margin: 0px auto;
+        color: #909399a8;
+    }
+</style>

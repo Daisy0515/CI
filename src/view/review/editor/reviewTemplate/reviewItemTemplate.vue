@@ -1,15 +1,21 @@
 <template>
     <el-dialog :title="formItemTitle" :visible.sync="formItemVisible" :before-close="closeItemForm"
                style="text-align:left; font-weight: bolder;">
-        <p style="margin: -20px auto 20px auto; font-weight: bolder;" v-if="reviewItemType==='scoreOption'">
-            说明：在文本/分数选项域，您可以设置一个单项选择题，为每一个选项设置不同的分数；
-            除此之外，还可以设置一个文本输入域，评审者可以用文字描述一些他/她的想法</p>
-        <p style="margin: -20px auto 20px auto; font-weight: bolder;" v-if="reviewItemType==='scoreInput'">
-            说明：在文本/分数输入域，您可以设置一个输入框，评审者可以直接输入分数，
-            您需要限定好用户输入分数的范围，例如：0-100,除此之外，还可以设置一个文本输入域，评审者可以用文字描述一些他/她的想法</p>
-        <p style="margin: -20px auto 20px auto; font-weight: bolder;" v-if="reviewItemType==='yesOrNo'">
-            说明：在是或否选项域，您可以设置一个是或否的选择，例如：评审是否通过这种;
-            除此之外，还可以设置一个文本输入域，评审者可以用文字描述一些他/她的想法</p>
+        <p class="Tips" style="margin-top: -20px">
+            <i class="el-icon-info"></i>
+            <span v-if="reviewItemType==='scoreOption'">
+            说明：在分数选项/文本域，您可以设置一个单项选择题，为每一个选项设置不同的分数；
+            除此之外，还可以设置一个文本输入域，评审者可以用文字描述一些他/她的想法
+            </span>
+            <span v-if="reviewItemType==='scoreInput'">
+                说明：在分数输入/文本域，您可以设置一个输入框，评审者可以直接输入分数，
+                您需要限定好用户输入分数的范围，例如：0-100,除此之外，还可以设置一个文本输入域，评审者可以用文字描述一些他/她的想法
+            </span>
+            <span v-if="reviewItemType==='yesOrNo'">
+                说明：在是或否选项域，您可以设置一个是或否的选择，例如：评审是否通过这种;
+                除此之外，还可以设置一个文本输入域，评审者可以用文字描述一些他/她的想法
+            </span>
+        </p>
         <el-form :model="localForm" :rules="formItemRules" ref="reviewItemForm" :disabled="readOnly">
             <el-form-item label="标题" :label-width="formLabelWidth" prop="scoreTitle">
                 <el-col :span="12">
@@ -19,28 +25,33 @@
             <el-form-item label="提示信息" :label-width="formLabelWidth" prop="purpose">
                 <el-input v-model="localForm.hint" type="textarea" :rows="2" auto-complete="off"/>
             </el-form-item>
-            <template v-if="reviewItemType==='scoreOption'||reviewItemType==='scoreInput'">
+            <template v-if="reviewItemType==='scoreOption'||reviewItemType==='scoreInput'"><!--分数选项/分数输入域-->
                 <div style="border:0.5px solid #CCC;margin: 30px auto;"></div>
-                <el-checkbox v-model="localForm.isScore"><span
-                        style=" font-weight: bolder;">如果此评审项包含数值分数，请选中此框</span></el-checkbox>
-                <br>
-                说明:
-                <p v-if="reviewItemType==='scoreOption'">填写关于分数的信息。得分为有限个分数的集合的字段。分数必须是整数。
-                    最小的数字应该表示质量最低:例如，“差”的数字应该比“好”的数字小。</p>
-                <p v-if="reviewItemType==='scoreInput'">填写关于分数的信息。分数域是一个让评审者直接输入分数的域，您可以选择是否对作者可见。</p>
-                <el-form-item label="分数相关设置：" v-if="localForm.isScore">
-                    <br>
+                <el-checkbox v-model="localForm.isScore">
+                    <span style=" font-weight: bolder;">如果此评审项包含数值分数，请选中此框 </span>
+                </el-checkbox><br>
+                <p class="Tips">
+                    <i class="el-icon-info"></i>
+                    <span v-if="reviewItemType==='scoreOption'">填写关于分数的信息。得分为有限个分数的集合。
+                        分数必须是整数。最小的数字应该表示质量最低:例如，“差”的数字应该比“好”的数字小。
+                    </span>
+                    <span v-if="reviewItemType==='scoreInput'">填写关于分数的信息。分数输入域是一个让评审者直接输入分数的域，
+                        您可以选择是否对评审提交人可见。
+                    </span>
+                </p>
+                <el-form-item label="分数相关设置：" v-if="localForm.isScore"><br>
                     <div style="margin-left: 70px;">
 <!--                        <el-checkbox v-model="localForm.isScoreSubmitVisible  "><span-->
-<!--                                style=" font-weight: bolder;">对作者可见</span></el-checkbox>-->
-<!--                        <br>-->
-                        <el-checkbox v-model="localForm.isScoreRequired  "><span
-                                style=" font-weight: bolder;">评审者必须要完成</span></el-checkbox>
-                        <br>
+<!--                                style=" font-weight: bolder;">对评审提交人可见</span></el-checkbox>-->
+<!--             这里默认让用户不可见          <br>-->
+                        <el-checkbox v-model="localForm.isScoreRequired  ">
+                            <span style=" font-weight: bolder;">评审者必须要完成</span>
+                        </el-checkbox> <br>
                         <template v-if="reviewItemType==='scoreOption'">
-                            <p style="line-height:20px;">一个分数的<span>权重</span>定义了这个分数如何贡献于评论的总体分数。例如，如果分数是5，
-                                权重是2，那么该字段将为总分增加10(即2 * 5)。权重通常为0(此字段不影响总体得分)
-                                或1(此字段的得分将被添加到总体得分中)。</p>
+                            <p class="Tips" style="margin-top: -10px">
+                                <i class="el-icon-info"></i>一个分数的<span>权重</span>定义了这个分数如何贡献于评审的总体分数。例如，若分数是5，
+                                权重是2，那么该字段将为总分增加10(2 * 5)。权重通常为0(此项得分不影响总体得分)或1。
+                            </p>
                             <el-form-item label="权重：">
                                 <el-col :span="6">
                                     <el-input v-model.number="localForm.scoreWeight " size="medium" auto-complete="off"
@@ -49,7 +60,9 @@
                             </el-form-item>
                         </template>
                         <el-form-item v-if="reviewItemType==='scoreOption'">
-                            <p style=" ">输入评审项所有的值和解释。它们还将出现在表单中，作为审核人员的指导方针。</p>
+                            <p class="Tips" style="margin:0 auto; ">
+                                <i class="el-icon-info"></i>输入评审项所有的值和解释。它们还将出现在表单中，作为审核人员的指导方针。
+                            </p>
                             <el-row :gutter="20">
                                 <el-col :span="6">
                                     <el-input v-model.number="tempScore" placeholder="请输入选项分值" size="medium"></el-input>
@@ -95,19 +108,22 @@
                 </el-form-item>
             </template>
             <template v-if="reviewItemType==='yesOrNo'">
+                <div style="border:0.5px solid #CCC;margin: 30px auto;"></div>
                 <el-form-item style="margin-left: 50px;">
-                    <el-form-item label="选择框后的文本说明：">
+                    <el-form-item label="选择框文本说明：">
                         <el-col :span="12">
-                            <el-input v-model="localForm.selectAnnotation" placeholder="例如：评审通过"></el-input>
+                            <el-input v-model="localForm.selectAnnotation" size="medium" placeholder="例如：评审通过"></el-input>
                         </el-col>
                     </el-form-item>
-                    <el-checkbox v-model="localForm.isScoreSubmitVisible  "><span
-                            style=" font-weight: bolder;">对作者可见</span></el-checkbox>
-                    <br>
-                    <el-checkbox v-model="localForm.isScoreRequired  "><span
-                            style=" font-weight: bolder;">评审者必须要完成</span></el-checkbox>
-                    <br>
-                    <p style="line-height:20px;">一个分数的<span>权重</span>定义了这个分数如何贡献于评论的总体分数。评审专家如果选中此框，权重将直接添加到评审的总分数中。复选框的权重通常为0
+<!--                    <el-checkbox v-model="localForm.isScoreSubmitVisible  "><span-->
+<!--                            style=" font-weight: bolder;">对评审提交人可见</span></el-checkbox>-->
+<!--                    <br>-->
+                    <el-checkbox v-model="localForm.isScoreRequired">
+                        <span style=" font-weight: bolder;">评审者必须要完成</span>
+                    </el-checkbox> <br>
+                    <p class="Tips">
+                        <i class="el-icon-info"></i> 一个分数的<span>权重</span>定义了这个分数如何贡献于评审的总体分数。
+                        评审专家如果选中此框，权重将直接添加到评审的总分数中。复选框的权重通常为1或0，
                     </p>
                     <el-form-item label="权重：">
                         <el-col :span="6">
@@ -119,16 +135,20 @@
             </template>
             <template><!--文本输入区域-->
                 <div style="border:0.5px solid #CCC;margin: 30px auto;"></div><!--分割线--->
-                <el-checkbox v-model="localForm.textAnnotation"><span style=" font-weight: bolder;">如果此评审项包含用于审阅人员的文本输入，请选中此框</span>
+                <el-checkbox v-model="localForm.textAnnotation">
+                    <span style=" font-weight: bolder;">若本评审项需要评审者添加额外的文字说明，请选中此框</span>
                 </el-checkbox>
-                <el-form-item label="文本输入设置：" v-if="localForm.textAnnotation">
-                    <p>说明: 填写关于文本输入相关的信息。</p>
+                <el-form-item label="文本说明设置：" v-if="localForm.textAnnotation">
+                    <p class="Tips" style="margin-top:0px;margin-right: 50%;">
+                        <i class="el-icon-info"></i>说明: 填写关于文本说明相关的信息。
+                    </p>
                     <div style="margin-left: 70px;">
-                        <el-checkbox v-model="localForm.textSubmitVisible"><span
-                                style=" font-weight: bolder;">对作者可见</span></el-checkbox>
-                        <br>
-                        <el-checkbox v-model="localForm.textDescription "><span
-                                style=" font-weight: bolder;">评审者必须要完成</span></el-checkbox>
+                        <el-checkbox v-model="localForm.textSubmitVisible">
+                            <span style=" font-weight: bolder;">对评审提交人可见</span>
+                        </el-checkbox> <br>
+                        <el-checkbox v-model="localForm.textDescription ">
+                            <span style=" font-weight: bolder;">评审者必须要完成</span>
+                        </el-checkbox>
                     </div>
                 </el-form-item>
             </template>
@@ -181,7 +201,7 @@
                 maxScore: null,//评审选项的得分最大值
                 formItemRules: {//评审单项里的表单规则
                     scoreTitle: [
-                        {required: true, message: '请输入模板名称', trigger: 'blur'},
+                        {required: true, message: '请输入标题', trigger: 'blur'},
                     ]
                 },
                 tempScore: null,//暂存选项分数
@@ -192,9 +212,9 @@
         computed: {
             formItemTitle: function () {//评审项的对话框的标题
                 if (this.reviewItemType === 'scoreOption') {
-                    return "文本/分数选项域";
+                    return "分数选项/文本域";
                 } else if (this.reviewItemType === 'scoreInput') {
-                    return "文本/分数输入域";
+                    return "分数输入/文本域";
                 } else {
                     return "是或否选择域";
                 }
@@ -390,3 +410,10 @@
         },
     }
 </script>
+<style lang="scss" scoped>
+    .Tips {
+        text-align: center;
+        margin: 10px  auto; font-weight: bolder;
+        color: #909399a8;
+    }
+</style>

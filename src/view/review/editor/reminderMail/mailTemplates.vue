@@ -70,7 +70,7 @@
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                     <el-button type="text" size="medium" @click="handleUpdateFormItem(scope.row)"><i
-                            class="el-icon-search"></i>修改
+                            class="el-icon-edit"></i>修改
                     </el-button>
                     <el-button @click="handleDeleteFormItem(scope.row.id)" type="text" size="medium"
                                v-if="scope.row.type===2">

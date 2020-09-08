@@ -232,6 +232,7 @@
                 suspendUserList:[],          //待中止任务的专家列表
                 suspendUserListLoading:false,//待中止任务的专家列表加载前的显示提示
                 templateId:null,             //中止任务使用到的邮件模板id
+                suspendReview:false,         //用于标记用户是否中止了任务
             };
         },
         created: function(){
@@ -382,14 +383,16 @@
                 });
             },
             /**已选择对象对话框：关闭对话框*/
-            closeSuspendDialog(){
+            closeSuspendDialog(suspendReview=false){
                 this.suspendVisible=false;
-                let params = deepCopyObject(this.$route.params);
-                params.identification = 1;//中止完任务后，希望将当前页面切换成提交意见的界面
-                this.$router.replace({name:this.$route.name,params:params});//采用replace是为了替换掉本身的中止页面，点击返回上一级的时候，可以返回评审任务列表
-                this.$router.go(0);   //加这一句是因为上一句只变换了地址栏，但是没有加载
+                console.log("suspendReview",suspendReview);
+                if(suspendReview===true){ //只有当用户中止任务的时候才发生页面的变化，否则不变
+                    let params = deepCopyObject(this.$route.params);
+                    params.identification = 1;//中止完任务后，希望将当前页面切换成提交意见的界面
+                    this.$router.replace({name:this.$route.name,params:params});//采用replace是为了替换掉本身的中止页面，点击返回上一级的时候，可以返回评审任务列表
+                    this.$router.go(0);   //加这一句是因为上一句只变换了地址栏，但是没有加载
+                }
             },
-
         },
     }
 </script>
