@@ -15,9 +15,15 @@
         </div>
         <div class="container deskHeader">
             <el-table :data="ReviewTable" style="width:900px;margin:50px auto;" :header-cell-style="rowClass"
-                      v-loading="loading">
+                      v-loading="loading" :span-method="arraySpanMethod">
                 <el-table-column label="评审状态" align="center">
                     <el-table-column fixed prop="typeName" label="评审流程" align="center">
+                    </el-table-column>
+                    <el-table-column prop="title" label="是否发起评审" align="center">
+                        <template slot-scope="scope">
+                                <span v-if="scope.row.id!== null">已发起评审</span>
+                                <span v-else>未发起评审</span>
+                        </template>
                     </el-table-column>
                     <el-table-column prop="title" label="评审标题" align="center">
                         <template slot-scope="scope">
@@ -43,72 +49,7 @@
                     </el-table-column>
                 </el-table-column>
             </el-table>
-            <el-dialog title="评审意见" :visible.sync="dialogVisible" width="60%" :close-on-click-modal="false">
-                <el-form :model="form">
-                    <h2 class="header">管理员意见：</h2>
-                    <el-row :gutter="20">
-                        <el-col :span="6">
-                            <el-form-item label="管理员决定" :label-width="formLabelWidth">
-                                <span v-if="form.adminOpinion.opinion === 1" class="score">通过</span>
-                                <span v-if="form.adminOpinion.opinion === 2" class="score">未通过</span>
-                                <span v-if="form.adminOpinion.opinion === 3" class="score">拒绝</span>
-                                <span v-if="form.adminOpinion.opinion === 4" class="score">没有意见</span>
-                            </el-form-item>
-                        </el-col>
-
-                        <el-col :span="6">
-                            <el-button type="primary" size="medium">管理员意见附件</el-button>
-                        </el-col>
-                    </el-row>
-					<el-row>
-						<el-form-item label="管理员意见详情" :label-width="formLabelWidth">
-							<el-input type="textarea" v-model="form.adminOpinion.details" auto-complete="off"
-									  :readonly="isReadOnly" :rows="5"/>
-						</el-form-item>
-					</el-row>
-                    <h2 class="header">评审专家意见：</h2>
-                    <el-table :data="userList" :header-cell-style="rowClass">
-                        <el-table-column prop="userName" label="评审专家" align="center"></el-table-column>
-                        <el-table-column prop="totalScore" label="总分" align="center"></el-table-column>
-                        <el-table-column prop="reviewScore" label="得分" align="center"></el-table-column>
-                        <el-table-column label="评审结果" align="center">
-                            <template slot-scope="scope">
-                                <el-button @click="viewExpertReview(scope.row)" type="text" size="medium">
-                                    <i class="el-icon-search"></i>详情
-                                </el-button>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                    <h2 class="header">发布者意见：</h2>
-                    <el-row :gutter="20">
-                        <el-col :span="6">
-                            <el-form-item label="发布者决定" :label-width="formLabelWidth">
-                                <el-input v-model="form.projectOpinion.result" auto-complete="off"
-                                          :readonly="isReadOnly"/>
-                            </el-form-item>
-
-                        </el-col>
-                        <el-col :span="6">
-                            <el-form-item label="评审得分" :label-width="formLabelWidth">
-                                <el-input v-model="form.projectOpinion.score" auto-complete="off"
-                                          :readonly="isReadOnly"/>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="12">
-                            <el-form-item label="评价内容" :label-width="formLabelWidth">
-                                <el-input type="textarea" v-model="form.projectOpinion.content" auto-complete="off"
-                                          :readonly="isReadOnly"/>
-                            </el-form-item>
-                        </el-col>
-                    </el-row>
-                </el-form>
-                <el-dialog title="查看评价" :visible.sync="readReviewDialogVisible" width="80%"
-                           style="text-align:left; font-weight: bolder;" append-to-body>
-                    <read-review-result-for-manger :templateConfigList="templateConfigList" :totalScore="totalScore"
-                                                   :result="result">
-                    </read-review-result-for-manger><!--生成评审表单的组件-->
-                </el-dialog>
-            </el-dialog>
+            <review-result :form="form"  :dialogVisible="dialogVisible" @closeDialog="closeDialog"></review-result>
             <p class="Tips">
                 <i class="el-icon-info"></i>
                 只有当前项目的所有评审通过才能进行交付；多次上传资源只保留最后一次的上传
@@ -166,18 +107,17 @@
     import {mapMutations} from 'vuex';
     import {successTips, errTips} from '@/utils/tips.js';
     import sourceUpload from '@/common/upload/resourceUpload';
-    import readReviewResultForManger from '@/view/review/components/readReviewResultForManger';
+    import reviewResult from '@/view/desk/myBid/reviewResult';
 
     export default {
         components: {
             sourceUpload,
-            readReviewResultForManger,
+            reviewResult,
         },
         data() {
             return {
-                totalScore: null,
+
                 isReadOnly: true,
-                userList: [],
                 dialogVisible: false, //控制查看详情的对话框
                 uploadIndex: false,
                 resourceId: "",
@@ -208,12 +148,6 @@
                         score: null
                     }
                 },
-                formLabelWidth: '150px',
-                /*第三方专家评价*/
-                readReviewDialogVisible: false,//控制专家评价框的显示
-                templateConfigList: [],//评审模板配置列表
-                result: {},//评审结果
-
             };
         },
 
@@ -259,31 +193,22 @@
 
         methods: {
             ...mapMutations(['setCache']),
-
+            /**合并没有邀请评审的评审流程的表格*/
+            arraySpanMethod({ row, column, rowIndex, columnIndex }){
+                if(row.id===null){
+                    if(columnIndex===1){
+                        return [1,4];
+                    }
+                }
+            },
             /**获取评审结果的详情*/
             handleClickDetail(val) {
                 this.dialogVisible = true;
                 httpGet("/v1/authorization/review/deliverydetails/get", {id: val}).then(results => {
                     const {httpCode, msg, data} = results.data;
+                    console.log("review data:",data);
                     if (httpCode == 200) {
                         this.form = data;
-                        this.userList = data.expertOpinionList;
-                    } else {
-                        errTips(msg);
-                    }
-                });
-            },
-            /**查看单个专家的评审意见*/
-            viewExpertReview(row) {
-                alert(111);
-                this.readReviewDialogVisible = true;
-                httpGet("/v1/authorization/review/experttemplateopinion/get", {id: row.expertiInviteId}).then(results => {
-                    const {httpCode, msg, data} = results.data;
-                    if (httpCode == 200) {
-                        this.templateConfigList = data.configList;
-                        this.result = data.result;
-                        this.templateName = data.templateName;
-                        this.totalScore = data.totalScore;
                     } else {
                         errTips(msg);
                     }
@@ -323,6 +248,7 @@
                     const {httpCode, msg, data} = results.data;
                     if (httpCode === 200) {
                         this.ReviewTable = data.reviewStatusList;
+                        console.log("this.ReviewTable",this.ReviewTable);
                         let list = this.ReviewTable;
                         for (let i of list) {
                             let index = i.type;
@@ -357,6 +283,9 @@
             },
             rowClass() {
                 return 'background:#F4F6F9;';
+            },
+            closeDialog(){
+                this.dialogVisible = false;
             }
         }
     };
@@ -366,11 +295,6 @@
         text-align: center;
         margin-top: 15px;
         color: #909399a8;
-    }
-
-    .header {
-        font-weight: bolder;
-        margin-top: 15px;
     }
 
     .cancel {
