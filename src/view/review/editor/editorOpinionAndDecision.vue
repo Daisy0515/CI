@@ -1,8 +1,7 @@
 <template>
     <div>
         <el-row>
-            <el-button type="text" @click="$router.go(-1);" style="font-size: large;font-weight: bolder;">返回上一级
-            </el-button>
+            <el-button type="text" @click="$router.go(-1);" style="font-size: large;font-weight: bolder;">返回上一级</el-button>
         </el-row>
         <el-card>
             <el-row>
@@ -139,7 +138,7 @@
                         <el-form-item>
                             <el-table :data="localForm.attachmentList" style="margin-top: 20px;" border>
                                 <el-table-column property="attachmentName" label="附件名" align="center" :show-overflow-tooltip="true"></el-table-column>
-                                <el-table-column property="userName" label="上传者" align="center"></el-table-column>
+                                <el-table-column property="name" label="上传者" align="center"></el-table-column>
                                 <el-table-column label="操作" align="center">
                                     <template slot-scope="scope">
                                         <a :href="scope.row.attachment" target="_blank">下载</a>
@@ -297,7 +296,7 @@
             setCommentsToAuthor() {
                 let commentsToAuthor = "";
                 for (let i in this.authorList) {
-                    commentsToAuthor += ('#' + this.authorList[i].userName+":" + '\n' + this.authorList[i].commentsToAuthor + '\n');
+                    commentsToAuthor += ('#' + this.authorList[i].name+":" + '\n' + this.authorList[i].commentsToAuthor + '\n');
                 }
                 this.commentsToAuthor = commentsToAuthor;
             },
@@ -305,7 +304,7 @@
             setCommentsToEditor() {
                 let commentsToEditor = "";
                 for (let i in this.editorList) {
-                    commentsToEditor += ('#' + this.editorList[i].userName +  ":" + '\n' + this.editorList[i].commentsToEditor + '\n');
+                    commentsToEditor += ('#' + this.editorList[i].name +  ":" + '\n' + this.editorList[i].commentsToEditor + '\n');
                 }
                 this.commentsToEditor = commentsToEditor;
             },

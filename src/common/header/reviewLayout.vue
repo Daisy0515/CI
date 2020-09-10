@@ -31,14 +31,17 @@
 <script>
 import { mapGetters, mapMutations } from "vuex";
 import HeadUser from "@/common/headUser/headUser";
+import {httpGet} from "@/utils/http.js";
 export default {
   components: {
     HeadUser
   },
   props: ["imageUrl"],
-  name: "myheader",
+  name: "reviewLayout",
   data: function() {
     return {
+      //1:项目发布者, 2:项目经理, 3:评审专家, 4:评审管理员,原本想写成permissionList:[],
+      // 但是这种写法的点击角色切换时会出现id对应的数字到name的切换
       permissionList: [{
         id: 1,
         name: '项目发布者'
@@ -86,6 +89,7 @@ export default {
     };
   },
   created: function() {
+    this.setPermissionList();
     /*通过地址栏进入页面时，根据路由判断角色*/
     let currentRouteName = this.$route.name;
     if(currentRouteName.indexOf('publisher')>=0){
@@ -107,9 +111,12 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["getHeader"])
+    ...mapGetters(["getHeader","getReviewPermissionList"])
   },
   methods: {
+    setPermissionList(){
+        this.permissionList = JSON.parse(sessionStorage.getItem("reviewPermissionList"));
+    },
     tiaoDesk() {
       this.setHeader("project");
     },

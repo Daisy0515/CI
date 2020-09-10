@@ -78,8 +78,8 @@ export default {
       loginForm: {
         phone: "",
         pass: "",
-        expiresIn: 14400
-      }
+        expiresIn: 144000
+      },
     };
   },
   created: function() {
@@ -137,6 +137,7 @@ export default {
                 sessionStorage.setItem("userToken", JSON.stringify(userToken));
                 this.setLogin();
                 this.getuserData(userRole);
+                this.getReviewPermissionList();
               } else if (httpCode !== 401) {
                 errTips(msg);
               }
@@ -144,6 +145,17 @@ export default {
           );
         } else {
           return false;
+        }
+      });
+    },
+
+    getReviewPermissionList(){
+      httpGet('/v1/authorization/review/permission/list').then(results=>{
+        const {httpCode, msg, data} = results.data;
+        if (httpCode == 200){
+           sessionStorage.setItem("reviewPermissionList",JSON.stringify(data.permissionList)) ;
+        } else {
+          errTips(msg);
         }
       });
     },

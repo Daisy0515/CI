@@ -59,7 +59,7 @@ axios.interceptors.response.use(
     // console.log('join method get token',store.state.userToken)
     switch (response.data.httpCode) {
       case 401:
-        if (store.state.userToken != undefined) {
+        if (store.state.userToken !== undefined) {
           store.commit("setLogout")
           MessageBox.alert('登录过期,请重新登录', '提示', {
             type: 'warning',
