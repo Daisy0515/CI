@@ -7,7 +7,7 @@
 					<el-row style="margin-bottom: 20px;" :gutter="20">
 						<el-col :span="6">
 							<el-card shadow="hover" style="height: 120px;">
-								<router-link :to="{name:'reviewTodo',query:{status:1}}"> <!--0 表示新的任务-->
+								<router-link :to="{name:'editorReviewTodo',query:{status:1}}"> <!--0 表示新的任务-->
 									<h1>{{ mission }}</h1>
 									<!-- <el-button type="text">新的任务</el-button> -->
 								</router-link>
@@ -16,7 +16,7 @@
 						</el-col>
 						<el-col :span="6">
 							<el-card shadow="hover" style="height: 120px;">
-								<router-link :to="{name:'reviewTodo',query:{status:2,statusExplain:1,}}">  <!--1 表示评审专家完成评审-->
+								<router-link :to="{name:'editorReviewTodo',query:{status:2,statusExplain:1,}}">  <!--1 表示评审专家完成评审-->
 									<h1>{{ expertAccomplish  }}</h1>
 									<!-- <el-button type="text">评审专家完成评审</el-button> -->
 								</router-link>
@@ -26,7 +26,7 @@
 						</el-col>
 						<el-col :span="6">
 							<el-card shadow="hover" style="height: 120px;">
-								<router-link :to="{name:'reviewTodo',query:{status:2,statusExplain:2,}}">  <!--2 表示需要额外评审专家-->
+								<router-link :to="{name:'editorReviewTodo',query:{status:2,statusExplain:2,}}">  <!--2 表示需要额外评审专家-->
 									<h1>{{ extraExpert  }}</h1>
 									<!-- <el-button type="text">需要额外评审专家</el-button> -->
 								</router-link>
@@ -35,7 +35,7 @@
 						</el-col>
 						<el-col :span="6">
 							<el-card shadow="hover" style="height: 120px;">
-								<router-link :to="{name:'reviewTodo',query:{status:2,statusExplain:3,}}">   <!--3 表示评审延期-->
+								<router-link :to="{name:'editorReviewTodo',query:{status:2,statusExplain:3,}}">   <!--3 表示评审延期-->
 									<h1>{{ postpone  }}</h1>
 									<!-- <el-button type="text">评审延期</el-button> -->
 								</router-link>
@@ -52,7 +52,7 @@
 					<el-row style="margin-bottom: 10px;">
 						<el-card shadow="hover" style="height: 60px;">
 							<el-row :gutter="20">
-								<router-link :to="{name:'reviewTodo',query:{status:2,statusExplain:4,}}">   <!--4 表示评审邀请未回复-->
+								<router-link :to="{name:'editorReviewTodo',query:{status:2,statusExplain:4,}}">   <!--4 表示评审邀请未回复-->
 									<el-col :span="20"><!-- <el-button type="text" style="font-size: 16px;">评审邀请未回复</el-button> -->
 									<span class="subtitle">评审邀请未回复</span>
 									</el-col>
@@ -64,7 +64,7 @@
 					<el-row style="margin-bottom: 10px;">
 						<el-card shadow="hover" style="height: 60px;">
 							<el-row :gutter="20">
-								<router-link :to="{name:'reviewTodo',query:{status:2}}">   <!--5 表示评审进行中-->
+								<router-link :to="{name:'editorReviewTodo',query:{status:2}}">   <!--5 表示评审进行中-->
 									<el-col :span="20"><!-- <el-button type="text" style="font-size: 16px;" >评审进行中</el-button> -->
 									<span class="subtitle">评审进行中</span>
 									</el-col>

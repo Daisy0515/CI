@@ -53,6 +53,7 @@
                     <el-date-picker
                             v-model="ruleForm.deadline"
                             type="date"
+                            :picker-options="endDatePickerForDeadLine"
                             placeholder="选择日期">
                     </el-date-picker>
                 </el-col>
@@ -84,6 +85,11 @@
         name: "publisherReviewOpinion",
         data() {
             return {
+                endDatePickerForDeadLine: { //截止日期不能早于当下时间
+                    disabledDate(time) {
+                        return time.getTime() <= new Date().getTime() - 8.64e6;
+                    }
+                },
                 formLabelWidth:'100px',
                 endDate:'',
                 innerVisible: false,

@@ -6,22 +6,30 @@
         <el-form :model="form">
             <h2 class="header">发布者意见：<span style="text-align: center" v-if="!showPublisherOpinion">未发表意见</span></h2>
             <template v-if="showPublisherOpinion">
-                <el-row :gutter="20" style="margin-top: 10px;">
-                    <el-col :span="6">
-                        <el-form-item label="发布者决定" :label-width="formLabelWidth">
-                            <el-input v-model="form.projectOpinion.result" size="medium" :readonly="isReadOnly"/>
-                        </el-form-item>
+                <el-row  style="margin-top: 10px;">
+                    <el-col :span="2" :offset="1">
+                        <span>发布者决定：</span>
                     </el-col>
-                    <el-col :span="6">
-                        <el-form-item label="评审得分" :label-width="formLabelWidth">
-                            <el-input v-model="form.projectOpinion.score" size="medium" :readonly="isReadOnly"/>
-                        </el-form-item>
+                    <el-col :span="2">
+                        <div style="font-weight: bolder;">
+                            <span v-if="form.projectOpinion.result">通过</span>
+                            <span v-else>不通过</span>
+                        </div>
+                    </el-col>
+                    <el-col :span="2">
+                        <span>评审得分:</span>
+                    </el-col>
+                    <el-col :span="3" style="margin: -5px auto 10px auto;">
+                        <el-input v-model="form.projectOpinion.score" size="small" :readonly="isReadOnly"/>
                     </el-col>
                 </el-row>
                 <el-row>
-                    <el-form-item label="评价内容" :label-width="formLabelWidth">
+                    <el-col :span="2" :offset="1">
+                        <span>评价内容:</span>
+                    </el-col>
+                    <el-col :span="12">
                         <el-input type="textarea" v-model="form.projectOpinion.content" size="medium" :readonly="isReadOnly" autosize/>
-                    </el-form-item>
+                    </el-col>
                 </el-row>
             </template>
             <h2 class="header">管理员意见：<span style="text-align: center" v-if="!showAdminOpinion">未发表意见</span></h2>

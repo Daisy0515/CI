@@ -96,30 +96,41 @@
                 </el-table-column>
                 <el-table-column prop="accomplishProgress" label="操作" align="center" width="280px">
                     <template slot-scope="scope">
-                        <el-button @click="handleClickDetail(scope.row.id)" type="text" size="medium"
-                        ><i class="el-icon-search"></i>查看详情
+                        <el-button @click="handleClickDetail(scope.row.id)" type="text" size="medium">
+                            <i class="el-icon-search"></i>查看详情
                         </el-button>
-                        <el-button @click="handleRollBack(scope.row.id)" type="text" size="medium" v-if="status===1||scope.row.status===1"
-                        ><i class="el-icon-close"></i>打回
-                        </el-button>
-                        <el-button @click="handleClickOpinion(scope.row.id)" type="text" size="medium" v-if="status===3||scope.row.status===3"
-                        ><i class="el-icon-document"></i>意见回复
-                        </el-button>
-                        <el-button @click="handleClickOpinion(scope.row.id)" type="text" size="medium" v-if="status===2||scope.row.status===2"
-                                   style="margin-right: 10px"
-                        ><i class="el-icon-document"></i>意见
-                        </el-button>
-                        <el-button @click="handleAccept(scope.row.id)" type="text" size="medium"
-                                   v-if="status===1||status===3||scope.row.status===1||scope.row.status===3"
-                        ><i class="el-icon-check"></i>接受
-                        </el-button>
-                        <el-button @click="handleClickEvaluate(scope.row.id,scope.row.title)" type="text" size="medium" v-if="status===2||scope.row.status===2"
-                                   style="margin-right: 10px"><i class="el-icon-edit"></i>评价
-                        </el-button>
-                        <el-button @click="handleEvaluateDetail(scope.row.id)" type="text" size="medium"
-                                   v-if="status===4||scope.row.status===4"
-                        ><i class="el-icon-search"></i>查看评价
-                        </el-button>
+                        <template v-if="status===1||scope.row.status===1">
+                            <el-button @click="handleRollBack(scope.row.id)" type="text" size="medium" >
+                                <i class="el-icon-close"></i>打回
+                            </el-button>
+                            <el-button @click="handleAccept(scope.row.id)" type="text" size="medium">
+                                <i class="el-icon-check"></i>接受
+                            </el-button>
+                        </template>
+                        <template v-if="status===2||scope.row.status===2">
+                            <el-button @click="handleClickOpinion(scope.row.id)" type="text" size="medium" style="margin-right: 10px" >
+                                <i class="el-icon-document"></i>意见
+                            </el-button>
+                            <el-button @click="handleClickEvaluate(scope.row.id,scope.row.title)" type="text" size="medium" style="margin-right: 10px">
+                                <i class="el-icon-edit"></i>评价
+                            </el-button>
+                        </template>
+                        <template v-if="status===3||scope.row.status===3">
+                            <el-button @click="handleClickOpinion(scope.row.id)" type="text" size="medium" >
+                                <i class="el-icon-document"></i>意见回复
+                            </el-button>
+                            <el-button @click="handleAccept(scope.row.id)" type="text" size="medium">
+                                <i class="el-icon-check"></i>接受
+                            </el-button>
+                        </template>
+                        <template v-if="status===4||scope.row.status===4">
+                            <el-button @click="handleEvaluateDetail(scope.row.id)" type="text" size="medium">
+                                <i class="el-icon-search"></i>查看评价
+                            </el-button>
+                            <el-button @click="handleClickOpinion(scope.row.id)" type="text" size="medium" >
+                                <i class="el-icon-document"></i>查看意见
+                            </el-button>
+                        </template>
                     </template>
                 </el-table-column>
             </el-table>
@@ -154,7 +165,7 @@
                         <el-form-item label="截止时间" prop="deadline" :label-width="formLabelWidth">
                             <el-date-picker
                                     v-model="form.deadline"
-                                    :picker-options="endDatePicker"
+                                    :picker-options="endDatePickerForDeadLine"
                                     type="date"
                                     placeholder="截止时间"
                                     value-format="yyyy-MM-dd"
@@ -251,6 +262,11 @@
         },
         data() {
             return {
+                endDatePickerForDeadLine: { //截止日期不能早于当下时间
+                    disabledDate(time) {
+                        return time.getTime() <= new Date().getTime() - 8.64e6;
+                    }
+                },
                 loading: false,//评审任务列表加载提示
                 processLoading: false,//搜索框中点击类型下拉框时，加载的
                 formReviewDetailLoading: false,//打开详情，加载转圈提示

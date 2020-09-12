@@ -7,6 +7,7 @@ import publisherPublic from '@/view/review/reviewPublic/publisherPublic'
 import expertPublic from '@/view/review/reviewPublic/expertPublic'
 import editorPublic from '@/view/review/reviewPublic/editorPublic'
 import store from '@/store/index.js'
+import {errTips} from "@/utils/tips.js";
 
 Vue.use(Router)
 const vueRouter = new Router({
@@ -404,7 +405,7 @@ const vueRouter = new Router({
             },
                 {
                     path: '/submissionSearch',
-                    name: 'submissionSearch',
+                    name: 'editorSubmissionSearch',
                     component: () => import('@/view/review/editor/submissionSearch'),
                     meta: {
                         title: '评审任务搜索',
@@ -414,7 +415,7 @@ const vueRouter = new Router({
                 },
                 {
                     path: '/expertSearch',
-                    name: 'expertSearch',
+                    name: 'editorExpertSearch',
                     component: () => import('@/view/review/editor/expertSearch'),
                     meta: {
                         title: '评审专家搜索',
@@ -424,7 +425,7 @@ const vueRouter = new Router({
                 },
                 {
                     path: '/reviewStatistic/expertAccomplishCount/:expertAccomplishCount',
-                    name: 'reviewStatistic',
+                    name: 'editorReviewStatistic',
                     component: () => import('@/view/review/editor/reviewStatistic'),
                     props: true,
                     meta: {
@@ -434,7 +435,7 @@ const vueRouter = new Router({
                 },
                 {
                     path: '/reviewTodo',
-                    name: 'reviewTodo',
+                    name: 'editorReviewTodo',
                     component: () => import('@/view/review/editor/reviewTodo'),
                     props: (route) => ({
                         status: route.query.status,
@@ -448,20 +449,20 @@ const vueRouter = new Router({
                 },
                 {
                     path: '/inviteExpert',
-                    name: 'inviteExpert',
+                    name: 'editorInviteExpert',
                     component: () => import('@/view/review/editor/inviteExpert'),
                     meta: {
-                        title: '发送邮件',
+                        title: '邀请评审专家',
                         requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
                     }
 
                 },
                 {
                     path: '/sendEmail',
-                    name: 'sendEmail',
+                    name: 'editorSendEmail',
                     component: () => import('@/view/review/editor/sendEmail'),
                     meta: {
-                        title: '邀请评审专家',
+                        title: '发送邮件',
                         requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
                     }
 
@@ -598,7 +599,7 @@ const vueRouter = new Router({
                     }
                 }, {
                     path: '/registerNewUser',
-                    name: 'registerNewUser',
+                    name: 'editorRegisterNewUser',
                     component: () => import('@/view/review/editor/registerNewUser'),
                     meta: {
                         title: '注册新用户',
@@ -1733,9 +1734,42 @@ const shareSessionStorage = function (to) {
         }
     });
 };
-
+/**根据rolename判断permissionList里是否有rolename所对应的权限*/
+const checkPermission = function(permissionList,roleName){
+    for(let item of permissionList){
+        if(item.name.indexOf(roleName)!==-1){
+            return true;
+        }
+    }
+    return false
+}
+const permissionList = JSON.parse(sessionStorage.getItem("reviewPermissionList"));//用户拥有的评审权限
+/**拦截评审系统中非法的访问*/
+const filterInvalidRequestForReview = function(to,from,next){
+    if(to.name!==null&&to.name.indexOf("editor")!== -1){
+        if(checkPermission(permissionList,"管理员")){
+            next();
+        }else{
+            errTips("您没有此角色！");
+            next({
+                path:from.fullPath
+            });
+        }
+    }else if(to.name!==null&&to.name.indexOf("expert")!== -1){
+        if(checkPermission(permissionList,"专家")){
+            next();
+        }else{
+            errTips("您没有此角色！");
+            next({
+                path:from.fullPath
+            });
+        }
+    }else{
+        next();
+    }
+}
 vueRouter.beforeEach((to, from, next) => {
-    shareSessionStorage(to);
+    // shareSessionStorage(to);
     document.title = to.meta.title;
     if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
         if (sessionStorage.getItem('userToken')) { // 通过vuex state获取当前的token是否存在
@@ -1771,12 +1805,14 @@ vueRouter.beforeEach((to, from, next) => {
                 next();
 
             }
+            filterInvalidRequestForReview(to,from,next);
         } else {
             store.commit('intercept', to.fullPath);
             next({
                 path: '/login',
             })
         }
+
     } else {
         next();
     }

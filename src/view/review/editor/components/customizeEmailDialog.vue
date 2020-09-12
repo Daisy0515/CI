@@ -1,10 +1,15 @@
 <!--功能：查看已选择的发送信件的对象列表，定制与发送信件，外加中止任务功能，
     调用页面：1.universalMail(评审管理员：评审管理/发送提醒邮件/通用邮件)，
               2.editorOpinionAndDecision(评审管理员：评审任务中的意见与决定，中止任务)
-              3.customizeAndSendEmail(评审管理员：评审管理/发送提醒邮件/评审专家提醒&评审专家邀请未回复/评审专家搜索结果/定制与发送邮件)
+              3.customizeAndSendEmail(评审管理员：评审管理/发送提醒邮件/评审专家提醒or评审专家邀请未回复/评审专家搜索结果/定制与发送邮件)
 -->
 <template>
-    <el-dialog title="已选择对象" :visible.sync="visible" width="80%" :before-close="closeSelectedUserDialog">
+    <el-dialog title="已选择对象" :visible.sync="visible" width="80%" :close-on-click-modal="false" :before-close="closeSelectedUserDialog">
+        <p class="Tips" >
+            <i class="el-icon-info"></i>
+            全局定制的编辑在保存后对所有邮件产生影响，如果需要对个别邮件再进一步的单独定制，
+            可以在全局定制完成后，再通过个别信件的定制来进行个性化定制。
+        </p>
         <el-table :data="userList" v-loading="userListLoading">
             <el-table-column property="name" label="发送对象"></el-table-column>
             <el-table-column property="title" label="评审标题" v-if="usedBy!=='editorOpinionAndDecision'"></el-table-column>
@@ -434,6 +439,10 @@
     }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+    .Tips {
+        text-align: center;
+        margin: 10px  auto;
+        color: #909399a8;
+    }
 </style>

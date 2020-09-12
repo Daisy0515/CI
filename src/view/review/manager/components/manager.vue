@@ -94,24 +94,33 @@
                 </el-table-column>
                 <el-table-column prop="accomplishProgress" label="操作" align="center" width="280px">
                     <template slot-scope="scope">
-                        <el-button @click="handleDetail(scope.row)" type="text" size="medium"
-                        ><i class="el-icon-search"></i>查看详情
+                        <el-button @click="handleDetail(scope.row)" type="text" size="medium" >
+                            <i class="el-icon-search"></i>查看详情
                         </el-button>
-                        <el-button @click="handleClickOpinion(scope.row)" type="text" size="medium" v-if="status===3||scope.row.status===3"
-                        ><i class="el-icon-document"></i>查看意见
-                        </el-button>
-                        <el-button @click="handleClickSubmit(scope.row)" type="text" size="medium" v-if="status===3||scope.row.status===3"
-                        ><i class="el-icon-refresh"></i>重新提交
-                        </el-button>
-                        <el-button @click="handleClickOpinion(scope.row)" type="text" size="medium" v-if="status===2||scope.row.status===2"
-                        ><i class="el-icon-document"></i>意见回复
-                        </el-button>
-                        <el-button @click="handleClickSubmit(scope.row)" type="text" size="medium" v-if="status===2||scope.row.status===2"
-                        ><i class="el-icon-refresh"></i>修改提交
-                        </el-button>
-                        <el-button @click="handleEvaluateDetail(scope.row)" type="text" size="medium" v-if="status===4||scope.row.status===4"
-                        ><i class="el-icon-search"></i>查看评价
-                        </el-button>
+                        <template v-if="status===3||scope.row.status===3"><!--打回中-->
+                            <el-button @click="handleClickOpinion(scope.row)" type="text" size="medium">
+                                <i class="el-icon-document"></i>查看意见
+                            </el-button>
+                            <el-button @click="handleClickSubmit(scope.row)" type="text" size="medium" >
+                                <i class="el-icon-refresh"></i>重新提交
+                            </el-button>
+                        </template>
+                        <template v-if="status===2||scope.row.status===2"><!--评审中-->
+                            <el-button @click="handleClickOpinion(scope.row)" type="text" size="medium"
+                            ><i class="el-icon-document"></i>意见回复
+                            </el-button>
+                            <el-button @click="handleClickSubmit(scope.row)" type="text" size="medium"
+                            ><i class="el-icon-refresh"></i>修改提交
+                            </el-button>
+                        </template>
+                        <template v-if="status===4||scope.row.status===4"><!--已完成-->
+                            <el-button @click="handleEvaluateDetail(scope.row)" type="text" size="medium" >
+                                <i class="el-icon-search"></i>查看评价
+                            </el-button>
+                            <el-button @click="handleClickOpinion(scope.row)" type="text" size="medium"
+                            ><i class="el-icon-document"></i>查看意见
+                            </el-button>
+                        </template>
                     </template>
                 </el-table-column>
             </el-table>

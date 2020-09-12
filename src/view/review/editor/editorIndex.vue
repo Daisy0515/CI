@@ -7,7 +7,7 @@
 					<el-row style="margin-bottom: 20px;" :gutter="20">
 						<el-col :span="6">
 							<el-card shadow="hover">
-								<router-link :to="{name:'reviewStatistic',params:{expertAccomplishCount:0}}">
+								<router-link :to="{name:'editorReviewStatistic',params:{expertAccomplishCount:0}}">
 									<h1 class="numtitle">{{ zeroSum  }}</h1>
 								</router-link>
 								<span class="subtitle">0位专家已评审</span>
@@ -15,7 +15,7 @@
 						</el-col>
 						<el-col :span="6">
 							<el-card shadow="hover">
-								<router-link :to="{name:'reviewStatistic',params:{expertAccomplishCount:1}}">
+								<router-link :to="{name:'editorReviewStatistic',params:{expertAccomplishCount:1}}">
 									<h1 class="numtitle">{{ oneSum  }}</h1>
 								</router-link>
 								<span class="subtitle">1位专家已评审</span>
@@ -23,7 +23,7 @@
 						</el-col>
 						<el-col :span="6">
 							<el-card shadow="hover">
-								<router-link :to="{name:'reviewStatistic',params:{expertAccomplishCount:2}}">
+								<router-link :to="{name:'editorReviewStatistic',params:{expertAccomplishCount:2}}">
 									<h1 class="numtitle">{{ twoSum  }}</h1>
 								</router-link>
 								<span class="subtitle">2位专家已评审</span>
@@ -31,7 +31,7 @@
 						</el-col>
 						<el-col :span="6">
 							<el-card shadow="hover">
-								<router-link :to="{name:'reviewStatistic',params:{expertAccomplishCount:3}}">
+								<router-link :to="{name:'editorReviewStatistic',params:{expertAccomplishCount:3}}">
 									<h1 class="numtitle">{{ threeSum  }}</h1>
 								</router-link>
 								<span class="subtitle">3位专家已评审</span>
