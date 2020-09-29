@@ -239,9 +239,9 @@
             closeDialog() {
                 this.dialogFormVisible = false;
             },
-
+            /**地址最后由get改成了getall，表示返回用户所发布的所有执行中与完成的项目(过滤没有设置参与评审) changed by xwj*/
             getProjectList() {
-                httpGet('/v1/authorization/mission/promulgator/get').then(results => {
+                httpGet('/v1/authorization/mission/promulgator/getall').then(results => {
                     const {msg, data, httpCode} = results.data;
                     if (httpCode === 200) {
                         this.projectList = data.projectList;

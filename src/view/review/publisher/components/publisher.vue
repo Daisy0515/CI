@@ -349,10 +349,11 @@
             searchList() {//点击搜索按钮触发的事件
                 this.getView(this.searchData);
             },
-            /**搜索栏：获取当前用户参与的项目*/
+            /**搜索栏：获取当前用户参与的项目,这些项目处于执行中或完成的状态,并且这些项目是设置了评审流程的*/
             getUserProjectList() {
-                httpGet("/v1/authorization/mission/promulgator/get").then(results => {
+                httpGet("/v1/authorization/mission/promulgator/getall").then(results => {
                     const {httpCode, msg, data} = results.data;
+                    console.log("data.projectList",data.projectList);
                     if (httpCode == 200) {
                         this.projectList = data.projectList;
                     } else if (httpCode !== 401) {
@@ -364,6 +365,10 @@
             getReviewProcessList(projectId) {
                 this.processLoading = true;
                 console.log("projectId:", projectId);
+                if(projectId===""){
+                    message("请先选择项目");
+                    return ;
+                }
                 httpGet("/v1/authorization/review/process/list", {id: projectId}).then(results => {
                     const {httpCode, msg, data} = results.data;
                     console.log("data:", data);
@@ -433,7 +438,7 @@
                 this.formReviewDetailLoading = true;
                 httpGet("/v1/authorization/review/review/get", {id: val}).then(results => {
                     const {httpCode, msg, data} = results.data;
-                    if (httpCode == 200) {
+                    if (httpCode === 200) {
                         data.deadline = specificDate(data.deadline);
                         data.gmtCreate = specificDate(data.gmtCreate);
                         for(let item of data.resourceList){

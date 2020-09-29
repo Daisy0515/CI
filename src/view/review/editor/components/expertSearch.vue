@@ -50,17 +50,17 @@
 			<el-table-column prop="uName" label="评审专家姓名" align="center"></el-table-column>
 			<el-table-column label="个人信息" align="center" >
 				<template slot-scope="scope">
-					<span>职称：{{scope.row.uJobTitle}}</span></br>
+					<span>职称：{{scope.row.uJobTitle}}</span><br/>
 					<span>学历：</span>
-					<span v-if="scope.row.uEducation==1">高中</span>
-					<span v-if="scope.row.uEducation==2">大专</span>
-					<span v-if="scope.row.uEducation==3">本科</span>
-					<span v-if="scope.row.uEducation==4">研究生</span>
-					<span v-if="scope.row.uEducation==5">博士</span>
-					<span v-if="scope.row.uEducation==6">博士后</span>
-					<span v-if="scope.row.uEducation==7">院士</span>
-					</br>
-					<span>单位：{{scope.row.uWorkUnit}}</span></br>
+					<span v-if="scope.row.uEducation===1">高中</span>
+					<span v-if="scope.row.uEducation===2">大专</span>
+					<span v-if="scope.row.uEducation===3">本科</span>
+					<span v-if="scope.row.uEducation===4">研究生</span>
+					<span v-if="scope.row.uEducation===5">博士</span>
+					<span v-if="scope.row.uEducation===6">博士后</span>
+					<span v-if="scope.row.uEducation===7">院士</span>
+					<br/>
+					<span>单位：{{scope.row.uWorkUnit}}</span><br/>
 				</template>
 			</el-table-column>
 
@@ -209,7 +209,7 @@
 				//this.inviteExpertParams.id = this.params.id;
 				this.inviteExpertParams = this.postForm;
 				console.log("postForm:", this.postForm);
-				if (this.postForm.alternativeList.length == 0 && this.postForm.expertInviteList.length == 0)
+				if (this.postForm.alternativeList.length === 0 && this.postForm.expertInviteList.length === 0)
 					errTips("请选择评审专家！");
 				else {
 					httpPost("/v1/authorization/review/expertinvite/get", this.postForm).then(results => {
@@ -248,10 +248,10 @@
 				console.log(this.postForm.alternativeList);
 				if (arr.length === 0) {
 					let index = this.postForm.expertInviteList.findIndex(item => item.userId === id);
-					if (index != -1)
+					if (index !== -1)
 						this.postForm.expertInviteList.splice(index, 1);
 					index = this.postForm.alternativeList.findIndex(item => item.userId === id);
-					if (index != -1) {
+					if (index !== -1) {
 						this.postForm.alternativeList.splice(index, 1);
 						this.alterList.splice(index, 1);
 					}
@@ -268,8 +268,8 @@
 						type: val,
 						userId: id
 					}
-					if (val == 1) this.postForm.expertInviteList.push(temp);
-					if (val == 2) {
+					if (val === 1) this.postForm.expertInviteList.push(temp);
+					if (val === 2) {
 						this.postForm.alternativeList.push(temp);
 						this.alterList.push(personalInfo);
 					}
@@ -283,7 +283,7 @@
 						msg,
 						data
 					} = results.data;
-					if (httpCode == 200) {
+					if (httpCode === 200) {
 						this.cruxList = data.cruxList;
 					} else {
 						this.cruxList = [];
@@ -300,7 +300,7 @@
 						msg,
 						data
 					} = results.data;
-					if (httpCode == 200) {
+					if (httpCode === 200) {
 						this.researchDirectionList = data.researchDirectionList;
 					} else {
 						this.researchDirectionList = [];
@@ -322,7 +322,7 @@
 						msg,
 						data
 					} = results.data;
-					if (httpCode == 200) {
+					if (httpCode === 200) {
 						this.pageNo = data.pageNo;
 						this.totalPage = parseInt(data.totalPage + "0");
 						//this.expertUserList = data.expertUserList;
@@ -339,7 +339,7 @@
 						this.dataTable = list;
 						Object.assign(this.pageData, val);
 
-					} else if (msg == "该条件暂无数据") {
+					} else if (msg === "该条件暂无数据") {
 						this.expertUserList = [];
 						message("该条件暂无数据");
 					} else if (httpCode !== 401) {

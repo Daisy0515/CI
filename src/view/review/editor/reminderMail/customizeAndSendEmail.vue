@@ -60,7 +60,7 @@
             getEmailTemplate(){
                 httpGet('/v1/authorization/review/emailtemplate/get').then(results=>{
                     const {httpCode, msg, data} = results.data;
-                    if (httpCode == 200){
+                    if (httpCode === 200){
                         this.templateList = data.templateList;
                     } else {
                         errTips(msg);

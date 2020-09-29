@@ -74,6 +74,7 @@
                       <span class="module_badge feedback-score feedback-score_medium">查看次数：</span>
                       <span class="module_badge">{{item.examineCount}}</span>
                     </div>
+                    <div :class="item.top===1?'up':''"></div><!--置顶特效-->
                   </div>
                   <div class="serviceMeta" style="padding-left: 6px;">
                     <p class="extras2">{{item.gmtCreate}} 共有{{item.participationCount}}个团队参与竞标</p>
@@ -245,6 +246,7 @@ export default {
       // !value && (value = "所有");
       httpGet("/v1/public/bid/search/getplaza", val).then(results => {
         let getData = results.data;
+        console.log("getData:",getData);
         if (getData.httpCode === 200) {
           this.plazaList = [...getData.data.plazaList];
           this.pageNo = getData.data.pageNo;
@@ -268,4 +270,19 @@ export default {
 </script>
 <style lang='scss'>
 @import "@/assets/scss/square.scss";
+.up:before{
+  position: absolute;
+  z-index: 1;
+  right:100px;
+  top: 5px;
+  height: 0;
+  padding-right: 10px;
+  line-height: 0;
+  color: white;
+  border: 15px solid #4c83c3;
+  background-color: #4c83c3;
+  border-right-color: white;
+  content: "置顶";
+  box-shadow: 0 5px 5px -5px #000;
+}
 </style>

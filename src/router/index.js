@@ -1743,9 +1743,10 @@ const checkPermission = function(permissionList,roleName){
     }
     return false
 }
-const permissionList = JSON.parse(sessionStorage.getItem("reviewPermissionList"));//用户拥有的评审权限
+
 /**拦截评审系统中非法的访问*/
 const filterInvalidRequestForReview = function(to,from,next){
+    const permissionList = JSON.parse(sessionStorage.getItem("reviewPermissionList"));//用户拥有的评审权限
     if(to.name!==null&&to.name.indexOf("editor")!== -1){
         if(checkPermission(permissionList,"管理员")){
             next();

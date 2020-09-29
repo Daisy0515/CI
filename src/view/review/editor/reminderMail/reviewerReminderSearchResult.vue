@@ -29,9 +29,9 @@
             <el-table-column prop="deadline" label="截止时间" align="center" width="100px;"></el-table-column>
             <el-table-column prop="surplus" label="距离截止日期(天)" align="center" ></el-table-column>
             <el-table-column prop="emailSum" label="发送提醒邮件总数" align="center"></el-table-column>
-            <el-table-column prop="emailInvite" label="邀请提醒已发送" align="center"></el-table-column>
-            <el-table-column prop="emailDeadlineFront" label="截止日期前提醒" align="center" ></el-table-column>
-            <el-table-column prop="emailDeadlineRear" label="截止日期后提醒" align="center" ></el-table-column>
+            <el-table-column prop="emailInvite" label="邀请提醒已发送次数" align="center"></el-table-column>
+            <el-table-column prop="emailDeadlineFront" label="截止日期前提醒次数" align="center" ></el-table-column>
+            <el-table-column prop="emailDeadlineRear" label="截止日期后提醒次数" align="center" ></el-table-column>
         </el-table>
         <el-row style="margin-top: 30px;">
             <el-button style="margin-left:42%;" @click="goBack">返回</el-button>
@@ -90,16 +90,16 @@
         },
         methods:{
             getSearchResult(){
+
                 let searchData = JSON.parse(this.searchData);
                 searchData = Object.assign(this.pageData,searchData);//searchData和pageData会合并在一起，两者都发生改变
+                console.log("search_data",JSON.stringify(searchData));
                 httpGet("v1/authorization/review/byadminmission/search", searchData).then(results => {
                     const {httpCode, msg, data} = results.data;
-                    console.log("searchResultData:",data);
-                    if (httpCode == 200) {
+                    console.log("searchResultData:",JSON.stringify(data));
+                    if (httpCode === 200) {
                         for(let item of data.expertList){
                             item.deadline = specificDate(item.deadline);
-                            item.emailDeadlineFront = specificDate(item.emailDeadlineFront);
-                            item.emailDeadlineRear  = specificDate(item.emailDeadlineRear );
                             item.gmtCreate  = specificDate(item.gmtCreate );
                             item.loginTime  = specificDate(item.loginTime);
                             item.receiveTime   = specificDate(item.receiveTime );

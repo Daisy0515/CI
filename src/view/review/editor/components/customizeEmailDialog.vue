@@ -329,7 +329,7 @@
                 this.httpMethodForSendEmail(url,data);
             },
             /**CustomizeAndSendEmail页面调用：已选择对象对话框：发送全部信件*/
-            sendAllEmailForCustomizeAndSendEmail() {
+            sendAllEmailForCustomizeAndSendEmail(){
                 this.sendAllEmailLoading = true;
                 let userList = this.userList;
                 for(let item of userList){
@@ -339,6 +339,7 @@
                     templateId: this.templateId,
                     previewList: userList,
                 };
+                console.log("customize data:",JSON.stringify(data));
                 let url = "/v1/authorization/review/expertemailall/send";
                 this.httpMethodForSendEmail(url,data);
             },

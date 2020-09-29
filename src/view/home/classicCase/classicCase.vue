@@ -104,6 +104,7 @@
                       </span>
                     </div>
                   </div>
+                  <div :class="item.top===1?'up':''"></div><!--置顶特效-->
                   <div class="serviceMeta" style="padding-left: 6px;">
                     <p class="extras2">{{item.gmtCreate}}</p>
                     <p class="desc">{{item.detail}}</p>
@@ -332,4 +333,19 @@ export default {
 </script>
 <style lang='scss'>
 @import "@/assets/scss/square.scss";
+.up:before{
+  position: absolute;
+  z-index: 1;
+  right:170px;
+  top: 5px;
+  height: 0;
+  padding-right: 10px;
+  line-height: 0;
+  color: white;
+  border: 15px solid #4c83c3;
+  background-color: #4c83c3;
+  border-right-color: white;
+  content: "置顶";
+  box-shadow: 0 5px 5px -5px #000;
+}
 </style>

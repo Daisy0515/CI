@@ -34,9 +34,9 @@
 							<template slot="append">天</template>
 						</el-input>
 					</el-form-item>
-					<el-form-item label="截止日期后,在取消未完成任务前每隔固定天数发生提醒邮件">
+					<el-form-item label="截止日期前,在取消未完成任务前每隔固定天数发生提醒邮件">
 						<el-input v-model="ruleForm.deadlineRearEvery ">
-							<template slot="append">次</template>
+							<template slot="append">天</template>
 						</el-input>
 					</el-form-item>
 					<el-form-item label="评审截止日前发送提醒邮件">
@@ -85,10 +85,12 @@
 					</el-table-column>
 					<el-table-column prop="replyOperation" label="状态" align="center">
 						<template slot-scope="scope">
-							<span v-if="scope.row.replyOperation==1">接受</span>
-							<span v-if="scope.row.replyOperation==2">拒绝</span>
-							<span v-if="scope.row.replyOperation==3">无回应</span>
-							<span v-if="scope.row.replyOperation==4">同意邀请前撤回邀请</span>
+							<span v-if="scope.row.replyOperation===1">接受</span>
+							<span v-if="scope.row.replyOperation===2">拒绝</span>
+							<span v-if="scope.row.replyOperation===3">同意邀请前撤回邀请</span>
+							<span v-if="scope.row.replyOperation===4">邀请未回复</span>
+							<span v-if="scope.row.replyOperation===5">同意邀请后中止任务</span>
+							<span v-if="scope.row.replyOperation===6">同意邀请后撤回任务</span>
 						</template>
 					</el-table-column>
 					<el-table-column prop="gmtModified" label="状态更新时间" align="center">
@@ -264,7 +266,8 @@
 			getView() {
 				httpGet("/v1/authorization/review/total/get", {id: this.id}).then(results => {
 					const { httpCode, msg, data } = results.data;
-					if (httpCode == 200) {
+					console.log("results.data&id",results.data,this.id);
+					if (httpCode === 200) {
 						this.ruleForm = data.adminDeployBean;
 						this.title = data.title;
 						this.expertAlternativeList = data.expertAlternativeList;

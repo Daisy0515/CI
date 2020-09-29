@@ -33,11 +33,11 @@
             <li>
               <a href="javascript:;" class="active">精选：</a>
             </li>
-          
+
             <li v-for="(item,index) in getNormalType" :key="index">
               <a href="javascript:;" class="toggleLink" style="display: block;">
                 <p class="parentClass" @click="seleType({typeName:item.label,type:item.value})">{{item.label}}</p>
-                
+
               </a>
             </li>
           </ul>
@@ -46,24 +46,24 @@
           <div class="panel" v-loading="loading">
             <p class="tip" v-show="tipData">暂无数据</p>
             <header class="clearfix"></header>
-			
+
 			<div class="e-input-button">
 				<el-input placeholder="请输入内容" class="input-with-select" style="width: 65%;" v-model="searchData.projectName">
 					<el-button slot="append" icon="el-icon-search" @click="getView(searchData)"></el-button>
-				</el-input>	
-				
+				</el-input>
+
 				<el-button @click="testPublish" type="primary" size="large" style="width:200px; margin-left:5%; ">
 					  发布测试
 				</el-button>
 			</div>
-            
-			
+
+
 			<!-- <div class="see_apply">
 			  <router-link :to="{path:'./testPublish'}">
 			    <span>发布测试</span>
 			  </router-link>
 			</div> -->
-			
+
             <div class="selectClass clearfix">
               <select v-model="selected" @change="changeSelect">
                 <option v-for="(item,index) in optList" :key="index">{{item}}</option>
@@ -83,6 +83,7 @@
                       <span class="module_badge feedback-score feedback-score_medium">查看次数：</span>
                       <span class="module_badge">{{item.examineCount}}</span>
                     </div>
+                    <div :class="item.top===1?'up':''"></div><!--置顶特效-->
                   </div>
                   <div class="serviceMeta" style="padding-left: 6px;">
                     <p class="extras2">截止时间：{{item.deadline}} | 所需人数：已有{{item.ownCount}} / 共需{{item.needCount}}</p>
@@ -187,9 +188,9 @@ export default {
     ...mapActions(["GETNORMALTYPE"]),
 	getTypeList()
 	{
-		httpGet("/v1/public/bid/typeall/get").then(results => {	  
+		httpGet("/v1/public/bid/typeall/get").then(results => {
 		  const { httpCode, msg, data } = results.data;
-		  if (httpCode === 200) {		           
+		  if (httpCode === 200) {
 		    // 筛选得到父类别
 		    this.types=data.list.filter(function(item){
 		      if(item.parentId===0)
@@ -249,7 +250,7 @@ export default {
       this.searchData.type = type;
       this.getView();
     },
-    
+
     getView(val = this.pageData) {
       this.loading = true;
       // !value && (value = "所有");
@@ -273,7 +274,7 @@ export default {
         }
       });
     },
-  
+
 	testPublish() {
 	  this.$router.push({ path: "./testPublish" });
 	}
@@ -282,4 +283,19 @@ export default {
 </script>
 <style lang='scss'>
 @import "@/assets/scss/square.scss";
+.up:before{
+  position: absolute;
+  z-index: 1;
+  right:100px;
+  top: 5px;
+  height: 0;
+  padding-right: 10px;
+  line-height: 0;
+  color: white;
+  border: 15px solid #4c83c3;
+  background-color: #4c83c3;
+  border-right-color: white;
+  content: "置顶";
+  box-shadow: 0 5px 5px -5px #000;
+}
 </style>

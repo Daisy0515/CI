@@ -84,6 +84,7 @@ import { message, successTips, errTips } from "@/utils/tips.js";
 				//get /v1/authorization/review/summarizing/get
 				httpGet("/v1/authorization/review/summarizing/get", {role:1}).then(results => {
 				  const { httpCode, msg, data } = results.data;
+				  console.log("data",data);
 				  if (httpCode == 200) {
 				    this.acceptCount=data.acceptCount;
 					this.reviewCount=data.reviewCount;

@@ -13,7 +13,7 @@
             <div class="header_top">
                 <el-select v-model="searchData.projectId" placeholder="请选择项目" @change="projectChange">
                     <el-option
-                            v-for="project in projectList"
+                            v-for="project in projectListForSearch"
                             :key="project.projectId"
                             :label="project.projectName"
                             :value="project.projectId"
@@ -191,11 +191,12 @@
                 dialogEvaluationVisible: false,//控制评价详情框是否显示
 
                 loading: false, //控制整体页面表格的加载提示
-                processLoading:false,//搜索框中点击类型下拉框时，加载的
+                processLoading:false,//搜索框中点击类型下拉框时加载提示
                 dialogLoading: false,//控制弹窗的加载提示
 
                 tableData: [],//存储当前页面的评审任务列表
-                projectList: [],//当前用户所竞标的项目列表，发起评审时，用于项目选择
+                projectList: [],//当前用户参与的项目，这些项目处于执行中的状态，并且这些项目是设置了评审流程的
+                projectListForSearch:[],//当前用户参与的项目，这些项目处于执行中或完成的状态，并且这些项目是设置了评审流程的
                 reviewProcessList: [],//当前用户选定评审项目后，该项目所拥有的评审流程
                 searchData: {
                     pageNo: 1,
@@ -240,6 +241,7 @@
             this.getAllReviewProcessList();
             this.getView();
             this.getUserProjectList();
+            this.getUserProjectListForSearch();
         },
         computed: {
             submitTitle: function(){  //确定submit-review组件中的标题
@@ -266,10 +268,24 @@
             searchList() { //对应搜索栏的搜索按钮
                 this.getView(this.searchData);
             },
-            getUserProjectList() { //获取当前用户参与的项目
-                httpGet("/v1/authorization/mission/projectid/get").then(results => {
+            /**搜索栏处会用获取当前用户参与的项目，这些项目处于执行中或完成的状态，并且这些项目是设置了评审流程的*/
+            getUserProjectListForSearch() {
+                httpGet("/v1/authorization/mission/projectid/getall").then(results => {
                     const {httpCode, msg, data} = results.data;
-                    if (httpCode == 200) {
+                    console.log("manager data.projectList",data);
+                    if (httpCode === 200) {
+                        this.projectListForSearch = data.projectList;
+                    } else if (httpCode !== 400) { //400 "该用户暂无参与执行中项目"
+                        errTips(msg);
+                    }
+                });
+            },
+            /**获取当前用户参与的项目，这些项目处于执行中的状态，并且这些项目是设置了评审流程的*/
+            getUserProjectList() {
+                httpGet("/v1/authorization/mission/projectid/getto").then(results => {
+                    const {httpCode, msg, data} = results.data;
+                    console.log("manager data.projectList",data.projectList);
+                    if (httpCode === 200) {
                         this.projectList = data.projectList;
                     } else if (httpCode !== 400) { //400 "该用户暂无参与执行中项目"
                         errTips(msg);
@@ -281,7 +297,7 @@
                 this.processLoading = true;
                 httpGet("/v1/authorization/review/process/list", {id: projectId}).then(results => {
                     const {httpCode, msg, data} = results.data;
-                    if (httpCode == 200) {
+                    if (httpCode === 200) {
                         if (data.processList.length === 0) { //没有评审流程
                             this.reviewProcessList = [{id: null, processName: "当前项目没有评审流程"}]
                         } else {
@@ -299,7 +315,7 @@
             getAllReviewProcessList(){
                 httpGet("/v1/public/bid/process/list").then(results => {
                     const {httpCode, msg, data} = results.data;
-                    if (httpCode == 200) {
+                    if (httpCode === 200) {
                         for(let i of data.reviewProcessList){
                             this.allReviewProcessList[i.id] = i.processName;
                         }
@@ -313,7 +329,7 @@
                 this.loading = true;
                 httpGet("/v1/authorization/review/review/search", val).then(results => {
                     const {httpCode, msg, data} = results.data;
-                    if (httpCode == 200) {
+                    if (httpCode === 200) {
                         this.pageNo = data.pageNo;
                         this.totalPage = parseInt(data.totalPage + '0');
                         let list = data.reviewInfoList;
@@ -325,7 +341,7 @@
                         }
                         Object.assign(this.pageData, val);
                         this.$set(this, 'tableData', list);
-                    } else if (msg == "该条件暂无数据") {
+                    } else if (msg === "该条件暂无数据") {
                         this.tableData = [];
                         message("该条件暂无数据");
                     } else if (httpCode !== 401) {
@@ -345,14 +361,14 @@
                 this.dialogLoading = true;
                 httpGet("/v1/authorization/review/review/get", {"id": row.id}).then(results => {
                     const {httpCode, msg, data} = results.data;
-                    if (httpCode == 200) {
+                    if (httpCode === 200) {
                         data.gmtCreate = specificDate(data.gmtCreate);
                         data.deadline = specificDate(data.deadline);
                         for (let i of data.resourceList) {
                             i.gmtCreate = specificDate(i.gmtCreate);
                         }
                         this.form = data;
-                    } else if (msg == "该条件暂无数据") {
+                    } else if (msg === "该条件暂无数据") {
                         this.form ={};
                         message("该条件暂无数据");
                     } else if (httpCode !== 401) {
@@ -368,14 +384,14 @@
                 this.dialogLoading = true;
                 httpGet("/v1/authorization/review/opinion/list", {"id": row.id}).then(results => {
                     const {httpCode, msg, data} = results.data;
-                    if (httpCode == 200) {
+                    if (httpCode === 200) {
                         data.gmtCreate = specificDate(data.gmtCreate);
                         for (let i of data.reviewOpinionList) {
                             i.submitTime = specificDate(i.submitTime);
                             i.deadline = specificDate(i.deadline);
                         }
                         this.formOpinion = data;
-                    } else if (msg == "该条件暂无数据") {
+                    } else if (msg === "该条件暂无数据") {
                         this.formOpinion = {};
                         message("该条件暂无数据");
                     } else if (httpCode !== 401) {
@@ -392,14 +408,14 @@
                 this.getReviewProcessList(row.projectId);
                 httpGet("/v1/authorization/review/review/get", {"id": row.id}).then(results => {
                     const {httpCode, msg, data} = results.data;
-                    if (httpCode == 200) {
+                    if (httpCode === 200) {
                         data.gmtCreate = specificDate(data.gmtCreate);
                         data.deadline = specificDate(data.deadline);
                         for (let i of data.resourceList) {
                             i.gmtCreate = specificDate(i.gmtCreate);
                         }
                         this.formSubmit = data;
-                    } else if (msg == "该条件暂无数据") {
+                    } else if (msg === "该条件暂无数据") {
                         this.formSubmit = {};
                         message("该条件暂无数据");
                     } else if (httpCode !== 401) {
@@ -415,13 +431,13 @@
                 this.dialogLoading = true;
                 httpGet("/v1/authorization/review/evaluate/get", {"id": row.id}).then(results => {
                     const {httpCode, msg, data} = results.data;
-                    if (httpCode == 200) {
+                    if (httpCode === 200) {
                         data.gmtCreate = specificDate(data.gmtCreate);
                         let reviewRecord = {"auditor": data.userName, "result": data.result, "score": data.score};
                         data.fileTable = [reviewRecord];
                         this.formEvaluation = data;
 
-                    } else if (msg == "该条件暂无数据") {
+                    } else if (msg === "该条件暂无数据") {
                         this.formEvaluation = {};
                         message("该条件暂无数据");
                     } else if (httpCode !== 401) {

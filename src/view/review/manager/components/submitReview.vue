@@ -379,7 +379,6 @@
             },
 
         },
-        name: "submitReview"
     }
 </script>
 

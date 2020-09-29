@@ -75,6 +75,7 @@
                       <span class="module_badge feedback-score feedback-score_medium">查看次数：</span>
                       <span class="module_badge">{{item.examineCount}}</span>
                     </div>
+                    <div :class="item.top===1?'up':''"></div><!--置顶特效-->
                   </div>
                   <div class="serviceMeta" style="padding-left: 6px;">
                     <p class="extras2">{{item.gmtCreate}} 共有{{item.participationCount}}个团队参与竞标</p>
@@ -250,12 +251,13 @@ export default {
           this.totalPage = parseInt(getData.data.totalPage + "0");
           for (let i of this.plazaList) {
             i.gmtCreate = specificDate(i.gmtCreate);
+            i.top = 1;
           }
           this.loading = false;
           this.tipData = false;
           Object.assign(this.pageData, val);
           // this.seleValue = value;
-        } else if (getData.msg == "该条件暂无数据") {
+        } else if (getData.msg === "该条件暂无数据") {
           this.loading = false;
           this.plazaList = [];
           this.tipData = true;
@@ -268,4 +270,24 @@ export default {
 </script>
 <style lang='scss'>
 @import "@/assets/scss/square.scss";
+
+
+.up:before{
+  position: absolute;
+  z-index: 1;
+  right:100px;
+  top: 5px;
+  height: 0;
+  padding-right: 10px;
+  line-height: 0;
+  color: white;
+  border: 15px solid #4c83c3;
+  background-color: #4c83c3;
+  border-right-color: white;
+  content: "置顶";
+  box-shadow: 0 5px 5px -5px #000;
+}
+
+
+
 </style>

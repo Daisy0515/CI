@@ -300,10 +300,10 @@
                     if (httpCode === 200) {
                         this.id = data.id;
                         this.ruleForm1.id = this.id;
-                        for (var i = 0; i < this.reviewData.length; i++) {
+                        for (let i = 0; i < this.reviewData.length; i++) {
                             this.reviewData[i].projectId = this.id;
                         }
-                        for (var i = 0; i < this.deliverData.length; i++) {
+                        for (let i = 0; i < this.deliverData.length; i++) {
                             this.deliverData[i].projectId = this.id;
                         }
                         this.ruleForm1.reviewProcessList = this.reviewData;
@@ -317,7 +317,7 @@
                                 this.setCache('myDemand');
                                 //这个函数是干嘛的？？
                                 httpGet('/v1/authorization/bid/requirementv/recommend', {
-                                    id: data.id
+                                    id: this.id
                                 }).then(results => {
                                     const {httpCode, msg} = results.data;
                                     if (httpCode === 200) {
