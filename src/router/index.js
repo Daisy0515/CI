@@ -1735,7 +1735,7 @@ const shareSessionStorage = function (to) {
     });
 };
 /**根据rolename判断permissionList里是否有rolename所对应的权限*/
-const checkPermission = function(permissionList,roleName){
+const hasPermission = function(permissionList,roleName){
     for(let item of permissionList){
         if(item.name.indexOf(roleName)!==-1){
             return true;
@@ -1744,11 +1744,11 @@ const checkPermission = function(permissionList,roleName){
     return false
 }
 
-/**拦截评审系统中非法的访问*/
+/**拦截评审系统中非法的访问,用户没有评审管理员和专家的角色时候是不允许访问相关页面的*/
 const filterInvalidRequestForReview = function(to,from,next){
     const permissionList = JSON.parse(sessionStorage.getItem("reviewPermissionList"));//用户拥有的评审权限
-    if(to.name!==null&&to.name.indexOf("editor")!== -1){
-        if(checkPermission(permissionList,"管理员")){
+    if(to.name!==null && to.name.indexOf("editor")!== -1){
+        if(hasPermission(permissionList,"管理员")){
             next();
         }else{
             errTips("您没有此角色！");
@@ -1757,7 +1757,7 @@ const filterInvalidRequestForReview = function(to,from,next){
             });
         }
     }else if(to.name!==null&&to.name.indexOf("expert")!== -1){
-        if(checkPermission(permissionList,"专家")){
+        if(hasPermission(permissionList,"专家")){
             next();
         }else{
             errTips("您没有此角色！");
@@ -1774,9 +1774,10 @@ vueRouter.beforeEach((to, from, next) => {
     document.title = to.meta.title;
     if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
         if (sessionStorage.getItem('userToken')) { // 通过vuex state获取当前的token是否存在
+
             if (to.meta.phoneToken) {
                 if (sessionStorage.getItem('mobileToken')) {
-                    next();
+                    // next();
                 } else {
                     next({
                         path: '/desk/yzPhone',
@@ -1787,9 +1788,9 @@ vueRouter.beforeEach((to, from, next) => {
                     next({
                         path: '/desk/personal',
                     })
-                } else {
-                    next()
-                }
+                 } //else {
+                //     next()
+                // }
             } else if (store.state.userData.role === '2') {
                 if (to.name === "changePersonal") {
                     next({
@@ -1799,13 +1800,14 @@ vueRouter.beforeEach((to, from, next) => {
                     next({
                         path: '/desk/changeCompany',
                     })
-                } else {
-                    next();
-                }
-            } else {
-                next();
+                }// else {
+                //     next();
+                // }
+            } //else {
+            //     next();
+            // }
 
-            }
+            //上面注释里的next()函数的调用改在了filterInvalidRequestForReview函数里。
             filterInvalidRequestForReview(to,from,next);
         } else {
             store.commit('intercept', to.fullPath);
