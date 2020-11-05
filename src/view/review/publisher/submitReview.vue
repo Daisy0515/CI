@@ -161,7 +161,7 @@
                 },
                 projectList: [],
                 processList: [],
-                typeList: [],
+                // typeList: [],//changed by xwj,没有其他地方使用到这个变量
                 adminList: [],
                 adminArr: {
                     idList: [],
@@ -173,24 +173,25 @@
         },
         created: function () {
             this.projectId = this.$route.query.projectId;
-            this.getType();
+            // this.getType(); //
             this.getProjectList();
             this.getAdmin();
             this.getView();
         },
         methods: {
             ...mapMutations(["setCache"]),
-            getType() {
-                httpGet('/v1/public/bid/process/list').then(results => {
-                    const {msg, data, httpCode} = results.data;
-                    if (httpCode === 200) {
-                        this.typeList = data.reviewProcessList;
-                        this.getView();
-                    } else {
-                        errTips(msg);
-                    }
-                });
-            },
+            // getType() { //changed by xwj
+            //     httpGet('/v1/public/bid/process/list').then(results => {
+            //         const {msg, data, httpCode} = results.data;
+            //         if (httpCode === 200) {
+            //             this.typeList = data.reviewProcessList;
+            //             this.getView();
+            //         } else {
+            //             errTips(msg);
+            //         }
+            //     });
+            // },
+            /**获取评审管理员的列表*/
             getAdmin(val = this.pageAdmin) {
                 httpGet("/v1/authorization/review/admin/user", val).then(results => {
                     const {httpCode, msg, data} = results.data;
