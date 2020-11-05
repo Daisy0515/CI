@@ -328,14 +328,14 @@
                 this.formReviewDetailLoading = true;
                 httpGet("/v1/authorization/review/review/get", {id: val}).then(results => {
                     const {httpCode, msg, data} = results.data;
-                    if (httpCode == 200) {
+                    if (httpCode === 200) {
                         data.deadline = specificDate(data.deadline);
                         data.gmtCreate = specificDate(data.gmtCreate);
                         for(let item of data.resourceList ){
                             item.gmtCreate = specificDate(item.gmtCreate);
                         }
                         this.formReviewDetail = data;
-                    } else if (msg == "该条件暂无数据") {
+                    } else if (msg === "该条件暂无数据") {
                         this.formReviewDetail = {};
                         message("该条件暂无数据");
                     } else if (httpCode !== 401) {
@@ -364,14 +364,14 @@
             },
             /**所有页面：获取列表数据*/
             getView(val = this.pageData) {
-                console.log(" this.pageData", this.pageData);
+                console.log(" this.pageData", JSON.stringify(this.pageData));
                 this.pageData.type = this.setPropertyNull(this.pageData.type);
                 this.pageData.submitTimeStart = this.setPropertyNull(this.pageData.submitTimeStart);
                 this.pageData.submitTimeEnd = this.setPropertyNull(this.pageData.submitTimeEnd);
                 this.loading = true;
                 httpGet("/v1/authorization/review/expertinvite/search", val).then(results => {
                     const { httpCode, msg, data } = results.data;
-                    if (httpCode == 200) {
+                    if (httpCode === 200) {
                         this.pageNo = data.pageNo;
                         this.totalPage = parseInt(data.totalPage + '0');
 
@@ -384,7 +384,7 @@
                         console.log("data:",list);
                         Object.assign(this.pageData, val);
                         this.$set(this, 'tableData', list);
-                    } else if (msg == "该条件暂无数据") {
+                    } else if (msg === "该条件暂无数据") {
                         this.tableData = [];
                         message("该条件暂无数据");
                     } else if (httpCode !== 401) {
