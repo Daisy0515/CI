@@ -36,10 +36,11 @@
 			<el-table-column prop="submitName" label="提交人" align="center"></el-table-column>
 			<el-table-column prop="status" label="状态" align="center">
 				<template slot-scope="scope">
-					<span v-if="scope.row.status===1">未接受</span>
+					<span v-if="scope.row.status===1">待评审</span>
 					<span v-if="scope.row.status===2">评审中</span>
-					<span v-if="scope.row.status===3">打回中</span>
-					<span v-if="scope.row.status===4">已完成</span>
+					<span v-if="scope.row.status===3">已完成</span>
+					<span v-if="scope.row.status===4">其他</span><!--status===4，其他表示的是待处理之外的类型，在查看第三方评审这个页面
+					                                              里正常是不会显示的-->
 				</template>
 			</el-table-column>
 			<el-table-column label="操作" prop="province" align="center" width="300px">
@@ -244,7 +245,7 @@
 				console.log("id",val);
 				httpGet("/v1/authorization/review/thirdparty/list", { id: val }).then(results => {
 					const { httpCode, msg, data } = results.data;
-					if (httpCode == 200) {
+					if (httpCode === 200) {
 						this.opinion = data.opinion; //管理员意见 1接受2需要修改3拒绝4没有意见
 						this.accessory = data.accessory; //意见附件
 						this.details = data.details;	 //意见详情
@@ -257,7 +258,6 @@
 						}
 						this.userList = userList;
 					} else if (msg === "该条件暂无数据") {
-
 						message("该条件暂无数据");
 					} else if (httpCode !== 401) {
 						errTips(msg);
@@ -275,7 +275,7 @@
 					id: val
 				}).then(results => {
 					const { httpCode, msg, data } = results.data;
-					if (httpCode == 200) {
+					if (httpCode === 200) {
 						this.form1 = data;
 						this.form1.deadline = specificDate(this.form1.deadline);
 						this.form1.gmtCreate = specificDate(this.form1.gmtCreate);
@@ -284,7 +284,7 @@
 							i.gmtCreate = specificDate(i.gmtCreate);
 						}
 						this.form1.resourceList = reviewInfoList;
-					} else if (msg == "该条件暂无数据") {
+					} else if (msg === "该条件暂无数据") {
 						this.form1 = "";
 						message("该条件暂无数据");
 					} else if (httpCode !== 401) {
@@ -335,7 +335,7 @@
 							i.deadline = specificDate(i.deadline);
 							i.gmtCreate = specificDate(i.gmtCreate);
 							let typeArr = this.typeList.filter(function(item) {
-								return item.id == i.type;
+								return item.id === i.type;
 							})
 							i.typeName = typeArr[0].processName;
 						}
@@ -352,7 +352,7 @@
 
 			submitList(val){
 				this.adminArr.userId=val;
-				if (this.adminArr.idList.length==0){
+				if (this.adminArr.idList.length===0){
 					errTips("至少选择一个评审");
 				}
 				else {
