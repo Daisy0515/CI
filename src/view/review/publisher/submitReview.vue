@@ -219,7 +219,7 @@
                 this.form1Loading = true;
                 httpGet("/v1/authorization/review/thirdparty/get", {id: val}).then(results => {
                     const {httpCode, msg, data} = results.data;
-                    if (httpCode == 200) {
+                    if (httpCode === 200) {
                         this.form1 = data;
                         this.form1.deadline = specificDate(this.form1.deadline);
                         this.form1.gmtCreate = specificDate(this.form1.gmtCreate);
@@ -228,7 +228,7 @@
                             i.gmtCreate = specificDate(i.gmtCreate);
                         }
                         this.form1.resourceList = reviewInfoList;
-                    } else if (msg == "该条件暂无数据") {
+                    } else if (msg === "该条件暂无数据") {
                         this.form1 = "";
                         errTips(msg);
                     } else if (httpCode !== 401) {
@@ -290,7 +290,7 @@
 
             submitList(val) {
                 this.adminArr.userId = val;
-                if (this.adminArr.idList.length == 0) {
+                if (this.adminArr.idList.length === 0) {
                     errTips("至少选择一个评审");
                 } else {
                     httpPost("/v1/authorization/review/admin/insert", this.adminArr).then(results => {
