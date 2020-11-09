@@ -25,6 +25,9 @@
           <router-link :to="{name:'desk'}">
             <li class="UserremindItem">工作台</li>
           </router-link>
+          <router-link :to="{name:'managerIndex'}">
+            <li class="UserremindItem">评审系统</li>
+          </router-link>
           <li @click="SETLOGOUT('index')" class="UserremindItem">退出</li>
         </ul>
         <img class="redCircle" :src="getuserData.headurl?getuserData.headurl:getnoImg" slot="reference" />
