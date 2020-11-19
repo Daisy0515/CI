@@ -33,20 +33,21 @@ import {
     Loading,
     progress,
     Tooltip,
-	Menu,
-	Submenu,
-	MenuItem,
-	MenuItemGroup,
-	Transfer,
-	Upload,
-	Tag,
+    Menu,
+    Submenu,
+    MenuItem,
+    MenuItemGroup,
+    Transfer,
+    Upload,
+    Tag,
 
 } from 'element-ui';
+
 const getElement = {
     install(Vue) {
         Vue.use(Tag);
-		Vue.use(Upload);
-		Vue.use(Transfer);
+        Vue.use(Upload);
+        Vue.use(Transfer);
         Vue.use(Row);
         Vue.use(Col);
         Vue.use(badge)
@@ -82,11 +83,11 @@ const getElement = {
         Vue.use(RadioButton)
         Vue.use(RadioGroup)
         Vue.use(Pagination)
-		Vue.use(Menu)
-		Vue.use(Submenu)
-		Vue.use(MenuItem)
-		Vue.use(MenuItemGroup)
-		
+        Vue.use(Menu)
+        Vue.use(Submenu)
+        Vue.use(MenuItem)
+        Vue.use(MenuItemGroup)
+
 
     }
 }

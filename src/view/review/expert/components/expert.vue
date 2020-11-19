@@ -48,9 +48,10 @@
                 </template>
             </el-table-column>
             <el-table-column prop="gmtCreate" label="邀请日期" align="center" width="100px;"></el-table-column>
-            <el-table-column prop="deadline" label="截止日期" align="center"  width="100px;"></el-table-column>
+            <el-table-column prop="deadline" label="截止日期" align="center" width="100px;"></el-table-column>
             <el-table-column prop="gmtModified" label="更新日期" align="center" width="100px;"></el-table-column>
-            <el-table-column prop="surplus" label="剩余天数" align="center" v-if="currentPageName==='待处理'||currentPageName==='评审中'">
+            <el-table-column prop="surplus" label="剩余天数" align="center"
+                             v-if="currentPageName==='待处理'||currentPageName==='评审中'">
                 <template slot-scope="scope">
                     <span class="tablehidden">{{ scope.row.surplus }}</span>
                 </template>
@@ -77,10 +78,12 @@
                         ><i class="el-icon-check"></i>接受
                         </el-button>
                     </template>
-                    <el-button @click="handleEvaluate(scope.row.id)" type="text" size="medium" v-if="currentPageName==='评审中'">
+                    <el-button @click="handleEvaluate(scope.row.id)" type="text" size="medium"
+                               v-if="currentPageName==='评审中'">
                         <i class="el-icon-edit"></i>评价
                     </el-button>
-                    <el-button @click="handleReadReview(scope.row.id)" type="text" size="medium" v-if="currentPageName==='已完成'">
+                    <el-button @click="handleReadReview(scope.row.id)" type="text" size="medium"
+                               v-if="currentPageName==='已完成'">
                         <i class="el-icon-edit"></i>查看评价
                     </el-button>
                 </template>
@@ -92,7 +95,7 @@
                 <el-row>
                     <el-col :span="20">
                         <el-form-item label="拒绝原因" :label-width="formLabelWidth">
-                            <el-input v-model="postForm.reply" type="textarea" :rows="3" placeholder="请输入内容" />
+                            <el-input v-model="postForm.reply" type="textarea" :rows="3" placeholder="请输入内容"/>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -103,7 +106,8 @@
             </div>
         </el-dialog>
 
-        <el-dialog title="评价" :visible.sync="dialogEvaluateVisible" width="80%" :before-close="handleEvaluateDialogClose"
+        <el-dialog title="评价" :visible.sync="dialogEvaluateVisible" width="80%"
+                   :before-close="handleEvaluateDialogClose"
                    style="text-align:left; font-weight: bolder;">
             <review-template :templateConfigList="templateConfigList" :totalScore="totalScore" ref="submitReview"
                              :id="id" @closeDialog="closeSubmitReviewDialog">
@@ -112,18 +116,20 @@
 
         <el-dialog title="查看评价" :visible.sync="dialogReadReviewVisible" width="80%"
                    style="text-align:left; font-weight: bolder;">
-            <read-review-result :templateConfigList="templateConfigListForRead" :totalScore="totalScore" :result="result"
-                             @closeDialog="closeReadReviewDialog">
+            <read-review-result :templateConfigList="templateConfigListForRead" :totalScore="totalScore"
+                                :result="result"
+                                @closeDialog="closeReadReviewDialog">
             </read-review-result><!--生成评审表单的组件-->
         </el-dialog>
         <!--评审详情-->
-        <expert-review-detail :form="formReviewDetail" :formLabelWidth="formLabelWidth" :dialogFormVisible="dialogFormVisible"
-                          :loading="formReviewDetailLoading" @closeDialog="closeReviewDetailDialog">
+        <expert-review-detail :form="formReviewDetail" :formLabelWidth="formLabelWidth"
+                              :dialogFormVisible="dialogFormVisible"
+                              :loading="formReviewDetailLoading" @closeDialog="closeReviewDetailDialog">
         </expert-review-detail>
 
         <div class="bid_footer">
             <el-pagination @current-change="handleCurrentChange" :current-page.sync="pageData.pageNo"
-                    :total="totalPage" layout="prev, pager, next, jumper" >
+                           :total="totalPage" layout="prev, pager, next, jumper">
             </el-pagination>
         </div>
     </div>
@@ -145,48 +151,53 @@
             reviewTemplate,
             readReviewResult
         },
-        props:{
-            currentPage:{           //1 待处理，2 评审中，3 已完成 4 已中止
-                type:[String,Number],
-                default:null,
+        props: {
+            currentPage: {           //1 待处理，2 评审中，3 已完成 4 已中止
+                type: [String, Number],
+                default: null,
             },
-            timeStatus:{            //时间状态 1即将超时 2已经超时
-                type:[String,Number],
-                default:null,
+            timeStatus: {            //时间状态 1即将超时 2已经超时
+                type: [String, Number],
+                default: null,
             }
         },
         mixins: [timeLimit],
-        computed:{
-            currentPageName:function(){
-                if(this.timeStatus===null){
-                    switch(parseInt(this.currentPage)){
-                        case 1: return "待处理";
-                        case 2 :return "评审中";
-                        case 3 :return "已完成";
-                        case 4 :return "已中止";
-                        case 5 :return "已拒绝";
+        computed: {
+            currentPageName: function () {
+                if (this.timeStatus === null) {
+                    switch (parseInt(this.currentPage)) {
+                        case 1:
+                            return "待处理";
+                        case 2 :
+                            return "评审中";
+                        case 3 :
+                            return "已完成";
+                        case 4 :
+                            return "已中止";
+                        case 5 :
+                            return "已拒绝";
                     }
-                }else{
-                    if(parseInt(this.timeStatus)===1){
+                } else {
+                    if (parseInt(this.timeStatus) === 1) {
                         return "即将超时";
-                    }else{
+                    } else {
                         return "已经超时";
                     }
                 }
             }
         },
-        data(){
+        data() {
             return {
                 dialogRollbackVisible: false,//控制打回对话框是否可见
                 formReviewDetailLoading: false,//打开详情，加载转圈提示
-                dialogFormVisible:false,//控制详情对话框是否可见
-                dialogEvaluateVisible:false,//控制评价对话框是否可见
-                dialogReadReviewVisible:false,//控制查看评价对话框是否可见
+                dialogFormVisible: false,//控制详情对话框是否可见
+                dialogEvaluateVisible: false,//控制评价对话框是否可见
+                dialogReadReviewVisible: false,//控制查看评价对话框是否可见
                 formLabelWidth: '100px',
                 loading: false,
                 tableData: [],
                 pageData: this.getInitPageOrSearchData(),
-                searchData:this.getInitPageOrSearchData(),
+                searchData: this.getInitPageOrSearchData(),
                 totalPage: 0,
                 postForm: {
                     id: null,
@@ -195,24 +206,24 @@
                 },
                 formReviewDetail: {},
                 /*评审模板信息*/
-                templateConfigList:[],//模板配置列表
-                totalScore:0,//模板总分
-                templateName:null,//模板名称
-                id:null,//评审专家邀请信息编号ID
-                result:{},//评审模板的评价结果
-                templateConfigListForRead:[],//查看评价的评审模板配置列表
+                templateConfigList: [],//模板配置列表
+                totalScore: 0,//模板总分
+                templateName: null,//模板名称
+                id: null,//评审专家邀请信息编号ID
+                result: {},//评审模板的评价结果
+                templateConfigListForRead: [],//查看评价的评审模板配置列表
             };
         },
         created: function () {
             this.getView();
         },
         methods: {
-            getInitPageOrSearchData(){
+            getInitPageOrSearchData() {
                 let status = null;
                 let timeStatus = null;
-                if(this.timeStatus===null){
+                if (this.timeStatus === null) {
                     status = parseInt(this.currentPage);
-                }else{
+                } else {
                     timeStatus = parseInt(this.timeStatus);
                 }
                 return {
@@ -224,11 +235,11 @@
                     submitTimeStart: null,
                     submitTimeEnd: null,
                     status: status,
-                    timeStatus:timeStatus,
+                    timeStatus: timeStatus,
                 };
             },
             /**待处理页面：提交拒绝理由*/
-            submitRollback(){
+            submitRollback() {
                 httpPut('/v1/authorization/review/expertinvite/update', this.postForm).then(results => {
                     const {msg, httpCode} = results.data;
                     if (httpCode === 200) {
@@ -260,7 +271,7 @@
                     this.postForm.id = val;
                     this.postForm.type = 1;
                     httpPut('/v1/authorization/review/expertinvite/update', this.postForm).then(results => {
-                        const { msg, httpCode} = results.data;
+                        const {msg, httpCode} = results.data;
                         if (httpCode === 200) {
                             successTips("已接受评审！");
                             this.getView();
@@ -271,23 +282,23 @@
                 });
             },
             /**评审中页面：评价*/
-            handleEvaluate(id){
+            handleEvaluate(id) {
                 this.dialogEvaluateVisible = true;
                 /*评审中页面：获取评价模板的详细信息*/
                 httpGet("/v1/authorization/review/experttemplateconfig/list", {id: id}).then(results => {
                     const {httpCode, msg, data} = results.data;
-                    if (httpCode === 200){
+                    if (httpCode === 200) {
                         this.templateConfigList = data.configList;
                         this.totalScore = data.totalScore;
                         this.templateName = data.templateName;
                         this.id = data.id;//评审专家邀请信息编号ID
-                    }else if(httpCode !== 401){
+                    } else if (httpCode !== 401) {
                         errTips(msg);
                     }
                 });
             },
             /**评审中页面：未提交而关闭评价的对话框*/
-            handleEvaluateDialogClose(){
+            handleEvaluateDialogClose() {
                 MessageBox.confirm("关闭后数据将不会保存，确定要关闭窗口么？", "提示", {
                     confirmButtonText: "确定",
                     cancelButtonText: "取消",
@@ -295,35 +306,35 @@
                 }).then(() => {
                     this.dialogEvaluateVisible = false;
                     this.$refs.submitReview.setReviewTemplateNull();//调用reviewTemplate组件的方法清空表单
-                    });
+                });
             },
             /**评审中页面：提交后评价框的关闭*/
-            closeSubmitReviewDialog(){
+            closeSubmitReviewDialog() {
                 this.dialogEvaluateVisible = false;
                 this.getView();
             },
             /**评审完成页面：点击查看评价*/
-            handleReadReview(id){
+            handleReadReview(id) {
                 this.dialogReadReviewVisible = true;
                 httpGet("/v1/authorization/review/experttemplateopinion/get", {id: id}).then(results => {
                     const {httpCode, msg, data} = results.data;
-                    if (httpCode === 200){
+                    if (httpCode === 200) {
                         data.result.content = JSON.parse(data.result.content);
                         this.result = data.result;//评审专家评价结果
                         this.templateConfigListForRead = data.configList;
                         this.totalScore = data.totalScore;
                         this.templateName = data.templateName;
-                    }else if(httpCode !== 401){
+                    } else if (httpCode !== 401) {
                         errTips(msg);
                     }
                 });
             },
             /**评审完成页面：关闭查看评价框*/
-            closeReadReviewDialog(){
+            closeReadReviewDialog() {
                 this.dialogReadReviewVisible = false;
             },
             /**所有页面：点击查看详情*/
-            handleClickDetail(val){
+            handleClickDetail(val) {
                 this.dialogFormVisible = true;
                 this.formReviewDetailLoading = true;
                 httpGet("/v1/authorization/review/review/get", {id: val}).then(results => {
@@ -331,7 +342,7 @@
                     if (httpCode === 200) {
                         data.deadline = specificDate(data.deadline);
                         data.gmtCreate = specificDate(data.gmtCreate);
-                        for(let item of data.resourceList ){
+                        for (let item of data.resourceList) {
                             item.gmtCreate = specificDate(item.gmtCreate);
                         }
                         this.formReviewDetail = data;
@@ -349,8 +360,8 @@
                 this.dialogFormVisible = false;
             },
 
-            setPropertyNull(obj){
-                if(obj===""){
+            setPropertyNull(obj) {
+                if (obj === "") {
                     return null;
                 }
                 return obj;
@@ -370,7 +381,7 @@
                 this.pageData.submitTimeEnd = this.setPropertyNull(this.pageData.submitTimeEnd);
                 this.loading = true;
                 httpGet("/v1/authorization/review/expertinvite/search", val).then(results => {
-                    const { httpCode, msg, data } = results.data;
+                    const {httpCode, msg, data} = results.data;
                     if (httpCode === 200) {
                         this.pageNo = data.pageNo;
                         this.totalPage = parseInt(data.totalPage + '0');
@@ -381,7 +392,7 @@
                             i.gmtCreate = specificDate(i.gmtCreate);
                             i.deadline = specificDate(i.deadline);
                         }
-                        console.log("data:",list);
+                        console.log("data:", list);
                         Object.assign(this.pageData, val);
                         this.$set(this, 'tableData', list);
                     } else if (msg === "该条件暂无数据") {

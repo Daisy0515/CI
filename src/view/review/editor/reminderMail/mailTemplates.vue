@@ -10,9 +10,10 @@
         </div>
         <h3 style="margin: 20px auto;font-weight: bolder;">已有邮件模板:</h3>
         <el-row>
-            <el-button type="primary" size="medium" style="margin-top: 20px;" @click="addNewEmailTemplate"> 添加个人模板</el-button>
+            <el-button type="primary" size="medium" style="margin-top: 20px;" @click="addNewEmailTemplate"> 添加个人模板
+            </el-button>
         </el-row>
-        <el-dialog  :visible.sync="dialogEmailVisible" width="70%" :before-close="handleEvaluateDialogClose">
+        <el-dialog :visible.sync="dialogEmailVisible" width="70%" :before-close="handleEvaluateDialogClose">
             <div slot="title" class="dialog-title">
                 <span v-if="isUpdate">修改邮件模板</span>
                 <span v-else>添加新的邮件模板</span>
@@ -49,7 +50,8 @@
                     <span>信件主体:</span>
                 </el-col>
                 <el-col :span="18">
-                    <el-input type="textarea" :rows="10" :placeholder="newEmailPlaceHolder" v-model="content"></el-input>
+                    <el-input type="textarea" :rows="10" :placeholder="newEmailPlaceHolder"
+                              v-model="content"></el-input>
                 </el-col>
             </el-row>
             <div slot="footer" class="dialog-footer">
@@ -58,10 +60,11 @@
                 <el-button type="primary" v-else @click="insertNewEmailTemplate">提 交</el-button>
             </div>
         </el-dialog>
-        <el-table :data="emailTemplateList" v-loading="loading" style="margin-top: 20px;margin-left:15%;width:70%;" border>
+        <el-table :data="emailTemplateList" v-loading="loading" style="margin-top: 20px;margin-left:15%;width:70%;"
+                  border>
             <el-table-column property="templateName" label="模板名称" align="center"></el-table-column>
             <el-table-column property="id" label="模板编号" align="center"></el-table-column>
-            <el-table-column property="type" label="类型" align="center" >
+            <el-table-column property="type" label="类型" align="center">
                 <template slot-scope="scope">
                     <span v-if="scope.row.type===1">系统内置</span>
                     <span v-else>个人</span>
@@ -93,7 +96,7 @@
 
 <script>
     import {errTips, successTips} from "@/utils/tips.js";
-    import {httpGet, httpDelete,httpPost,httpPut} from "@/utils/http.js";
+    import {httpGet, httpDelete, httpPost, httpPut} from "@/utils/http.js";
     import {MessageBox} from "element-ui";
 
     export default {
@@ -104,8 +107,8 @@
                 dialogEmailVisible: false,//添加新的邮件模板框的显示控制
                 templateName: null,//新的模板名称
                 content: null,//新的模板的内容
-                isUpdate:false,//是修改还是新增邮件模板
-                updateId:null,//待更新邮件模板的id
+                isUpdate: false,//是修改还是新增邮件模板
+                updateId: null,//待更新邮件模板的id
                 emailTemplateList: [],//已有邮件模板的列表
                 pageData: {
                     pageNo: 1,
@@ -121,7 +124,7 @@
                     "管理员：$[管理员名]\n",
             };
         },
-        created: function (){
+        created: function () {
             this.getEmailTemplate();
         },
         methods: {
@@ -147,19 +150,22 @@
                 this.isUpdate = false;
             },
             insertNewEmailTemplate() {
-                if(this.templateName===null||this.templateName.trim()===''){
+                if (this.templateName === null || this.templateName.trim() === '') {
                     errTips("请输入模板名称！");
                     return;
                 }
-                if(this.content===null||this.content.trim()===''){
+                if (this.content === null || this.content.trim() === '') {
                     errTips("请输入信件主体内容！");
                     return;
                 }
-                httpPost("/v1/authorization/review/adminemailtemplate/insert",{templateName:this.templateName,content:this.content}).then(results=>{
-                    const {httpCode,msg} = results.data;
-                    if(httpCode===200){
+                httpPost("/v1/authorization/review/adminemailtemplate/insert", {
+                    templateName: this.templateName,
+                    content: this.content
+                }).then(results => {
+                    const {httpCode, msg} = results.data;
+                    if (httpCode === 200) {
                         successTips("添加模板成功");
-                    }else{
+                    } else {
                         errTips(msg);
                     }
                     this.dialogEmailVisible = false;
@@ -167,7 +173,7 @@
                 })
 
             },
-            handleUpdateFormItem(row){
+            handleUpdateFormItem(row) {
                 this.dialogEmailVisible = true;
                 this.templateName = row.templateName;
                 this.content = row.content;
@@ -175,7 +181,7 @@
                 this.updateId = row.id;
             },
             /**修改模板时直接关掉会带来的提示，以及防止对弹框外的区域的误触*/
-            handleEvaluateDialogClose(){
+            handleEvaluateDialogClose() {
                 MessageBox.confirm("关闭后，新修改的数据将不会保存，确定要关闭窗口么？", "提示", {
                     confirmButtonText: "确定",
                     cancelButtonText: "取消",
@@ -184,16 +190,19 @@
                     this.dialogEmailVisible = false;
                 });
             },
-            updateEmailTemplate(){
-                if(this.content===null||this.content.trim()===''){
+            updateEmailTemplate() {
+                if (this.content === null || this.content.trim() === '') {
                     errTips("信件主体内容不能为空！");
                     return;
                 }
-                httpPut("/v1/authorization/review/adminemailtemplate/update",{id:this.updateId,content:this.content}).then(results=>{
-                    const {httpCode,msg} = results.data;
-                    if(httpCode===200){
+                httpPut("/v1/authorization/review/adminemailtemplate/update", {
+                    id: this.updateId,
+                    content: this.content
+                }).then(results => {
+                    const {httpCode, msg} = results.data;
+                    if (httpCode === 200) {
                         successTips("修改模板成功");
-                    }else{
+                    } else {
                         errTips(msg);
                     }
                     this.dialogEmailVisible = false;
@@ -239,7 +248,8 @@
         margin-left: 35%;
         margin-top: 10px;
     }
-    .dialog-title{
+
+    .dialog-title {
         font-size: large;
         font-weight: bolder;
     }

@@ -108,7 +108,7 @@
                         </router-link>
                     </el-popover>
 
-					<router-link :to="{ path: 'editTest', query: {id: scope.row.id } }" v-if="scope.row.status===2">
+                    <router-link :to="{ path: 'editTest', query: {id: scope.row.id } }" v-if="scope.row.status===2">
                         <i class="el-icon-edit"></i>
                         发布任务
                     </router-link>
@@ -188,7 +188,7 @@
                 testId: {
                     id: ""
                 },
-                ownNum:null,
+                ownNum: null,
                 ruleForm: []
             };
         },

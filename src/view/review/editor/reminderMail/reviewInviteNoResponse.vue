@@ -45,7 +45,7 @@
     import {errTips} from "@/utils/tips.js";
 
     export default {
-        data(){
+        data() {
             return {
                 checkList: [],
                 gmtCreateExceed: 5,//邀请时间超过#天的评审人员
@@ -57,19 +57,22 @@
                 this.$router.go(-1);
             },
             search() {
-                if (this.checkList.length==0) {
+                if (this.checkList.length == 0) {
                     errTips("请先选择查询条件");
                     return;
                 }
                 let searchData = {};
                 console.log(this.checkList);
-                if(this.checkList.includes(1)){
+                if (this.checkList.includes(1)) {
                     searchData.gmtCreateExceed = this.gmtCreateExceed;
                 }
-                if(this.checkList.includes(2)){
+                if (this.checkList.includes(2)) {
                     searchData.gmtCreateWithin = this.gmtCreateWithin;
                 }
-                this.$router.push({name:'editorReviewerReminderSearchResult',params:{searchData:JSON.stringify(searchData)}})
+                this.$router.push({
+                    name: 'editorReviewerReminderSearchResult',
+                    params: {searchData: JSON.stringify(searchData)}
+                })
 
             },
         }

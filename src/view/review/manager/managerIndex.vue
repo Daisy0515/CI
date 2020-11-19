@@ -55,8 +55,8 @@
                 </el-card>
             </el-col>
         </el-row>
-        <submit-review :form="form"  :title="submitTitle" :dialogSubmitVisible="dialogSubmitVisible"
-                       :projectList="projectList":isShowSubmitHistory="isShowSubmitHistory"
+        <submit-review :form="form" :title="submitTitle" :dialogSubmitVisible="dialogSubmitVisible"
+                       :projectList="projectList" :isShowSubmitHistory="isShowSubmitHistory"
                        @closeSubmitDialog="closeSubmitDialog">
         </submit-review>
 
@@ -119,10 +119,10 @@
                     }
                 });
             },
-            getTips(){
+            getTips() {
                 message("暂未开放，敬请期待！");
             },
-            getInitForm(){
+            getInitForm() {
                 return {
                     content: "",
                     deadline: "",

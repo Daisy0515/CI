@@ -3,15 +3,16 @@
 </template>
 
 <script>
-    import  expert from '@/view/review/expert/components/expert'
+    import expert from '@/view/review/expert/components/expert'
+
     export default {
-        name:"expertAlreadyTimeOut",
+        name: "expertAlreadyTimeOut",
         components: {
             expert
         },
-        data(){
-            return{
-                timeStatus:2,//已经超时
+        data() {
+            return {
+                timeStatus: 2,//已经超时
             }
         }
     }

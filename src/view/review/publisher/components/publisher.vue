@@ -100,7 +100,7 @@
                             <i class="el-icon-search"></i>查看详情
                         </el-button>
                         <template v-if="status===1||scope.row.status===1">
-                            <el-button @click="handleRollBack(scope.row.id)" type="text" size="medium" >
+                            <el-button @click="handleRollBack(scope.row.id)" type="text" size="medium">
                                 <i class="el-icon-close"></i>打回
                             </el-button>
                             <el-button @click="handleAccept(scope.row.id)" type="text" size="medium">
@@ -108,15 +108,17 @@
                             </el-button>
                         </template>
                         <template v-if="status===2||scope.row.status===2">
-                            <el-button @click="handleClickOpinion(scope.row.id)" type="text" size="medium" style="margin-right: 10px" >
+                            <el-button @click="handleClickOpinion(scope.row.id)" type="text" size="medium"
+                                       style="margin-right: 10px">
                                 <i class="el-icon-document"></i>意见
                             </el-button>
-                            <el-button @click="handleClickEvaluate(scope.row.id,scope.row.title)" type="text" size="medium" style="margin-right: 10px">
+                            <el-button @click="handleClickEvaluate(scope.row.id,scope.row.title)" type="text"
+                                       size="medium" style="margin-right: 10px">
                                 <i class="el-icon-edit"></i>评价
                             </el-button>
                         </template>
                         <template v-if="status===3||scope.row.status===3">
-                            <el-button @click="handleClickOpinion(scope.row.id)" type="text" size="medium" >
+                            <el-button @click="handleClickOpinion(scope.row.id)" type="text" size="medium">
                                 <i class="el-icon-document"></i>意见回复
                             </el-button>
                             <el-button @click="handleAccept(scope.row.id)" type="text" size="medium">
@@ -127,7 +129,7 @@
                             <el-button @click="handleEvaluateDetail(scope.row.id)" type="text" size="medium">
                                 <i class="el-icon-search"></i>查看评价
                             </el-button>
-                            <el-button @click="handleClickOpinion(scope.row.id)" type="text" size="medium" >
+                            <el-button @click="handleClickOpinion(scope.row.id)" type="text" size="medium">
                                 <i class="el-icon-document"></i>查看意见
                             </el-button>
                         </template>
@@ -148,7 +150,7 @@
                            :dialogEvaluationVisible="dialogEvaluationDetailVisible"
                            :loading="evaluateDetailLoading"
                            @closeEvaluationDialog="closeEvaluationDetailDialog"></review-evaluation>
-        <el-dialog title="打回评审" :visible.sync="dialogRollbackVisible"  style="text-align:left; font-weight: bolder;">
+        <el-dialog title="打回评审" :visible.sync="dialogRollbackVisible" style="text-align:left; font-weight: bolder;">
             <el-form :model="form">
                 <el-row>
                     <el-col :span="20">
@@ -191,8 +193,8 @@
                     <el-col :span="10">
                         <el-form-item label="是否通过" :label-width="formLabelWidth" prop="result">
                             <el-radio-group v-model="evaluateForm.result">
-                                <el-radio  :label="true">通过</el-radio>
-                                <el-radio  :label="false">未通过</el-radio>
+                                <el-radio :label="true">通过</el-radio>
+                                <el-radio :label="false">未通过</el-radio>
                             </el-radio-group>
                         </el-form-item>
                     </el-col>
@@ -248,17 +250,17 @@
         props: {
             pageName: String,
             status: {//评审状态1未接受2评审中3打回中4已完成
-                type:Number,
-                default:null,
+                type: Number,
+                default: null,
             },
-            timeStatus:{//时间状态1即将超时2已经超时
-                type:Number,
-                default:null,
+            timeStatus: {//时间状态1即将超时2已经超时
+                type: Number,
+                default: null,
             },
         },
         mixins: [timeLimit],
         components: {
-            reviewDetailDialog, publisherReviewOpinion,reviewEvaluation
+            reviewDetailDialog, publisherReviewOpinion, reviewEvaluation
         },
         data() {
             return {
@@ -281,11 +283,11 @@
                 evaluateTitle: "",
                 formLabelWidth: '100px',
                 formReviewDetail: {},//用于存储评审打详情内容
-                evaluateForm:this.getInitEvaluateForm() ,
-                rulesEvaluateForm:{ //填写评价的表单验证
-                    result:[{required: true, message: '请选择是否通过', trigger: 'change' }],
-                    score: [{type: 'number',required: true,  message: '请输入分数', trigger: 'blur' }],
-                    content:[{required: true, message: '请输入评价内容', trigger: 'blur' }],
+                evaluateForm: this.getInitEvaluateForm(),
+                rulesEvaluateForm: { //填写评价的表单验证
+                    result: [{required: true, message: '请选择是否通过', trigger: 'change'}],
+                    score: [{type: 'number', required: true, message: '请输入分数', trigger: 'blur'}],
+                    content: [{required: true, message: '请输入评价内容', trigger: 'blur'}],
                 },
                 form: {//表单中的信息，保存打回评审时填写的信息
                     details: "",
@@ -304,7 +306,7 @@
                     orderType: "DESC",
                     role: 1,  //用户的角色 1项目发布者 2项目经理 3评审专家 4评审管理员
                     status: this.status,//任务的评审状态 评审状态 1未接受 2评审中 3打回中 4已完成
-                    timeStatus:null,//时间状态1即将超时2已经超时
+                    timeStatus: null,//时间状态1即将超时2已经超时
                     projectId: null,//项目名称编号ID
                     type: null,//评审类型,
                     title: null,//评审标题
@@ -319,7 +321,7 @@
                     orderType: "DESC",
                     role: 1,//用户的角色 1项目发布者 2项目经理 3评审专家 4评审管理员
                     status: this.status,//任务的评审状态 评审状态 1未接受 2评审中 3打回中 4已完成
-                    timeStatus:this.timeStatus,//时间状态1即将超时2已经超时
+                    timeStatus: this.timeStatus,//时间状态1即将超时2已经超时
                     projectId: null,
                     type: null,//评审类型,
                     title: null,//评审标题
@@ -353,7 +355,7 @@
             getUserProjectList() {
                 httpGet("/v1/authorization/mission/promulgator/getall").then(results => {
                     const {httpCode, msg, data} = results.data;
-                    console.log("data.projectList",data.projectList);
+                    console.log("data.projectList", data.projectList);
                     if (httpCode == 200) {
                         this.projectList = data.projectList;
                     } else if (httpCode !== 401) {
@@ -365,9 +367,9 @@
             getReviewProcessList(projectId) {
                 this.processLoading = true;
                 console.log("projectId:", projectId);
-                if(projectId===""){
+                if (projectId === "") {
                     message("请先选择项目");
-                    return ;
+                    return;
                 }
                 httpGet("/v1/authorization/review/process/list", {id: projectId}).then(results => {
                     const {httpCode, msg, data} = results.data;
@@ -441,7 +443,7 @@
                     if (httpCode === 200) {
                         data.deadline = specificDate(data.deadline);
                         data.gmtCreate = specificDate(data.gmtCreate);
-                        for(let item of data.resourceList){
+                        for (let item of data.resourceList) {
                             item.gmtCreate = specificDate(item.gmtCreate);
                         }
                         this.formReviewDetail = data;
@@ -484,7 +486,7 @@
                     type: "warning"
                 }).then(() => {
                     httpPut('/v1/authorization/review/status/update', {id: val}).then(results => {
-                        const { msg, httpCode} = results.data;
+                        const {msg, httpCode} = results.data;
                         if (httpCode === 200) {
                             successTips("已接受评审！");
                             this.getView();
@@ -492,7 +494,8 @@
                             errTips(msg);
                         }
                     });
-                }) .catch(() => {});
+                }).catch(() => {
+                });
 
             },
             /**未接受：意见回复 --- 评审中：意见*/
@@ -524,7 +527,7 @@
             },
 
             /**评审中：用于保存评价时填写的内容*/
-            getInitEvaluateForm(){
+            getInitEvaluateForm() {
                 return {
                     content: null,
                     result: null,
@@ -541,12 +544,12 @@
                 this.evaluateForm.reviewInfoId = id;
             },
             /**评审中：关闭评价框*/
-            closeEvaluateDialog(){
+            closeEvaluateDialog() {
                 this.dialogEvaluateVisible = false
             },
             /**评审中页面：提交评价*/
             submitEvaluate(formName) {//提交评价
-                this.$refs[formName].validate((valid)=>{
+                this.$refs[formName].validate((valid) => {
                     if (valid) {
                         httpPost('/v1/authorization/review/evaluate/insert', this.evaluateForm).then(results => {
                             const {msg, httpCode} = results.data;

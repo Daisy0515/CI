@@ -4,12 +4,13 @@
 
 <script>
     import manager from '@/view/review/manager/components/manager'
+
     export default {
-        components:{manager},
+        components: {manager},
         data() {
             return {
-                pageName:"即将超时",
-                timeStatus:1,//对应即将超时的状态id
+                pageName: "即将超时",
+                timeStatus: 1,//对应即将超时的状态id
             };
         },
     };

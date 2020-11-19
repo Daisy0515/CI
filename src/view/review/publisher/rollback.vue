@@ -4,12 +4,13 @@
 
 <script>
     import publisher from '@/view/review/publisher/components/publisher'
+
     export default {
-        components:{publisher},
+        components: {publisher},
         data() {
             return {
-                pageName:"打回中",
-                status:3,
+                pageName: "打回中",
+                status: 3,
             };
         },
     };

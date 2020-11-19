@@ -21,8 +21,8 @@
                     </el-table-column>
                     <el-table-column prop="title" label="是否发起评审" align="center">
                         <template slot-scope="scope">
-                                <span v-if="scope.row.id!== null">已发起评审</span>
-                                <span v-else>未发起评审</span>
+                            <span v-if="scope.row.id!== null">已发起评审</span>
+                            <span v-else>未发起评审</span>
                         </template>
                     </el-table-column>
                     <el-table-column prop="title" label="评审标题" align="center">
@@ -49,7 +49,7 @@
                     </el-table-column>
                 </el-table-column>
             </el-table>
-            <review-result :form="form"  :dialogVisible="dialogVisible" @closeDialog="closeDialog"></review-result>
+            <review-result :form="form" :dialogVisible="dialogVisible" @closeDialog="closeDialog"></review-result>
             <p class="Tips">
                 <i class="el-icon-info"></i>
                 只有当前项目的所有评审通过才能进行交付；多次上传资源只保留最后一次的上传
@@ -194,10 +194,10 @@
         methods: {
             ...mapMutations(['setCache']),
             /**合并没有邀请评审的评审流程的表格*/
-            arraySpanMethod({ row, column, rowIndex, columnIndex }){
-                if(row.id===null){
-                    if(columnIndex===1){
-                        return [1,4];
+            arraySpanMethod({row, column, rowIndex, columnIndex}) {
+                if (row.id === null) {
+                    if (columnIndex === 1) {
+                        return [1, 4];
                     }
                 }
             },
@@ -206,7 +206,7 @@
                 this.dialogVisible = true;
                 httpGet("/v1/authorization/review/deliverydetails/get", {id: val}).then(results => {
                     const {httpCode, msg, data} = results.data;
-                    console.log("review data:",data);
+                    console.log("review data:", data);
                     if (httpCode == 200) {
                         this.form = data;
                     } else {
@@ -248,7 +248,7 @@
                     const {httpCode, msg, data} = results.data;
                     if (httpCode === 200) {
                         this.ReviewTable = data.reviewStatusList;
-                        console.log("this.ReviewTable",this.ReviewTable);
+                        console.log("this.ReviewTable", this.ReviewTable);
                         let list = this.ReviewTable;
                         for (let i of list) {
                             let index = i.type;
@@ -284,7 +284,7 @@
             rowClass() {
                 return 'background:#F4F6F9;';
             },
-            closeDialog(){
+            closeDialog() {
                 this.dialogVisible = false;
             }
         }

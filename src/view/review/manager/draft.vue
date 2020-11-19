@@ -76,7 +76,8 @@
     import {message, successTips, errTips} from '@/utils/tips.js';
     import sourceUpload from '@/common/upload/resourceUpload';
     import submitReview from '@/view/review/manager/components/submitReview';
-    import { MessageBox } from "element-ui";
+    import {MessageBox} from "element-ui";
+
     export default {
         components: {
             sourceUpload,
@@ -132,12 +133,12 @@
                     if (httpCode == 200) {
                         this.pageNo = data.pageNo;
                         this.totalPage = parseInt(data.totalPage + "0");
-                        for(let i of data.reviewDraftList){
+                        for (let i of data.reviewDraftList) {
                             i.gmtCreate = specificDate(i.gmtCreate);
                             i.deadline = specificDate(i.deadline);
                         }
                         this.tableData = data.reviewDraftList;
-                        console.log("tableData:",this.tableData);
+                        console.log("tableData:", this.tableData);
                         Object.assign(this.pageData, val);
                     } else if (msg == "该条件暂无数据") {
                         this.tableData = [];
@@ -227,9 +228,9 @@
                 })
 
             },
-            closeSubmitDialog(params={}) {
+            closeSubmitDialog(params = {}) {
                 this.dialogSubmitVisible = false;
-                if(params.isSubmit!==null && params.isSubmit===true){ //在评审草稿中发起评审,发起成功之后要删除原先的评审草稿
+                if (params.isSubmit !== null && params.isSubmit === true) { //在评审草稿中发起评审,发起成功之后要删除原先的评审草稿
                     this.dialogLoading = true;
                     httpDelete(
                         `/v1/authorization/review/draft/delete/${params.id}`
