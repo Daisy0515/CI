@@ -292,7 +292,7 @@ const vueRouter = new Router({
                 meta: {
                     title: '首页',
                     requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-                    hasExpertRole:true,   //添加该字段，表示进入这个路由是需要评审专家权限
+                    hasExpertRole: true,   //添加该字段，表示进入这个路由是需要评审专家权限
                 }
 
             },
@@ -303,7 +303,7 @@ const vueRouter = new Router({
                     meta: {
                         title: '即将超时',
                         requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-                        hasExpertRole:true,   //添加该字段，表示进入这个路由是需要评审专家权限
+                        hasExpertRole: true,   //添加该字段，表示进入这个路由是需要评审专家权限
                     }
                 },
                 {
@@ -313,7 +313,7 @@ const vueRouter = new Router({
                     meta: {
                         title: '已经超时',
                         requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-                        hasExpertRole:true,   //添加该字段，表示进入这个路由是需要评审专家权限
+                        hasExpertRole: true,   //添加该字段，表示进入这个路由是需要评审专家权限
                     }
                 },
                 {
@@ -323,7 +323,7 @@ const vueRouter = new Router({
                     meta: {
                         title: '已完成',
                         requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-                        hasExpertRole:true,   //添加该字段，表示进入这个路由是需要评审专家权限
+                        hasExpertRole: true,   //添加该字段，表示进入这个路由是需要评审专家权限
                     }
                 },
                 {
@@ -333,7 +333,7 @@ const vueRouter = new Router({
                     meta: {
                         title: '已中止',
                         requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-                        hasExpertRole:true,   //添加该字段，表示进入这个路由是需要评审专家权限
+                        hasExpertRole: true,   //添加该字段，表示进入这个路由是需要评审专家权限
                     }
                 },
                 {
@@ -343,7 +343,7 @@ const vueRouter = new Router({
                     meta: {
                         title: '已拒绝',
                         requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-                        hasExpertRole:true,   //添加该字段，表示进入这个路由是需要评审专家权限
+                        hasExpertRole: true,   //添加该字段，表示进入这个路由是需要评审专家权限
                     }
                 },
                 {
@@ -353,7 +353,7 @@ const vueRouter = new Router({
                     meta: {
                         title: '信息维护',
                         requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-                        hasExpertRole:true,   //添加该字段，表示进入这个路由是需要评审专家权限
+                        hasExpertRole: true,   //添加该字段，表示进入这个路由是需要评审专家权限
                     },
                 },
                 {
@@ -363,7 +363,7 @@ const vueRouter = new Router({
                     meta: {
                         title: '评审中',
                         requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-                        hasExpertRole:true,   //添加该字段，表示进入这个路由是需要评审专家权限
+                        hasExpertRole: true,   //添加该字段，表示进入这个路由是需要评审专家权限
                     }
                 },
                 {
@@ -373,7 +373,7 @@ const vueRouter = new Router({
                     meta: {
                         title: '待处理',
                         requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-                        hasExpertRole:true,   //添加该字段，表示进入这个路由是需要评审专家权限
+                        hasExpertRole: true,   //添加该字段，表示进入这个路由是需要评审专家权限
                     }
                 },
                 {
@@ -383,7 +383,7 @@ const vueRouter = new Router({
                     meta: {
                         title: '信息维护',
                         requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-                        hasExpertRole:true,   //添加该字段，表示进入这个路由是需要评审专家权限
+                        hasExpertRole: true,   //添加该字段，表示进入这个路由是需要评审专家权限
                     }
                 },
                 {
@@ -393,7 +393,7 @@ const vueRouter = new Router({
                     meta: {
                         title: '信息维护',
                         requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-                        hasExpertRole:true,   //添加该字段，表示进入这个路由是需要评审专家权限
+                        hasExpertRole: true,   //添加该字段，表示进入这个路由是需要评审专家权限
                     }
                 },
             ]
@@ -411,7 +411,7 @@ const vueRouter = new Router({
                 meta: {
                     title: '首页',
                     requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-                    hasEditorRole:true,   //添加该字段，表示进入这个路由是需要评审管理员权限
+                    hasEditorRole: true,   //添加该字段，表示进入这个路由是需要评审管理员权限
                 }
 
             },
@@ -422,7 +422,7 @@ const vueRouter = new Router({
                     meta: {
                         title: '评审任务搜索',
                         //requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-                        hasEditorRole:true,   //添加该字段，表示进入这个路由是需要评审管理员权限
+                        hasEditorRole: true,   //添加该字段，表示进入这个路由是需要评审管理员权限
                     }
 
                 },
@@ -433,7 +433,7 @@ const vueRouter = new Router({
                     meta: {
                         title: '评审专家搜索',
                         //requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-                        hasEditorRole:true,   //添加该字段，表示进入这个路由是需要评审管理员权限
+                        hasEditorRole: true,   //添加该字段，表示进入这个路由是需要评审管理员权限
                     }
 
                 },
@@ -445,7 +445,7 @@ const vueRouter = new Router({
                     meta: {
                         title: '评审统计',
                         requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-                        hasEditorRole:true,   //添加该字段，表示进入这个路由是需要评审管理员权限
+                        hasEditorRole: true,   //添加该字段，表示进入这个路由是需要评审管理员权限
                     }
                 },
                 {
@@ -460,7 +460,7 @@ const vueRouter = new Router({
                     meta: {
                         title: '待处理',
                         requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-                        hasEditorRole:true,   //添加该字段，表示进入这个路由是需要评审管理员权限
+                        hasEditorRole: true,   //添加该字段，表示进入这个路由是需要评审管理员权限
                     }
                 },
                 {
@@ -470,7 +470,7 @@ const vueRouter = new Router({
                     meta: {
                         title: '邀请评审专家',
                         requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-                        hasEditorRole:true,   //添加该字段，表示进入这个路由是需要评审管理员权限
+                        hasEditorRole: true,   //添加该字段，表示进入这个路由是需要评审管理员权限
                     }
 
                 },
@@ -481,7 +481,7 @@ const vueRouter = new Router({
                     meta: {
                         title: '发送邮件',
                         requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-                        hasEditorRole:true,   //添加该字段，表示进入这个路由是需要评审管理员权限
+                        hasEditorRole: true,   //添加该字段，表示进入这个路由是需要评审管理员权限
                     }
 
                 },
@@ -492,7 +492,7 @@ const vueRouter = new Router({
                     meta: {
                         title: '已完成',
                         requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-                        hasEditorRole:true,   //添加该字段，表示进入这个路由是需要评审管理员权限
+                        hasEditorRole: true,   //添加该字段，表示进入这个路由是需要评审管理员权限
                     }
                 },
                 {
@@ -502,7 +502,7 @@ const vueRouter = new Router({
                     meta: {
                         title: '待处理任务',
                         requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-                        hasEditorRole:true,   //添加该字段，表示进入这个路由是需要评审管理员权限
+                        hasEditorRole: true,   //添加该字段，表示进入这个路由是需要评审管理员权限
                     }
                 },
                 {
@@ -513,7 +513,7 @@ const vueRouter = new Router({
                     meta: {
                         title: '意见与决定',
                         requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-                        hasEditorRole:true,   //添加该字段，表示进入这个路由是需要评审管理员权限
+                        hasEditorRole: true,   //添加该字段，表示进入这个路由是需要评审管理员权限
                     }
                 },
                 {
@@ -523,7 +523,7 @@ const vueRouter = new Router({
                     meta: {
                         title: '评审管理',
                         requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-                        hasEditorRole:true,   //添加该字段，表示进入这个路由是需要评审管理员权限
+                        hasEditorRole: true,   //添加该字段，表示进入这个路由是需要评审管理员权限
                     }
                 },
                 {
@@ -533,7 +533,7 @@ const vueRouter = new Router({
                     meta: {
                         title: '发送提醒邮件',
                         requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-                        hasEditorRole:true,   //添加该字段，表示进入这个路由是需要评审管理员权限
+                        hasEditorRole: true,   //添加该字段，表示进入这个路由是需要评审管理员权限
                     }
                 },
                 {
@@ -543,7 +543,7 @@ const vueRouter = new Router({
                     meta: {
                         title: '邮件模板',
                         requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-                        hasEditorRole:true,   //添加该字段，表示进入这个路由是需要评审管理员权限
+                        hasEditorRole: true,   //添加该字段，表示进入这个路由是需要评审管理员权限
                     }
                 },
                 {
@@ -553,7 +553,7 @@ const vueRouter = new Router({
                     meta: {
                         title: '评审专家提醒',
                         requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-                        hasEditorRole:true,   //添加该字段，表示进入这个路由是需要评审管理员权限
+                        hasEditorRole: true,   //添加该字段，表示进入这个路由是需要评审管理员权限
                     }
                 },
                 {
@@ -564,7 +564,7 @@ const vueRouter = new Router({
                     meta: {
                         title: '评审专家搜索结果',
                         requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-                        hasEditorRole:true,   //添加该字段，表示进入这个路由是需要评审管理员权限
+                        hasEditorRole: true,   //添加该字段，表示进入这个路由是需要评审管理员权限
                     }
                 },
                 {
@@ -574,7 +574,7 @@ const vueRouter = new Router({
                     meta: {
                         title: '评审专家邀请未回复',
                         requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-                        hasEditorRole:true,   //添加该字段，表示进入这个路由是需要评审管理员权限
+                        hasEditorRole: true,   //添加该字段，表示进入这个路由是需要评审管理员权限
                     }
                 },
                 {
@@ -584,7 +584,7 @@ const vueRouter = new Router({
                     meta: {
                         title: '通用邮件',
                         requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-                        hasEditorRole:true,   //添加该字段，表示进入这个路由是需要评审管理员权限
+                        hasEditorRole: true,   //添加该字段，表示进入这个路由是需要评审管理员权限
                     }
                 },
                 {
@@ -595,7 +595,7 @@ const vueRouter = new Router({
                     meta: {
                         title: '定制与发送邮件',
                         requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-                        hasEditorRole:true,   //添加该字段，表示进入这个路由是需要评审管理员权限
+                        hasEditorRole: true,   //添加该字段，表示进入这个路由是需要评审管理员权限
                     }
                 },
                 {
@@ -606,7 +606,7 @@ const vueRouter = new Router({
                     meta: {
                         title: '评审模板配置',
                         requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-                        hasEditorRole:true,   //添加该字段，表示进入这个路由是需要评审管理员权限
+                        hasEditorRole: true,   //添加该字段，表示进入这个路由是需要评审管理员权限
                     }
                 },
                 {
@@ -616,7 +616,7 @@ const vueRouter = new Router({
                     meta: {
                         title: '已有评审模板',
                         requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-                        hasEditorRole:true,   //添加该字段，表示进入这个路由是需要评审管理员权限
+                        hasEditorRole: true,   //添加该字段，表示进入这个路由是需要评审管理员权限
                     }
                 },
                 {
@@ -627,7 +627,7 @@ const vueRouter = new Router({
                     meta: {
                         title: '评审模板详情',
                         requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-                        hasEditorRole:true,   //添加该字段，表示进入这个路由是需要评审管理员权限
+                        hasEditorRole: true,   //添加该字段，表示进入这个路由是需要评审管理员权限
                     }
                 }, {
                     path: '/registerNewUser',
@@ -636,7 +636,7 @@ const vueRouter = new Router({
                     meta: {
                         title: '注册新用户',
                         requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-                        hasEditorRole:true,   //添加该字段，表示进入这个路由是需要评审管理员权限
+                        hasEditorRole: true,   //添加该字段，表示进入这个路由是需要评审管理员权限
                     }
                 },
 
@@ -1768,9 +1768,9 @@ const shareSessionStorage = function (to) {
     });
 };
 /**根据rolename判断permissionList里是否有rolename所对应的权限*/
-const hasPermission = function(permissionList,roleName){
-    for(let item of permissionList){
-        if(item.name.indexOf(roleName)!==-1){
+const hasPermission = function (permissionList, roleName) {
+    for (let item of permissionList) {
+        if (item.name.indexOf(roleName) !== -1) {
             return true;
         }
     }
@@ -1778,27 +1778,27 @@ const hasPermission = function(permissionList,roleName){
 }
 
 /**拦截评审系统中非法的访问,用户没有评审管理员和专家的角色时候是不允许访问相关页面的*/
-const filterInvalidRequestForReview = function(to,from,next){
+const filterInvalidRequestForReview = function (to, from, next) {
     const permissionList = JSON.parse(sessionStorage.getItem("reviewPermissionList"));//用户拥有的评审权限
-    if(to.meta.hasEditorRole===true){
-        if(hasPermission(permissionList,"管理员")){
+    if (to.meta.hasEditorRole === true) {
+        if (hasPermission(permissionList, "管理员")) {
             next();
-        }else{
+        } else {
             errTips("您没有评审管理员角色！");
             next({
-                path:from.fullPath
+                path: from.fullPath
             });
         }
-    }else if(to.meta.hasExpertRole===true){
-        if(hasPermission(permissionList,"专家")){
+    } else if (to.meta.hasExpertRole === true) {
+        if (hasPermission(permissionList, "专家")) {
             next();
-        }else{
+        } else {
             errTips("您没有评审专家角色！");
             next({
-                path:from.fullPath
+                path: from.fullPath
             });
         }
-    }else{
+    } else {
         next();
     }
 }
@@ -1821,7 +1821,7 @@ vueRouter.beforeEach((to, from, next) => {
                     next({
                         path: '/desk/personal',
                     })
-                 } //else {
+                } //else {
                 //     next()
                 // }
             } else if (store.state.userData.role === '2') {
@@ -1841,7 +1841,7 @@ vueRouter.beforeEach((to, from, next) => {
             // }
 
             //上面注释里的next()函数的调用改在了filterInvalidRequestForReview函数里。
-            filterInvalidRequestForReview(to,from,next);
+            filterInvalidRequestForReview(to, from, next);
         } else {
             store.commit('intercept', to.fullPath);
             next({

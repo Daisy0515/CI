@@ -4,12 +4,13 @@
 
 <script>
     import publisher from '@/view/review/publisher/components/publisher'
+
     export default {
-        components:{publisher},
+        components: {publisher},
         data() {
             return {
-                pageName:"已经超时",
-                timeStatus:2,
+                pageName: "已经超时",
+                timeStatus: 2,
             };
         },
     };

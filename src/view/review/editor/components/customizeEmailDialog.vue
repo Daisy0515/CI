@@ -4,8 +4,9 @@
               3.customizeAndSendEmail(评审管理员：评审管理/发送提醒邮件/评审专家提醒or评审专家邀请未回复/评审专家搜索结果/定制与发送邮件)
 -->
 <template>
-    <el-dialog title="已选择对象" :visible.sync="visible" width="80%" :close-on-click-modal="false" :before-close="closeSelectedUserDialog">
-        <p class="Tips" >
+    <el-dialog title="已选择对象" :visible.sync="visible" width="80%" :close-on-click-modal="false"
+               :before-close="closeSelectedUserDialog">
+        <p class="Tips">
             <i class="el-icon-info"></i>
             全局定制的编辑在保存后对所有邮件产生影响，如果需要对个别邮件再进一步的单独定制，
             可以在全局定制完成后，再通过个别信件的定制来进行个性化定制。
@@ -13,7 +14,8 @@
         <el-table :data="userList" v-loading="userListLoading">
             <el-table-column property="name" label="发送对象"></el-table-column>
             <el-table-column property="title" label="评审标题" v-if="usedBy!=='editorOpinionAndDecision'"></el-table-column>
-            <el-table-column property="status" label="评审状态" v-if="usedBy==='editorOpinionAndDecision'"></el-table-column>
+            <el-table-column property="status" label="评审状态"
+                             v-if="usedBy==='editorOpinionAndDecision'"></el-table-column>
             <el-table-column property="id" label="评审编号"></el-table-column>
             <el-table-column label="信件模板">
                 <el-select v-model="templateId" placeholder="请选择模板" disabled>
@@ -36,8 +38,8 @@
                 </template>
             </el-table-column>
         </el-table>
-        <div style="text-align:center;margin: 15px auto;" >
-            <el-button  @click="closeSelectedUserDialog">关闭</el-button>
+        <div style="text-align:center;margin: 15px auto;">
+            <el-button @click="closeSelectedUserDialog">关闭</el-button>
             <el-button type="primary" style="margin-left:30px;" @click="customizeEmailGlobally">全局定制</el-button>
             <el-button type="primary" style="margin-left:30px;" v-if="usedBy!=='editorOpinionAndDecision'"
                        @click="sendAllEmail" :loading="sendAllEmailLoading">发送邮件
@@ -47,7 +49,8 @@
                 <el-button type="primary" style="margin-left:30px;" @click="suspendAndSendEmail(2)">中止任务发送邮件</el-button>
             </template>
         </div>
-        <el-dialog width="60%" title="定制信件" :visible.sync="customizeVisible" append-to-body :before-close="closeCustomizeDialog">
+        <el-dialog width="60%" title="定制信件" :visible.sync="customizeVisible" append-to-body
+                   :before-close="closeCustomizeDialog">
             <el-row style="margin-top: 15px;">
                 <el-col :span="3"> 收件人：</el-col>
                 <el-col :span="10" style="margin-top: -10px;">
@@ -95,7 +98,7 @@
 </template>
 
 <script>
-    import {httpGet, httpPost,httpPut} from "@/utils/http.js";
+    import {httpGet, httpPost, httpPut} from "@/utils/http.js";
     import {message, successTips, errTips} from "@/utils/tips.js";
     import deepCopyObject from "@/utils/deepCopyObject";
     import {MessageBox} from 'element-ui';
@@ -125,8 +128,8 @@
                 type: Array,
                 default: () => [],
             },
-            usedBy:{//使用本组件的页面名称
-                type:String
+            usedBy: {//使用本组件的页面名称
+                type: String
             }
 
         },
@@ -138,12 +141,12 @@
 
                 /*点击定制，定制信件对话框，用到的属性*/
                 selectedUserIndex: null,//定制的信件在已选择对象列表中的下标(index)
-                openedEmailInfo:{},//点击定制后，存储该封信件相关的信息,例如userId:用户编号，adminMissionId:管理员任务编号
-                globalCustomizeInfo:null,//存储全局定制的信息，第一次全局定制后，再次打开时，显示的信息
+                openedEmailInfo: {},//点击定制后，存储该封信件相关的信息,例如userId:用户编号，adminMissionId:管理员任务编号
+                globalCustomizeInfo: null,//存储全局定制的信息，第一次全局定制后，再次打开时，显示的信息
                 emailPreviewContent: null,//信件主体预览
                 previewVisible: false,//控制预览页面的显示
                 global: false,//是否进行全局定制
-                emailInfo:{                                 //用于存储每一封信显示的内容
+                emailInfo: {                                 //用于存储每一封信显示的内容
                     receiverName: null,                     //收件人姓名
                     duplicate: this.getInitDuplicate(),     //邮件抄送的设置
                     emailConfig: this.getInitEmailConfig(), //信件需要定制的内容
@@ -179,12 +182,13 @@
                     type: "warning"
                 }).then(() => {//点击确定后执行
                     this.customizeVisible = false;
-                }).catch(() => {});//点击取消后执行，没有这个会报错 Uncaught (in promise) cancel
+                }).catch(() => {
+                });//点击取消后执行，没有这个会报错 Uncaught (in promise) cancel
             },
 
 
             /**定制信件页面：获取信件模板的http方法*/
-            httpMethodForGetEmailContentInfo(url,data){
+            httpMethodForGetEmailContentInfo(url, data) {
                 httpPost(url, data).then(results => {
                     const {httpCode, msg, data} = results.data;
                     if (httpCode === 200) {
@@ -196,19 +200,19 @@
                 });
             },
             /**universalMail页面调用，定制信件页面：获取信件模板等相关信息*/
-            getEmailContentInfoForUniversalMail(row){
+            getEmailContentInfoForUniversalMail(row) {
                 this.emailInfo.duplicate = deepCopyObject(row.duplicate);//初始化抄送选项
                 this.openedEmailInfo = deepCopyObject(row);//将当前打开的信件存储到openedEmailInfo，userId和adminMissionId在后续的查看预览里可以用到。
-                if (row.emailConfig === null){//定制信件框没有保存过内容
+                if (row.emailConfig === null) {//定制信件框没有保存过内容
                     let data = {
                         adminMissionId: row.adminMissionId,//管理员任务编号
                         receiver: parseInt(this.receiver),//接收对象 提交人、发布者、评审专家
                         userId: row.userId,
-                        templateId:this.templateId,
+                        templateId: this.templateId,
                     };
                     console.log("data", data);
                     let url = "/v1/authorization/review/admincurrentemail/update";
-                    this.httpMethodForGetEmailContentInfo(url,data);
+                    this.httpMethodForGetEmailContentInfo(url, data);
                 } else {     //定制信件保存过
                     this.emailInfo.emailConfig = deepCopyObject(row.emailConfig);
                 }
@@ -219,21 +223,21 @@
                 this.openedEmailInfo = deepCopyObject(row);//将当前打开的信件存储到openedEmailInfo，在预览信件内容的时候需要用户的id,adminMissionId
                 if (row.emailConfig === null) {      //定制信件框没有保存过内容
                     let idList = [];                //评审专家邀请编号ID集合
-                    for(let item of this.userList){
+                    for (let item of this.userList) {
                         idList.push(item.id);       //由于每一封信件返回来的信件都是一样的,所以取消了该专家是否被邀请的判断
                     }
                     let data = {
-                        idList:idList,
-                        templateId:this.templateId,
+                        idList: idList,
+                        templateId: this.templateId,
                     };
                     let url = "/v1/authorization/review/expertemail/update";
-                    this.httpMethodForGetEmailContentInfo(url,data);
+                    this.httpMethodForGetEmailContentInfo(url, data);
                 } else {     //定制信件保存过
                     this.emailInfo.emailConfig = deepCopyObject(row.emailConfig);
                 }
             },
             /**editorOpinionAndDecision页面调用，定制信件页面：获取信件模板等相关信息*/
-            getEmailContentInfoForEditorOpinionAndDecision(row){
+            getEmailContentInfoForEditorOpinionAndDecision(row) {
                 this.emailInfo.duplicate = deepCopyObject(row.duplicate);//初始化抄送选项
                 this.openedEmailInfo = deepCopyObject(row);//将当前打开的信件存储到openedEmailInfo，在预览信件内容的时候需要userId,adminMissionId
                 if (row.emailConfig === null) {//定制信件框没有保存过内容
@@ -241,35 +245,35 @@
                         adminMissionId: row.adminMissionId,//管理员任务编号
                         receiver: parseInt(this.receiver),//接收对象 提交人、发布者、评审专家
                         userId: row.userId,
-                        templateId:this.templateId,
+                        templateId: this.templateId,
                     };
                     let url = "/v1/authorization/review/endmissionemailconfig/update";
-                    this.httpMethodForGetEmailContentInfo(url,data);
+                    this.httpMethodForGetEmailContentInfo(url, data);
                 } else {     //定制信件保存过
                     this.emailInfo.emailConfig = deepCopyObject(row.emailConfig);
                 }
             },
             /**定制信件页面：获取信件模板等相关信息*/
-            getEmailContentInfo(row){
-                if(this.usedBy==="universalMail"){
+            getEmailContentInfo(row) {
+                if (this.usedBy === "universalMail") {
                     this.getEmailContentInfoForUniversalMail(row);
-                }else if(this.usedBy==="customizeAndSendEmail"){
+                } else if (this.usedBy === "customizeAndSendEmail") {
                     this.getEmailContentInfoForCustomizeAndSendEmail(row);
-                }else if(this.usedBy==="editorOpinionAndDecision"){
+                } else if (this.usedBy === "editorOpinionAndDecision") {
                     this.getEmailContentInfoForEditorOpinionAndDecision(row);
                 }
             },
             /**已选择对象对话框：全局定制的数据显示*/
-            customizeEmailGlobally(){
+            customizeEmailGlobally() {
                 this.global = true;         //开启全局定制
                 let index = 0;              //考虑到发送的邮件最少只有1封，故index取最小值
                 let row = deepCopyObject(this.userList[index]); //第一次点开全局定制时，显示的内容为第一封信件后台返回的内容
                 this.emailInfo.receiverName = row.name; //全局定制的时候，收件人姓名仅仅以第一个人的为例
                 this.customizeVisible = true;
-                if(this.globalCustomizeInfo===null){
+                if (this.globalCustomizeInfo === null) {
                     row.emailConfig = null;     //全局定制的数据第一次要从后端返回，
                     this.getEmailContentInfo(row);
-                }else{                          //已经全局定制过信件，就展示上一次的信息
+                } else {                          //已经全局定制过信件，就展示上一次的信息
                     this.openedEmailInfo = deepCopyObject(row);//将当前打开的信件存储到openedEmailInfo，在预览信件内容的时候需要userId,adminMissionId
                     this.emailInfo = deepCopyObject(this.globalCustomizeInfo);
                 }
@@ -302,7 +306,7 @@
 
 
             /**发送信件用到的http方法*/
-            httpMethodForSendEmail(url,data){
+            httpMethodForSendEmail(url, data) {
                 httpPost(url, data).then(results => {
                     const {httpCode, msg} = results.data;
                     if (httpCode === 200) {
@@ -317,7 +321,7 @@
             sendAllEmailForUniversalMail() {
                 this.sendAllEmailLoading = true;
                 let userList = this.userList;
-                for(let item of userList){
+                for (let item of userList) {
                     item.isInvite = item.isSent;//后台接口中给的属性是isInvite
                 }
                 let data = {
@@ -326,29 +330,29 @@
                     userList: userList,
                 };
                 let url = "/v1/authorization/review/admincurrentemail/insert";
-                this.httpMethodForSendEmail(url,data);
+                this.httpMethodForSendEmail(url, data);
             },
             /**CustomizeAndSendEmail页面调用：已选择对象对话框：发送全部信件*/
-            sendAllEmailForCustomizeAndSendEmail(){
+            sendAllEmailForCustomizeAndSendEmail() {
                 this.sendAllEmailLoading = true;
                 let userList = this.userList;
-                for(let item of userList){
+                for (let item of userList) {
                     item.isRemind = item.isSent; //后台接口中给的属性是isRemind,转换一下
                 }
                 let data = {
                     templateId: this.templateId,
                     previewList: userList,
                 };
-                console.log("customize data:",JSON.stringify(data));
+                console.log("customize data:", JSON.stringify(data));
                 let url = "/v1/authorization/review/expertemailall/send";
-                this.httpMethodForSendEmail(url,data);
+                this.httpMethodForSendEmail(url, data);
             },
             /**已选择对象对话框：发送全部信件*/
-            sendAllEmail(){
-                if(this.usedBy==="universalMail"){
+            sendAllEmail() {
+                if (this.usedBy === "universalMail") {
                     this.sendAllEmailForUniversalMail();
                 }
-                if(this.usedBy==="customizeAndSendEmail"){
+                if (this.usedBy === "customizeAndSendEmail") {
                     this.sendAllEmailForCustomizeAndSendEmail();
                 }
 
@@ -356,7 +360,7 @@
 
 
             /**预览信件用到的http方法*/
-            httpMethodForPreviewEmail(url, data){
+            httpMethodForPreviewEmail(url, data) {
                 httpPost(url, data).then(results => {
                     const {httpCode, msg, data} = results.data;
                     if (httpCode === 200) {
@@ -367,7 +371,7 @@
                 });
             },
             /**universalMail页面调用，定制信件对话框：预览邮件内容*/
-            previewEmailForUniversalMail(){
+            previewEmailForUniversalMail() {
                 let data = {
                     adminMissionId: this.openedEmailInfo.adminMissionId,
                     emailContent: this.emailInfo.emailConfig.content,
@@ -384,17 +388,17 @@
                 let idList = [];                        //评审专家邀请编号ID集合
                 idList.push(this.openedEmailInfo.id);   //在预览的时候只要传递一个id就可以了，这块是后台设计的不是很好，应该传1个id就可以了
                 let data = {
-                    idList:idList,
+                    idList: idList,
                     content: this.emailInfo.emailConfig.content,
-                    templateId:this.templateId,
+                    templateId: this.templateId,
                 };
-                console.log("customize data:",data);
+                console.log("customize data:", data);
                 this.previewVisible = true;//预览信件框打开
                 let url = "/v1/authorization/review/expertemailpreview/get";
                 this.httpMethodForPreviewEmail(url, data)
             },
             /**editorOpinionAndDecision页面调用，定制信件对话框：预览邮件内容*/
-            previewEmailForEditorOpinionAndDecision(){
+            previewEmailForEditorOpinionAndDecision() {
                 let data = {
                     adminMissionId: this.openedEmailInfo.adminMissionId,
                     emailContent: this.emailInfo.emailConfig.content,
@@ -406,34 +410,34 @@
                 this.httpMethodForPreviewEmail(url, data);
             },
             /**定制信件对话框：预览邮件内容*/
-            previewEmail(){
-                if(this.usedBy==="universalMail"){
+            previewEmail() {
+                if (this.usedBy === "universalMail") {
                     this.previewEmailForUniversalMail();
                 }
-                if(this.usedBy==="customizeAndSendEmail"){
+                if (this.usedBy === "customizeAndSendEmail") {
                     this.previewEmailForCustomizeAndSendEmail();
                 }
-                if(this.usedBy==="editorOpinionAndDecision"){
+                if (this.usedBy === "editorOpinionAndDecision") {
                     this.previewEmailForEditorOpinionAndDecision();
                 }
             },
 
 
             /**中止任务用到的方法*/
-            suspendAndSendEmail(type){
+            suspendAndSendEmail(type) {
                 let data = {
-                    id:this.userList[0].adminMissionId,//管理员任务编号ID ,列表里的每一个
-                    type:type,                         //操作类型 1中止任务不发送邮件2中止任务并发送邮件 (
-                    userList:this.userList,            //用户信息对象
+                    id: this.userList[0].adminMissionId,//管理员任务编号ID ,列表里的每一个
+                    type: type,                         //操作类型 1中止任务不发送邮件2中止任务并发送邮件 (
+                    userList: this.userList,            //用户信息对象
                 };
-                httpPut("/v1/authorization/review/adminmissionstaus/update",data).then(results=>{
+                httpPut("/v1/authorization/review/adminmissionstaus/update", data).then(results => {
                     const {httpCode, msg} = results.data;
-                    if(httpCode===200){
+                    if (httpCode === 200) {
                         successTips("中止任务成功！");
-                    }else{
+                    } else {
                         errTips(msg);
                     }
-                    this.$emit("closeDialog",true); //true表明用户中止了任务，对于关闭对话框后页面的跳转有影响
+                    this.$emit("closeDialog", true); //true表明用户中止了任务，对于关闭对话框后页面的跳转有影响
                 });
             },
         }
@@ -443,7 +447,7 @@
 <style lang="scss" scoped>
     .Tips {
         text-align: center;
-        margin: 10px  auto;
+        margin: 10px auto;
         color: #909399a8;
     }
 </style>

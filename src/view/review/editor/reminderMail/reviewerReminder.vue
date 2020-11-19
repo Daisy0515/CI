@@ -66,7 +66,7 @@
     import {errTips} from "@/utils/tips.js";
 
     export default {
-        data(){
+        data() {
             return {
                 radio: null,
                 aboutTimeout: 5,//截止日期XX天内的评审人员
@@ -78,17 +78,17 @@
             }
         },
         methods: {
-            startDate(){
+            startDate() {
                 const self = this;
                 return {
-                    disabledDate(time){
-                        if (self.submitTimeEnd){//如果结束时间不为空，则小于结束时间
+                    disabledDate(time) {
+                        if (self.submitTimeEnd) {//如果结束时间不为空，则小于结束时间
                             return time.getTime() > new Date(self.submitTimeEnd).getTime();
                         }
                     }
                 };
             },
-            endDate(){
+            endDate() {
                 const self = this;
                 return {
                     disabledDate(time) {
@@ -116,10 +116,13 @@
                     searchData.submitTimeStart = this.submitTimeStart;
                     searchData.submitTimeEnd = this.submitTimeEnd;
                 }
-                this.$router.push({name:'editorReviewerReminderSearchResult',params:{searchData:JSON.stringify(searchData)}})
+                this.$router.push({
+                    name: 'editorReviewerReminderSearchResult',
+                    params: {searchData: JSON.stringify(searchData)}
+                })
 
             },
-            submitExpertList(){
+            submitExpertList() {
 
             },
             rowClass() {

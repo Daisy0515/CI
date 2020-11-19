@@ -101,7 +101,8 @@ const mixinRegular = {
             }
         };
     },
-    created() {},
+    created() {
+    },
     methods: {}
 };
 export default mixinRegular

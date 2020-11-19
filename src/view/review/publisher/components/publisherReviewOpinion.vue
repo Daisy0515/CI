@@ -48,7 +48,7 @@
         </el-form>
         <el-dialog width="30%" :visible.sync="innerVisible" append-to-body center>
             <el-row :gutter="10" style="margin-bottom: 30px;">
-                <el-col :span="6"><span>回复截止日期:</span> </el-col>
+                <el-col :span="6"><span>回复截止日期:</span></el-col>
                 <el-col :span="18">
                     <el-date-picker
                             v-model="ruleForm.deadline"
@@ -70,7 +70,7 @@
                             placeholder="请输入内容"/>
                 </el-col>
             </el-row>
-            <div slot="footer" class="dialog-footer" >
+            <div slot="footer" class="dialog-footer">
                 <el-button @click="innerVisible = false" style="margin-right: 30px;">取 消</el-button>
                 <el-button type="primary" @click="submitOpinion" v-prevent-click>提交</el-button>
             </div>
@@ -79,8 +79,9 @@
 </template>
 
 <script>
-	import { httpGet, httpPost,httpPut } from '@/utils/http.js';
-	import { successTips,errTips } from '@/utils/tips.js';
+    import {httpGet, httpPost, httpPut} from '@/utils/http.js';
+    import {successTips, errTips} from '@/utils/tips.js';
+
     export default {
         name: "publisherReviewOpinion",
         data() {
@@ -90,28 +91,28 @@
                         return time.getTime() <= new Date().getTime() - 8.64e6;
                     }
                 },
-                formLabelWidth:'100px',
-                endDate:'',
+                formLabelWidth: '100px',
+                endDate: '',
                 innerVisible: false,
-				ruleForm:{
-					deadline:"",
-					details:"",
-					reviewInfoId:null
-				}
+                ruleForm: {
+                    deadline: "",
+                    details: "",
+                    reviewInfoId: null
+                }
             }
         },
-        props:{
-            form:{
-                type:Object,
-                default:{}
+        props: {
+            form: {
+                type: Object,
+                default: {}
             },
-            dialogOpinionVisible:{
-                type:Boolean,
-                default:false,
+            dialogOpinionVisible: {
+                type: Boolean,
+                default: false,
             },
-            loading:{
-                type:Boolean,
-                default:false,
+            loading: {
+                type: Boolean,
+                default: false,
             }
         },
         methods: {
@@ -122,25 +123,25 @@
                 this.innerVisible = true;
             },
             submitOpinion() {
-				this.ruleForm.reviewInfoId = this.form.id;
-				//post /v1/authorization/review/opinion/insert
-				httpPost('/v1/authorization/review/opinion/insert',this.ruleForm).then(results=>{
-					const { data, msg, httpCode } = results.data;
-					if (httpCode === 200) {
-						successTips("新增意见成功！");
-						this.ruleForm="";
-						this.innerVisible = false;
-						this.changeVisible();
-					} else {
-						errTips(msg);
-					}
-				})
+                this.ruleForm.reviewInfoId = this.form.id;
+                //post /v1/authorization/review/opinion/insert
+                httpPost('/v1/authorization/review/opinion/insert', this.ruleForm).then(results => {
+                    const {data, msg, httpCode} = results.data;
+                    if (httpCode === 200) {
+                        successTips("新增意见成功！");
+                        this.ruleForm = "";
+                        this.innerVisible = false;
+                        this.changeVisible();
+                    } else {
+                        errTips(msg);
+                    }
+                })
 
                 //提交意见
             },
-			rowClass() {
-			    return "background:#F4F6F9;";
-			}
+            rowClass() {
+                return "background:#F4F6F9;";
+            }
         },
 
     }

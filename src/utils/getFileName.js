@@ -10,7 +10,7 @@ export default function getFileName() {
     let yyyyMMdd = curr_year + "" + curr_month + "" + curr_date;
     let mm = Date.now();
     return {
-        yyyyMMdd:yyyyMMdd,
-        mm : mm
+        yyyyMMdd: yyyyMMdd,
+        mm: mm
     }
 }

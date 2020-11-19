@@ -24,7 +24,7 @@ const mixinRegular = {
         const detail = (rule, value, callback) => {
             if (value === "") {
                 callback(new Error("请输入详细描述"));
-            } else if (value.length>=500) {
+            } else if (value.length >= 500) {
                 callback(new Error("详细描述不可超过500个字"));
             } else {
                 callback();

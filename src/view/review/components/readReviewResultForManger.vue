@@ -13,11 +13,12 @@
                 <span style="font-size: large;font-weight: bolder;">评审得分:</span>
             </el-col>
             <el-col :span="3">
-                <el-input v-model="editorForm.reviewScore" size="medium" style="margin-top: -5px;" :readonly="readonly"></el-input>
+                <el-input v-model="editorForm.reviewScore" size="medium" style="margin-top: -5px;"
+                          :readonly="readonly"></el-input>
             </el-col>
         </el-row>
         <form-create v-model="fApi" :rule="rules" :option="option"/>
-        <el-form :model="editorForm" style="font-weight: bolder"  ref="editorForm" :rules="editorRules">
+        <el-form :model="editorForm" style="font-weight: bolder" ref="editorForm" :rules="editorRules">
             <el-form-item label="给评审提交人的意见:" prop="commentsToAuthor">
                 <el-input type="textarea" :rows="5" v-model="editorForm.commentsToAuthor" :readonly="readonly"
                           :autosize="{minRows: 5, maxRows: 10 }">
@@ -27,13 +28,14 @@
         <el-row style="margin-top: 20px;">
             <el-col :span="3">
                 <a target="_Blank" :href="editorForm.attachment" v-if="editorForm.isVisible===true"> 下载 </a>
-                <a  v-else> 暂无附件 </a>
+                <a v-else> 暂无附件 </a>
             </el-col>
             <el-col :span="2" :offset="16">
                 <span style="font-size: large;font-weight: bolder;">评审得分:</span>
             </el-col>
             <el-col :span="3">
-                <el-input v-model="editorForm.reviewScore" size="medium" style="margin-top: -5px;":readonly="readonly"></el-input>
+                <el-input v-model="editorForm.reviewScore" size="medium" style="margin-top: -5px;"
+                          :readonly="readonly"></el-input>
             </el-col>
         </el-row>
     </div>
@@ -45,22 +47,23 @@
     import deepCopyObject from "@/utils/deepCopyObject";//深拷贝对象
 
     export default {
-        name:"readReviewResultForManger",
+        name: "readReviewResultForManger",
         components: {
             formCreate: formCreate.$form(),
         },
-        props:{
-            templateConfigList:{
-                type:Array,
-                default:()=>[],//对象或者数组的默认值需要由工厂函数来返回
+        props: {
+            templateConfigList: {
+                type: Array,
+                default: () => [],//对象或者数组的默认值需要由工厂函数来返回
             },
-            totalScore:{//评审模板的总分
-                type:Number,
-                default:0,
+            totalScore: {//评审模板的总分
+                type: Number,
+                default: 0,
             },
-            result:{//评价结果
-                type:Object,
-                default:()=>{},
+            result: {//评价结果
+                type: Object,
+                default: () => {
+                },
 
             }
         },
@@ -68,33 +71,33 @@
         data() {
             return {
                 templateName: '',//当前评审模板的名称
-                templateId:null,//评审模板的id
-                readonly:true,//查看评价的所有页面都不能编辑
+                templateId: null,//评审模板的id
+                readonly: true,//查看评价的所有页面都不能编辑
 
-                fApi:{},//生成表单所必要的属性，表单生成后，关于表单相关的属性和操作都在fApi中
+                fApi: {},//生成表单所必要的属性，表单生成后，关于表单相关的属性和操作都在fApi中
                 rules: [],       //生成评审表单的规则
                 option: {
-                    submitBtn : false,//隐藏提交按钮
+                    submitBtn: false,//隐藏提交按钮
                     resetBtn: false,// //隐藏表单重置按钮
                 },
 
-                editorRules:{
-                    commentsToAuthor:[{required:true,message:"对评审提交人暂无意见",trigger: 'blur'}],
+                editorRules: {
+                    commentsToAuthor: [{required: true, message: "对评审提交人暂无意见", trigger: 'blur'}],
                 },
             };
         },
-        watch:{
+        watch: {
             /*templateConfigList发生更新就重新生成评审表单*/
-            templateConfigList:function(){
+            templateConfigList: function () {
                 this.setCreateRule();
             }
         },
-        computed:{
-            editorForm:function(){
+        computed: {
+            editorForm: function () {
                 return this.result;
             }
         },
-        methods:{
+        methods: {
             /**生成符合formCreate的生成表单的输入**/
             setCreateRule() {
                 let content = this.result.content;
@@ -107,7 +110,7 @@
                 for (let i = 0; i < this.templateConfigList.length; i++) { /*生成标题**/
                     let item = this.templateConfigList[i];
                     let title = (i + 1) + '.' + item.scoreTitle;//生成评审项的题号和标题
-                    if ( item.hint !== null &&item.hint.trim() !== "") {//判断提示题目的提示是否为空，然后添加提示
+                    if (item.hint !== null && item.hint.trim() !== "") {//判断提示题目的提示是否为空，然后添加提示
                         title += "(" + item.hint + ")";
                     }
                     rules.push({ //生成题目的标题和提示
@@ -157,10 +160,10 @@
                                     });
                                 }
                             }
-                        }else if(item.type===2){//2.生成是或否选择
+                        } else if (item.type === 2) {//2.生成是或否选择
                             rule.type = "switch";
                             rule.title = item.selectAnnotation
-                        }else if(item.type === 3){//3.生成文本/分数输入域
+                        } else if (item.type === 3) {//3.生成文本/分数输入域
                             rule.type = "InputNumber";
                             rule.title = "得分:";
                             rule.props.controlsPosition = "right";//计数器的控制放在右边
@@ -169,7 +172,7 @@
                                 max: item.value.max * item.scoreWeight,
                                 min: item.value.min * item.scoreWeight,
                                 message: '分数范围' + item.value.min * item.scoreWeight + '到' + item.value.max * item.scoreWeight,
-                                trigger: ['change','blur']
+                                trigger: ['change', 'blur']
                             });
                         }
                         if (item.isScoreRequired === true) {//改选项评审者必选
@@ -184,7 +187,7 @@
                         rule = deepCopyObject(nullRule);
                     }
                     /*添加文本说明且该文本说明允许提交人看见**/
-                    if (item.textAnnotation === true&&item.textSubmitVisible === true){
+                    if (item.textAnnotation === true && item.textSubmitVisible === true) {
                         rule.field = item.fieldTwo;
                         rule.value = content[rule.field];
                         rule.type = "input";
@@ -192,8 +195,8 @@
                         rule.props = {
                             type: "textarea",
                             rows: 5,
-                            autosize:{minRows: 5, maxRows: 10},
-                            readonly:true,
+                            autosize: {minRows: 5, maxRows: 10},
+                            readonly: true,
                         };
                         rule.col = {
                             span: 16

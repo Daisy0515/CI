@@ -4,12 +4,13 @@
 
 <script>
     import manager from '@/view/review/manager/components/manager'
+
     export default {
-        components:{manager},
+        components: {manager},
         data() {
             return {
-                pageName:"评审中",
-                status:2,
+                pageName: "评审中",
+                status: 2,
             };
         },
     };

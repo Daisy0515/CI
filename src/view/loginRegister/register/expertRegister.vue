@@ -7,7 +7,7 @@
                     <span>评审专家注册</span>
                 </div>
                 <h2 style="text-align: left;font-weight: bolder;margin-top: 2%;">基本资料</h2>
-                <div >
+                <div>
                     <el-form :rules="rules" :model="ruleForm" style="margin-top: 2%;" ref="ruleForm"
                              class="demo-ruleForm">
                         <el-row :gutter="20">
@@ -154,12 +154,10 @@
                         </el-row>
                         <el-row :gutter="20">
 
-                                <el-form-item label="个人关键词" :label-width="formLabelWidth">
-                                    <add-key-words :dynamic-tags="ruleForm.cruxList"
-                                                   @addKeyWord="addKeyWords"></add-key-words>
-                                </el-form-item>
-
-
+                            <el-form-item label="个人关键词" :label-width="formLabelWidth">
+                                <add-key-words :dynamic-tags="ruleForm.cruxList"
+                                               @addKeyWord="addKeyWords"></add-key-words>
+                            </el-form-item>
 
 
                         </el-row>
@@ -263,21 +261,21 @@
             this.getPersonalInfo();
         },
         methods: {
-            setIdCard(data){
-              console.log(data);
-              this.ruleForm.headurl = data;
+            setIdCard(data) {
+                console.log(data);
+                this.ruleForm.headurl = data;
             },
             addKeyWords(val) {
                 this.ruleForm.cruxList = val;
             },
             printValue() {
-				this.researchName = null;
-				let arr = [];
-				for (var i = 0; i < this.value.length; i++) {
-					arr.push(this.researchList[this.value[i] - 1].researchDirection);
-				}
-				this.researchName = arr.join();
-				this.keywordsVisible = false;
+                this.researchName = null;
+                let arr = [];
+                for (var i = 0; i < this.value.length; i++) {
+                    arr.push(this.researchList[this.value[i] - 1].researchDirection);
+                }
+                this.researchName = arr.join();
+                this.keywordsVisible = false;
             },
             getPersonalInfo() {
                 httpGet("/v1/authorization/coreuser/review/register?role=3").then(results => {

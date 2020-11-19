@@ -129,9 +129,9 @@
 
                 this.resourceUrl ? this.setIdCard2() : (this.uploadIndex = !this.uploadIndex);
             },
-			rowClass() {
-				return 'background:#F4F6F9;';
-			}
+            rowClass() {
+                return 'background:#F4F6F9;';
+            }
         }
     };
 </script>

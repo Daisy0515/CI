@@ -15,20 +15,23 @@
         <div class="myTable">
             <div class="header_top">
                 <el-input v-model="searchData.title" placeholder="评审标题"></el-input>
-                <el-select v-model="searchData.type" clearable placeholder="请选择评审类型" style="width: 150px;margin-right: 15px;">
+                <el-select v-model="searchData.type" clearable placeholder="请选择评审类型"
+                           style="width: 150px;margin-right: 15px;">
                     <el-option v-for="index in typeList" :label="typeList[index]" :value="index"></el-option>
                 </el-select>
                 <el-input v-model="searchData.projectUserName" placeholder="发布者"></el-input>
                 <el-input v-model="searchData.submitterName" placeholder="提交人"></el-input>
-                <el-date-picker v-model="searchData.submitTimeStart" type="date" style="width: 150px;" placeholder="提交开始时间"
+                <el-date-picker v-model="searchData.submitTimeStart" type="date" style="width: 150px;"
+                                placeholder="提交开始时间"
                                 value-format="yyyy-MM-dd" :picker-options="startDatePicker"></el-date-picker>
                 <span style="margin-right: 15px;">到</span>
-                <el-date-picker v-model="searchData.submitTimeEnd" type="date" style="width: 150px;" placeholder="提交结束时间"
+                <el-date-picker v-model="searchData.submitTimeEnd" type="date" style="width: 150px;"
+                                placeholder="提交结束时间"
                                 value-format="yyyy-MM-dd" :picker-options="endDatePicker"></el-date-picker>
                 <el-button type="primary" @click="searchList">搜索</el-button>
             </div>
         </div>
-        <el-table v-loading="loading" :data="tableData" style="margin:20px auto;" :header-cell-style="rowClass" >
+        <el-table v-loading="loading" :data="tableData" style="margin:20px auto;" :header-cell-style="rowClass">
             <el-table-column label="操作" align="center" width="230px">
                 <template slot-scope="scope">
                     <el-button @click="handleClickDetail(scope.row.reviewId )" type="text" size="medium">
@@ -37,7 +40,8 @@
                     <el-button @click="inviteExpert(scope.row.id,scope.row.reviewId)" type="text" size="medium">
                         <i class="el-icon-document"></i>邀请评审专家
                     </el-button>
-                    <el-button @click="handleClickDecisionAndOpinion(scope.row)" type="text" size="medium" v-if="intStatus===3">
+                    <el-button @click="handleClickDecisionAndOpinion(scope.row)" type="text" size="medium"
+                               v-if="intStatus===3">
                         <i class="el-icon-refresh"></i>查看意见与决定
                     </el-button>
                     <el-button @click="handleClickDecisionAndOpinion(scope.row)" type="text" size="medium" v-else>
@@ -132,7 +136,8 @@
         </el-table>
 
         <!--查看第三方评审意见-->
-        <el-dialog title="第三方评审意见" :visible.sync="expertReviewDialogVisible" width="80%" :before-close="closeExpertReviewDialog">
+        <el-dialog title="第三方评审意见" :visible.sync="expertReviewDialogVisible" width="80%"
+                   :before-close="closeExpertReviewDialog">
             <view-expert-review-list :userList="userList" :userListLoading="userListLoading"></view-expert-review-list>
         </el-dialog>
         <!--查看详情-->
@@ -156,7 +161,7 @@
     import viewExpertReviewList from "@/view/review/editor/components/viewExpertReviewList";
 
     export default {
-        name:"editorReviewList",
+        name: "editorReviewList",
         mixins: [timeLimit],
         props: {
             status: {//状态1待处理2评审中3完成4中止
@@ -181,7 +186,7 @@
                 /*查看第三方评审对话框*/
                 opinion: null,                      //管理员决定
                 userList: [],                       //评审专家的信息
-                userListLoading:false,              //列表的加载提示
+                userListLoading: false,              //列表的加载提示
                 expertReviewDialogVisible: false,   //控制查看详情的对话框
 
                 searchData: this.getInitialPageOrSearchData(),  //搜索栏的初始化数据
@@ -191,8 +196,8 @@
                 tableData: [],                                  //存储评审任务列表
                 totalPage: 0,
 
-                intStatus:null,                 //整型的status,原生的status可能因为使用浏览器刷新的原因变成字符串类型
-                intStatusExplain:null,          //整型的statusExplain,原生的statusExplain可能因为使用浏览器刷新的原因变成字符串类型
+                intStatus: null,                 //整型的status,原生的status可能因为使用浏览器刷新的原因变成字符串类型
+                intStatusExplain: null,          //整型的statusExplain,原生的statusExplain可能因为使用浏览器刷新的原因变成字符串类型
                 /*查看详情*/
                 reviewDetailDialogVisible: false,   //控制查看详情对话框是否显示
                 reviewDetail: {},                   //查看评审详情时存储数据的框
@@ -211,15 +216,20 @@
             reviewTypes: function () {
                 if (this.intStatus === 1) {                 //对应等待管理员分配专家的新任务
                     return "新任务";
-                } else if (this.intStatus=== 2) {           //评审中的新任务
-                    switch ( this.intStatusExplain) {
-                        case 1: return "评审专家完成评审";
-                        case 2: return "需要额外评审专家";
-                        case 3: return "评审延期";
-                        case 4: return "评审邀请未回复";
-                        default: return "评审中";
+                } else if (this.intStatus === 2) {           //评审中的新任务
+                    switch (this.intStatusExplain) {
+                        case 1:
+                            return "评审专家完成评审";
+                        case 2:
+                            return "需要额外评审专家";
+                        case 3:
+                            return "评审延期";
+                        case 4:
+                            return "评审邀请未回复";
+                        default:
+                            return "评审中";
                     }
-                } else if ( this.intStatus === 3 ) {
+                } else if (this.intStatus === 3) {
                     return "评审完成";
                 }
                 if (this.expertAccomplishCount !== null) {   //评审统计中的新任务
@@ -231,7 +241,7 @@
             /**获取评审任务列表*/
             getView(val = this.pageData) {
                 this.loading = true;
-                console.log("val",val);
+                console.log("val", val);
                 httpGet("/v1/authorization/review/admin/search", val).then(results => {
                     const {httpCode, msg, data} = results.data;
                     console.log(" results.data", results.data);
@@ -281,10 +291,10 @@
                 this.userListLoading = true;
                 httpGet("/v1/authorization/review/expertinviterecord/list", {id: val}).then(results => {
                     const {httpCode, msg, data} = results.data;
-                    if (httpCode == 200){
+                    if (httpCode == 200) {
                         this.opinion = data.opinion;
                         let userList = data.userList;
-                        for (let i of userList){
+                        for (let i of userList) {
                             i.gmtCreate = specificDate(i.gmtCreate);
                         }
                         this.userList = userList;
@@ -310,7 +320,7 @@
 
             /**搜索列表*/
             searchList() {
-                if(this.searchData.type===""){//搜索条件中的评审类型删除后为"",后台搜索采取的是精确搜索,搜索结果返回为空
+                if (this.searchData.type === "") {//搜索条件中的评审类型删除后为"",后台搜索采取的是精确搜索,搜索结果返回为空
                     this.searchData.type = null;
                 }
                 console.log("this.searchData", this.searchData);
@@ -347,7 +357,7 @@
             /**跳转到(查看)意见与决定的页面*/
             handleClickDecisionAndOpinion(row) {
                 let identification = row.identification;
-                if(this.intStatus===3){//当前任务已完成
+                if (this.intStatus === 3) {//当前任务已完成
                     identification = 3
                 }
                 this.$router.push({
@@ -405,7 +415,8 @@
 
 <style lang="scss" scoped>
     @import "@/assets/scss/myTable.scss";
-    .bid_footer{
+
+    .bid_footer {
         text-align: center;
     }
 </style>

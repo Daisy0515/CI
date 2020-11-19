@@ -94,14 +94,14 @@
                 </el-table-column>
                 <el-table-column prop="accomplishProgress" label="操作" align="center" width="280px">
                     <template slot-scope="scope">
-                        <el-button @click="handleDetail(scope.row)" type="text" size="medium" >
+                        <el-button @click="handleDetail(scope.row)" type="text" size="medium">
                             <i class="el-icon-search"></i>查看详情
                         </el-button>
                         <template v-if="status===3||scope.row.status===3"><!--打回中-->
                             <el-button @click="handleClickOpinion(scope.row)" type="text" size="medium">
                                 <i class="el-icon-document"></i>查看意见
                             </el-button>
-                            <el-button @click="handleClickSubmit(scope.row)" type="text" size="medium" >
+                            <el-button @click="handleClickSubmit(scope.row)" type="text" size="medium">
                                 <i class="el-icon-refresh"></i>重新提交
                             </el-button>
                         </template>
@@ -114,7 +114,7 @@
                             </el-button>
                         </template>
                         <template v-if="status===4||scope.row.status===4"><!--已完成-->
-                            <el-button @click="handleEvaluateDetail(scope.row)" type="text" size="medium" >
+                            <el-button @click="handleEvaluateDetail(scope.row)" type="text" size="medium">
                                 <i class="el-icon-search"></i>查看评价
                             </el-button>
                             <el-button @click="handleClickOpinion(scope.row)" type="text" size="medium"
@@ -169,19 +169,20 @@
     import reviewOpinion from '@/view/review/manager/components/reviewOpinion';
     import reviewEvaluation from '@/view/review/components/reviewEvaluation'
     import timeLimit from "@/mixins/regular/timeLimitForReview.js";
+
     export default {
-        props:{
-            pageName:String,//pageName当前页面名称
+        props: {
+            pageName: String,//pageName当前页面名称
             status: {//评审状态1未接受2评审中3打回中4已完成
-                type:Number,
-                default:null,
+                type: Number,
+                default: null,
             },
-            timeStatus:{//时间状态1即将超时2已经超时
-                type:Number,
-                default:null,
+            timeStatus: {//时间状态1即将超时2已经超时
+                type: Number,
+                default: null,
             },
         },
-        components: {reviewDetailDialog, submitReview, reviewOpinion,reviewEvaluation},
+        components: {reviewDetailDialog, submitReview, reviewOpinion, reviewEvaluation},
         mixins: [timeLimit],
         data() {
             return {
@@ -191,12 +192,12 @@
                 dialogEvaluationVisible: false,//控制评价详情框是否显示
 
                 loading: false, //控制整体页面表格的加载提示
-                processLoading:false,//搜索框中点击类型下拉框时加载提示
+                processLoading: false,//搜索框中点击类型下拉框时加载提示
                 dialogLoading: false,//控制弹窗的加载提示
 
                 tableData: [],//存储当前页面的评审任务列表
                 projectList: [],//当前用户参与的项目，这些项目处于执行中的状态，并且这些项目是设置了评审流程的
-                projectListForSearch:[],//当前用户参与的项目，这些项目处于执行中或完成的状态，并且这些项目是设置了评审流程的
+                projectListForSearch: [],//当前用户参与的项目，这些项目处于执行中或完成的状态，并且这些项目是设置了评审流程的
                 reviewProcessList: [],//当前用户选定评审项目后，该项目所拥有的评审流程
                 searchData: {
                     pageNo: 1,
@@ -205,7 +206,7 @@
                     orderType: "DESC",
                     role: 2,  //用户的角色 1项目发布者 2项目经理 3评审专家 4评审管理员
                     status: this.status,//任务的评审状态 评审状态 1未接受 2评审中 3打回中 4已完成
-                    timeStatus:this.timeStatus,//时间状态1即将超时2已经超时
+                    timeStatus: this.timeStatus,//时间状态1即将超时2已经超时
                     projectId: null,//项目名称编号ID
                     type: null,//评审类型,
                     title: null,//评审标题
@@ -217,22 +218,22 @@
                     pageSize: 10,
                     orderBy: "gmtModified",
                     orderType: "DESC",
-                    role:2,
+                    role: 2,
                     status: this.status,
-                    timeStatus:this.timeStatus,//时间状态1即将超时2已经超时
+                    timeStatus: this.timeStatus,//时间状态1即将超时2已经超时
                     projectId: null,
                     type: null,//评审类型,
                     title: null,//评审标题
                     gmtCreateStart: null,//提交开始时间
                     gmtCreateEnd: null,//提交结束时间
                 },
-                allReviewProcessList:{},//以评审的id为键，评审的processName为值存储所有评审流程的
+                allReviewProcessList: {},//以评审的id为键，评审的processName为值存储所有评审流程的
                 totalPage: 0,
 
                 form: {},//存储评审详情的信息
-                formSubmit:{},//存储提交弹框里的信息
-                formOpinion:{},//存储意见弹框里的信息
-                formEvaluation:{},//存储评价弹框里的信息
+                formSubmit: {},//存储提交弹框里的信息
+                formOpinion: {},//存储意见弹框里的信息
+                formEvaluation: {},//存储评价弹框里的信息
                 isReadOnly: true,//用于控制提交表格里部分属性是否
                 formLabelWidth: '100px' //弹框中各个form-item的长度
             };
@@ -244,16 +245,16 @@
             this.getUserProjectListForSearch();
         },
         computed: {
-            submitTitle: function(){  //确定submit-review组件中的标题
+            submitTitle: function () {  //确定submit-review组件中的标题
                 if (this.status === 2) {
                     return "修改提交";
-                }else if (this.status === 3) {
+                } else if (this.status === 3) {
                     return "重新提交";
-                }else{//null对应了默认的 编辑评审
+                } else {//null对应了默认的 编辑评审
                     return null;
                 }
             },
-            isShowSubmitHistory:function(){ //确定submit-review组件中是否显示提交历史
+            isShowSubmitHistory: function () { //确定submit-review组件中是否显示提交历史
                 if (this.status === 1) { //除了未接受，其他的页面都需要显示提交历史
                     return false;
                 }
@@ -272,7 +273,7 @@
             getUserProjectListForSearch() {
                 httpGet("/v1/authorization/mission/projectid/getall").then(results => {
                     const {httpCode, msg, data} = results.data;
-                    console.log("manager data.projectList",data);
+                    console.log("manager data.projectList", data);
                     if (httpCode === 200) {
                         this.projectListForSearch = data.projectList;
                     } else if (httpCode !== 400) { //400 "该用户暂无参与执行中项目"
@@ -284,7 +285,7 @@
             getUserProjectList() {
                 httpGet("/v1/authorization/mission/projectid/getto").then(results => {
                     const {httpCode, msg, data} = results.data;
-                    console.log("manager data.projectList",data.projectList);
+                    console.log("manager data.projectList", data.projectList);
                     if (httpCode === 200) {
                         this.projectList = data.projectList;
                     } else if (httpCode !== 400) { //400 "该用户暂无参与执行中项目"
@@ -312,11 +313,11 @@
                 });
             },
             /**各个页面通用：获取整个系统中的所有评审与评审名字*/
-            getAllReviewProcessList(){
+            getAllReviewProcessList() {
                 httpGet("/v1/public/bid/process/list").then(results => {
                     const {httpCode, msg, data} = results.data;
                     if (httpCode === 200) {
-                        for(let i of data.reviewProcessList){
+                        for (let i of data.reviewProcessList) {
                             this.allReviewProcessList[i.id] = i.processName;
                         }
                     } else if (httpCode !== 401) {
@@ -336,7 +337,7 @@
                         for (let i of list) {
                             i.gmtCreate = specificDate(i.gmtCreate);
                             i.deadline = specificDate(i.deadline);
-                            i.gmtModified= specificDate(i.gmtModified);
+                            i.gmtModified = specificDate(i.gmtModified);
                             i.type = this.allReviewProcessList[i.type];//将评审类型由id转换为name
                         }
                         Object.assign(this.pageData, val);
@@ -369,7 +370,7 @@
                         }
                         this.form = data;
                     } else if (msg === "该条件暂无数据") {
-                        this.form ={};
+                        this.form = {};
                         message("该条件暂无数据");
                     } else if (httpCode !== 401) {
                         errTips(msg);

@@ -29,7 +29,8 @@
                 <div style="border:0.5px solid #CCC;margin: 30px auto;"></div>
                 <el-checkbox v-model="localForm.isScore">
                     <span style=" font-weight: bolder;">如果此评审项包含数值分数，请选中此框 </span>
-                </el-checkbox><br>
+                </el-checkbox>
+                <br>
                 <p class="Tips">
                     <i class="el-icon-info"></i>
                     <span v-if="reviewItemType==='scoreOption'">填写关于分数的信息。得分为有限个分数的集合。
@@ -41,12 +42,13 @@
                 </p>
                 <el-form-item label="分数相关设置：" v-if="localForm.isScore"><br>
                     <div style="margin-left: 70px;">
-<!--                        <el-checkbox v-model="localForm.isScoreSubmitVisible  "><span-->
-<!--                                style=" font-weight: bolder;">对评审提交人可见</span></el-checkbox>-->
-<!--             这里默认让用户不可见          <br>-->
+                        <!--                        <el-checkbox v-model="localForm.isScoreSubmitVisible  "><span-->
+                        <!--                                style=" font-weight: bolder;">对评审提交人可见</span></el-checkbox>-->
+                        <!--             这里默认让用户不可见          <br>-->
                         <el-checkbox v-model="localForm.isScoreRequired  ">
                             <span style=" font-weight: bolder;">评审者必须要完成</span>
-                        </el-checkbox> <br>
+                        </el-checkbox>
+                        <br>
                         <template v-if="reviewItemType==='scoreOption'">
                             <p class="Tips" style="margin-top: -10px">
                                 <i class="el-icon-info"></i>一个分数的<span>权重</span>定义了这个分数如何贡献于评审的总体分数。例如，若分数是5，
@@ -112,15 +114,17 @@
                 <el-form-item style="margin-left: 50px;">
                     <el-form-item label="选择框文本说明：">
                         <el-col :span="12">
-                            <el-input v-model="localForm.selectAnnotation" size="medium" placeholder="例如：评审通过"></el-input>
+                            <el-input v-model="localForm.selectAnnotation" size="medium"
+                                      placeholder="例如：评审通过"></el-input>
                         </el-col>
                     </el-form-item>
-<!--                    <el-checkbox v-model="localForm.isScoreSubmitVisible  "><span-->
-<!--                            style=" font-weight: bolder;">对评审提交人可见</span></el-checkbox>-->
-<!--                    <br>-->
+                    <!--                    <el-checkbox v-model="localForm.isScoreSubmitVisible  "><span-->
+                    <!--                            style=" font-weight: bolder;">对评审提交人可见</span></el-checkbox>-->
+                    <!--                    <br>-->
                     <el-checkbox v-model="localForm.isScoreRequired">
                         <span style=" font-weight: bolder;">评审者必须要完成</span>
-                    </el-checkbox> <br>
+                    </el-checkbox>
+                    <br>
                     <p class="Tips">
                         <i class="el-icon-info"></i> 一个分数的<span>权重</span>定义了这个分数如何贡献于评审的总体分数。
                         评审专家如果选中此框，权重将直接添加到评审的总分数中。复选框的权重通常为1或0，
@@ -145,7 +149,8 @@
                     <div style="margin-left: 70px;">
                         <el-checkbox v-model="localForm.textSubmitVisible">
                             <span style=" font-weight: bolder;">对评审提交人可见</span>
-                        </el-checkbox> <br>
+                        </el-checkbox>
+                        <br>
                         <el-checkbox v-model="localForm.textDescription ">
                             <span style=" font-weight: bolder;">评审者必须要完成</span>
                         </el-checkbox>
@@ -153,7 +158,7 @@
                 </el-form-item>
             </template>
         </el-form>
-        <div slot="footer" style="margin-right: 35%" v-if="readOnly===false" >
+        <div slot="footer" style="margin-right: 35%" v-if="readOnly===false">
             <el-button @click="closeItemForm" style="margin-right: 10%">取消</el-button>
             <el-button type="primary" v-prevent-click @click="saveFormItem('reviewItemForm')">保存</el-button>
         </div>
@@ -161,9 +166,9 @@
 </template>
 
 <script>
-    import {successTips,errTips} from "@/utils/tips.js";
+    import {successTips, errTips} from "@/utils/tips.js";
     import deepCopyObject from "@/utils/deepCopyObject.js";
-    import {httpPut,httpPost} from "@/utils/http.js";
+    import {httpPut, httpPost} from "@/utils/http.js";
 
     export default {
         name: "reviewItemTemplate",
@@ -181,20 +186,20 @@
                 type: Boolean,
                 default: false,
             },
-            updateToBackEnd:{//更新操作是否发送给后端
+            updateToBackEnd: {//更新操作是否发送给后端
                 type: Boolean,
                 default: false,
             },
-            readOnly:{//评审表单详情里的表单项的详情，只读无法提交修改
+            readOnly: {//评审表单详情里的表单项的详情，只读无法提交修改
                 type: Boolean,
                 default: false,
             },
-            newTemplate:{//是否创建新的评审单项模板，向后端发送请求
+            newTemplate: {//是否创建新的评审单项模板，向后端发送请求
                 type: Object,
                 default: null,
             }
         },
-        data(){
+        data() {
             return {
                 localForm: this.getNullLocalForm(),
                 minScore: null,//评审选项的得分最小值
@@ -290,7 +295,7 @@
             setValueOfScoreOption() {
                 let minScore = Number.MAX_VALUE;//找出分数选项的最大值，最小值
                 let maxScore = Number.MIN_VALUE;
-                if (this.localForm.scoreExplainList!==null&&this.localForm.scoreExplainList.length > 0) {
+                if (this.localForm.scoreExplainList !== null && this.localForm.scoreExplainList.length > 0) {
                     for (let scoreExplain of this.localForm.scoreExplainList) {
                         if (minScore > scoreExplain.score) {
                             minScore = scoreExplain.score;
@@ -336,14 +341,14 @@
             },
             /**设置新增项（向后端发送数据的新增项）**/
             setFieldOfNewTemplateItem(index) {
-                if (this.localForm.isScore === true){
+                if (this.localForm.isScore === true) {
                     this.localForm.fieldOne = index + "-1";
-                }else{
+                } else {
                     this.localForm.fieldOne = null;
                 }
                 if (this.localForm.textAnnotation === true) {
                     this.localForm.fieldTwo = index + "-2";
-                }else{
+                } else {
                     this.localForm.fieldTwo = null;
                 }
             },
@@ -365,33 +370,33 @@
                         }
                         this.localForm.type = this.getType();
                         if (this.itemIndex === null) {//提交新的评审单项
-                            if(this.newTemplate!==null&&this.newTemplate.isCreateNewTemplate===true){//需要向后端提交更新
+                            if (this.newTemplate !== null && this.newTemplate.isCreateNewTemplate === true) {//需要向后端提交更新
                                 this.localForm.templateId = this.newTemplate.templateId;
                                 this.setFieldOfNewTemplateItem(this.newTemplate.newIndex);// 设置fieldOne和fieldTwo
-                                httpPost('/v1/authorization/review/templateconfigadd/insert',this.localForm).then(results => {
+                                httpPost('/v1/authorization/review/templateconfigadd/insert', this.localForm).then(results => {
                                     const {httpCode, msg, data} = results.data;
-                                    if (httpCode === 200){
+                                    if (httpCode === 200) {
                                         successTips("更新成功！");
                                         this.$emit("getReviewTemplateDetail");//重新加载页面
-                                    }else if(httpCode !== 401){
+                                    } else if (httpCode !== 401) {
                                         errTips(msg);
                                     }
                                 });
-                            }else{//不需要向后端提交更新
+                            } else {//不需要向后端提交更新
                                 this.$emit("getNewReviewItemForm", deepCopyObject(this.localForm));
                             }
                         } else {//更新已有的评审单项
-                            if(this.updateToBackEnd===false){//不向后端发送更新
+                            if (this.updateToBackEnd === false) {//不向后端发送更新
                                 this.$emit("getUpdatedReviewItemForm", this.itemIndex, deepCopyObject(this.localForm));
-                            }else{//向后端发送更新
+                            } else {//向后端发送更新
                                 this.setFieldOfNewTemplateItem(this.itemIndex);// 设置更新过后的fieldOne和fieldTwo
                                 // console.log("发送前的数据：",this.localForm);
-                                httpPut('/v1/authorization/review/templateconfig/update',this.localForm).then(results => {
+                                httpPut('/v1/authorization/review/templateconfig/update', this.localForm).then(results => {
                                     const {httpCode, msg} = results.data;
-                                    if (httpCode == 200){
+                                    if (httpCode == 200) {
                                         successTips("更新成功！");
                                         this.$emit("getReviewTemplateDetail");//重新加载页面
-                                    }else if(httpCode !== 401) {
+                                    } else if (httpCode !== 401) {
                                         errTips(msg);
                                     }
                                 });
@@ -413,7 +418,8 @@
 <style lang="scss" scoped>
     .Tips {
         text-align: center;
-        margin: 10px  auto; font-weight: bolder;
+        margin: 10px auto;
+        font-weight: bolder;
         color: #909399a8;
     }
 </style>
