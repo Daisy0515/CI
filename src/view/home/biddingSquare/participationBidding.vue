@@ -90,7 +90,9 @@ export default {
       ruleForm: {
         projectCognize: "",
         projectId: "",
-        checkedValue: "是"
+        checkedValue: "是",
+        teamName:"",
+        teamIntroduction:"",
       },
       rules: {
         projectCognize: [

@@ -27,7 +27,7 @@
       <div class="editorialTeam_main">
         <div class="main_item clearfix" v-if="addList.userId||typeList.length!==0">
           <h4 class="userList">搜索列表</h4>
-          
+
           <el-card style="float:left" class="item clearfix" v-if="search_flag">
             <router-link
               :to="{path:'personalProfile', query:{userId:userId,projectId:projectId,id:addList.userId}}"
@@ -40,7 +40,7 @@
                 <i class="el-icon-circle-plus"></i>邀请
               </span>
               <span @click="cancelInvitation(addList.userId)" v-if="addList.status===1">
-                <i class="el-icon-remove" style="margin-right"></i>取消邀请
+                <i class="el-icon-remove" ></i>取消邀请
               </span>
             </div>
           </el-card>
@@ -55,14 +55,14 @@
               <span @click="invite(user.userId)">
                 <i class="el-icon-circle-plus"></i>邀请
               </span>
-              
+
               <span @click="cancelInvitation(user.userId)" v-if="user.status===1">
-                <i class="el-icon-remove" style="margin-right"></i>取消邀请
+                <i class="el-icon-remove" ></i>取消邀请
               </span>
             </div>
           </el-card>
-          
-         
+
+
         </div>
         <div class="main_item">
           <h4 class="userList">{{userList.competeTeamList.length>0?'成员列表':'暂无成员'}}</h4>
@@ -150,7 +150,7 @@ export default {
         })
         .catch(() => {});
     },
-    
+
     invite(id) {
       MessageBox.confirm("是否邀请此用户加入至团队？", "提示", {
         confirmButtonText: "确定",
@@ -253,9 +253,9 @@ export default {
           const { httpCode, msg, data } = results.data;
           if (httpCode === 200) {
            this.typeList=data.typeList;
-          }  else if (httpCode !== 401) {          
+          }  else if (httpCode !== 401) {
             errTips(msg);
-          } 
+          }
         });
     },
     //获取页面数据
@@ -374,7 +374,7 @@ export default {
       }
     }
   }
-  
+
   .el-input__inner {
     height: 30px;
     width: 300px;
