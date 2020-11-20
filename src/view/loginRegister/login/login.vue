@@ -49,6 +49,20 @@
                     </el-form-item>
                 </el-form>
             </el-card>
+            <el-dialog
+                    title="请选择项目角色"
+                    :visible.sync="dialogVisible"
+                    width="30%"
+                    :close-on-click-modal="false"
+                    :close-on-press-escape="false"
+                    :show-close="false">
+                <el-radio v-model="projectRole" :label="1">项目发布方</el-radio>
+                <el-radio v-model="projectRole" :label="2">项目经理</el-radio>
+                <el-radio v-model="projectRole" :label="3">项目开发者</el-radio>
+                <span slot="footer" class="dialog-footer">
+                    <el-button type="primary" @click="submitProjectRole">确 定</el-button>
+                </span>
+            </el-dialog>
         </div>
         <div style="clear:both"></div>
         <Footer class="height_footer"></Footer>
@@ -81,6 +95,9 @@
                     pass: "",
                     expiresIn: 144000
                 },
+                userRole:null,       //用户的身份角色，个人：1，公司：2
+                projectRole:null,    // 用户在登陆成功后需要选择的项目角色，项目发布者（需求方） 1，项目经理 2，项目开发者 3
+                dialogVisible:false, //用户选择项目角色的对话框
             };
         },
         created: function () {
@@ -113,6 +130,17 @@
             },
             ...mapMutations(["setLogin"]),
             ...mapGetters(["getUrl", "getUser"]),
+            /**用户在登录后选择在项目中充当的角色，包括项目发布者（需求方），项目经理，项目开发者*/
+            submitProjectRole(){
+                if(this.projectRole === null){
+                    errTips("请选择用户的项目角色！");
+                }else{
+                    sessionStorage.setItem("projectRole",this.projectRole);
+                    this.setLogin();
+                    this.getuserData(this.userRole);
+                    this.getReviewPermissionList();
+                }
+            },
             //表单提交
             submitForm(formName) {
                 this.$refs[formName].validate(valid => {
@@ -134,11 +162,10 @@
                                     this.slideIndex = false;
                                 } else if (httpCode === 200) {
                                     let userToken = data.accessToken;
-                                    let userRole = data.roleType;
+                                    this.userRole = data.roleType;
                                     sessionStorage.setItem("userToken", JSON.stringify(userToken));
-                                    this.setLogin();
-                                    this.getuserData(userRole);
-                                    this.getReviewPermissionList();
+                                    this.dialogVisible = true;//开启用户选择项目角色的弹窗
+
                                 } else if (httpCode !== 401) {
                                     errTips(msg);
                                 }
@@ -149,7 +176,7 @@
                     }
                 });
             },
-
+            /**获取用户的评审系统角色*/
             getReviewPermissionList() {
                 httpGet('/v1/authorization/review/permission/list').then(results => {
                     const {httpCode, msg, data} = results.data;
@@ -163,7 +190,7 @@
             //登录成功获取用户信息
             getuserData(role) {
                 let userUrl = () => {
-                    return role == 1 ? "personage" : "company";
+                    return role === 1 ? "personage" : "company";
                 };
                 httpGet(`v1/authorization/coreuser/userinfo/${userUrl()}`).then(
                     results => {
