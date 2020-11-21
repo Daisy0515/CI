@@ -99,19 +99,19 @@
     import {errTips, successTips} from "@/utils/tips.js";
     import deepCopyObject from "@/utils/deepCopyObject.js";
     import reviewItemTemplate from '@/view/review/editor/reviewTemplate/reviewItemTemplate';
-    import {httpPost,httpGet} from "@/utils/http.js";
+    import {httpPost, httpGet} from "@/utils/http.js";
 
     //reviewItemTypeStringToId中元素的小标就对应着type的数字表示（传递给后端的，前端为了更好的阅读体验用的字符串表示）
-    const reviewItemTypeStringToId =["","scoreOption","yesOrNo","scoreInput"];
+    const reviewItemTypeStringToId = ["", "scoreOption", "yesOrNo", "scoreInput"];
     export default {
-        name:"reviewTemplateConfig",
+        name: "reviewTemplateConfig",
         components: {
             reviewItemTemplate
         },
-        props:{
-            templateId:{
-                type:[String,Number],
-                default:null,
+        props: {
+            templateId: {
+                type: [String, Number],
+                default: null,
             }
         },
         data() {
@@ -136,8 +136,8 @@
                 },
             };
         },
-        created(){
-            if(this.templateId!==null){
+        created() {
+            if (this.templateId !== null) {
                 this.getReviewTemplateDetail();
             }
         },
@@ -164,18 +164,18 @@
         },
         methods: {
             /**评审表单详情中点击创建副本 跳转到当前页面时调用*/
-            getReviewTemplateDetail(){
+            getReviewTemplateDetail() {
                 httpGet("/v1/authorization/review/templateconfig/list", {id: this.templateId}).then(results => {
                     const {httpCode, msg, data} = results.data;
                     console.log("data", data);
                     if (httpCode == 200) {
-                        for(let item of data.templateConfigList){
+                        for (let item of data.templateConfigList) {
                             delete item.id;
                         }
                         this.configList = data.templateConfigList;
                         this.templateForm.totalScore = data.totalScore;
                         this.templateForm.templateName = data.templateName;
-                    }else if(httpCode !== 401){
+                    } else if (httpCode !== 401) {
                         errTips(msg);
                     }
                 });
@@ -244,7 +244,7 @@
             },
 
             /**存储评审单项组件提交的新的评审单项记录*/
-            getNewReviewItemForm(newReviewItemForm){
+            getNewReviewItemForm(newReviewItemForm) {
                 this.configList.push(newReviewItemForm);
             },
             /**存储评审单项组件提交的更新的评审单项记录*/

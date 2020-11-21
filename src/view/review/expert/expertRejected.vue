@@ -3,14 +3,15 @@
 </template>
 
 <script>
-    import  expert from '@/view/review/expert/components/expert'
+    import expert from '@/view/review/expert/components/expert'
+
     export default {
         components: {
             expert
         },
         data() {
             return {
-                currentPage:5,//已拒绝
+                currentPage: 5,//已拒绝
             };
         }
     }

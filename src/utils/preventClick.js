@@ -1,15 +1,15 @@
 //
 export default {
-    install (Vue) {
+    install(Vue) {
         // 防止重复点击
         Vue.directive('preventClick', {
-            inserted (el, binding) {
+            inserted(el, binding) {
                 el.addEventListener('click', () => {
                     if (!el.disabled) {
                         el.disabled = true
                         setTimeout(() => {
                             el.disabled = false
-                        }, binding.value ||3000)
+                        }, binding.value || 3000)
                     }
                 })
             }

@@ -155,7 +155,7 @@
                     </el-table>
                 </el-row>
                 <el-form-item class="cancel" style="text-align: center;">
-                    <el-button  @click="Return" size="medium" style="width:150px;">返回</el-button>
+                    <el-button @click="Return" size="medium" style="width:150px;">返回</el-button>
                 </el-form-item>
             </el-form>
         </el-card>

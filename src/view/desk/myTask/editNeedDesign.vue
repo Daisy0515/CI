@@ -109,7 +109,7 @@
                     sourceFile: '' //原文件
                 },
                 rules: {
-                    remark: [{ required: true, message: '请输入此次编辑备注', trigger: 'blur' }]
+                    remark: [{required: true, message: '请输入此次编辑备注', trigger: 'blur'}]
                 }
             };
         },

@@ -162,7 +162,8 @@
                             </el-row>
                             <el-row :gutter="20">
                                 <el-form-item label="个人关键词" :label-width="formLabelWidth">
-									<add-key-words :dynamic-tags="ruleForm.cruxList" @addKeyWord="addKeyWords"></add-key-words>
+                                    <add-key-words :dynamic-tags="ruleForm.cruxList"
+                                                   @addKeyWord="addKeyWords"></add-key-words>
                                 </el-form-item>
 
 
@@ -186,18 +187,19 @@
 </template>
 
 <script>
-    import {httpGet,httpPut, httpDelete} from "@/utils/http.js";
+    import {httpGet, httpPut, httpDelete} from "@/utils/http.js";
     import {specificDate} from '@/utils/getDate.js';
     import {message, successTips, errTips} from "@/utils/tips.js";
     import {provinceAndCityData, CodeToText} from "element-china-area-data";
     import foreignArea from "@/view/loginRegister/register/components/foreignArea";
     import Avatar from "@/common/upload/Avatar";
-	import addKeyWords from "./components/addKeyWords";
+    import addKeyWords from "./components/addKeyWords";
+
     export default {
         components: {
             foreignArea,
             Avatar,
-			addKeyWords
+            addKeyWords
         },
         data() {
             return {
@@ -216,7 +218,7 @@
                 Nation: '',
                 options: provinceAndCityData,
                 newcity: CodeToText,
-                educationName:null,
+                educationName: null,
                 ruleForm: {
                     address: "",
                     city: "",
@@ -251,16 +253,16 @@
 
         },
         methods: {
-            setIdCard(data){
+            setIdCard(data) {
                 console.log(data);
                 this.ruleForm.headurl = data;
             },
-            addKeyWords(val){
-              this.ruleForm.cruxList = val;
+            addKeyWords(val) {
+                this.ruleForm.cruxList = val;
             },
             submitForm(formName) {
                 //this.ruleForm.province = this.newcity[this.selectedOptions[0]];
-                console.log(this.educationName,Number.isInteger(this.educationName));
+                console.log(this.educationName, Number.isInteger(this.educationName));
                 if (Number.isInteger(this.educationName) === true)
                     this.ruleForm.education = this.educationName;
                 this.ruleForm.city = this.newcity[this.selectedOptions[1]];
@@ -374,21 +376,24 @@
 </script>
 
 <style lang="scss" scoped>
-	.el-tag + .el-tag {
-		margin-left: 10px;
-	}
-	.button-new-tag {
-		margin-left: 10px;
-		height: 32px;
-		line-height: 30px;
-		padding-top: 0;
-		padding-bottom: 0;
-	}
-	.input-new-tag {
-		width: 90px;
-		margin-left: 10px;
-		vertical-align: bottom;
-	}
+    .el-tag + .el-tag {
+        margin-left: 10px;
+    }
+
+    .button-new-tag {
+        margin-left: 10px;
+        height: 32px;
+        line-height: 30px;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+
+    .input-new-tag {
+        width: 90px;
+        margin-left: 10px;
+        vertical-align: bottom;
+    }
+
     .detail {
         .el-input {
             //display: inline-block;

@@ -4,12 +4,13 @@
 
 <script>
     import manager from '@/view/review/manager/components/manager'
+
     export default {
-        components:{manager},
+        components: {manager},
         data() {
             return {
-                pageName:"未接受",
-                status:1,
+                pageName: "未接受",
+                status: 1,
             };
         },
     };

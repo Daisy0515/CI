@@ -1,6 +1,7 @@
 import {
     Message
 } from 'element-ui'
+
 export const errTips = (msg) => {
     Message.error({
         message: msg,

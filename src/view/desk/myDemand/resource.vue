@@ -123,7 +123,7 @@
             //获取项目类型数据
             this.teamId = this.$route.query.id;
             this.getView();
-          //  this.use(LightTimeline);
+            //  this.use(LightTimeline);
         },
 
         methods: {

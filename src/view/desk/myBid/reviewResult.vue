@@ -2,11 +2,12 @@
      调用页面：projectDeliver
 -->
 <template>
-    <el-dialog title="评审意见" :visible.sync="dialogVisible" width="60%" :close-on-click-modal="false" :before-close="closeDialog">
+    <el-dialog title="评审意见" :visible.sync="dialogVisible" width="60%" :close-on-click-modal="false"
+               :before-close="closeDialog">
         <el-form :model="form">
             <h2 class="header">发布者意见：<span style="text-align: center" v-if="!showPublisherOpinion">未发表意见</span></h2>
             <template v-if="showPublisherOpinion">
-                <el-row  style="margin-top: 10px;">
+                <el-row style="margin-top: 10px;">
                     <el-col :span="2" :offset="1">
                         <span>发布者决定：</span>
                     </el-col>
@@ -28,7 +29,8 @@
                         <span>评价内容:</span>
                     </el-col>
                     <el-col :span="12">
-                        <el-input type="textarea" v-model="form.projectOpinion.content" size="medium" :readonly="isReadOnly" autosize/>
+                        <el-input type="textarea" v-model="form.projectOpinion.content" size="medium"
+                                  :readonly="isReadOnly" autosize/>
                     </el-col>
                 </el-row>
             </template>
@@ -49,7 +51,8 @@
                 </el-row>
                 <el-row>
                     <el-form-item label="管理员意见详情" :label-width="formLabelWidth">
-                        <el-input type="textarea" v-model="form.adminOpinion.details"  :readonly="isReadOnly" :rows="5" autosize/>
+                        <el-input type="textarea" v-model="form.adminOpinion.details" :readonly="isReadOnly" :rows="5"
+                                  autosize/>
                     </el-form-item>
                 </el-row>
             </template>
@@ -81,36 +84,37 @@
 <script>
     import readReviewResultForManger from '@/view/review/components/readReviewResultForManger';
     import {httpGet} from '@/utils/http.js';
-    import { errTips} from '@/utils/tips.js';
+    import {errTips} from '@/utils/tips.js';
 
     export default {
         name: "reviewResult",
-        props:{
-            form:{ //各个角色的评审意见
-                type:Object,
-                default:()=>{},
+        props: {
+            form: { //各个角色的评审意见
+                type: Object,
+                default: () => {
+                },
             },
-            dialogVisible:{ //当前组件的显示
-                type:Boolean,
-                default:false,
+            dialogVisible: { //当前组件的显示
+                type: Boolean,
+                default: false,
             },
         },
-        components:{
+        components: {
             readReviewResultForManger
         },
-        computed:{
-            showPublisherOpinion:function(){
+        computed: {
+            showPublisherOpinion: function () {
                 return this.judgeObjectPropertyNull(this.form.projectOpinion);
             },
-            showAdminOpinion:function(){
+            showAdminOpinion: function () {
                 return this.judgeObjectPropertyNull(this.form.adminOpinion);
             },
-            showExpertOpinionList:function (){
+            showExpertOpinionList: function () {
                 return this.judgeObjectPropertyNull(this.form.expertOpinionList);
             },
         },
-        data(){
-            return{
+        data() {
+            return {
                 totalScore: null,
                 formLabelWidth: '150px',
                 isReadOnly: true,
@@ -120,12 +124,12 @@
                 result: {},//评审结果
             };
         },
-        methods:{
+        methods: {
 
-            judgeObjectPropertyNull(obj){
+            judgeObjectPropertyNull(obj) {
                 let valueArray = Object.values(obj);
-                for(let item of valueArray){//存在1个属性不为null，则这个对象就不是空
-                    if(item!==null){
+                for (let item of valueArray) {//存在1个属性不为null，则这个对象就不是空
+                    if (item !== null) {
                         return true;
                     }
                 }
@@ -147,7 +151,7 @@
                     }
                 });
             },
-            closeDialog(){
+            closeDialog() {
                 this.$emit("closeDialog");
             },
             rowClass() {

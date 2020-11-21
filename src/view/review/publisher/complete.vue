@@ -4,12 +4,13 @@
 
 <script>
     import publisher from '@/view/review/publisher/components/publisher'
+
     export default {
-        components:{publisher},
+        components: {publisher},
         data() {
             return {
-                pageName:"已完成",
-                status:4,
+                pageName: "已完成",
+                status: 4,
             };
         },
     };
