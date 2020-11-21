@@ -37,16 +37,32 @@
           </div>
           <el-form-item class="Remember">
             <!-- <el-checkbox label="记住密码" name="type"></el-checkbox> -->
+
+            <router-link to="selectRole">
+              <span class="Forget">注册</span>
+            </router-link>
             <router-link to="forget">
               <span class="Forget">忘记密码?</span>
             </router-link>
+
+
+
           </el-form-item>
-          <el-form-item class="login_get">
+
+          <el-form-item class="ThirdPartyLogin">
+<!--            <span class="ThirdPart">其他登录方式</span>-->
+            <a :href="'https://api.weibo.com/oauth2/authorize?client_id=' + clientId + '&response_type=code&redirect_uri=' + redirect_uri">
+              <img :src="weibologo" class="logoCSS">
+            </a>
+            <img :src="weixinlogo" class="logoCSS">
+            <img :src="QQlogo" class="logoCSS">
+          </el-form-item>
+          <el-form-item class="loginButton">
             <el-button type="primary" @click="submitForm('loginForm')">登录</el-button>
           </el-form-item>
-          <el-form-item class="register_get">
-            <el-button type="primary" @click="goRegister">注册</el-button>
-          </el-form-item>
+<!--          <el-form-item class="register_get">-->
+<!--            <el-button type="primary" @click="goRegister">注册</el-button>-->
+<!--          </el-form-item>-->
         </el-form>
       </el-card>
     </div>
@@ -71,6 +87,9 @@ export default {
   mixins: [regular],
   data() {
     return {
+      weibologo: require("@/assets/img/weibo.png"),
+      weixinlogo: require("@/assets/img/weixin.png"),
+      QQlogo: require("@/assets/img/QQ.png"),
       yzText: "",
       slideIndex: false,
       phoneError: "",
@@ -80,13 +99,18 @@ export default {
         pass: "",
         expiresIn: 144000
       },
+      clientId:null,
+      redirect_uri:"http://127.0.0.1:8080/oauth/redirect"
     };
   },
   created: function() {
+
+    //get
     if (sessionStorage.getItem("userToken")) {
       this.$router.push("/");
       return false;
     }
+    this.getClientIdAndUrl();
   },
   mounted: function() {
     const dataList = ["0", "1"];
@@ -112,7 +136,17 @@ export default {
     },
     ...mapMutations(["setLogin"]),
     ...mapGetters(["getUrl", "getUser"]),
-    //表单提交
+
+    getClientIdAndUrl(){
+      httpGet(`/v1/public/thirdparty/clientid/get`).then(results => {
+        const { data, httpCode } = results.data;
+        if (httpCode === 200) {
+          this.clientId = data.clientId;
+          console.log(this.clientId);
+        }
+      });
+
+    },
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         this.phoneError = "";
@@ -184,4 +218,22 @@ export default {
 </script>
 <style lang='scss'>
 @import "@/assets/scss/login.scss";
+  .ThirdPart{
+    /*float: right;*/
+    color: #3e76b8;
+    /*cursor: pointer;*/
+    margin-right: 20px;
+    margin-bottom: 20px;
+  }
+  .logoCSS{
+    width: 30px;
+    height: 30px;
+    margin-right: 30px;
+  }
+  .ThirdPartyLogin{
+    text-align: center;
+  }
+  .loginButton{
+    text-align: center;
+  }
 </style>
