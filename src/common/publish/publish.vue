@@ -201,10 +201,14 @@
             ...mapMutations(['setCache']),
             ...mapActions(['GETNORMALTYPE']),
             addItem() {
+                if(this.input1===null||this.input1.trim()===""){
+                    errTips('交付资源名称不能为空');
+                    return;
+                }
                 var L = this.deliverData.length;
                 var index = -1;
                 for (var i = 0; i < L; i++) {
-                    if (this.input1 == this.deliverData[i].resourceName) {
+                    if (this.input1 === this.deliverData[i].resourceName) {
                         index = i;
                         break;
                     }
@@ -242,10 +246,14 @@
 
             },
             addRItem() {
+                if(this.input3===null||this.input3.trim()===""){
+                    errTips('评审流程名称不能为空');
+                    return;
+                }
                 var L = this.reviewData.length;
                 var index = -1;
                 for (var i = 0; i < L; i++) {
-                    if (this.input3 == this.reviewData[i].processName) {
+                    if (this.input3 === this.reviewData[i].processName) {
                         index = i;
                         break;
                     }
