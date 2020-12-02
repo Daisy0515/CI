@@ -30,6 +30,7 @@
                     @selection-change="handleSelectionChange"
             >
                 <el-table-column type="selection" align="center"></el-table-column>
+                <el-table-column prop="teamName" label="团队名称" align="center"></el-table-column>
                 <el-table-column prop="projectCognize" label="项目认知" align="center"></el-table-column>
                 <el-table-column prop="leaderName" label="团队组长" align="center"></el-table-column>
                 <el-table-column prop="gmtCreate" label="最后更新时间" align="center"></el-table-column>

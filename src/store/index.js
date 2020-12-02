@@ -149,7 +149,7 @@ const store = new Vuex.Store({
             }
             state.taskList = status
             for (let i = 0; i < status.length; i++) {
-                if (status[i].accomplishProgress != 100) {
+                if (status[i].accomplishProgress !== 100) {
                     state.uploadIndex = false;
                     return false
                 } else {
@@ -171,7 +171,7 @@ const store = new Vuex.Store({
         },
         intercept(state, status) {
             state.loginSuccess = status
-        }
+        },
     },
     actions: {
         GETALLTYPE(context) {

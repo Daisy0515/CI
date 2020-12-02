@@ -11,18 +11,29 @@
                             </div>
                         </router-link>
                     </div>
-                    <ul class="c-header__navigation clearfix">
-                        <li class="c-header__navigation__item" v-for="item in items" :key="item.title">
-                            <router-link
-                                    ondragstart="return false"
-                                    @click.native="setHeader(item.url)"
-                                    :class="getHeader===item.url?'header_active':''"
-                                    :to="item.url"
-                            >{{item.title}}
-                            </router-link>
-                        </li>
-                    </ul>
-                    <HeadUser/>
+                        <ul class="c-header__navigation clearfix">
+                            <li class="c-header__navigation__item" v-for="item in showNavItem" :key="item.title">
+                                <router-link
+                                        ondragstart="return false"
+                                        @click.native="setHeader(item.url)"
+                                        :class="getHeader===item.url?'header_active':''"
+                                        :to="item.url"
+                                >{{item.title}}
+                                </router-link>
+                            </li>
+                        </ul>
+                        <HeadUser/>
+                        <div style="display: inline-block; float:right; margin-top: -5px; margin-right:20px;" >
+                            <span style="color: white">项目角色切换：</span>
+                            <el-select v-model="projectRole" placeholder="请选择" @change="projectRoleChange">
+                                <el-option
+                                        v-for="item in projectRoleList"
+                                        :key="item.id"
+                                        :label="item.name"
+                                        :value="item.id"
+                                />
+                            </el-select>
+                        </div>
                 </div>
             </div>
         </nav>
@@ -36,64 +47,102 @@
         components: {
             HeadUser
         },
-        props: ["imageUrl"],
+        props: {
+            imageUrl:{
+                type: [String],
+                default: null,
+            },
+
+        },
         name: "myheader",
         data: function () {
             return {
                 title: "群智化平台",
                 logoUrl: require("@/assets/img/homepage/logo.png"),
                 indexUrl: "/index",
-                headActive: "工作台",
+                headActive: "",
                 items: [
                     {
                         title: "工作台",
-                        url: "project"
+                        url: "project",
+                        projectRoles:[1,2,3], //从导航栏中去除
                     },
                     {
                         title: "我的需求",
-                        url: "myDemand"
+                        url: "myDemand",
+                        projectRoles:[1],  //项目发布者角色
                     },
                     {
                         title: "我的投标",
-                        url: "myBid"
+                        url: "myBid",
+                        projectRoles:[2], //项目经理角色
                     },
+                    // {
+                    //     title: "我的任务",
+                    //     url: "myTask",
+                    //     projectRoles:[3], //项目开发者角色
+                    // },
+                    // {
+                    //     title: "项目管理",
+                    //     url: "projectManagement",
+                    //     projectRoles:[2], //项目开发者角色
+                    // },
                     {
-                        title: "我的任务",
-                        url: "myTask"
+                        title: "我的项目",
+                        url: "projectManagement",
+                        projectRoles:[3], //项目经理角色
                     },
                     {
                         title: "团队申请",
-                        url: "teamApplication"
+                        url: "teamApplication",
+                        projectRoles:[3], //项目开发者角色
                     },
-                    {
-                        title: "个人信息",
-                        url: "information"
-                    },
+                    // {
+                    //     title: "个人信息",
+                    //     url: "information",
+                    // },
                     {
                         title: "消息管理",
-                        url: "myMessage"
+                        url: "myMessage",
+                        projectRoles:[1, 2, 3], //所有角色都在
                     },
                     {
                         title: "我的评分",
-                        url: "myComments"
+                        url: "myComments",
+                        projectRoles:[2], //项目经理角色
                     },
-                    {
-                        title: "我的收藏",
-                        url: "myCollection"
-                    },
-                    {
-                        title: "缺陷管理",
-                        url: "issueManage"
-                    }
-                    ,
+                    // {
+                    //     title: "我的收藏",
+                    //     url: "myCollection"
+                    // },
+                    // {
+                    //     title: "缺陷管理",
+                    //     url: "issueManage",
+                    // },
                     {
                         title: "内测管理",
-                        url: "myTest"
+                        url: "myTest",
+                        projectRoles:[2, 3], //项目经理,开发者角色
                     }
 
                 ],
                 loginUrl: "login",
-                registerUrl: "selectRole"
+                registerUrl: "selectRole",
+                projectRoleList:[
+                    {
+                        id:1,
+                        name:"项目发布者",
+                    },
+                    {
+                        id:2,
+                        name:"项目经理",
+                    },
+                    {
+                        id:3,
+                        name:"项目开发者",
+                    }
+                ],
+                projectRole:parseInt(sessionStorage.getItem("projectRole")),
             };
         },
         created: function () {
@@ -107,11 +156,21 @@
             }
         },
         computed: {
-            ...mapGetters(["getHeader"])
+            ...mapGetters(["getHeader","getuserData"]),
+            showNavItem:function(){
+                let that = this;
+                return this.items.filter(function(item){
+                    return item.projectRoles.includes(that.projectRole);
+                });
+            }
         },
         methods: {
             tiaoDesk() {
                 this.setHeader("project");
+            },
+            projectRoleChange(){
+                sessionStorage.setItem("projectRole",this.projectRole);
+                this.$router.push({name:this.showNavItem[0].url});
             },
             ...mapMutations(["setHeader"])
         }
@@ -249,9 +308,10 @@
         }
 
         .c-header__navigation {
-            width: 940px;
+            margin-left: 20px;
+            width: auto;
             float: left;
-            text-align: center;
+            text-align: left;
             list-style: none;
         }
 

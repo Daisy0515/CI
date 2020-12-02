@@ -1,15 +1,19 @@
 <template>
     <div class="teamProgress">
         <div class="Crumbs">
-            <div class="container deskHeader">
+            <div class="container deskHeader" >
                 <h4>
                     您的位置：
                     <router-link to="myDemand">我的需求</router-link>
                     >
-                    <span class="active">团队列表</span>
+                    <span class="active" >团队列表</span>
+                    <el-button type="primary" size="small" @click="getDeliverySet" style="margin-left:20px;">交付汇总</el-button>
                 </h4>
             </div>
         </div>
+        <deliverySet :dialogVisible="dialogVisible"  :projectId="projectId"
+                     @closeDialog="closeDeliverSearchDialog">
+        </deliverySet>
         <div class="container deskHeader">
             <el-table
                     v-loading="loading"
@@ -24,13 +28,8 @@
                 <el-table-column prop="accomplishProgress" label="完成进度" align="center"></el-table-column>
                 <el-table-column label="操作" prop="province" align="center" width="380px">
                     <template slot-scope="scope">
-
-                        <router-link
-                                :to="{path:'viewDelivery', query:{projectId:projectId,Id:scope.row.id}}"
-
-                        >
-                            <i class="el-icon-search"></i>
-                            查看交付
+                        <router-link :to="{path:'viewDelivery', query:{projectId:projectId,Id:scope.row.id}}">
+                            <i class="el-icon-search">查看交付</i>
                         </router-link>
                     </template>
                 </el-table-column>
@@ -42,14 +41,18 @@
     import {httpGet} from "@/utils/http.js";
     import {hoursSeconds as getDate} from "@/utils/getDate.js";
     import {errTips} from "@/utils/tips.js";
-
+    import  deliverySet from "@/view/desk/myDemand/deliverySet";
     export default {
-        components: {},
+        components: {deliverySet},
         data() {
             return {
-                projectId: "",
+                projectId: null,
                 loading: false,
-                progressForm: []
+                progressForm: [],
+                deliverSearchParam:{
+
+                },//交付汇总搜索参数
+                dialogVisible:false,  //交付汇总的对话框
             };
         },
         created: function () {
@@ -105,7 +108,13 @@
                     }
                 });
             },
-
+            getDeliverySet(){
+                this.deliverSearchParam.projectId = this.projectId;
+                this.dialogVisible = true;
+            },
+            closeDeliverSearchDialog(){
+                this.dialogVisible = false;
+            },
             rowClass() {
                 return "background:#f8f8f8";
             }

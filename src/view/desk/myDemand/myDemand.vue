@@ -1,9 +1,18 @@
 <template>
     <div class="myTable">
-        <div class="Crumbs">
-            <div class="container deskHeader">
-                <h4>我的需求</h4>
-            </div>
+        <div class="header_two0">
+            <nav class="c-header c-header--solid0">
+                <div class="o-container deskHeader clearfix">
+                    <ul class="c-header__navigation clearfix">
+                        <li class="c-header__navigation__item" v-for="item in demandStatus" :key="item.title"
+                            @click="changeDemandStatus(item)">
+                            <span :class="demandStatusHeader === item.title ? 'header_active' : ''" >
+                                {{ item.title }}
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
         </div>
         <div class="header_top">
             <el-input v-model="searchData.name" placeholder="项目名称搜索"></el-input>
@@ -22,13 +31,13 @@
                     placeholder="创建结束时间"
                     value-format="yyyy-MM-dd"
             ></el-date-picker>
-            <el-select v-model="selestate" placeholder="请选择状态" clearable>
-                <el-option label="竞标中" value="竞标中"></el-option>
-                <el-option label="执行中" value="执行中"></el-option>
-                <el-option label="放弃" value="放弃"></el-option>
-                <el-option label="非法需求" value="非法需求"></el-option>
-                <el-option label="完成" value="完成"></el-option>
-            </el-select>
+<!--            <el-select v-model="selestate" placeholder="请选择状态" clearable>-->
+<!--                <el-option label="竞标中" value="竞标中"></el-option>-->
+<!--                <el-option label="执行中" value="执行中"></el-option>-->
+<!--                <el-option label="放弃" value="放弃"></el-option>-->
+<!--                <el-option label="非法需求" value="非法需求"></el-option>-->
+<!--                <el-option label="完成" value="完成"></el-option>-->
+<!--            </el-select>-->
             <el-cascader :options="getNormalType" placeholder="请选择项目类型" change-on-select v-model="selectedOptions"
                          clearable></el-cascader>
             <el-button type="primary" @click="searchList()">搜索</el-button>
@@ -56,9 +65,12 @@
             </el-table-column>
             <el-table-column prop="name" label="项目名称" align="center">
                 <template slot-scope="scope">
-                    <el-tooltip class="item" effect="dark" :content="scope.row.name" placement="top-start">
-                        <span class="tablehidden">{{scope.row.name}}</span>
-                    </el-tooltip>
+                    <router-link :to="{path:'demandView', query:{projectId:scope.row.projectId,id:scope.row.id}}"
+                            v-if="scope.row.status===5||scope.row.status===1||scope.row.status===2||scope.row.status===3" >
+                        <el-tooltip class="item" effect="dark" :content="scope.row.name" placement="top-start">
+                            <span class="tablehidden">{{scope.row.name}}</span>
+                        </el-tooltip>
+                    </router-link>
                 </template>
             </el-table-column>
             <el-table-column prop="gmtCreate" label="创建时间" align="center"></el-table-column>
@@ -75,23 +87,21 @@
             <el-table-column prop="type" label="项目类型" align="center" width="180"></el-table-column>
             <el-table-column label="操作" align="center" width="340">
                 <template slot-scope="scope">
-                    <router-link
-                            :to="{path:'demandView', query:{id:scope.row.projectId}}"
-                            v-if="scope.row.status===5||scope.row.status===1||scope.row.status===2||scope.row.status===3"
-                    >
+                    <router-link :to="{path:'demandView', query:{projectId:scope.row.projectId,id:scope.row.id}}"
+                                 v-if="scope.row.status===5||scope.row.status===1||scope.row.status===2||scope.row.status===3" >
                         <i class="el-icon-search"></i>
                         查看
                     </router-link>
                     <router-link
                             :to="{path:'overCompetition', query:{projectId:scope.row.id}}"
-                            v-if="scope.row.status===1&&scope.row.isCompetition==1 "
+                            v-if="scope.row.status===1&&scope.row.isCompetition===1 "
                     >
                         <i class="icon iconfont icon-tuandui"></i>
                         结束报名
                     </router-link>
                     <router-link
                             :to="{path:'teamSelect', query:{projectId:scope.row.id}}"
-                            v-if="scope.row.status===1&&scope.row.isCompetition==0 "
+                            v-if="scope.row.status===1&&scope.row.isCompetition===0 "
                     >
                         <i class="icon iconfont icon-tuandui"></i>
                         选择团队
@@ -208,14 +218,41 @@
                     orderType: "DESC"
                 },
                 options: [],
-                selestate: [],
-                tableData: []
+                selestate: "全部",
+                tableData: [],
+                demandStatusHeader: "全部",
+                demandStatus:[
+                    {
+                        status:null,
+                        title:"全部",
+                    },
+                    {
+                        status:1,
+                        title:"竞标中",
+                    },
+                    {
+                        status:2,
+                        title:"执行中",
+                    },
+                    {
+                        status:3,
+                        title:"完成",
+                    },
+                    {
+                        status:4,
+                        title:"非法需求",
+                    },
+                    {
+                        status:5,
+                        title:"放弃",
+                    },
+                ],
             };
         },
         created: function () {
             //获取项目类型数据
             this.GETNORMALTYPE();
-            this.getView();
+            this.searchList();
         },
         computed: {
             ...mapGetters(["getNormalType"])
@@ -305,7 +342,7 @@
                 });
             },
             //页码变化
-            handleCurrentChange(val) {
+            handleCurrentChange(val){
                 this.pageData.pageNo = val;
                 this.getView();
             },
@@ -329,6 +366,11 @@
                 }
                 this.getView(searchData);
             },
+            changeDemandStatus(item){
+                this.demandStatusHeader = item.title;
+                this.selestate = item.title;
+                this.searchList();
+            },
             rowClass() {
                 return "background:#F4F6F9;";
             }
@@ -337,4 +379,191 @@
 </script>
 <style lang='scss'>
     @import "@/assets/scss/myTable.scss";
+    .header_two0 {
+        .userImg {
+            float: right;
+            width: 65px;
+
+            .icon-xiaoxi {
+                cursor: pointer;
+                font-size: 26px;
+                color: white;
+                transition: all 0.4s;
+                float: left;
+                margin-top: 4px;
+
+                &:hover {
+                    color: rgba(0, 0, 0, 0.74);
+                }
+            }
+
+            img {
+                margin-top: 3px;
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+        }
+
+        a {
+            color: #666;
+            font-weight: 400;
+            width: 100px;
+            font-size: 16px;
+
+            &:hover {
+                border-bottom: 1.9px solid #4c83c3;
+                padding-bottom: 10px;
+            }
+        }
+
+        .login_two {
+            border: 1px solid #fff;
+            padding: 5px 13px 5px 13px;
+            margin-right: 10px;
+            border-radius: 3px;
+
+            &:hover {
+                background: #426ea1;
+            }
+        }
+
+        .register_two {
+            background: white;
+            color: black;
+            padding: 5px 13px 5px 13px;
+            border: 1px solid #fff;
+            border-radius: 3px;
+
+            &:hover {
+                background: #e8e8e8;
+            }
+        }
+
+        .c-header {
+            -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
+            box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
+            width: 100%;
+            z-index: 100;
+        }
+
+        .c-header--fixed,
+        .c-header--solid0 {
+            border-bottom: 1px solid #e8e8e8;
+            padding: 15px 0 15px;
+        }
+
+        .c-header__row {
+            height: 70px;
+            padding-top: 20px;
+            box-sizing: border-box;
+        }
+
+        .c-header__logowrap {
+            border: 0;
+            height: 30px;
+            width: 130px;
+            outline: 0;
+            margin-right: auto;
+            float: left;
+        }
+
+        .c-header__logo {
+            width: 130px;
+            height: 30px;
+            fill: #333;
+        }
+
+        .c-header__options {
+            float: right;
+            width: 65px;
+
+            img {
+                width: 27px;
+                height: 27px;
+                border-radius: 50%;
+                margin-left: 10px;
+            }
+        }
+
+        .c-header__options__signin {
+            display: inline-block;
+        }
+
+        .c-header__navigation {
+            width: 940px;
+            float: left;
+            // text-align: center;
+            list-style: none;
+        }
+
+        .c-header__navigation__item {
+            padding: 0 15px 0 15px;
+            display: inline-block;
+            vertical-align: middle;
+            height: 100%;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .header_active {
+            border-bottom: 1.9px solid #4c83c3;
+            padding-bottom: 10px;
+            // background: #0760c5;
+        }
+
+        .c-header--transparent:not(.c-header--fixed) {
+            position: absolute;
+        }
+
+        .c-header--transparent:not(.c-header--fixed) .c-header__navigation__item a {
+            color: #fff;
+            text-shadow: 0 0 1px rgba(0, 0, 0, 0.9);
+        }
+
+        .c-header--transparent:not(.c-header--fixed) .c-header__options__join {
+            border-color: #fff;
+            background-color: #fff;
+            color: #444;
+            font-weight: 400;
+        }
+
+        .c-header--transparent:not(.c-header--fixed) .c-header__options__join:hover {
+            background-color: #4c83c3;
+            border-color: #4c83c3;
+            color: #fff;
+        }
+
+        .c-header--transparent:not(.c-header--fixed) .c-header__options__signin {
+            background-color: transparent;
+            border: 1px solid #fff;
+            color: #fff;
+        }
+
+        .c-header--transparent:not(.c-header--fixed) .c-header__options__signin:hover {
+            background-color: #fff;
+            color: #444;
+        }
+
+        .c-header--breadcrumbs .c-header__logowrap {
+            margin-right: 2rem;
+        }
+
+        .c-header--breadcrumbs .c-header__breadcrumb,
+        .c-header--breadcrumbs .c-header__breadcrumb a {
+            font-size: 14px;
+            font-size: 0.875rem;
+            color: #fff;
+            text-shadow: 0 0 1px rgba(0, 0, 0, 0.9);
+        }
+
+        .c-header--breadcrumbs .mobileBreadcrumb {
+            display: block;
+        }
+
+        .c-header--breadcrumbs .fullscreenBreadcrumb {
+            display: none;
+        }
+    }
 </style>

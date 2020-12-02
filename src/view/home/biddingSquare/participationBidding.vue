@@ -25,6 +25,12 @@
         <div class="container">
             <el-card class="box-card0">
                 <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="ruleForm">
+                    <el-form-item label="团队名称" prop="teamName">
+                        <el-input v-model="ruleForm.teamName"></el-input>
+                    </el-form-item>
+                    <el-form-item label="团队介绍" prop="teamIntroduction">
+                        <el-input type="textarea" v-model="ruleForm.teamIntroduction " :rows="10"></el-input>
+                    </el-form-item>
                     <el-form-item label="一句话对项目的认知" prop="projectCognize">
                         <el-input v-model="ruleForm.projectCognize "></el-input>
                     </el-form-item>
@@ -74,6 +80,15 @@
                     callback();
                 }
             };
+            const teamName = (rule, value, callback) => {
+                if (value === "") {
+                    callback(new Error("请输入团队名称"));
+                } else if (!RequirementReg.test(value)) {
+                    callback(new Error("不可输入符号，不超过50个字"));
+                } else {
+                    callback();
+                }
+            };
             const detailedPlanning = (rule, value, callback) => {
                 if (!value) {
                     callback(new Error("请输入详细描述"));
@@ -104,7 +119,10 @@
                     ],
                     detailedPlanning: [
                         {validator: detailedPlanning, trigger: "blur", required: true}
-                    ]
+                    ],
+                    teamName: [
+                        {validator: teamName, trigger: "blur", required: true}
+                    ],
                 }
             };
         },

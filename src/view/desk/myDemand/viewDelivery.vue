@@ -99,7 +99,7 @@
         methods: {
             ...mapMutations(['setCache']),
             returnMybid() {
-                this.$router.push({path: './myDemand'});
+                this.$router.go(-1);
             },
             getView() {
                 this.loading = true;
