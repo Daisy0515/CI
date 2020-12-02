@@ -166,6 +166,18 @@
                         <a target="_Blank" v-if="!ruleForm.demandResult">暂无附件</a>
                     </el-form-item>
                 </el-form>
+                <p>评审流程：<span v-if="processList.length===0">无</span></p>
+                <el-table :data="processList" style="width: 100%" v-if="processList.length>0">
+                    <el-table-column prop="id" label="评审流程编号" width="180"> </el-table-column>
+                    <el-table-column prop="processName" label="评审流程" width="180"> </el-table-column>
+                    <el-table-column prop="demand" label="评审要求"> </el-table-column>
+                </el-table>
+                <p style="margin: 16px auto;">交付资源列表：</p>
+                <el-table :data="resourceList" style="width: 100%">
+                    <el-table-column prop="id" label="编号" width="180"> </el-table-column>
+                    <el-table-column prop="resourceName" label="交付资源名称" width="180"> </el-table-column>
+                    <el-table-column prop="remark" label="备注"> </el-table-column>
+                </el-table>
             </el-card>
         </div>
     </div>
@@ -189,7 +201,10 @@
                     projectTypeList: [],
                     requirementv: {},
                     teamInfo: {}
-                }
+                },
+                processList:[],//评审流程列表
+                resourceList:[],//交付资源列表
+                projectId:null,
             };
         },
         computed: {
@@ -218,17 +233,45 @@
                             data.requirementv.gmtCreate
                         );
                         this.ruleForm = data;
+                        this.projectId = this.ruleForm.requirementv.id;//获取需求的id
+                        this.getResourceList();
+                        this.getReviewProcess();
                     } else if (httpCode === 400) {
                         this.setCache("myBid");
                     } else if (httpCode !== 401) {
                         errTips(msg);
                     }
                 });
-            }
+            },
+
         },
         methods: {
             ...mapMutations(["setCache"]),
-            ...mapActions(["GETALLTYPE"])
+            ...mapActions(["GETALLTYPE"]),
+            /**获取交付资源*/
+            getResourceList(){
+                httpGet('/v1/authorization/review/team/list', { id: this.id }).then(results => {
+                    const {httpCode, msg, data} = results.data;
+                    if (httpCode === 200) {
+                        this.resourceList = data.reviewTeamList;
+                    }else if (httpCode !== 401) {
+                        errTips(msg);
+                    }
+                });
+            },
+            /**获取评审流程*/
+            getReviewProcess(){
+                httpGet("/v1/authorization/review/process/list",{id:this.projectId}).then( results => {
+                    const {httpCode,data, msg} = results.data;
+                    if (httpCode === 200){
+                        this.processList = data.processList;
+                    }else if (msg === "该条件暂无数据") {
+                        this.processList = [];
+                    } else if (httpCode !== 401) {
+                        errTips(msg);
+                    }
+                });
+            },
         }
     };
 </script>

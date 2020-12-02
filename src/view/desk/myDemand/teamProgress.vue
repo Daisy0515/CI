@@ -17,7 +17,8 @@
                     style="width: 100%"
                     :header-cell-style="rowClass"
             >
-                <el-table-column fixed prop="leaderName" label="团队组长" align="center"></el-table-column>
+                <el-table-column fixed prop="teamName" label="团队名称" align="center"></el-table-column>
+                <el-table-column prop="leaderName" label="团队组长" align="center"></el-table-column>
                 <el-table-column prop="count" label="人员个数" align="center"></el-table-column>
                 <el-table-column prop="gmtModified" label="最后更新时间" align="center"></el-table-column>
                 <el-table-column prop="dayCount" label="距上一次更新天数" align="center"></el-table-column>
