@@ -96,6 +96,10 @@
         mixins: [regular],
         data() {
             return {
+                loginForm:{
+                    microblogId:null,
+                    type:null
+                },
                 personalForm: {
                     password: "",
                     checkPass: "",
@@ -109,6 +113,10 @@
             };
         },
         created: function () {
+            this.loginForm.microblogId = this.$route.query.microblogId;
+            this.loginForm.type = this.$route.query.type;
+
+            // console.log(this.loginForm.microblogId!=null);
             if (sessionStorage.getItem("userToken")) {
                 this.$router.push("/");
                 return false;
@@ -130,7 +138,13 @@
                         ).then(results => {
                             const {httpCode, msg} = results.data;
                             if (httpCode === 200) {
-                                this.$router.push({name: 'registerSuccess', params: {isSuccess: 1}});
+                                //跳转第三方绑定页面
+                                if (his.loginForm.microblogId!=null) {
+                                    this.$router.push({name: 'thirdpartyLogin', query: {microblogId: this.loginForm.microblogId,type:this.loginForm.type}});
+                                } else {
+                                    this.$router.push({name: 'registerSuccess', params: {isSuccess: 1}});
+                                }
+
                             } else if (msg === "用户名已被使用") {
                                 this.errorList.userError = "用户名已被使用";
                             } else if (msg === "手机号码已被使用") {

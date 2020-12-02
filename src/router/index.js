@@ -8,7 +8,8 @@ import expertPublic from '@/view/review/reviewPublic/expertPublic'
 import editorPublic from '@/view/review/reviewPublic/editorPublic'
 import store from '@/store/index.js'
 import {errTips} from "@/utils/tips.js";
-
+import {httpPost, httpGet} from "@/utils/http.js";
+import {mapMutations} from "vuex";
 Vue.use(Router)
 const vueRouter = new Router({
     routes: [
@@ -18,6 +19,22 @@ const vueRouter = new Router({
             component: () => import('@/view/loginRegister/login/login'),
             meta: {
                 title: '登录'
+            }
+        },
+        {
+            path: '/thirdpartyLogin',
+            name: 'thirdpartyLogin',
+            component: () => import('@/view/loginRegister/login/thirdpartyLogin'),
+            meta: {
+                title: '第三方登录'
+            }
+        },
+        {
+            path: '/logining',
+            name: 'logining',
+            component: () => import('@/view/loginRegister/login/logining'),
+            meta: {
+                title: '正在登录'
             }
         },
         {
@@ -1178,6 +1195,16 @@ const vueRouter = new Router({
                             },
                         },
                         {
+                            path: '/desk/thirdpartyManage',
+                            name: 'thirdpartyManage',
+                            component: () => import('@/view/desk/information/thirdpartyManage'),
+                            meta: {
+                                title: "用户信息",
+                                routerIndex: "thirdpartyManage",
+                                requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+                            },
+                        },
+                        {
                             path: '/desk/changeCompany',
                             name: 'changeCompany',
                             component: () => import('@/view/desk/information/changeCompany'),
@@ -1802,9 +1829,68 @@ const filterInvalidRequestForReview = function (to, from, next) {
         next();
     }
 }
+const weiboLogin = function (code, to, from, next) {
+    //微博 获取AccessToken与微博用户ID
+    var weiboAccessToken;
+    var microblogId;
+    httpGet(`/v1/public/thirdparty/token/get?code=${code}`).then(results => {
+        const {data, httpCode} = results.data;
+        if (httpCode === 200) {
+            weiboAccessToken = data.accessToken;
+            microblogId = data.microblogId;
+            console.log("微博ID", weiboAccessToken, microblogId);
+            //检测该微博用户是否与平台绑定
+            let param = {microblogId:microblogId, accessToken:weiboAccessToken};
+            let weiboInfo = {
+                is : false,
+                microblogId : null,
+                user : {
+                    password : null,
+                    phone : null
+                }
+            }
+            httpGet(`/v1/public/thirdparty/userinfo/get`,param).then(results => {
+                const {data, httpCode} = results.data;
+                if (httpCode === 200) {
+                    weiboInfo.is = data.is;
+                    weiboInfo.user = data.user;
+                }
+                console.log("weiboInfo", weiboInfo);
+                if (weiboInfo.is === true) {
+                    //已经绑定过了，直接登录
+                    next({
+                        path: "logining",
+                        query: param
+                    });
+                } else {
+                    console.log("microblogId", microblogId);
+                    next({
+                        path: "thirdpartyLogin",
+                        query: {microblogId: microblogId,type:1}
+                    });
+                }
+            });
+        }
+    });
+
+}
 vueRouter.beforeEach((to, from, next) => {
     // shareSessionStorage(to);
     document.title = to.meta.title;
+    let url = window.location.href;
+    console.log("当前地址：", url);
+    if(url.indexOf("oauth/redirect")!=-1){
+        console.log(1);
+        var dz_url = url.split('#')[0];
+        console.log(dz_url);
+        var code = dz_url.split('?')[1].split('=')[1];
+        console.log("before");
+        // window.history.pushState("","","http://localhost:8080/#/");
+        console.log("after");
+        weiboLogin(code, to, from, next);
+
+
+    }
     if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
         if (sessionStorage.getItem('userToken')) { // 通过vuex state获取当前的token是否存在
 
@@ -1842,6 +1928,7 @@ vueRouter.beforeEach((to, from, next) => {
 
             //上面注释里的next()函数的调用改在了filterInvalidRequestForReview函数里。
             filterInvalidRequestForReview(to, from, next);
+
         } else {
             store.commit('intercept', to.fullPath);
             next({
