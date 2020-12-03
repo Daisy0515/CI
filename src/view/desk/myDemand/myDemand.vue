@@ -94,14 +94,14 @@
                     </router-link>
                     <router-link
                             :to="{path:'overCompetition', query:{projectId:scope.row.id}}"
-                            v-if="scope.row.status===1&&scope.row.isCompetition===1 "
+                            v-if="scope.row.status===1&&scope.row.isCompetition===true "
                     >
                         <i class="icon iconfont icon-tuandui"></i>
                         结束报名
                     </router-link>
                     <router-link
                             :to="{path:'teamSelect', query:{projectId:scope.row.id}}"
-                            v-if="scope.row.status===1&&scope.row.isCompetition===0 "
+                            v-if="scope.row.status===1&&scope.row.isCompetition===false"
                     >
                         <i class="icon iconfont icon-tuandui"></i>
                         选择团队
