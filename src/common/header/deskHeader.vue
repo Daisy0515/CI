@@ -82,15 +82,15 @@
                     //     url: "myTask",
                     //     projectRoles:[3], //项目开发者角色
                     // },
-                    // {
-                    //     title: "项目管理",
-                    //     url: "projectManagement",
-                    //     projectRoles:[2], //项目开发者角色
-                    // },
+                    {
+                        title: "项目管理",
+                        url: "projectManagement",
+                        projectRoles:[2], //项目经理角色
+                    },
                     {
                         title: "我的项目",
                         url: "projectManagement",
-                        projectRoles:[3], //项目经理角色
+                        projectRoles:[3], //项目开发者角色
                     },
                     {
                         title: "团队申请",
