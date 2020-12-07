@@ -907,6 +907,52 @@ const vueRouter = new Router({
                     },
                 },
                 {
+                    path: '/desk/projectManagement',
+                    name: 'projectManagement',
+                    redirect: 'projectManageList',
+                    meta: {
+                        title: "项目管理",
+                        routerIndex: "projectManagement",
+                        requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+                    },
+                    component: () => import('@/view/desk/projectManagement/index'),
+                    children: [
+                        {
+                            path: '/desk/projectManageList',
+                            name: 'projectManageList',
+                            component: () => import('@/view/desk/projectManagement/projectManageList'),
+                            meta: {
+                                title: "项目管理列表",
+                                routerIndex: "projectManagement", //children的routerIndex与父路由的routerIndex要一致，在common/header/deskHeader中保持被选择导航项的样式
+                                requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+                            },
+                        },
+                        {
+                            path: '/desk/projectManageContent',
+                            name: 'projectManageContent',
+                            redirect: '/desk/projectProgress',
+                            component: () => import('@/view/desk/projectManagement/projectManageContent'),
+                            meta: {
+                                title: "项目管理内容",
+                                routerIndex: "projectManagement",//children的routerIndex与父路由的routerIndex要一致，在common/header/deskHeader中保持被选择导航项的样式
+                                requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+                            },
+                            children: [
+                                {
+                                    path: '/desk/projectProgress',
+                                    name: 'projectProgress',
+                                    component: () => import('@/view/desk/projectManagement/projectManageContent/projectProgress'),
+                                    meta: {
+                                        title: "项目进度",
+                                        routerIndex: "projectManagement", //children的routerIndex与父路由的routerIndex要一致，在common/header/deskHeader中保持被选择导航项的样式
+                                        requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+                                    },
+                                 },
+                            ]
+                        },
+                    ]
+                },
+                {
                     path: '/desk/myTask',
                     name: 'myTask',
                     component: () => import('@/view/desk/myTask/myTask'),
