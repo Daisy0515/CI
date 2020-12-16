@@ -23,8 +23,8 @@
                     placeholder="项目更新时间"
                     value-format="yyyy-MM-dd"
             ></el-date-picker>
-<!--            <el-cascader placeholder="请选择项目类型" :options="getNormalType" clearable-->
-<!--                         v-model="selectedOptions"></el-cascader>-->
+            <el-cascader placeholder="请选择项目类型" :options="getNormalType" clearable
+                         v-model="selectedOptions"></el-cascader>
             <el-button type="primary" @click="searchList()">搜索</el-button>
             <el-button type="primary" @click="addProject()" v-if="projectRole===2">添加项目</el-button>
         </div>
@@ -176,8 +176,8 @@
             //搜索查询
             searchList() {
                 let {searchData, selectedOptions} = this;
-                // searchData.parentId = selectedOptions[0];
-                // searchData.typeId = selectedOptions[1]; //后台的搜索条件暂时还没有加typeId，所以暂时没有做
+                searchData.parentId = selectedOptions[0];
+                searchData.typeId = selectedOptions[1];
                 this.getView(searchData);
             },
             handleCurrentChange(val) {
