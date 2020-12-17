@@ -53,6 +53,26 @@
                         name: "项目进度",
                         url: "projectProgress",
                     },
+                    {
+                        name: "任务管理",
+                        url: "taskManage",
+                    },
+                    {
+                        name: "项目文件",
+                        url: "projectFile",
+                    },
+                    {
+                        name: "项目成员",
+                        url: "projectMembers",
+                    },
+                    {
+                        name: "git提交信息",
+                        url: "gitSubmitInfo",
+                    },
+                    {
+                        name: "通知",
+                        url: "notification",
+                    },
 
 
                 ],
@@ -65,7 +85,9 @@
                 ],
                 projectName:"", //项目名称
                 teamName:"",    //团队名称
+                projectId:null, //项目编号
                 teamId:null, //团队编号
+                userId:null,
                 showDataLeftOne:true,
             };
         },
@@ -75,6 +97,8 @@
             this.projectName = this.$route.query.projectName;
             this.teamName = this.$route.query.teamName;
             this.teamId = this.$route.query.teamId;
+            this.projectId = this.$route.query.projectId;
+            this.userId = this.$route.query.userId;
         },
         computed: {
             ...mapGetters(["getuserData", "getleftIndex"])
@@ -83,7 +107,7 @@
             ...mapMutations(["setLogin", "setLeft"]),
             changeleft(item) {
                 this.setLeft(item.url);
-                this.$router.push({name:item.url,query:{teamId:this.teamId}});
+                this.$router.push({name:item.url,query:{projectId:this.projectId,teamId:this.teamId,userId:this.userId}});
             }
         }
     };
