@@ -37,15 +37,27 @@
                     </div>
                     <el-form-item class="Remember">
                         <!-- <el-checkbox label="记住密码" name="type"></el-checkbox> -->
+
+                        <router-link to="selectRole">
+                            <span class="Forget">注册</span>
+                        </router-link>
                         <router-link to="forget">
                             <span class="Forget">忘记密码?</span>
                         </router-link>
+
+
                     </el-form-item>
-                    <el-form-item class="login_get">
+
+                    <el-form-item class="ThirdPartyLogin">
+                        <!--            <span class="ThirdPart">其他登录方式</span>-->
+                        <a :href="'https://api.weibo.com/oauth2/authorize?client_id=' + clientId + '&response_type=code&redirect_uri=' + redirect_uri">
+                            <img :src="weibologo" class="logoCSS">
+                        </a>
+                        <img :src="weixinlogo" class="logoCSS">
+                        <img :src="QQlogo" class="logoCSS">
+                    </el-form-item>
+                    <el-form-item class="loginButton">
                         <el-button type="primary" @click="submitForm('loginForm')">登录</el-button>
-                    </el-form-item>
-                    <el-form-item class="register_get">
-                        <el-button type="primary" @click="goRegister">注册</el-button>
                     </el-form-item>
                 </el-form>
             </el-card>
@@ -64,8 +76,10 @@
                 </span>
             </el-dialog>
         </div>
+
         <div style="clear:both"></div>
         <Footer class="height_footer"></Footer>
+
     </div>
 </template>
 <script>
@@ -86,6 +100,9 @@
         mixins: [regular],
         data() {
             return {
+                weibologo: require("@/assets/img/weibo.png"),
+                weixinlogo: require("@/assets/img/weixin.png"),
+                QQlogo: require("@/assets/img/QQ.png"),
                 yzText: "",
                 slideIndex: false,
                 phoneError: "",
@@ -95,17 +112,24 @@
                     pass: "",
                     expiresIn: 144000
                 },
-                userRole:null,       //用户的身份角色，个人：1，公司：2
-                projectRole:null,    // 用户在登陆成功后需要选择的项目角色，项目发布者（需求方） 1，项目经理 2，项目开发者 3
-                dialogVisible:false, //用户选择项目角色的对话框
+                clientId: null,
+                redirect_uri: "http://127.0.0.1:8080/oauth/redirect",
+                userRole: null,       //用户的身份角色，个人：1，公司：2
+                projectRole: null,    // 用户在登陆成功后需要选择的项目角色，项目发布者（需求方） 1，项目经理 2，项目开发者 3
+                dialogVisible: false, //用户选择项目角色的对话框
             };
         },
         created: function () {
+
+            //get
             if (sessionStorage.getItem("userToken")) {
                 this.$router.push("/");
                 return false;
             }
+            this.getClientIdAndUrl();
         },
+
+
         mounted: function () {
             const dataList = ["0", "1"];
             let _this = this;
@@ -131,11 +155,21 @@
             ...mapMutations(["setLogin"]),
             ...mapGetters(["getUrl", "getUser"]),
             /**用户在登录后选择在项目中充当的角色，包括项目发布者（需求方），项目经理，项目开发者*/
-            submitProjectRole(){
-                if(this.projectRole === null){
+            getClientIdAndUrl() {
+                httpGet(`/v1/public/thirdparty/clientid/get`).then(results => {
+                    const {data, httpCode} = results.data;
+                    if (httpCode === 200) {
+                        this.clientId = data.clientId;
+                        console.log(this.clientId);
+                    }
+                });
+
+            },
+            submitProjectRole() {
+                if (this.projectRole === null) {
                     errTips("请选择用户的项目角色！");
-                }else{
-                    sessionStorage.setItem("projectRole",this.projectRole);
+                } else {
+                    sessionStorage.setItem("projectRole", this.projectRole);
                     this.setLogin();
                     this.getuserData(this.userRole);
                     this.getReviewPermissionList();
@@ -211,5 +245,29 @@
     };
 </script>
 <style lang='scss'>
+
     @import "@/assets/scss/login.scss";
+
+    .ThirdPart {
+        /*float: right;*/
+        color: #3e76b8;
+        /*cursor: pointer;*/
+        margin-right: 20px;
+        margin-bottom: 20px;
+    }
+
+    .logoCSS {
+        width: 30px;
+        height: 30px;
+        margin-right: 30px;
+    }
+
+    .ThirdPartyLogin {
+        text-align: center;
+    }
+
+    .loginButton {
+        text-align: center;
+    }
+
 </style>
