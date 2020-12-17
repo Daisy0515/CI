@@ -948,6 +948,57 @@ const vueRouter = new Router({
                                         requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
                                     },
                                  },
+                                {
+                                    path: '/desk/taskManage',
+                                    name: 'taskManage',
+                                    component: () => import('@/view/desk/projectManagement/projectManageContent/taskManage'),
+                                    meta: {
+                                        title: "任务管理",
+                                        routerIndex: "taskManage", //children的routerIndex与父路由的routerIndex要一致，在common/header/deskHeader中保持被选择导航项的样式
+                                        requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+                                    },
+                                },
+                                {
+                                    path: '/desk/projectFile',
+                                    name: 'projectFile',
+                                    component: () => import('@/view/desk/projectManagement/projectManageContent/projectFile'),
+                                    meta: {
+                                        title: "项目文件",
+                                        routerIndex: "projectFile", //children的routerIndex与父路由的routerIndex要一致，在common/header/deskHeader中保持被选择导航项的样式
+                                        requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+                                    },
+                                },
+                                {
+                                    path: '/desk/projectMembers',
+                                    name: 'projectMembers',
+                                    component: () => import('@/view/desk/projectManagement/projectManageContent/projectMembers'),
+                                    meta: {
+                                        title: "项目成员",
+                                        routerIndex: "projectMembers", //children的routerIndex与父路由的routerIndex要一致，在common/header/deskHeader中保持被选择导航项的样式
+                                        requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+                                    },
+                                },
+                                {
+                                    path: '/desk/gitSubmitInfo',
+                                    name: 'gitSubmitInfo',
+                                    component: () => import('@/view/desk/projectManagement/projectManageContent/gitSubmitInfo'),
+                                    meta: {
+                                        title: "git提交信息",
+                                        routerIndex: "gitSubmitInfo", //children的routerIndex与父路由的routerIndex要一致，在common/header/deskHeader中保持被选择导航项的样式
+                                        requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+                                    },
+                                },
+                                {
+                                    path: '/desk/notification',
+                                    name: 'notification',
+                                    component: () => import('@/view/desk/projectManagement/projectManageContent/notification'),
+                                    meta: {
+                                        title: "git提交信息",
+                                        routerIndex: "notification", //children的routerIndex与父路由的routerIndex要一致，在common/header/deskHeader中保持被选择导航项的样式
+                                        requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+                                    },
+                                },
+
                             ]
                         },
                     ]

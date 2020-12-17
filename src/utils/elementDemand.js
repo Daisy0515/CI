@@ -40,11 +40,15 @@ import {
     Transfer,
     Upload,
     Tag,
+    Tabs,
+    TabPane
 
 } from 'element-ui';
 
 const getElement = {
     install(Vue) {
+        Vue.use(TabPane);
+        Vue.use(Tabs);
         Vue.use(Tag);
         Vue.use(Upload);
         Vue.use(Transfer);

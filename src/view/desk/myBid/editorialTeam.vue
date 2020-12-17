@@ -308,6 +308,7 @@
                     })
             }
         }
+
     };
 </script>
 <style lang='scss'>

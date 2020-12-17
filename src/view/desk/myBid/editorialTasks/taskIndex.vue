@@ -199,6 +199,7 @@
             </div>
         </div>
     </div>
+
 </template>
 
 <script>
@@ -708,4 +709,5 @@
         padding-left: 30px;
         border-left: 1px solid #e8e8e8;
     }
+
 </style>
