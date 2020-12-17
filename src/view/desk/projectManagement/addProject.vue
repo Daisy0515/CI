@@ -87,7 +87,7 @@
                     pageSize: 10,
                     orderType:"DESC",
                     orderBy:"gmtCreate",
-
+                    projectName:"",   //项目名称（模糊查询）
                     teamName:null,    //团队名称（模糊查询）
                     resourceName:null,//交付任务名称（模糊查询）
                     uploader:null,    //上传者（模糊查询）
