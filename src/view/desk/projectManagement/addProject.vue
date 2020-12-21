@@ -6,7 +6,6 @@
                :before-close="changeVisible">
         <div class="dialog_header_top">
             <el-input v-model="searchData.projectName" placeholder="项目名称"></el-input>
-            <el-input v-model="searchData.teamName" placeholder="团队名称"></el-input>
             <el-date-picker
                     v-model="searchData.startTime"
                     type="date"
