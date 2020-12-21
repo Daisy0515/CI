@@ -94,8 +94,20 @@
         created: function () {
             this.setLeft(this.$router.currentRoute.name);
             this.showDataLeftOne = parseInt(sessionStorage.getItem('projectRole')) === 2; //true 项目经理角色 false 开发者角色
-            this.projectName = this.$route.query.projectName;
-            this.teamName = this.$route.query.teamName;
+            let _projectName = this.$route.query.projectName; //每次点击进入一个项目的管理页面，存储项目名称与团队名称，在从其他页面(eg:如何使用git)返回项目管理时，
+            if(_projectName!==undefined){
+                sessionStorage.setItem("projectName",_projectName);
+                this.projectName = _projectName;
+            }else{
+                this.projectName = sessionStorage.getItem("projectName");
+            }
+            let _teamName = this.$route.query.teamName;
+            if(_teamName!==undefined){
+                sessionStorage.setItem("teamName",_teamName);
+                this.teamName = _teamName;
+            }else{
+                this.teamName = sessionStorage.getItem("teamName");
+            }
             this.teamId = this.$route.query.teamId;
             this.projectId = this.$route.query.projectId;
             this.userId = this.$route.query.userId;
