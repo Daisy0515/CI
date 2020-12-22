@@ -23,8 +23,8 @@
                     placeholder="项目更新时间"
                     value-format="yyyy-MM-dd"
             ></el-date-picker>
-<!--            <el-cascader placeholder="请选择项目类型" :options="getNormalType" clearable-->
-<!--                         v-model="selectedOptions"></el-cascader>-->
+            <el-cascader placeholder="请选择项目类型" :options="getNormalType" clearable
+                         v-model="selectedOptions"></el-cascader>
             <el-button type="primary" @click="searchList()">搜索</el-button>
             <el-button type="primary" @click="addProject()" v-if="projectRole===2">添加项目</el-button>
         </div>
@@ -34,25 +34,25 @@
         <el-dialog title="项目团队信息" :visible.sync="dialogTeamInfoVisible" :close-on-click-modal="false" width="60%">
             <el-form   class="demo-ruleForm">
                     <el-col :span="12">
-                        <el-form-item label="项目名称:" prop="name" >
+                        <el-form-item label="项目名称:" >
                             <el-input style="width:200px;" v-model="teamInfo.projectName"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="项目类型:" prop="name">
+                        <el-form-item label="项目类型:" >
                             <el-input style="width:200px;" v-model="teamInfo.projectType"></el-input>
                         </el-form-item>
                     </el-col>
-                <el-form-item label="一句话描述需求:" prop="requirement">
+                <el-form-item label="一句话描述需求:" >
                     <el-input style="width:100%;" v-model="teamInfo.projectCognize"></el-input>
                 </el-form-item>
-                <el-form-item label="详细描述:" prop="detail">
+                <el-form-item label="详细描述:" >
                     <el-input type="textarea" v-model="teamInfo.detailedPlanning" :rows="10"></el-input>
                 </el-form-item>
-                <el-form-item label="团队名称:" prop="requirement">
+                <el-form-item label="团队名称:" >
                     <el-input style="width:100%;"  v-model="teamInfo.teamName"></el-input>
                 </el-form-item>
-                <el-form-item label="团队介绍:" prop="detail">
+                <el-form-item label="团队介绍:" >
                     <el-input type="textarea" v-model="teamInfo.teamIntroduction" :rows="10"></el-input>
                 </el-form-item>
             </el-form>
@@ -176,8 +176,8 @@
             //搜索查询
             searchList() {
                 let {searchData, selectedOptions} = this;
-                // searchData.parentId = selectedOptions[0];
-                // searchData.typeId = selectedOptions[1]; //后台的搜索条件暂时还没有加typeId，所以暂时没有做
+                searchData.parentId = selectedOptions[0];
+                searchData.typeId = selectedOptions[1];
                 this.getView(searchData);
             },
             handleCurrentChange(val) {

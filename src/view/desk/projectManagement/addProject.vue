@@ -6,7 +6,6 @@
                :before-close="changeVisible">
         <div class="dialog_header_top">
             <el-input v-model="searchData.projectName" placeholder="项目名称"></el-input>
-            <el-input v-model="searchData.teamName" placeholder="团队名称"></el-input>
             <el-date-picker
                     v-model="searchData.startTime"
                     type="date"
@@ -33,6 +32,8 @@
                 </el-option>
                 <el-option label="完成" :value="3">完成</el-option>
             </el-select>
+            <el-cascader placeholder="请选择项目类型" :options="getNormalType" clearable
+                         v-model="selectedOptions"></el-cascader>
             <el-button type="primary" @click="searchList()">搜索</el-button>
         </div>
         <el-table :data="tableData" :header-cell-style="rowClass" style="margin-top: 20px;" v-loading="loading">
@@ -62,6 +63,7 @@
     import {message, successTips, errTips} from "@/utils/tips.js";
     import {specificDate} from '@/utils/getDate.js';
     import timeLimit from "@/mixins/regular/timeLimit.js";
+    import {mapGetters} from "vuex";
     export default {
         name: "addProject",
         mixins: [timeLimit],
@@ -71,9 +73,12 @@
                 default: false,
             },
         },
-
+        computed: {
+            ...mapGetters(["getNormalType"])
+        },
         data() {
             return {
+                selectedOptions: [],
                 pageSizes:[10, 20, 40, 80],
                 loading:false,
                 searchData: {
@@ -81,7 +86,7 @@
                     pageSize: 10,
                     orderType:"DESC",
                     orderBy:"gmtCreate",
-
+                    projectName:"",   //项目名称（模糊查询）
                     teamName:null,    //团队名称（模糊查询）
                     resourceName:null,//交付任务名称（模糊查询）
                     uploader:null,    //上传者（模糊查询）
@@ -89,6 +94,8 @@
                     endTime:null,     //项目更新结束时间
                     type:1,           // 1中标项目2比赛项目
                     status:2,         //项目状态 2执行中3完成       1竞标中 ,4非法需求 , 5放弃这3个不可选，下拉框只设置了2个
+                    parentId:null,    //项目父类型id
+                    typeId:null,      //项目子类型id
                 },
                 totalPage: null,
                 totalCount:null,
@@ -146,6 +153,9 @@
             },
             /**搜索交付文件*/
             searchList() {
+                let {selectedOptions} = this;
+                this.searchData.parentId = selectedOptions[0];
+                this.searchData.typeId = selectedOptions[1];
                 this.getView();
                 this.projectNameLabel = this.searchData.type===1?"项目名称":"比赛名称";
             },
