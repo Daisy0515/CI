@@ -1,9 +1,23 @@
 <template>
     <div class="editorialTeam">
         <div class="Crumbs">
+            <div class="header_two0">
+<!--                <nav class="c-header c-header&#45;&#45;solid0">-->
+                    <div class="o-container deskHeader clearfix">
+                        <ul class="c-header__navigation clearfix">
+                            <li @click="selected = item.value" class="c-header__navigation__item" v-for="item in items" :key="item.title">
 
+                                <router-link :class="selected === item.value ? 'header_active' : ''" to>
+                                    {{ item.title }}
+                                </router-link>
+                            </li>
+                        </ul>
+                    </div>
+<!--                </nav>-->
+            </div>
         </div>
-        <div class="container deskHeader">
+<!--        成员管理模块-->
+        <div class="container deskHeader" v-show="selected === 1">
             <div class="header_ele">
                 <el-input v-model="userNamePhoneEmail" placeholder="请输入用户名、手机号或邮箱"></el-input>
                 <el-button @click="search" type="primary">搜索人员</el-button>
@@ -82,6 +96,52 @@
                 </div>
             </div>
         </div>
+<!--        队员申请模块-->
+        <div class="teamApplication" v-show="selected === 2">
+        <div class="container deskHeader" >
+            <el-table
+                    :data="teamFrom"
+                    style="width: 100%"
+            >
+                <el-table-column prop="proposer" label="申请人" align="center"></el-table-column>
+                <el-table-column prop="gmtCreate" label="申请时间" align="center"></el-table-column>
+                <el-table-column prop="status" label="状态" align="center"></el-table-column>
+                <el-table-column label="操作" prop="province" align="center" width="250">
+                    <template slot-scope="scope">
+                        <router-link @click.native="dele(scope)" to v-if="scope.row.status==='失败'">
+                            <i class="el-icon-delete"></i>
+                            删除
+                        </router-link>
+                        <router-link
+                                @click.native="pass(scope.row)"
+                                to
+                                v-if="scope.row.status==='审核中'&&scope.row.show"
+                        >
+                            <i class="el-icon-circle-check"></i>
+                            通过
+                        </router-link>
+                        <router-link
+                                @click.native="nopass(scope.row)"
+                                to
+                                v-if="scope.row.status==='审核中'&&scope.row.show"
+                        >
+                            <i class="el-icon-error"></i>
+                            不通过
+                        </router-link>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <div class="bid_footer">
+                <el-pagination
+                        @current-change="handleCurrentChange"
+                        :current-page.sync="pageData.pageNo"
+
+                        :total="totalPage"
+                        layout="prev, pager, next, jumper"
+                ></el-pagination>
+            </div>
+        </div>
+        </div>
     </div>
 </template>
 
@@ -90,9 +150,22 @@
     import {mapGetters, mapMutations} from "vuex";
     import {successTips, errTips} from "@/utils/tips.js";
     import {MessageBox} from "element-ui";
+    import {specificDate} from "@/utils/getDate.js";
     export default {
         data() {
             return {
+                projectName:null,
+                selected:1,//决定显示哪一个页面
+                items: [
+                    {
+                        title: "成员管理",
+                        value: 1
+                    },
+                    {
+                        title: "队员申请",
+                        value: 2
+                    },
+                ],
                 search_flag: false,
                 types: [],
                 typeId: "",
@@ -103,22 +176,35 @@
                     competeTeamList: [],
                     typeList: []
                 },
-                userId:null
+                userId:null,
+
+                totalPage: 0,
+                pageData: {
+                    projectName: this.projectName,
+                    pageSize: 10,
+                    pageNo: 1,
+                    orderType: "DESC",
+                    typeId: null,
+                    orderBy: "id",
+                    role:2
+                },
+                teamFrom: []
             };
         },
         computed: {
-            ...mapGetters(["getnoImg"])
+            ...mapGetters(["getHeader", "getnoImg"])
         },
         created: function () {
+            this.projectName = this.$route.query.projectName;
             this.projectId = this.$route.query.projectId;
             this.userId = this.$route.query.userId;
             if (!this.projectId && !this.userId) {
                 console.log("没有团队消息！");
             }
             this.getView();
+            this.getApplication();
         },
         methods: {
-            ...mapMutations(["setCache"]),
             //添加用户
             addUser(id) {
                 MessageBox.confirm("是否确定将此用户加入至团队？", "提示", {
@@ -296,6 +382,24 @@
                             }
                         });
                     })
+            },
+            getApplication(val=this.pageData){
+                val.projectName = this.projectName;
+                httpGet("/v1/authorization/team/teamapplyfor/get", val).then(results => {
+                    const {httpCode, msg, data} = results.data;
+                    if (httpCode === 200) {
+                        let getData = data;
+                        this.pageNo = getData.pageNo;
+                        this.teamFrom = getData.teamApplyForList;
+                        let { teamApplyForList} = getData;
+                        for (let i of teamApplyForList) {
+                            i.gmtCreate = specificDate(i.gmtCreate);
+                        }
+                        Object.assign(this.pageData, val);
+                    } else if (msg === "该条件暂无数据") {
+                        this.teamFrom = [];
+                    }
+                });
             }
         }
 
@@ -399,6 +503,245 @@
             line-height: 10px;
             font-size: 13px;
             margin-left: 20px;
+        }
+    }
+    .header_two0 {
+        .userImg {
+            float: right;
+            width: 65px;
+
+            .icon-xiaoxi {
+                cursor: pointer;
+                font-size: 26px;
+                color: white;
+                transition: all 0.4s;
+                float: left;
+                margin-top: 4px;
+
+                &:hover {
+                    color: rgba(0, 0, 0, 0.74);
+                }
+            }
+
+            img {
+                margin-top: 3px;
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+        }
+
+        a {
+            color: #666;
+            font-weight: 400;
+            width: 100px;
+            font-size: 16px;
+
+            &:hover {
+                border-bottom: 1.9px solid #4c83c3;
+                padding-bottom: 10px;
+            }
+        }
+
+        .login_two {
+            border: 1px solid #fff;
+            padding: 5px 13px 5px 13px;
+            margin-right: 10px;
+            border-radius: 3px;
+
+            &:hover {
+                background: #426ea1;
+            }
+        }
+
+        .register_two {
+            background: white;
+            color: black;
+            padding: 5px 13px 5px 13px;
+            border: 1px solid #fff;
+            border-radius: 3px;
+
+            &:hover {
+                background: #e8e8e8;
+            }
+        }
+
+        .c-header {
+            -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
+            box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
+            width: 100%;
+            z-index: 100;
+        }
+
+        .c-header--fixed,
+        .c-header--solid0 {
+            border-bottom: 1px solid #e8e8e8;
+            padding: 15px 0 15px;
+        }
+
+        .c-header__row {
+            height: 70px;
+            padding-top: 20px;
+            box-sizing: border-box;
+        }
+
+        .c-header__logowrap {
+            border: 0;
+            height: 30px;
+            width: 130px;
+            outline: 0;
+            margin-right: auto;
+            float: left;
+        }
+
+        .c-header__logo {
+            width: 130px;
+            height: 30px;
+            fill: #333;
+        }
+
+        .c-header__options {
+            float: right;
+            width: 65px;
+
+            img {
+                width: 27px;
+                height: 27px;
+                border-radius: 50%;
+                margin-left: 10px;
+            }
+        }
+
+        .c-header__options__signin {
+            display: inline-block;
+        }
+
+        .c-header__navigation {
+            width: 940px;
+            float: left;
+            // text-align: center;
+            list-style: none;
+        }
+
+        .c-header__navigation__item {
+            padding: 0 15px 0 15px;
+            display: inline-block;
+            vertical-align: middle;
+            height: 100%;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .header_active {
+            border-bottom: 1.9px solid #4c83c3;
+            padding-bottom: 10px;
+            // background: #0760c5;
+        }
+
+        .c-header--transparent:not(.c-header--fixed) {
+            position: absolute;
+        }
+
+        .c-header--transparent:not(.c-header--fixed) .c-header__navigation__item a {
+            color: #fff;
+            text-shadow: 0 0 1px rgba(0, 0, 0, 0.9);
+        }
+
+        .c-header--transparent:not(.c-header--fixed) .c-header__options__join {
+            border-color: #fff;
+            background-color: #fff;
+            color: #444;
+            font-weight: 400;
+        }
+
+        .c-header--transparent:not(.c-header--fixed) .c-header__options__join:hover {
+            background-color: #4c83c3;
+            border-color: #4c83c3;
+            color: #fff;
+        }
+
+        .c-header--transparent:not(.c-header--fixed) .c-header__options__signin {
+            background-color: transparent;
+            border: 1px solid #fff;
+            color: #fff;
+        }
+
+        .c-header--transparent:not(.c-header--fixed) .c-header__options__signin:hover {
+            background-color: #fff;
+            color: #444;
+        }
+
+        .c-header--breadcrumbs .c-header__logowrap {
+            margin-right: 2rem;
+        }
+
+        .c-header--breadcrumbs .c-header__breadcrumb,
+        .c-header--breadcrumbs .c-header__breadcrumb a {
+            font-size: 14px;
+            font-size: 0.875rem;
+            color: #fff;
+            text-shadow: 0 0 1px rgba(0, 0, 0, 0.9);
+        }
+
+        .c-header--breadcrumbs .mobileBreadcrumb {
+            display: block;
+        }
+
+        .c-header--breadcrumbs .fullscreenBreadcrumb {
+            display: none;
+        }
+    }
+    .teamApplication {
+        .bid_footer {
+            .el-input__inner {
+                width: 70px;
+            }
+
+            .el-pagination {
+                text-align: center;
+                margin: 50px 0 50px 0;
+            }
+
+            .el-pagination.is-background .el-pager li:not(.disabled).active {
+                background: #3e76b8;
+            }
+        }
+
+        .el-table {
+            border: 1px solid #d8d8d8;
+        }
+
+        .get_btn {
+            float: right;
+        }
+
+        .header_top {
+            margin-top: 15px;
+            padding-bottom: 20px;
+
+            button {
+                margin-left: 20px;
+            }
+        }
+
+        .el-input {
+            display: inline-block;
+            width: 200px;
+            margin-right: 25px;
+        }
+
+        .el-input__inner {
+            border: 1px solid #c0c0c0;
+            width: 200px;
+            height: 35px;
+            line-height: 35px;
+        }
+
+        .el-table td,
+        .el-table th.is-leaf {
+            color: black;
+            border-bottom: 1px solid #d8d8d8;
         }
     }
 </style>
