@@ -73,6 +73,10 @@
                         name: "通知",
                         url: "notification",
                     },
+                    {
+                        name: "缺陷管理",
+                        url: "defectManagement",
+                    },
 
 
                 ],

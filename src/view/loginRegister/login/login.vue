@@ -113,7 +113,7 @@
                     expiresIn: 144000
                 },
                 clientId: null,
-                redirect_uri: "http://127.0.0.1:8080/oauth/redirect",
+                redirect_uri: "http://127.0.0.1:8080/oauth/weibo/redirect",
                 userRole: null,       //用户的身份角色，个人：1，公司：2
                 projectRole: null,    // 用户在登陆成功后需要选择的项目角色，项目发布者（需求方） 1，项目经理 2，项目开发者 3
                 dialogVisible: false, //用户选择项目角色的对话框
