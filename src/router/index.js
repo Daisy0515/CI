@@ -14,6 +14,14 @@ Vue.use(Router)
 const vueRouter = new Router({
     routes: [
         {
+            path: '/oauth/redirect',
+            name: 'weiboLogin',
+            component: () => import('@/view/loginRegister/login/weiboLogin'),
+            meta: {
+                title: '微博第三方登录'
+            }
+        },
+        {
             path: '/login',
             name: 'login',
             component: () => import('@/view/loginRegister/login/login'),
@@ -1879,18 +1887,18 @@ vueRouter.beforeEach((to, from, next) => {
     document.title = to.meta.title;
     let url = window.location.href;
     console.log("当前地址：", url);
-    if(url.indexOf("oauth/redirect")!=-1){
-        console.log(1);
-        var dz_url = url.split('#')[0];
-        console.log(dz_url);
-        var code = dz_url.split('?')[1].split('=')[1];
-        console.log("before");
-        // window.history.pushState("","","http://localhost:8080/#/");
-        console.log("after");
-        weiboLogin(code, to, from, next);
-
-
-    }
+    // if(url.indexOf("oauth/redirect")!=-1){
+    //     console.log(1);
+    //     var dz_url = url.split('#')[0];
+    //     console.log(dz_url);
+    //     var code = dz_url.split('?')[1].split('=')[1];
+    //     console.log("before");
+    //     // window.history.pushState("","","http://localhost:8080/#/");
+    //     console.log("after");
+    //     weiboLogin(code, to, from, next);
+    //
+    //
+    // }
     if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
         if (sessionStorage.getItem('userToken')) { // 通过vuex state获取当前的token是否存在
 
