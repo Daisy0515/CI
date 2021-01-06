@@ -73,6 +73,10 @@
                         name: "通知",
                         url: "notification",
                     },
+                    {
+                        name: "缺陷管理",
+                        url: "defectManagement",
+                    },
 
 
                 ],
@@ -119,7 +123,7 @@
             ...mapMutations(["setLogin", "setLeft"]),
             changeleft(item) {
                 this.setLeft(item.url);
-                this.$router.push({name:item.url,query:{projectId:this.projectId,teamId:this.teamId,userId:this.userId}});
+                this.$router.push({name:item.url,query:{projectName:this.projectName,projectId:this.projectId,teamId:this.teamId,userId:this.userId}});
             }
         }
     };

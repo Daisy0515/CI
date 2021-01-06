@@ -166,7 +166,8 @@
                                 :value="index"
                             >
                                 <el-table :data="taskTable" stripe style="width: 100%">
-                                    <el-table-column prop="missionType" label="子任务名称" width="180"></el-table-column>
+                                    <el-table-column prop="title" label="子任务名称" width="180"></el-table-column>
+                                    <el-table-column prop="missionType" label="子任务类型" width="180"></el-table-column>
                                     <el-table-column prop="status" label="状态" width="180"></el-table-column>
                                     <el-table-column label="操作" width="180">
                                         <template slot-scope="scope">

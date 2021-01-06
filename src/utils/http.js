@@ -3,6 +3,7 @@ import store from '../store/index.js'
 //let api = "http://10.249.46.207:8083/cosine-core-web-api/"
 //let api = "http://118.178.194.230:8083/cosine-core-web-api/"//测试环境
 let api = "http://120.79.19.115:8083/cosine-core-web-api/" //new测试环境
+//let api = "http://localhost:8086/cosine-core-web-api/" //本地测试环境
 // let api = "http://8.129.186.75:8083/cosine-core-web-api/"
 //let api = "http://120.25.149.86:8083/"
 // let api = "http://api.cosine.ienkel.com/cosine-core-web-api/"

@@ -19,6 +19,14 @@ Vue.use(Router)
 const vueRouter = new Router({
     routes: [
         {
+            path: '/oauth/weibo/redirect',
+            name: 'weiboLogin',
+            component: () => import('@/view/loginRegister/login/weiboLogin'),
+            meta: {
+                title: '第三方授权登录'
+            }
+        },
+        {
             path: '/login',
             name: 'login',
             component: () => import('@/view/loginRegister/login/login'),
@@ -944,6 +952,40 @@ const vueRouter = new Router({
                                 requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
                             },
                             children: [
+                                {
+                                    path: '/desk/defectManagement',
+                                    name: 'defectManagement',
+                                    component: () => import('@/view/desk/projectManagement/projectManageContent/defectManagement'),
+                                    redirect:'/desk/projectManageContent/codeDefect',
+                                    meta: {
+                                        title: "项目进度",
+                                        routerIndex: "projectManagement", //children的routerIndex与父路由的routerIndex要一致，在common/header/deskHeader中保持被选择导航项的样式
+                                        requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+
+                                    },
+                                    children:[
+                                        {
+                                            path:'/desk/projectManageContent/codeDefect',
+                                            name:'codeDefect',
+                                            component:() => import('@/view/desk/projectManagement/projectManageContent/defectManagement/codeDefect'),
+                                            meta:{
+                                                title:"代码缺陷",
+                                                routerIndex:"projectManagement",
+                                                requireAuth:true,
+                                            }
+                                        },
+                                        {
+                                            path:'/desk/projectManageContent/documentComments',
+                                            name:'codeDefect',
+                                            component:() => import('@/view/desk/projectManagement/projectManageContent/defectManagement/documentComments'),
+                                            meta:{
+                                                title:"文档意见",
+                                                routerIndex:"projectManagement",
+                                                requireAuth:true,
+                                            }
+                                        },
+                                    ]
+                                },
                                 {
                                     path: '/desk/projectProgress',
                                     name: 'projectProgress',
