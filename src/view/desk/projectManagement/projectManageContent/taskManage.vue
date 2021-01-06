@@ -330,15 +330,16 @@
                         if(form.status == 2) form.status = "完成";
                         if(form.status == 3) form.status = "放弃";
                         this.taskForm = form;
-                        console.log(this.taskForm);
+                        //console.log(this.taskForm);
                     } else {
                         errTips(msg);
                     }
                 });
             },
             showSubTask(val){
-                console.log(val);
+                //console.log(val);
                 this.taskTable = this.allMissionList[val].missionInfoList;
+                console.log("tasktable",taskTable);
             },
             getAllMissionList(){
                 httpGet('/v1/authorization/manage/mission/list', {teamId: this.projectId}).then(results => {
@@ -553,6 +554,7 @@
                     } else {
                         errTips(msg);
                     }
+                    console.log(data);
                     this.getContent();
                     this.getTask();
                     this.getSubList(this.ruleForm.titleId);
@@ -578,7 +580,7 @@
                 this.ruleForm.sourceFile ? this.setIdCard2() : (this.testUploadIndex = !this.testUploadIndex);
             },
             returnSquare() {
-                this.$router.push({path: './myBid'});
+                this.$router.push({path: '/desk/taskManage'});
             },
             rowClass() {
                 return 'background:#F4F6F9;';
