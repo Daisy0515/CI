@@ -100,7 +100,7 @@
                         if (!this.projectId) {
                             console.log("no project");
                         }
-                        this.getContent();
+                        this.getUserlist();
                     },
                     methods: {
                         changeVisible() {
@@ -132,7 +132,7 @@
                                     errTips(msg);
                                 }
                                 console.log(noticeData);
-                                this.getContent();
+                                this.getUserlist();
                                 this.noticeData.content = '';
                                 this.noticeData.theme= '';
                                 this.noticeData.participantsList = [];
@@ -142,12 +142,12 @@
                                 this.noticeData.resourceName = '';
                             });
                         },
-                        getContent() {
-                            httpGet(`/v1/authorization/bids/get/content?castId=${this.projectId}`).then(results => {
+                        getUserlist() {
+                            httpGet('/v1/authorization/manage/user/list?',{teamId:this.projectId}).then(results => {
                             const {msg, data, httpCode} = results.data;
                             if (httpCode === 200) {
-                                this.contentList = data.contentList;
                                 this.userList = data.userList;
+                                //console.log(data);
                             } else if (httpCode === 400) {
                                 this.setCache('');
                             } else if (httpCode !== 401) {

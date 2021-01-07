@@ -380,6 +380,7 @@
 
             },
             closeNewNotification(){
+                this.getNotification();
                 this.newNotificationView=false;
             },
             getMissionList(value) {
