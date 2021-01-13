@@ -138,13 +138,7 @@
                         ).then(results => {
                             const {httpCode, msg} = results.data;
                             if (httpCode === 200) {
-                                //跳转第三方绑定页面
-                                if (his.loginForm.microblogId!=null) {
-                                    this.$router.push({name: 'thirdpartyLogin', query: {microblogId: this.loginForm.microblogId,type:this.loginForm.type}});
-                                } else {
-                                    this.$router.push({name: 'registerSuccess', params: {isSuccess: 1}});
-                                }
-
+                                this.$router.push({name: 'registerSuccess', params: {isSuccess: 1}});
                             } else if (msg === "用户名已被使用") {
                                 this.errorList.userError = "用户名已被使用";
                             } else if (msg === "手机号码已被使用") {

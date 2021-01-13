@@ -12,6 +12,7 @@ import {httpPost, httpGet} from "@/utils/http.js";
 import {mapMutations} from "vuex";
 Vue.use(Router)
 const vueRouter = new Router({
+    mode:'history',
     routes: [
         {
             path: '/oauth/redirect',
@@ -1885,8 +1886,8 @@ const weiboLogin = function (code, to, from, next) {
 vueRouter.beforeEach((to, from, next) => {
     // shareSessionStorage(to);
     document.title = to.meta.title;
-    let url = window.location.href;
-    console.log("当前地址：", url);
+    // let url = window.location.href;
+    // console.log("当前地址：", url);
     // if(url.indexOf("oauth/redirect")!=-1){
     //     console.log(1);
     //     var dz_url = url.split('#')[0];
