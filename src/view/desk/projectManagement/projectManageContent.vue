@@ -42,6 +42,8 @@
 </template>
 <script>
     import {mapGetters, mapMutations} from "vuex";
+    import {httpGet} from "../../../utils/http";
+    import {errTips} from "../../../utils/tips";
 
     export default {
         name:"projectManageContent",
@@ -94,23 +96,8 @@
         created: function () {
             this.setLeft(this.$router.currentRoute.name);
             this.showDataLeftOne = parseInt(sessionStorage.getItem('projectRole')) === 2; //true 项目经理角色 false 开发者角色
-            let _projectName = this.$route.query.projectName; //每次点击进入一个项目的管理页面，存储项目名称与团队名称，在从其他页面(eg:如何使用git)返回项目管理时，
-            if(_projectName!==undefined){
-                sessionStorage.setItem("projectName",_projectName);
-                this.projectName = _projectName;
-            }else{
-                this.projectName = sessionStorage.getItem("projectName");
-            }
-            let _teamName = this.$route.query.teamName;
-            if(_teamName!==undefined){
-                sessionStorage.setItem("teamName",_teamName);
-                this.teamName = _teamName;
-            }else{
-                this.teamName = sessionStorage.getItem("teamName");
-            }
             this.teamId = this.$route.query.teamId;
-            this.projectId = this.$route.query.projectId;
-            this.userId = this.$route.query.userId;
+            this.getTeamInfo(this.teamId);
         },
         computed: {
             ...mapGetters(["getuserData", "getleftIndex"])
@@ -119,7 +106,23 @@
             ...mapMutations(["setLogin", "setLeft"]),
             changeleft(item) {
                 this.setLeft(item.url);
-                this.$router.push({name:item.url,query:{projectId:this.projectId,teamId:this.teamId,userId:this.userId}});
+                this.$router.push({name:item.url,query:{projectId:this.projectId,teamId:this.teamId}});
+            },
+            /**获取团队的信息**/
+            getTeamInfo(teamId){
+                httpGet("/v1/authorization/manage/manage/get",{teamId:teamId}).then(results=>{
+                    const {httpCode, msg, data} = results.data;
+                    if (httpCode === 200) {
+                        this.projectId = data.projectId;
+                        this.teamName = data.teamName;
+                        this.projectName = data.projectName;
+                        sessionStorage.setItem("teamId",this.teamId);
+                        sessionStorage.setItem("projectId",this.projectId);
+                    }else{
+                        errTips(msg);
+                    }
+
+                });
             }
         }
     };
