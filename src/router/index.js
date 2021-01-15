@@ -1006,16 +1006,16 @@ const vueRouter = new Router({
                                         requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
                                     },
                                 },
-                                {
-                                    path: '/desk/myTaskManage',
-                                    name: 'myTaskManage',
-                                    component: () => import('@/view/desk/projectManagement/projectManageContent/myTaskManage'),
-                                    meta: {
-                                        title: "我的任务",
-                                        routerIndex: "projectManagement", //children的routerIndex与父路由的routerIndex要一致，在common/header/deskHeader中保持被选择导航项的样式
-                                        requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-                                    },
-                                },
+                                // {
+                                //     path: '/desk/myTaskManage',
+                                //     name: 'myTaskManage',
+                                //     component: () => import('@/view/desk/projectManagement/projectManageContent/myTaskManage'),
+                                //     meta: {
+                                //         title: "我的任务",
+                                //         routerIndex: "projectManagement", //children的routerIndex与父路由的routerIndex要一致，在common/header/deskHeader中保持被选择导航项的样式
+                                //         requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+                                //     },
+                                // },
                                 {
                                     path: '/desk/projectFile',
                                     name: 'projectFile',
