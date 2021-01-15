@@ -41,9 +41,9 @@
               <div class="serviceItem clearfix" v-for="(item, index) in notificationList " :key="index">
                 <div
                     style="margin:10px; border: #d8d8d8 1px solid; padding: 10px 10px 10px 10px; box-shadow: 0 2px 2px 0 rgba(0,0,0,.1);">
-                  <li>{{item}}</li>
+<!--                  <li>{{item}}</li>-->
                   <li>通知主题：{{ item.theme }}</li>
-                  <li>相关人员：{{ item.userList.length == 0?"":item.userList[0].userName }}</li>
+                  <li>相关人员：{{ item.userList.length == 0 ? "" : item.userList[0].userName }}</li>
                   <li>通知日期：{{ item.notificationTime }}</li>
                   <el-button type="text" @click="showNoticeInfoDialog(item.id)"><i class="el-icon-search"></i>详情
                   </el-button>
@@ -129,8 +129,6 @@
 
         </el-dialog>
       </div>
-
-
       <init-new-notification :initNewNotificationVisible="newNotificationView"
                              @closeDialog="closeNewNotification">
       </init-new-notification>
@@ -138,7 +136,7 @@
   </div>
 </template>
 <script>
-import {httpGet, httpPost,httpDelete} from "@/utils/http.js";
+import {httpGet, httpPost, httpDelete} from "@/utils/http.js";
 import {specificDate} from "@/utils/getDate.js";
 import {errTips} from "@/utils/tips.js";
 import {mapMutations, mapActions, mapGetters} from "vuex";
@@ -159,33 +157,33 @@ export default {
       formLabelWidth: "100px",
       missionList: [],
       id: "",
-      newNotificationView:false,
+      newNotificationView: false,
       loading: false,
       typeValue: "",
       ruleForm: {},
-      noticeVisible:false,
+      noticeVisible: false,
       searchData: {
         id: "",
         missionId: "",
 
       },
-      selectedNotice:0,
-      noticeTable:{
-        theme:'',
-        participantsList:'',
-        notificationTime:'',
-        id:'',
+      selectedNotice: 0,
+      noticeTable: {
+        theme: '',
+        participantsList: '',
+        notificationTime: '',
+        id: '',
 
       },
-      noticeData:{
-        theme:"",
-        participantsList:'',
-        type:"",
-        notificationTime:"",
-        content:"",
-        resourceList:[],
+      noticeData: {
+        theme: "",
+        participantsList: '',
+        type: "",
+        notificationTime: "",
+        content: "",
+        resourceList: [],
       },
-      noticeTableList:[],
+      noticeTableList: [],
       searchData: {
         pageNo: 1,
         pageSize: 10,
@@ -195,8 +193,8 @@ export default {
         theme: null,
         participantsId: null,
         type: null,
-        startTime:null,
-        endTime:null
+        startTime: null,
+        endTime: null
       },
       pageData: {
         pageNo: 1,
@@ -207,11 +205,11 @@ export default {
         theme: null,
         participantsId: null,
         type: null,
-        startTime:null,
-        endTime:null
+        startTime: null,
+        endTime: null
       },
-      notificationList:[],
-      teamId:null
+      notificationList: [],
+      teamId: null
     };
   },
   created: function () {
@@ -226,13 +224,14 @@ export default {
 
   methods: {
     ...mapMutations(["setCache"]),
-    getNotification(val=this.pageData) {
+    getNotification(val = this.pageData) {
 
       ///v1/authorization/notification/search/list
       httpGet('v1/authorization/notification/search/list', val).then(results => {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
           this.notificationList = data.list;
+          console.log("234TEST");
           console.log(this.notificationList);
         } else {
           errTips(msg);
@@ -241,17 +240,17 @@ export default {
         this.loading = false;
       });
     },
-    closeNoticeDialog(){
-      this.noticeVisible=false;
+    closeNoticeDialog() {
+      this.noticeVisible = false;
     },
-    showInitNewNotification(){
+    showInitNewNotification() {
       console.log("123");
-      this.newNotificationView=true;
+      this.newNotificationView = true;
     },
-    downloadResource(val){
+    downloadResource(val) {
       console.log(val);
     },
-    deleteNotice(val){
+    deleteNotice(val) {
       httpDelete(`v1/authorization/notification/notification/delete/${val}`).then(results => {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
@@ -264,13 +263,13 @@ export default {
       });
 
     },
-    showNotice(val){
+    showNotice(val) {
       this.noticeTable.theme = this.notificationList[val].theme;
       this.noticeTable.id = this.notificationList[val].id;
       this.noticeTable.notificationTime = specificDate(this.notificationList[val].notificationTime);
-      this.noticeTable.participantsList="";
-      for(let i=0;i<this.notificationList[val].userList.length;i++){
-        this.noticeTable.participantsList +=this.notificationList[val].userList[i].userName+"; "
+      this.noticeTable.participantsList = "";
+      for (let i = 0; i < this.notificationList[val].userList.length; i++) {
+        this.noticeTable.participantsList += this.notificationList[val].userList[i].userName + "; "
         //console.log(this.notificationList[val].userList.userName);
       }
       //console.log(this.noticeTable);
@@ -278,71 +277,76 @@ export default {
       this.noticeTableList.push(this.noticeTable);
 
     },
-    showNoticeInfoDialog(val){
-      this.noticeVisible=true;
-      httpGet('v1/authorization/notification/notification/get', {id:val}).then(results => {
+    showNoticeInfoDialog(val) {
+      this.noticeVisible = true;
+      httpGet('v1/authorization/notification/notification/get', {id: val}).then(results => {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
-
+          this.loading = false;
+          this.noticeData.theme = data.theme;
+          //console.log(data.theme);
+          this.noticeData.id = data.id;
+          if (data.type == 1) {
+            this.noticeData.type = "会议";
+          }
+          if (data.type == 2) {
+            this.noticeData.type = "其他通知";
+          }
+          this.noticeData.notificationTime = specificDate(data.notificationTime);
+          this.noticeData.participantsList = "";
+          for (let i = 0; i < data.userList.length; i++) {
+            this.noticeData.participantsList += data.userList[i].userName + "; "
+            //console.log(this.notificationList[val].userList.userName);
+          }
+          //console.log(this.noticeData);
           //console.log(data);
         } else {
           errTips(msg);
         }
-        this.loading = false;
-        this.noticeData.theme = data.theme;
-        //console.log(data.theme);
-        this.noticeData.id = data.id;
-        if(data.type==1){
-          this.noticeData.type="会议";
-        }
-        if(data.type==2){
-          this.noticeData.type="其他通知";
-        }
-        this.noticeData.notificationTime = specificDate(data.notificationTime);
-        this.noticeData.participantsList="";
-        for(let i=0;i<data.userList.length;i++){
-          this.noticeData.participantsList +=data.userList[i].userName+"; "
-          //console.log(this.notificationList[val].userList.userName);
-        }
-        //console.log(this.noticeData);
+
       });
 
-      httpGet('v1/authorization/notification/resource/list', {id:val}).then(results => {
+      httpGet('v1/authorization/notification/resource/list', {id: val}).then(results => {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
+          this.loading = false;
+          let resource = {
+            gmtCreate: '',
+            resourceName: '',
+            userName: '',
+            resourceUrl: '',
+          }
+          resource.gmtCreate = specificDate(data.gmtCreate);
 
+
+          this.noticeData.resourceList.length = 0;
+          console.log("data.resourceList TEST");
+          console.log(data.resourceList);
+          for (let i = 0; i < data.resourceList.length; i++) {
+            if (data.resourceList[i].resource == "") {
+              continue;
+            }
+            resource.gmtCreate = specificDate(data.resourceList[i].gmtCreate);
+            resource.userName = data.resourceList[i].userName;
+            resource.resourceUrl = data.resourceList[i].resource;
+            resource.resourceName = data.resourceList[i].resourceName;
+            this.noticeData.resourceList.push(resource);
+            //console.log(this.notificationList[val].userList.userName);
+          }
+          console.log("noticeData.resourceList TEST");
+          console.log(this.noticeData.resourceList);
           console.log(data);
         } else {
           errTips(msg);
         }
-        this.loading = false;
-        let resource={
-          gmtCreate:'',
-          resourceName:'',
-          userName:'',
-          resourceUrl:'',
-        }
-        resource.gmtCreate=specificDate(data.gmtCreate);
 
-        while(this.noticeData.resourceList.length>0){
-          this.noticeData.resourceList.pop();
-        }
-        for(let i=0;i<data.resourceList.length;i++){
-          resource.gmtCreate=specificDate(data.resourceList[i].gmtCreate);
-          resource.userName=data.resourceList[i].userName;
-          resource.resourceUrl=data.resourceList[i].resource;
-          resource.resourceName=data.resourceList[i].resourceName;
-          this.noticeData.resourceList.push(resource);
-          //console.log(this.notificationList[val].userList.userName);
-        }
-        console.log(this.noticeData.resourceList);
       });
 
 
     },
-    closeNewNotification(){
+    closeNewNotification() {
       this.getNotification();
-      this.newNotificationView=false;
+      this.newNotificationView = false;
     },
     getMissionList(value) {
       //get /v1/authorization/test/get/bugMission

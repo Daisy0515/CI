@@ -62,7 +62,7 @@
                             </el-col>
                         </el-row>
                         <div style="text-align: center;margin-top: 50px">
-                            <el-button type="primary" @click="submitNotice">保存修改</el-button>
+                            <el-button type="primary" @click="submitNotice">发起通知</el-button>
                         </div>
                     </el-form>
             
@@ -131,7 +131,6 @@
                                 } else {
                                     errTips(msg);
                                 }
-                                console.log(noticeData);
                                 this.getUserlist();
                                 this.noticeData.content = '';
                                 this.noticeData.theme= '';
