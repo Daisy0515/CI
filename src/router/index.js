@@ -11,7 +11,16 @@ import {errTips} from "@/utils/tips.js";
 
 Vue.use(Router)
 const vueRouter = new Router({
+    mode:'history',
     routes: [
+        {
+            path: '/oauth/github/redirect',
+            name: 'githubOauth',
+            component: () => import('@/view/git/githubOauth.vue'),
+            meta: {
+                title: 'github授权'
+            }
+        },
         {
             path: '/login',
             name: 'login',

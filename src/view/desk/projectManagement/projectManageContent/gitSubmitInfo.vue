@@ -155,21 +155,6 @@
 
                 <el-tab-pane label="commits" name="commits" v-loading="gitInfoListLoading" element-loading-text="拼命加载中"
                              element-loading-background="rgba(255, 255, 255, 1)">
-                    <el-row>
-                        <el-col :span="4" style="font-size: 20px;margin-top:5px;">
-                            <span >请选择分支：</span>
-                        </el-col>
-                        <el-col :span="6" style="margin-bottom: 10px;">
-                            <el-select v-model="commits.selectedBranch" placeholder="请选择分支" style="width:83%;" @change="getNewBranchCommits">
-                                <el-option
-                                        v-for="(item,index) in branches.list"
-                                        :key="index"
-                                        :label="item.branches"
-                                        :value="item.branches">
-                                </el-option>
-                            </el-select>
-                        </el-col>
-                    </el-row>
                     <div class="panelHold boxSize">
                         <div class="panel" >
                             <p class="tip" v-show="commits.list.length===0">暂无数据</p>
@@ -448,18 +433,7 @@
                     this.getPullsList(this.gitUserName,this.gitName,this.reposName,this.gitProjectId);
                 }
                 if(tab.label==="commits"&&this.commits.list.length===0){
-                    if(this.branches.list.length===0){
-                        this.getBranchesList(this.gitUserName,this.gitName,this.reposName,this.gitProjectId).then(()=>{
-                            let branch = this.branches.list[0].branches;
-                            this.commits.selectedBranch = branch;
-                            this.getCommitsList(this.gitUserName,this.gitName,this.reposName,this.gitProjectId,branch);
-                        });
-                    }else{
-                        let branch = this.branches.list[0].branches;
-                        this.commits.selectedBranch = branch;
-                        this.getCommitsList(this.gitUserName,this.gitName,this.reposName,this.gitProjectId,branch);
-                    }
-
+                    this.getCommitsList(this.gitUserName,this.gitName,this.reposName,this.gitProjectId);
                 }
             },
 
@@ -548,21 +522,16 @@
                 });
             },
 
-            /**根据用户选择的仓库选择指定分支的提交记录**/
-            getNewBranchCommits(){
-                this.getCommitsList(this.gitUserName, this.gitName, this.reposName, this.gitProjectId, this.commits.selectedBranch);
-            },
-            /**获取git公开仓库的指定分支的提交记录**/
-            getCommitsList(userName, gitName, reposName, gitProjectId, branch){
-                let url = "/v1/authorization/"+ gitName +"/commitsbranches/list";
+
+            /**获取git公开仓库的提交记录**/
+            getCommitsList(userName, gitName, reposName, gitProjectId){
+                let url = "/v1/authorization/"+ gitName +"/commits/list";
                 let data = {};
                 if(gitName.indexOf("gitlab")>=0){
                     data.reposId = gitProjectId;
-                    data.refName = branch;
                 }else{
                     data.userName = userName;
                     data.repos = reposName;
-                    data.branch = branch;
                 }
                 this.gitInfoListLoading = true;
                 httpGet(url,data).then(results=>{
