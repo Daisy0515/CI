@@ -127,7 +127,7 @@
                             httpPost('/v1/authorization/notification/notification/insert', this.noticeData).then(results => {
                                 const {msg, httpCode, data} = results.data;
                                 if (httpCode === 200) {
-                                    successTips('添加任务成功！');
+                                    successTips('发布成功！');
                                 } else {
                                     errTips(msg);
                                 }

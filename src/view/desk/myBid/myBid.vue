@@ -275,6 +275,8 @@
             //获取页面数据
             getView(val = this.pageData) {
                 this.loading = true;
+                console.log("myBid-278-TEST");
+                console.log(val);
                 httpGet("/v1/authorization/bids/castinfolist/get", val).then(results => {
                     const {httpCode, msg, data} = results.data;
                     if (httpCode === 200) {

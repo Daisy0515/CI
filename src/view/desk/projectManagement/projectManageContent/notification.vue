@@ -5,7 +5,7 @@
         发起通知
       </el-button>
       <div class="header_top">
-        <el-input v-model="searchData.theme" placeholder="请输入通知主题"></el-input>
+        <el-input v-model="searchData.theme" clearable placeholder="请输入通知主题"></el-input>
         <el-select v-model="searchData.type" clearable placeholder="通知类型">
           <el-option label="会议通知" value="1"></el-option>
           <el-option label="其他" value="2"></el-option>
@@ -18,6 +18,7 @@
           <el-option v-for="item in missionList" :key="item.id" :label="item.missionName"
                      :value="item.id"></el-option>
         </el-select>
+        <div>
         <el-date-picker
             v-model="searchData.startTime"
             type="date"
@@ -31,8 +32,8 @@
             placeholder="通知结束时间"
             value-format="yyyy-MM-dd"
         ></el-date-picker>
-        <el-button size="primary" @click="searchList()">搜索</el-button>
-
+        <el-button size="primary" @click="searchList">搜索</el-button>
+        </div>
       </div>
       <div style="margin-top: 30px">
         <div>
@@ -41,7 +42,7 @@
               <div class="serviceItem clearfix" v-for="(item, index) in notificationList " :key="index">
                 <div
                     style="margin:10px; border: #d8d8d8 1px solid; padding: 10px 10px 10px 10px; box-shadow: 0 2px 2px 0 rgba(0,0,0,.1);">
-<!--                  <li>{{item}}</li>-->
+                  <!--                  <li>{{item}}</li>-->
                   <li>通知主题：{{ item.theme }}</li>
                   <li>相关人员：{{ item.userList.length == 0 ? "" : item.userList[0].userName }}</li>
                   <li>通知日期：{{ item.notificationTime }}</li>
@@ -77,6 +78,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="10">
+
                 <el-form-item label="通知日期" :label-width="formLabelWidth">
                   <el-input v-model="noticeData.notificationTime" auto-complete="off" :disabled="true"/>
                 </el-form-item>
@@ -115,8 +117,6 @@
                       <a target="_Blank" :href="scope.row.resourceUrl">
                         下载
                       </a>
-
-
                     </template>
                   </el-table-column>
                 </el-table>
@@ -162,11 +162,6 @@ export default {
       typeValue: "",
       ruleForm: {},
       noticeVisible: false,
-      searchData: {
-        id: "",
-        missionId: "",
-
-      },
       selectedNotice: 0,
       noticeTable: {
         theme: '',
@@ -214,25 +209,28 @@ export default {
   },
   created: function () {
     this.teamId = this.$route.query.teamId;
+    this.searchData.teamId = this.teamId;
     this.pageData.teamId = this.teamId;
-    this.getNotification();
+    this.getNotification(this.pageData);
     // this.searchData.id = this.$route.query.id;
     // this.testIssueList(this.searchData.id);
-    // this.getMissionList(this.searchData.id);
+    this.getMissionList(this.searchData.Id);
     //alert(this.id);
   },
 
   methods: {
     ...mapMutations(["setCache"]),
-    getNotification(val = this.pageData) {
+    getNotification(val=this.pageData) {
 
       ///v1/authorization/notification/search/list
+
       httpGet('v1/authorization/notification/search/list', val).then(results => {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
           this.notificationList = data.list;
-          console.log("234TEST");
-          console.log(this.notificationList);
+          for (let i = 0; i < this.notificationList.length; i++) {
+            this.notificationList[i].notificationTime = specificDate(this.notificationList[i].notificationTime);
+          }
         } else {
           errTips(msg);
         }
@@ -244,18 +242,14 @@ export default {
       this.noticeVisible = false;
     },
     showInitNewNotification() {
-      console.log("123");
       this.newNotificationView = true;
-    },
-    downloadResource(val) {
-      console.log(val);
     },
     deleteNotice(val) {
       httpDelete(`v1/authorization/notification/notification/delete/${val}`).then(results => {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
           this.getNotification();
-          //console.log(data);
+
         } else {
           errTips(msg);
         }
@@ -270,9 +264,9 @@ export default {
       this.noticeTable.participantsList = "";
       for (let i = 0; i < this.notificationList[val].userList.length; i++) {
         this.noticeTable.participantsList += this.notificationList[val].userList[i].userName + "; "
-        //console.log(this.notificationList[val].userList.userName);
+
       }
-      //console.log(this.noticeTable);
+
       this.noticeTableList.pop();
       this.noticeTableList.push(this.noticeTable);
 
@@ -284,7 +278,7 @@ export default {
         if (httpCode === 200) {
           this.loading = false;
           this.noticeData.theme = data.theme;
-          //console.log(data.theme);
+
           this.noticeData.id = data.id;
           if (data.type == 1) {
             this.noticeData.type = "会议";
@@ -296,10 +290,7 @@ export default {
           this.noticeData.participantsList = "";
           for (let i = 0; i < data.userList.length; i++) {
             this.noticeData.participantsList += data.userList[i].userName + "; "
-            //console.log(this.notificationList[val].userList.userName);
           }
-          //console.log(this.noticeData);
-          //console.log(data);
         } else {
           errTips(msg);
         }
@@ -320,8 +311,6 @@ export default {
 
 
           this.noticeData.resourceList.length = 0;
-          console.log("data.resourceList TEST");
-          console.log(data.resourceList);
           for (let i = 0; i < data.resourceList.length; i++) {
             if (data.resourceList[i].resource == "") {
               continue;
@@ -331,11 +320,7 @@ export default {
             resource.resourceUrl = data.resourceList[i].resource;
             resource.resourceName = data.resourceList[i].resourceName;
             this.noticeData.resourceList.push(resource);
-            //console.log(this.notificationList[val].userList.userName);
           }
-          console.log("noticeData.resourceList TEST");
-          console.log(this.noticeData.resourceList);
-          console.log(data);
         } else {
           errTips(msg);
         }
@@ -350,7 +335,7 @@ export default {
     },
     getMissionList(value) {
       //get /v1/authorization/test/get/bugMission
-      httpGet('/v1/authorization/test/get/bugMission', {id: value}).then(results => {
+      httpGet('/v1/authorization/notification/notification/teammember/get', {id: value}).then(results => {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
           this.missionList = data.missionIdList;
@@ -377,17 +362,21 @@ export default {
 
     searchList() {
 
-      this.loading = true;
-      //get /v1/authorization/test/get/bugSummary
-      httpGet('/v1/authorization/test/get/bugSummary', this.searchData).then(results => {
+      ///v1/authorization/notification/search/list
+
+      console.log("pageData", this.pageData);
+      console.log("searchData", this.searchData);
+      httpGet('v1/authorization/notification/search/list', this.searchData).then(results => {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
-          this.testIssueSumList = data.bugSummaryList;
-        } else if (httpCode === 400) {
-          this.setCache('myTest'); //???????
-        } else if (httpCode !== 401) {
+          this.notificationList = data.list;
+          for (let i = 0; i < this.notificationList.length; i++) {
+            this.notificationList[i].notificationTime = specificDate(this.notificationList[i].notificationTime);
+          }
+        } else {
           errTips(msg);
         }
+        this.showNotice(this.selectedNotice);
         this.loading = false;
       });
     },
