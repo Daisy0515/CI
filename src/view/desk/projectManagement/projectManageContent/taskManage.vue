@@ -166,7 +166,8 @@
                                 :value="index"
                             >
                                 <el-table :data="taskTable" stripe style="width: 100%">
-                                    <el-table-column prop="missionType" label="子任务名称" width="180"></el-table-column>
+                                    <el-table-column prop="title" label="子任务名称" width="180"></el-table-column>
+                                    <el-table-column prop="missionType" label="子任务类型" width="180"></el-table-column>
                                     <el-table-column prop="status" label="状态" width="180"></el-table-column>
                                     <el-table-column label="操作" width="180">
                                         <template slot-scope="scope">
@@ -330,15 +331,16 @@
                         if(form.status == 2) form.status = "完成";
                         if(form.status == 3) form.status = "放弃";
                         this.taskForm = form;
-                        console.log(this.taskForm);
+                        //console.log(this.taskForm);
                     } else {
                         errTips(msg);
                     }
                 });
             },
             showSubTask(val){
-                console.log(val);
+                //console.log(val);
                 this.taskTable = this.allMissionList[val].missionInfoList;
+                console.log("tasktable",taskTable);
             },
             getAllMissionList(){
                 httpGet('/v1/authorization/manage/mission/list', {teamId: this.projectId}).then(results => {
@@ -553,6 +555,7 @@
                     } else {
                         errTips(msg);
                     }
+                    console.log(data);
                     this.getContent();
                     this.getTask();
                     this.getSubList(this.ruleForm.titleId);
@@ -578,7 +581,7 @@
                 this.ruleForm.sourceFile ? this.setIdCard2() : (this.testUploadIndex = !this.testUploadIndex);
             },
             returnSquare() {
-                this.$router.push({path: './myBid'});
+                this.$router.push({path: '/desk/taskManage'});
             },
             rowClass() {
                 return 'background:#F4F6F9;';
