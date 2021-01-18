@@ -118,6 +118,8 @@
                         this.projectName = data.projectName;
                         sessionStorage.setItem("teamId",this.teamId);
                         sessionStorage.setItem("projectId",this.projectId);
+                        sessionStorage.setItem("teamName",this.teamName);
+                        sessionStorage.setItem("projectName",this.projectName);
                     }else{
                         errTips(msg);
                     }
