@@ -17,13 +17,24 @@ Router.prototype.push = function push(location) {
 
 Vue.use(Router)
 const vueRouter = new Router({
+    mode:'history',
     routes: [
+        {
+
+            path: '/oauth/github/redirect',
+            name: 'githubOauth',
+            component: () => import('@/view/git/githubOauth'),
+            meta: {
+                title: 'github授权'
+            }
+        },
         {
             path: '/oauth/weibo/redirect',
             name: 'weiboLogin',
             component: () => import('@/view/loginRegister/login/weiboLogin'),
             meta: {
                 title: '第三方授权登录'
+
             }
         },
         {
