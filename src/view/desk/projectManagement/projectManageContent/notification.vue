@@ -212,13 +212,8 @@ export default {
     this.searchData.teamId = this.teamId;
     this.pageData.teamId = this.teamId;
     this.projectId = sessionStorage.getItem("projectId");
-    console.log("teamId",this.teamId);
-    console.log("projectId",this.projectId);
     this.getNotification(this.pageData);
-    // this.searchData.id = this.$route.query.id;
-    // this.testIssueList(this.searchData.id);
     this.getMissionList();
-    //alert(this.id);
   },
 
   methods: {
@@ -269,7 +264,6 @@ export default {
         this.noticeTable.participantsList += this.notificationList[val].userList[i].userName + "; "
 
       }
-
       this.noticeTableList.pop();
       this.noticeTableList.push(this.noticeTable);
 

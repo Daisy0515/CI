@@ -119,11 +119,13 @@
                             })
                         },
                         setIdCard2(data){
-                            console.log(data);
-                            data && (this.noticeData.resource = data.fileName);
+                            console.log("122data",data);
+                            console.log(data.fileName);
+                            this.noticeData.resource = data.fileName;
+                            console.log("noticeData", this.noticeData);
                             let dataForm = this.noticeData.resource.split('/');
                             this.noticeData.resourceName=dataForm[dataForm.length-1];
-                            //console.log(this.noticeData);
+                            console.log("noticeData", this.noticeData);
                             httpPost('/v1/authorization/notification/notification/insert', this.noticeData).then(results => {
                                 const {msg, httpCode, data} = results.data;
                                 if (httpCode === 200) {
@@ -154,7 +156,7 @@
                             }
                         });
             },
-                        
+
                         submitNotice() {
                             this.noticeData.resource ? this.setIdCard2() : (this.testUploadIndex = !this.testUploadIndex);
                         },
