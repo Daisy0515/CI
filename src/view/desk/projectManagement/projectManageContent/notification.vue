@@ -12,11 +12,11 @@
         </el-select>
         <el-select v-model="searchData.participantsId" clearable placeholder="发起人">
           <el-option v-for="item in missionList" :key="item.id" :label="item.missionName"
-                     :value="item.id"></el-option>
+                     :value="item"></el-option>
         </el-select>
         <el-select v-model="searchData.participantsId" clearable placeholder="相关人员">
           <el-option v-for="item in missionList" :key="item.id" :label="item.missionName"
-                     :value="item.id"></el-option>
+                     :value="item"></el-option>
         </el-select>
         <div>
         <el-date-picker
@@ -208,13 +208,16 @@ export default {
     };
   },
   created: function () {
-    this.teamId = this.$route.query.teamId;
+    this.teamId = sessionStorage.getItem("teamId");
     this.searchData.teamId = this.teamId;
     this.pageData.teamId = this.teamId;
+    this.projectId = sessionStorage.getItem("projectId");
+    console.log("teamId",this.teamId);
+    console.log("projectId",this.projectId);
     this.getNotification(this.pageData);
     // this.searchData.id = this.$route.query.id;
     // this.testIssueList(this.searchData.id);
-    // this.getMissionList(this.searchData.Id);
+    this.getMissionList();
     //alert(this.id);
   },
 
@@ -333,12 +336,15 @@ export default {
       this.getNotification();
       this.newNotificationView = false;
     },
-    getMissionList(value) {
+    getMissionList() {
       //get /v1/authorization/test/get/bugMission
-      httpGet('/v1/authorization/notification/notification/teammember/get', {id: value}).then(results => {
+      httpGet('/v1/authorization/notification/notification/teammember/get', {teamId: this.teamId, projectId: this.projectId}).then(results => {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
-          this.missionList = data.missionIdList;
+          console.log("344", data);
+          for(let i=0; i<data.teamUserList.length; i++){
+            this.missionList.push(data.teamUserList[i].name);
+          }
         } else {
           errTips(msg);
         }

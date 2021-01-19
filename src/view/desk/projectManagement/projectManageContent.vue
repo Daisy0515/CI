@@ -117,7 +117,9 @@
                 httpGet("/v1/authorization/manage/manage/get",{teamId:teamId}).then(results=>{
                     const {httpCode, msg, data} = results.data;
                     if (httpCode === 200) {
+                        console.log("data:",data);
                         this.projectId = data.projectId;
+                        console.log("projectId", this.projectId);
                         this.teamName = data.teamName;
                         this.projectName = data.projectName;
                         sessionStorage.setItem("teamId",this.teamId);
