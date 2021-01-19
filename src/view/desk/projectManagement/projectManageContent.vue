@@ -101,6 +101,9 @@
             this.setLeft(this.$router.currentRoute.name);
             this.showDataLeftOne = parseInt(sessionStorage.getItem('projectRole')) === 2; //true 项目经理角色 false 开发者角色
             this.teamId = this.$route.query.teamId;
+            if(this.teamId === undefined){
+                this.teamId = sessionStorage.getItem("teamId");
+            }
             this.getTeamInfo(this.teamId);
         },
         computed: {

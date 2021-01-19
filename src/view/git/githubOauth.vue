@@ -1,17 +1,18 @@
 <template>
     <div>
         <h2 v-if="!showBindGitDialog">正在处理中，请稍等....</h2>
-        <el-dialog :visible.sync="showBindGitDialog">
-            <el-row>
-                <h3>已选择：{{gitName}}平台</h3>
+        <el-dialog :visible.sync="showBindGitDialog" :show-close="false">
+            <el-row style="margin-bottom: 10px;">
+                <h2>已选择：{{gitName}}平台</h2>
             </el-row>
             <el-row style="margin-bottom: 10px;">
-                <el-col :span="5" :offset="2">
-                    用户名：<el-input v-model="gitUserName" >
+                <el-col :span="3">
+                    <h2 style="text-align: center;margin-top: 5px;">用户名：</h2>
+                </el-col>
+                <el-col :span="5" >
+                    <el-input v-model="gitUserName" >
                     </el-input>
                 </el-col>
-            </el-row>
-            <el-row>
                 <el-col :span="6" :offset="2">
                     <el-select v-model="reposIndex" placeholder="请选择仓库" style="width:83%;"
                                :loading="reposLoading">
