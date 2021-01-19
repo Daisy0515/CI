@@ -1,0 +1,37 @@
+.participationBidding {
+  margin: 0 auto;
+  .module_headerCrumb .searchTitle a:hover {
+    color: #ddd;
+  }
+  .publish {
+    text-align: center;
+  }
+  &::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  .header_h {
+    border-bottom: 1px solid #ebeef5;
+    padding: 20px;
+  }
+  .box-card0 {
+    padding: 20px 20px 20px 20px;
+    width: 100%;
+    margin: 40px auto;
+  }
+  .el-input__inner {
+    background: rgb(251, 251, 251);
+  }
+  .el-form-item__label {
+    font-size: 16px;
+    white-space: pre-line;
+  }
+  .el-textarea__inner {
+    background: rgb(251, 251, 251);
+  }
+  .el-card__header {
+    padding: 10px 20px 8px;
+    background: rgb(251, 251, 251);
+  }
+}

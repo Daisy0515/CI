@@ -1,0 +1,90 @@
+.personalProfile {
+    line-height: 30px;
+    h3 {
+      padding: 10px;
+      border-bottom: 1px solid #e8e8e8;
+    }
+    .personal {
+      border-bottom: 1px solid #e8e8e8;
+      .personal_txt {
+        padding: 10px 0 10px 0;
+      }
+    }
+    .editorialTeam_top {
+      margin-top: 30px;
+    }
+    .el-card__body {
+      padding: 0;
+    }
+    .card_main {
+      padding: 12px 15px 15px 15px;
+    }
+    .editorialTeam_left {
+      .card {
+        width: 520px;
+        height: 252px;
+        padding: 15px;
+        box-sizing: border-box;
+      }
+      float: left;
+      .main_item {
+        margin: 30px 0 30px 0;
+      }
+      .header_ele {
+        margin-top: 15px;
+      }
+      .item {
+        border: 1px solid #e8e8e8;
+        width: 180px;
+        height: 180px;
+        float: left;
+        margin-right: 30px;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .item_title {
+        height: 180px;
+        width: 180px;
+        float: left;
+        position: relative;
+        & p:nth-child(2) {
+          position: absolute;
+          bottom: 0;
+        }
+      }
+    }
+    .el-input__inner {
+      height: 30px;
+      width: 300px;
+    }
+    .el-input {
+      width: 300px;
+    }
+    button {
+      line-height: 10px;
+      font-size: 13px;
+      margin-left: 20px;
+    }
+    .editorialTeam_right {
+      float: right;
+      .card {
+        width: 520px;
+        height: 250px;
+      }
+    }
+    .editorialTeam_bottom {
+      margin: 50px 0 50px 0;
+      .card {
+        width: 100%;
+        p {
+          padding-left: 15px;
+        }
+        .expresice {
+          border-bottom: 1px solid #e8e8e8;
+          padding: 10px 0 10px 0;
+        }
+      }
+    }
+  }

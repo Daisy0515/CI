@@ -1,0 +1,120 @@
+
+  .demandendView {
+    .user_logo {
+      background: black;
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      // background: url("../img/leader.png")
+      background: url("../../../assets/img/leader.png");
+      background-size: 100%;
+      right: 0px;
+      top: 30px;
+    }
+      .userBorder{
+        border-top: 1px solid #e8e8e8;
+      }
+      .leader_position{
+        position: relative;
+        width: 100px;
+        display: inline-block;
+        margin-right: 10px;
+      }
+      .el-card__body{
+        padding: 0 0 5px 0;
+      }
+      .leader{
+        color:#4c83c3;
+      }
+      .userImg{
+          margin:30px 30px 30px 0;
+          width: 100%;
+          vertical-align:top;
+          display: inline-block;
+          img{
+              width: 101px;
+              height: 101px;
+              border: 1px solid #e8e8e8;
+          }
+          p{
+              text-align: center;
+              font-size: 13px;
+              line-height: 18px;
+          }
+      }
+    .searchTitle{
+    font-size: 17px;
+    color: rgba(255, 255, 255, 0.712);
+    }
+    margin: 0 auto;
+    margin-bottom: 50px;
+    .module_headerCrumb{
+      margin: 20px 0 20px 0;
+    }
+    .publish{
+      text-align: center;
+    }
+    &::after {
+      content: "";
+      clear: both;
+      display: table;
+    }
+    .el-table .cell {
+      white-space: pre-line;
+    }
+    .header_h {
+      border-bottom: 1px solid #ebeef5;
+      padding: 20px;
+    }
+    .el-form-item__label {
+      font-size: 16px;
+      white-space: pre-line;
+    }
+    .box-card0 {
+      padding: 20px 40px 20px 40px;
+      width: 100%;
+      margin: 40px auto;
+    }
+    .box-card2 {
+      width: 25%;
+      float: right;
+      margin-top: 20px;
+      span {
+        font-size: 18px;
+      }
+    }
+    .text span {
+      margin-left: 5px;
+      font-size: 14px;
+    }
+    
+    .item {
+      margin-bottom: 10px;
+    }
+    .clearfix span{
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .clearfix:before,
+    .clearfix:after {
+      display: table;
+      content: "";
+    }
+    .clearfix:after {
+      clear: both;
+    }
+    .el-button--primary,.el-radio-button__orig-radio:checked+.el-radio-button__inner{
+        background: #3e76b8;
+        margin:0 auto;
+    }
+    .el-input__inner{
+      background:rgb(251,251,251);
+    }
+    .el-textarea__inner{
+      background:rgb(251,251,251);
+    }
+    .el-card__header{
+      padding:10px 20px 8px;
+      background:rgb(251,251,251)
+    }
+  }

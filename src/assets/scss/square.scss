@@ -1,0 +1,266 @@
+.square {
+  height: 100%;
+  .icon-shoucang1 {
+    color: #4c83c3;
+  }
+  .icon-dianzan1 {
+    color: rgba(255, 0, 0, 0.884);
+  }
+
+  .small_icon {
+    margin-right: 4px;
+    i {
+      cursor: pointer;
+    }
+    .icon-chakan {
+      margin-right: 5px;
+    }
+  }
+  .el-input {
+    margin-top: 10px;
+  }
+  .typeList {
+    margin: 8px 0 8px 15px;
+    font-size: 15px;
+    &:hover {
+      color: #4c83c3;
+    }
+  }
+  .parentClass {
+    font-size: 15px;
+    &:hover {
+      color: #4c83c3;
+    }
+  }
+  .selectClass {
+    select {
+      float: right;
+      margin-top: 15px;
+      padding: 2px 0 3px 2px;
+    }
+  }
+  .see_apply {
+    float: right;
+    margin: 0px 3px;
+    span {
+      border: 1px solid #4c83c3;
+      background: #4c83c3;
+      font-size: 12px;
+      color: white;
+      padding: 7px 18px 7px 18px;
+      cursor: pointer;
+    }
+  }
+  .clearfix:after,
+  .clearfix:before {
+    content: "\0020";
+    display: block;
+    height: 0;
+  }
+  .avatar {
+    float: left;
+  }
+  .identityName {
+    font-size: 14px;
+  }
+  .subtext {
+    font-size: 13px;
+    margin-top: 7px;
+  }
+  .avatarinfo {
+    margin-left: 5px;
+    float: left;
+  }
+  .clearfix:after {
+    clear: both;
+  }
+  .saveSearchError {
+    background: #d06320;
+    color: #fff;
+    padding: 5px;
+    font-size: 12px;
+    border-radius: 5px;
+    display: inline-block;
+    margin-left: 5px;
+  }
+  .module_headerCrumb {
+    margin: 20px 0 0;
+    .searchTitle {
+      a:hover {
+        color: #ddd;
+      }
+      h1 {
+        display: inline;
+        color: #fff;
+        font-size: 25px;
+      }
+      span {
+        color: #ccc;
+        font-weight: 400;
+        font-size: 16px;
+      }
+    }
+  }
+
+  .panel {
+    position: relative;
+    background: rgb(245, 245, 245);
+  }
+  .tip {
+    position: absolute;
+    top: 50%;
+    left: 48%;
+    color: rgba(0, 0, 0, 0.651);
+    transform: scale(-50%, -50%);
+  }
+
+  .panel {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 12px 12px 2px;
+    min-height: 300px;
+  }
+  ul.services li.serviceItem .serviceMeta {
+    width: 100%;
+    margin: 0;
+    float: left;
+  }
+  ul.services li.serviceItem .serviceMeta h2.servTitle {
+    font-size: 17.5px;
+    font-size: 1.25rem;
+    margin: 0;
+    font-family: "Open Sans", sans-serif !important;
+    font-weight: 600;
+    word-wrap: break-word;
+  }
+
+  ul.services li.serviceItem p.desc {
+    font-size: 14px;
+    color: #666;
+    letter-spacing: 0.6px;
+    padding: 0;
+    word-wrap: break-word;
+  }
+  ul.services li.serviceItem .extras2 {
+    display: block;
+    color: #999;
+    font-size: 14px;
+    padding: 3px 0 8px;
+    line-height: 1.8;
+  }
+  .switchPanel {
+    width: 25%;
+    margin: 30px 1% 0 0;
+    float: left;
+  }
+  .searchRefinement {
+    margin-top: 10px;
+    & li:nth-child(1) {
+      margin-bottom: 5px;
+      .active {
+        font-weight: 600;
+        color: #333;
+        font-size: 16px;
+      }
+    }
+    .toggleLink {
+      display: block;
+      padding: 4px 0;
+      color: #666;
+    }
+  }
+  .panelHold {
+    width: 74%;
+    float: left;
+  }
+  .services > li {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    background: #fff;
+    padding: 12px 12px 3px 12px;
+    margin-bottom: 12px;
+    border: 2px solid transparent !important;
+    position: relative;
+  }
+  .refinementHeader {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .services > li .serviceHeader .servTitle {
+    display: block;
+    font-size: 22px;
+    line-height: 1;
+    color: #4c83c3;
+    font-weight: 400;
+    word-wrap: break-word;
+  }
+
+  .services > li .serviceHeader .servTitle h2 {
+    font-size: 22px !important;
+    font-weight: 400;
+    line-height: 1;
+  }
+
+  .services > li .serviceHeader .fb {
+    float: right;
+    width: 20%;
+    text-align: right;
+  }
+
+  .services > li .serviceHeader .fb a {
+    display: inline-block;
+    padding: 5px;
+    font-size: 16px;
+    color: #999;
+  }
+
+  .serviceHeader .servfeedback,
+  .serviceIdentity__contact {
+    display: block;
+    float: right;
+    text-align: right;
+  }
+  .servfeedback {
+    font-size: 14px;
+  }
+
+  .serviceIdentity {
+    margin: 13px 0 0px;
+  }
+
+  .serviceIdentity__info {
+    display: block;
+    margin: 6px 0 5px 7px;
+    float: left;
+    width: 100%;
+  }
+
+  .serviceHeader .servTitle {
+    float: left;
+    max-width: 80%;
+    margin-bottom: 6px;
+    margin-left: 4px;
+  }
+  .services {
+    margin-top: 15px;
+  }
+  .pagerHold {
+    text-align: center;
+    margin: 10px 0;
+    span {
+      margin-top: -9px;
+    }
+  }
+  .searchActive {
+    margin-top: 8px;
+    color: #666;
+    font-size: 15px;
+  }
+  .clearList {
+    color: #4c83c3;
+    margin-top: 9px;
+    font-size: 13px;
+  }
+}

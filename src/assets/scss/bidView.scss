@@ -1,0 +1,85 @@
+.bidView {
+  .searchTitle {
+    font-size: 17px;
+    color: rgba(255, 255, 255, 0.712);
+  }
+  .parentCard {
+    width: 700px;
+  }
+  img {
+    width: 75px;
+    height: 75px;
+    margin-right: 30px;
+    border: 1px solid #e8e8e8;
+  }
+  margin: 0 auto;
+  margin-bottom: 50px;
+  .publish {
+    text-align: center;
+  }
+  &::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  .el-table .cell {
+    white-space: pre-line;
+  }
+  .header_h {
+    border-bottom: 1px solid #ebeef5;
+    padding: 20px;
+  }
+  .el-form-item__label {
+    font-size: 16px;
+    white-space: pre-line;
+  }
+  .box-card0 {
+    padding: 20px 20px 20px 20px;
+    width: 100%;
+    margin: 40px auto;
+  }
+  .box-card2 {
+    width: 25%;
+    float: right;
+    margin-top: 20px;
+    span {
+      font-size: 18px;
+    }
+  }
+  .text span {
+    margin-left: 5px;
+    font-size: 14px;
+  }
+
+  .item {
+    margin-bottom: 10px;
+  }
+  .clearfix span {
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .clearfix:before,
+  .clearfix:after {
+    display: table;
+    content: "";
+  }
+  .clearfix:after {
+    clear: both;
+  }
+  .el-button--primary,
+  .el-radio-button__orig-radio:checked + .el-radio-button__inner {
+    margin: 0 auto;
+  }
+  .el-input__inner {
+    background: rgb(251, 251, 251);
+  }
+  .el-form-item__content {
+  }
+  .el-textarea__inner {
+    background: rgb(251, 251, 251);
+  }
+  .el-card__header {
+    padding: 10px 20px 8px;
+    background: rgb(251, 251, 251);
+  }
+}

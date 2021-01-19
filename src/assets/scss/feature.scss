@@ -1,0 +1,220 @@
+.feature{
+.characteristic{
+  span{
+      font-weight: 600;
+      font-size: 15px;
+      line-height: 30px;
+  }
+}
+.hp2018 .c-hpTitle {
+    font-size: 24px;
+    font-size: 1.5rem;
+    color: #444;
+    display: block;
+    text-align: center;
+    margin-bottom: 3.75rem;
+    position: relative;
+    line-height: 1.5
+}
+
+.hp2018 .c-hpTitle.c-hpTitle--left:after,
+.hp2018 .c-hpTitle:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -1rem;
+    width: 50px;
+    border-bottom: 3px solid #ccc
+}
+
+.hp2018 .c-hpTitle:after {
+    right: 0;
+    margin: 0 auto
+}
+
+.hp2018 .c-hpTitle.c-hpTitle--left {
+    text-align: left
+}
+
+.hp2018 .c-hpTitle.c-hpTitle--left:after {
+    right: auto;
+    margin: 0
+}
+
+.hp2018 .c-hpTitle.cp-hpTitle--small {
+    font-size: 20px;
+    font-size: 1.25rem;
+    margin-bottom: 3rem
+}
+
+
+.hp2018 h1,
+.hp2018 h2,
+.hp2018 h3,
+.hp2018 h4,
+.hp2018 h5,
+.hp2018 p {
+    margin-bottom: 1rem
+}
+
+.hp2018 p {
+    line-height: 1.85
+}
+
+.c-hpSection.c-hpSection--grey {
+    background: #f5f5f5
+}
+
+.c-hpSection.c-hpSection--white {
+    background: #FFF;
+    border-top: 1px solid #DDD;
+    border-bottom: 1px solid #DDD
+}
+
+.c-hpSection.c-hpSection--blue {
+    background: #4c83c3;
+    border: none
+}
+
+.c-hpSection.c-hpSection--blue .c-hpTitle {
+    color: #FFF
+}
+
+.c-hpSection.c-hpSection--paddingBottom0 {
+    padding-bottom: 0
+}
+
+.c-hpSection.c-hpSection--paddingTop0 {
+    padding-top: 0
+}
+
+.c-hpSection.c-hpSection--small {
+    padding: 3rem 0
+}
+
+.c-hpSection.c-hpSection--users {
+    background-color: #f5f5f5;
+    background-position: center;
+    background-repeat: repeat
+}
+
+.c-hpSection__quotes {
+    margin-left: auto;
+    margin-right: auto
+}
+
+.c-hpSection {
+    padding: 80px 0;
+}
+
+.c-hero {
+    background-color: #8e979f;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, .9)), to(transparent));
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, .9), transparent);
+    position: relative;
+    padding: 0;
+    height: 300px;
+    max-height: none;
+    text-align: left;
+    color: #FFF;
+    will-change: filter;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0)
+}
+
+.c-hero__lead {
+    margin-top: calc(70px + 3rem);
+    margin-bottom: 3rem;
+    text-shadow: 0 0 1px rgba(0, 0, 0, .9)
+}
+
+.c-carousel__wrapper,
+.c-hero {
+    overflow: hidden
+}
+
+.c-hero__title {
+    font-size: 40px;
+    line-height: 1
+}
+
+
+
+.c-hero {
+    background-image: linear-gradient(to right, rgba(0, 0, 0, .9), transparent), url('../../../assets/img/homepage/banners/funnel/find-hire-freelancers.jpg')
+}
+
+.c-hero__copy {
+    max-width: 640px;
+    margin: 0 0 2rem
+}
+
+.c-hero__copy h3 {
+    font-size: 18px;
+    font-size: 1.125rem
+}
+
+.clear0 {
+    clear: both;
+    padding: 0px;
+    margin: 0px;
+}
+
+.about_main {
+    width: 100%;
+    height: 600px;
+    background: url(http://cdn.ienkel.com/image/about_img.jpg) 40% center / auto 100% no-repeat;
+    background-size: cover;
+}
+
+.about_count {
+    width: 100%;
+    margin: 70px auto;
+}
+
+.about_top p {
+    
+    font-size: 15px;
+    letter-spacing: 2px;
+    -webkit-font-smoothing: antialiased;
+    color: #4d4d4d;
+    font-weight: 490;
+    line-height: 30px;
+    --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-family: sans-serif;
+}
+
+.wrap clearfix {
+    width: 100%;
+}
+.contact {
+    padding: 40px 0 20px 0;
+}
+
+strong{
+    font-size: 24px;
+    font-weight: 400;
+}
+
+.contact p:nth-child(1) {
+    font-size: 26px;
+    color: #4d4d4d;
+}
+
+.contact p:nth-child(2){
+    font-size: 20px;
+    color: #4d4d4d;
+    margin-top: 18px;
+    margin-bottom: 13px;
+}
+
+.contact p:nth-child(3),.contact p:nth-child(4) {
+    font-size: 16px;
+    line-height: 25px;
+    color: #4d4d4d;
+}
+
+}

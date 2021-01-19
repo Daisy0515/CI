@@ -1,0 +1,251 @@
+body,
+html {
+	width: 100%;
+	padding: 0;
+	margin: 0
+}
+.center {
+	text-align: center
+}
+.left {
+	text-align: left
+}
+.right {
+	text-align: right
+}
+.globalHeader * {
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box
+}
+.globalHeader {
+	background-color: #F5F5F5;
+	border-bottom: 1px solid #DDD;
+	border-top: 4px solid #4C83C3;
+	z-index: 100;
+	width: 100%;
+	height: auto;
+	vertical-align: middle;
+	position: relative;
+	margin: 0;
+	min-width: 984px
+}
+
+.globalHeader-masthead {
+	padding: 12px 0
+}
+
+.globalHeader-logo {
+	float: left;
+	margin-right: 24px;
+	height: 32px;
+	line-height: 1;
+	font-size: 0
+}
+
+.globalHeader-search {
+	float: left;
+	width: 40%
+}
+
+.globalHeader-search button,
+.globalHeader-search input[type=text] {
+	height: 32px
+}
+
+.globalHeader .ui-autocomplete {
+	background: #FFF;
+	border: 1px solid #ddd;
+	z-index: 1;
+	top: 32px;
+	left: 0;
+	position: absolute;
+	width: 353px
+}
+
+.globalHeader .ui-autocomplete li {
+	border-bottom: 1px solid #EEE
+}
+
+.globalHeader .ui-autocomplete li a {
+	display: block;
+	padding: 6px
+}
+
+.globalHeader .ui-autocomplete li a.ui-state-hover,
+.globalHeader .ui-autocomplete li a:active,
+.globalHeader .ui-autocomplete li a:hover {
+	background: #4C83C3;
+	color: #FFF
+}
+
+.globalHeader-account {
+	float: right;
+	margin-top: 4px
+}
+
+.globalHeader-account-item {
+	display: block;
+	float: left;
+	margin: 0 6px 0 0;
+	padding: 0;
+	position: relative;
+	background: #FFF
+}
+
+.globalHeader__btn {
+	color: #666!important;
+	padding: 2px 6px!important
+}
+
+.globalHeader-account-item.dropdown {
+	line-height: 1.5;
+	margin-right: 0;
+	padding: 0
+}
+
+.globalHeader-account-item.dropdown a:hover {
+	text-decoration: none
+}
+
+.globalHeader-account-dropdownMenu {
+	background: #FFF;
+	border-radius: 2px;
+	border: 1px solid #CCC;
+	border-top: none;
+	margin-top: 1px;
+	padding: 10px 0!important;
+	width: 200px
+}
+
+.globalHeader-account-dropdownMenu .nav-header {
+	color: #999;
+	font-size: 11px;
+	text-transform: uppercase;
+	padding: 6px 12px;
+	white-space: nowrap
+}
+
+.globalHeader-alertIcon {
+	padding: 0 4px 0 0
+}
+
+.globalHeader-alertIcon-alert {
+	border-radius: 50%;
+	height: 11px;
+	width: 11px;
+	line-height: 11px;
+	color: #FFF;
+	text-align: center;
+	border: 1px solid #FFF;
+	display: block;
+	right: 0;
+	left: 13px;
+	top: -5px;
+	padding: 2px;
+	box-sizing: content-box
+}
+
+.accountDropdownBtn__alert,
+.globalHeader-alertIcon-alert {
+	font-weight: 600;
+	position: absolute;
+	background: #d06320;
+	font-size: 9px;
+	-webkit-box-sizing: content-box
+}
+
+.globalHeader-menu {
+	border-top: 1px solid #eee
+}
+
+.globalHeader-nav {
+	height: 36px
+}
+
+.globalHeader-nav-wrap {
+	display: block;
+	overflow: hidden;
+	height: 36px;
+	margin: 0;
+	padding: 0
+}
+
+.globalHeader-nav-wrap li {
+	display: inline
+}
+
+.globalHeader-nav-item {
+	color: #333;
+	display: block;
+	font-weight: 600;
+	float: left;
+	padding: 8px 6px;
+	margin-right: 24px;
+	-webkit-transition: height .1s ease-in-out;
+	transition: height .1s ease-in-out;
+	height: 38px;
+	border-bottom: 2px solid #CCC
+}
+
+.globalHeader-nav-item:hover {
+	height: 36px;
+	text-decoration: none
+}
+
+.globalHeader-nav-item.globalHeader-nav-item_active {
+	height: 36px;
+	border-bottom: 2px solid #CCC
+}
+
+
+.globalFooter {
+	background: #F5F5F5;
+	border-top: 1px solid #DDD;
+	-webkit-box-shadow: 0 -1px 0 #EEE;
+	box-shadow: 0 -1px 0 #EEE;
+	margin-top: 72px;
+	padding: 24px 0;
+	min-width: 984px
+}
+
+.globalFooter a,
+.globalFooter a.BlueLinks,
+.globalFooter a.BlueLinks:visited,
+.globalFooter a:visited {
+	color: #666
+}
+
+.globalFooter a.BlueLinks:hover,
+.globalFooter a:hover {
+	color: #4C83C3
+}
+
+.globalFooter-topRow {
+	float: left;
+	margin: 12px 0;
+	width: 20%;
+	margin-bottom: 72px
+}
+
+.globalFooter-botRow {
+	float: left;
+	margin: 12px 0;
+	width: 33%;
+	vertical-align: middle
+}
+
+.globalFooter-botRow_right {
+	float: right;
+	text-align: right
+}
+
+.globalFooter-botRow_center {
+	text-align: center
+}
+
+.globalFooter-logo {
+	width: 130px;
+	height: 34px;
+	margin: 0 auto
+}
