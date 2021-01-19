@@ -188,7 +188,6 @@ const store = new Vuex.Store({
                 }
             });
         },
-
         GETNORMALTYPE(context) {
             httpGet("/v1/public/bid/typeall/get").then(results => {
                 const {

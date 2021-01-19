@@ -9,9 +9,24 @@ import editorPublic from '@/view/review/reviewPublic/editorPublic'
 import store from '@/store/index.js'
 import {errTips} from "@/utils/tips.js";
 
+const originalPush = Router.prototype.push
+Router.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
+
 Vue.use(Router)
 const vueRouter = new Router({
+    mode:'history',
     routes: [
+        {
+
+            path: '/oauth/github/redirect',
+            name: 'githubOauth',
+            component: () => import('@/view/git/githubOauth'),
+            meta: {
+                title: 'github授权'
+            }
+        },
         {
             path: '/oauth/weibo/redirect',
             name: 'weiboLogin',

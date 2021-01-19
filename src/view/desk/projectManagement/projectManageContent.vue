@@ -42,6 +42,8 @@
 </template>
 <script>
     import {mapGetters, mapMutations} from "vuex";
+    import {httpGet} from "../../../utils/http";
+    import {errTips} from "../../../utils/tips";
 
     export default {
         name:"projectManageContent",
@@ -137,7 +139,29 @@
             ...mapMutations(["setLogin", "setLeft"]),
             changeleft(item) {
                 this.setLeft(item.url);
+<<<<<<< HEAD
                 this.$router.push({name:item.url,query:{projectName:this.projectName,projectId:this.projectId,teamId:this.teamId,userId:this.userId}});
+=======
+                this.$router.push({name:item.url,query:{projectId:this.projectId,teamId:this.teamId}});
+            },
+            /**获取团队的信息**/
+            getTeamInfo(teamId){
+                httpGet("/v1/authorization/manage/manage/get",{teamId:teamId}).then(results=>{
+                    const {httpCode, msg, data} = results.data;
+                    if (httpCode === 200) {
+                        this.projectId = data.projectId;
+                        this.teamName = data.teamName;
+                        this.projectName = data.projectName;
+                        sessionStorage.setItem("teamId",this.teamId);
+                        sessionStorage.setItem("projectId",this.projectId);
+                        sessionStorage.setItem("teamName",this.teamName);
+                        sessionStorage.setItem("projectName",this.projectName);
+                    }else{
+                        errTips(msg);
+                    }
+
+                });
+>>>>>>> 40d6c577242615aded8ae3b80951feb063a6683f
             }
         }
     };

@@ -53,7 +53,11 @@
     "webpack-dev-server": "^3.11.0"
   },
   "eslintConfig": {
+<<<<<<< HEAD
     "root": true,
+=======
+    "root": false,
+>>>>>>> 40d6c577242615aded8ae3b80951feb063a6683f
     "env": {
       "node": true
     },

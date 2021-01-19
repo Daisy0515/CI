@@ -33,7 +33,7 @@
                         <p>4 项目经理组队</p>
                     </li>
                 </ul>
-                <ul class="buzhou clearfix" style="margin: auto">
+                <ul class="buzhou clearfix">
                     <li>
                         <p>5 选择团队</p>
                         <span>>>></span>
