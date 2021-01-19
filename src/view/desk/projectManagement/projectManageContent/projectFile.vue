@@ -2,20 +2,15 @@
     <div class="myTable">
 
         <div class="header_top">
-            <el-select v-model="searchData.missionId" clearable placeholder="任务名称">
-                <el-option v-for="item in missionTitleList" :label="item.title" :value="item.id"></el-option>
+            <el-select v-model="pageData.missionId" clearable placeholder="任务名称">
+                <el-option v-for="(item, index) in missionTitleList" :label="item.title" :value="item.id" :key="index"></el-option>
             </el-select>
-            <el-select v-model="searchData.subtitle" clearable placeholder="子任务标题">
-                <el-option label="比赛中/中标" value="比赛中/中标"></el-option>
-                <el-option label="报名中/投标中" value="报名中/投标中"></el-option>
-                <el-option label="失败" value="失败"></el-option>
-                <el-option label="结束" value="结束"></el-option>
-            </el-select>
-            <el-select v-model="searchData.userId" clearable placeholder="上传者">
-                <el-option v-for="item in userList" :label="item.userName" :value="item.id"></el-option>
+            <el-input v-model="pageData.subtitle" placeholder="子任务名称"></el-input>
+            <el-select v-model="pageData.userId" clearable placeholder="上传者">
+                <el-option v-for="(item, index) in userList" :label="item.userName" :value="item.id" :key="index"></el-option>
             </el-select>
             <el-date-picker
-                    v-model="searchData.startTime"
+                    v-model="pageData.startTime"
                     :picker-options="endDatePicker"
                     type="date"
                     placeholder="上传时间"
@@ -34,9 +29,12 @@
             <el-table-column prop="gmtCreate" label="上传时间" align="center"></el-table-column>
             <el-table-column prop="userName" label="上传者" align="center"></el-table-column>
 
-            <el-table-column label="下载" align="center" >
+            <el-table-column label="操作" align="center" >
                 <template slot-scope="scope">
-                    <el-checkbox ></el-checkbox>
+                    <router-link @click.native="downloadFile(scope.row)" to>
+                            <i class="el-icon-download"></i>
+                            下载
+                    </router-link>
                 </template>
             </el-table-column>
         </el-table>
@@ -51,12 +49,11 @@
     </div>
 </template>
 <script>
-    import {httpGet, httpDelete} from "@/utils/http.js";
+    import {httpGet} from "@/utils/http.js";
     import {specificDate} from "@/utils/getDate.js";
     import timeLimit from "@/mixins/regular/timeLimit.js";
-    import {message, successTips, errTips} from "@/utils/tips.js";
-    import {MessageBox} from "element-ui";
-    import {mapMutations, mapActions, mapGetters} from "vuex";
+    import {message, errTips} from "@/utils/tips.js";
+    import {mapMutations} from "vuex";
 
     export default {
         name: "myBid",
@@ -67,19 +64,6 @@
                 teamId:null,
                 loading: false,
                 totalPage: 0,
-                searchData: {
-                    pageNo: 1,
-                    pageSize: 10,
-                    orderType: "DESC",
-                    orderBy: "id",
-                    teamId: null,
-                    missionId: null,
-                    titleId:null,
-                    userId:null,
-                    subtitle:null,
-                    startTime: null,
-                    endTime: null
-                },
                 pageData: {
                     pageNo: 1,
                     pageSize: 10,
@@ -95,7 +79,8 @@
                 },
                 fileTable: [],
                 userList:[],
-                missionTitleList:[]
+                missionTitleList:[],
+                subtitleList: [],
             };
         },
         created: function () {
@@ -104,13 +89,12 @@
             this.getView();
             this.getUserList();
             this.getMissionList();
+            this.getSubtitleList();
         },
         computed: {
-            ...mapGetters(["getNormalType"])
         },
         methods: {
             ...mapMutations(["setCache"]),
-            ...mapActions(["GETNORMALTYPE"]),
             getMissionList(){
                 httpGet("/v1/authorization/manage/missiontitle/list", {
                     teamId: this.teamId
@@ -123,8 +107,19 @@
                     }
                 });
             },
+            getSubtitleList() {
+                httpGet("/v1/authorization/manage/missiontitle/list", {
+                    teamId: this.teamId
+                }).then(results => {
+                    const {httpCode, msg, data} = results.data;
+                    if (httpCode === 200) {
+                        this.missionTitleList = data.missionTitle;
+                    } else {
+                        errTips(msg);
+                    }
+                });
+            },
             getUserList(){
-                console.log("获取团队成员");
                 httpGet("/v1/authorization/manage/user/list", {
                     teamId: this.teamId
                 }).then(results => {
@@ -138,21 +133,8 @@
             },
 
             searchList() {
-                // let {selestate, searchData, selectedOptions} = this;
-                // searchData.parentId = selectedOptions[0];
-                // searchData.typeId = selectedOptions[1];
-                // if (selestate.indexOf("投标中")>0) {
-                //     searchData.status = 1;
-                // } else if (selestate.indexOf("中标")>0) {
-                //     searchData.status = 2;
-                // } else if (selestate === "结束") {
-                //     searchData.status = 3;
-                // } else if (selestate === "失败") {
-                //     searchData.status = 4;
-                // } else {
-                //     searchData.status = "";
-                // }
-                this.getView(searchData);
+                this.getView();
+                
             },
             handleCurrentChange(val) {
                 this.pageData.pageNo = val;

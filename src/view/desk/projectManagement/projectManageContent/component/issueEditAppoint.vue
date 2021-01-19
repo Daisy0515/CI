@@ -1,4 +1,4 @@
-<!--功能：创建人编辑缺陷
+<!--功能：被指派人编辑缺陷
     调用页面：codeDefct
              -->
 <template>
@@ -13,14 +13,13 @@
                     <el-form-item label="描述:" prop="description">
                         <quill-editor v-model="ruleForm.description"
                                       ref="myQuillEditor"
-                                      class="quill-editor1"
+                                      class="quill-editor"
                                       :options="editorOption"
                                       @blur="onEditorBlur($event)"
                                       @focus="onEditorFocus($event)"
                                       @ready="onEditorReady($event)">
                         </quill-editor>
                     </el-form-item>
-
                     <!-- resourceFile为空！ -->
                     <el-form-item label="附件：">
                         <a target="_Blank" :href="ruleForm.resourceFile" v-if="ruleForm.resourceFile">下载附件</a>
@@ -82,7 +81,7 @@
                     <el-form-item label="级别：">
                         <span v-if="ruleForm.level===1" style="color:red">█马上解决</span>
                         <span v-if="ruleForm.level===2" style="color:orange">█急需解决</span>
-                        <span v-if="ruleForm.level===3" style="color:#FFE153">█高度重视</span>
+                        <span v-if="ruleForm.level===3" style="color:yellow">█高度重视</span>
                         <span v-if="ruleForm.level===4" style="color:green">█正常处理</span>
                         <span v-if="ruleForm.level===5" style="color:blue">█低优先级</span>
                     </el-form-item>
@@ -94,62 +93,32 @@
                     </el-form-item>
                 </el-form>
                 <el-form :model="ruleForm2" ref="ruleForm2" class="demo-ruleForm">
-                    <el-form-item label="修改状态:" class="borderTop">
+                    <el-form-item label="修改状态" class="borderTop">
                         <el-select
-                                style="width:200px;margin-left:10px;"
+                                style="width:200px"
                                 v-model="ruleForm2.status"
                                 placeholder="请选择"
                                 size="small"
                         >
                             <el-option
-                                    v-if="ruleForm.status===1"
-                                    value="1"
-                                    label="结束"
-                                    @click.native="reason=false,appoint=false"
-                            ></el-option>
-                            <el-option
-                                    v-if="ruleForm.status===2"
-                                    value="1"
-                                    label="结束"
-                                    @click.native="reason=false,appoint=false"
-                            ></el-option>
-                            <el-option
-                                    v-if="ruleForm.status===3"
-                                    value="1"
-                                    label="结束"
-                                    @click.native="reason=false,appoint=false"
-                            ></el-option>
-                            <el-option
-                                    v-if="ruleForm.status===3"
                                     value="2"
-                                    label="重新打回"
-                                    @click.native="reason=true,appoint=false"
+                                    label="解决中"
                             ></el-option>
                             <el-option
-                                    v-if="ruleForm.status===4"
                                     value="3"
-                                    label="重新开启"
-                                    @click.native="appoint=true,reason=false"
+                                    label="已解决"
                             ></el-option>
                         </el-select>
                     </el-form-item>
-                    <!--使用编辑器-->
-                    <el-form-item label="打回理由:" prop="description" v-if="reason">
-                        <quill-editor v-model="ruleForm2.description"
-                                      ref="myQuillEditor"
-                                      class="quill-editor2"
-                                      :options="editorOption"
-                                      @blur="onEditorBlur2"
-                                      @focus="onEditorFocus2"
-                                      @ready="onEditorReady2">
-                        </quill-editor>
+                    <el-form-item>
+                        <input type="radio"
+                               name="appoint"
+                               v-on:click="changeRadio"
+                               :checked="checked"/>是否指派给他人
                     </el-form-item>
-                    <el-form-item style="margin-left:80px;" v-if="reason">
-                        <sourceUpload :uploadIndex="uploadIndex" v-on:setIdCard="setIdCard($event)"/>
-                    </el-form-item>
-                    <el-form-item label="指派给:" v-if="appoint">
+                    <el-form-item label="指派给" v-if="checked">
                         <el-select
-                                style="width:200px;margin:0 0 0 15px"
+                                style="width:200px;margin-left:15px"
                                 v-model="ruleForm2.userId"
                                 placeholder="请选择"
                                 size="small"
@@ -169,26 +138,26 @@
                     </el-form-item>
                 </el-form>
             </el-card>
-        </div>
+
+        </div>>
     </el-dialog>
 </template>
-
 <script>
     import {quillEditor} from 'vue-quill-editor'; //调用编辑器
     import 'quill/dist/quill.core.css';
     import 'quill/dist/quill.snow.css';
     import 'quill/dist/quill.bubble.css';
-    // import sourceUpload from "@/common/upload/resourceUpload";
     import {httpGet, httpPut} from "@/utils/http.js";
     // import {specificDate} from "@/utils/getDate.js";
     import {errTips, successTips} from "@/utils/tips.js";
     // import {mapMutations, mapActions, mapGetters} from "vuex";
+    // import sourceUpload from "@/common/upload/resourceUpload";
 
     export default {
         components: {
             quillEditor,
         },
-        name: "issueEditCreator",
+        name: "issueEditAppoint",
         props: {
             dialogFormVisible: {
                 type: Boolean,
@@ -199,11 +168,10 @@
                 default: null,
             }
         },
-        data(){
+        data() {
             return {
                 history: false,
                 editorOption: {},
-                uploadIndex: false,
                 statusList: [],
                 ruleForm:{
                     title: "",
@@ -216,19 +184,16 @@
                 },
                 ruleForm2: {
                     id: null,
+                    is: 0,
                     status: "",
-                    userId: "",
-                    description: "",
-                    resourceFile: ""
+                    userId: ""
                 },
-                userId: "",
                 userList: [],
-                appoint: false,
-                reason: false
-            }
+                checked: false
+            };
         },
 
-        methods:{
+        methods: {
             changeVisible() {
                 this.$emit('closeDialog');
             },
@@ -246,19 +211,18 @@
                 event.enable(false);
                 // console.log('ready', this.messages)
             },
-            onEditorBlur2() {
-                // console.log('blur', this.messages)
-            },
-
-            onEditorFocus2() {
-                // console.log('focus', this.messages)
-            },
-
-            onEditorReady2() {
-                // console.log('ready', this.messages)
+            changeRadio: function () {
+                if (this.checked === true) {
+                    this.checked = false;
+                    this.ruleForm2.is = 0;
+                } else {
+                    this.checked = true;
+                    this.ruleForm2.is = 1;
+                }
+                // alert(this.checked);
             },
             getIssue() {
-                httpGet("/v1/authorization/bug/edit/creator", {id: this.issueId}).then(
+                httpGet("/v1/authorization/bug/edit/appoint", {id: this.issueId}).then(
                     results => {
                         const {httpCode} = results.data;
                         if (httpCode === 200) {
@@ -272,42 +236,58 @@
             },
             //获取某个项目的可指派人
             getUsers() {
-                httpGet("/v1/authorization/bug/edit/creatoruser", {id: this.issueId}).then(
+                httpGet("/v1/authorization/bug/edit/appointuser", {id: this.issueId}).then(
                     results => {
                         const {msg, data, httpCode} = results.data;
                         if (httpCode === 200) {
                             this.userList = data.userList;
                         } else if (httpCode !== 401) {
+                            alert(msg);
                             errTips(msg);
                         }
                     }
                 );
             },
-            //提交表单
-            setIdCard(data) {
-                data && (this.ruleForm2.resourceFile = data);
-                this.ruleForm2.id = this.issueId;
-                httpPut("/v1/authorization/bug/creator/save", this.ruleForm2).then(results => {
-                    const {msg, httpCode} = results.data;
-                    if (httpCode === 200) {
-                        successTips("编辑缺陷成功！");
-                        
-                    } else if (httpCode !== 401) {
-                        errTips(msg);
-                    }
-                });
-            },
             submitForm() {
-                if (this.ruleForm2.status == 2) {
-                    this.ruleForm2.resourceFile ? this.setIdCard() : (this.uploadIndex = !this.uploadIndex);
+                if (this.ruleForm2.status === "" && this.ruleForm2.userId === "") {
+                    errTips("修改状态和选择指派人不能同时为空！");
                 } else {
-                    this.setIdCard();
+                    this.ruleForm2.id = this.issueId;
+                    httpPut("/v1/authorization/bug/appoint/save", this.ruleForm2).then(results => {
+                        const {msg, httpCode} = results.data;
+                        if (httpCode === 200) {
+                            successTips("编辑缺陷成功！");
+                        } else if (httpCode !== 401) {
+                            errTips(msg);
+                        }
+                    });
                 }
             }
-        }
-    }
+        },
+    };
 </script>
+<style lang='scss'>
+    @import "@/assets/scss/applicationView.scss";
 
-<style scoped>
+    .borderTop {
+        border-top: 1px solid #e8e8e8;
+        padding-bottom: 10px;
+    }
 
+    .quill-editor {
+        width: 96%;
+        float: right;
+        height: 200px;
+        margin: 0px 0px 100px 0px;
+    }
+
+    .el-table {
+        border: 1px solid #d8d8d8;
+    }
+
+    .el-table td,
+    .el-table th.is-leaf {
+        color: black;
+        border-bottom: 1px solid #d8d8d8;
+    }
 </style>

@@ -44,7 +44,8 @@
                         ref="upload"
                 >
                     <!-- :size="1024 * 1024 * 10" -->
-                    <el-button type="primary" size="mini">上传资源</el-button>
+                    <el-button type="primary" size="mini">选择资源</el-button>
+
                 </file-upload>
                 <!-- <el-button
           type="success"

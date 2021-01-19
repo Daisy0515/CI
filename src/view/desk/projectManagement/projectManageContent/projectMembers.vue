@@ -1,6 +1,6 @@
 <template>
     <div class="editorialTeam">
-        <div class="Crumbs">
+        <div class="Crumbs" v-if="manager_role">
             <div class="header_two0">
 <!--                <nav class="c-header c-header&#45;&#45;solid0">-->
                     <div class="o-container deskHeader clearfix">
@@ -18,7 +18,7 @@
         </div>
 <!--        成员管理模块-->
         <div class="container deskHeader" v-show="selected === 1">
-            <div class="header_ele">
+            <div class="header_ele" v-if="manager_role">
                 <el-input v-model="userNamePhoneEmail" placeholder="请输入用户名、手机号或邮箱"></el-input>
                 <el-button @click="search" type="primary">搜索人员</el-button>
 
@@ -34,7 +34,7 @@
                 <el-button @click="getTypeUsers" type="primary">推荐用户</el-button>
             </div>
             <div class="editorialTeam_main">
-                <div class="main_item clearfix" v-if="addList.userId||typeList.length!==0">
+                <div class="main_item clearfix" v-if="(addList.userId||typeList.length!==0) && manager_role">
                     <h4 class="userList">搜索列表</h4>
 
                     <el-card style="float:left" class="item clearfix" v-if="search_flag">
@@ -86,18 +86,21 @@
                         >
                             <img :src="item.headurl?item.headurl:getnoImg"/>
                         </router-link>
-                        <div class="item_title">
+                        <div class="item_title" v-if="!manager_role">
+                            <span style="text-align:center; display:block; width:100%; margin-left:0px">{{item.name}}</span>
+                        </div>
+                        <div class="item_title" v-if="manager_role">
                             <span>{{item.name}}</span>
-                            <span @click="deleteUser(item.userId,index)">
-                <i class="el-icon-error"></i>删除
-              </span>
+                            <span @click="deleteUser(item.userId,index)" >
+                                <i class="el-icon-error"></i>删除
+                            </span>
                         </div>
                     </el-card>
                 </div>
             </div>
         </div>
 <!--        队员申请模块-->
-        <div class="teamApplication" v-show="selected === 2">
+        <div class="teamApplication" v-show="selected === 2" v-if="manager_role">
         <div class="container deskHeader" >
             <el-table
                     :data="teamFrom"
@@ -154,6 +157,7 @@
     export default {
         data() {
             return {
+                manager_role: true,
                 projectName:null,
                 selected:1,//决定显示哪一个页面
                 items: [
@@ -198,6 +202,7 @@
             this.projectName = this.$route.query.projectName;
             this.projectId = this.$route.query.projectId;
             this.userId = this.$route.query.userId;
+            this.manager_role = parseInt(sessionStorage.getItem('projectRole')) === 2;
             if (!this.projectId && !this.userId) {
                 console.log("没有团队消息！");
             }

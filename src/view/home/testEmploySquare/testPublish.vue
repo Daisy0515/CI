@@ -152,7 +152,6 @@
                 this.$router.push({path: "./testEmploy"});
             },
             setIdCard(data) {
-
                 data && (this.ruleForm.sourceFile = data);
                 //alert(111);
                 httpPost('/v1/authorization/test/itemtest/insert', this.ruleForm).then(results => {

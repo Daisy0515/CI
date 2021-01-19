@@ -164,6 +164,7 @@
                                 v-for="(item,index) in allMissionList"
                                 :label="item.title"
                                 :value="index"
+                                :key="index"
                             >
                                 <el-table :data="taskTable" stripe style="width: 100%">
                                     <el-table-column prop="title" label="子任务名称" width="180"></el-table-column>
@@ -555,7 +556,7 @@
                     } else {
                         errTips(msg);
                     }
-                    console.log(data);
+                    // console.log(data);
                     this.getContent();
                     this.getTask();
                     this.getSubList(this.ruleForm.titleId);

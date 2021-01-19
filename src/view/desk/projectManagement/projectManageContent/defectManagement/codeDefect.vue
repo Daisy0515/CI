@@ -89,18 +89,23 @@
                 <el-table-column prop="operation" label="操作" align="center" width="200">
                     <template slot-scope="scope">
                         <!-- 不理解 -->
-                        <router-link @click.native="edit(scope.row.creatorId,scope.row.appointId,scope.row.id)" to>
+                        <!-- <router-link @click.native="edit(scope.row.creatorId,scope.row.appointId,scope.row.id)" to> -->
+                        <el-button plain type="primary" size="small" @click.native="edit(scope.row.creatorId,scope.row.appointId,scope.row.id)">
                             <i class="el-icon-edit"></i>
                             编辑
-                        </router-link>
-                        <router-link @click.native="viewDefectHistory(scope.row.id)" to>
+                        </el-button>
+                        <!-- </router-link> -->
+                        <el-button plain type="primary" size="small" @click.native="viewDefectHistory(scope.row.id)">
                             <i class="el-icon-search"></i>
                             查看历史
-                        </router-link>
+                        </el-button>
                     </template>
                 </el-table-column>
             </el-table>
+        
         <view-defect-history :dialogFormVisible="historyDialog" :rule-form="historyForm" :title="defectTitle" @closeDialog="closeHistoryDialog"></view-defect-history>
+        <issue-edit-creator :dialogFormVisible="editCreatorDialog" :issueId="issueId" v-if="this.issueId" @closeDialog="closeEditCreatorDialog" ref="editCreator"></issue-edit-creator>
+        <issue-edit-appoint :dialogFormVisible="editAppointDialog" :issueId="issueId" v-if="this.issueId" @closeDialog="closeEditAppointDialog" ref="editAppoint"></issue-edit-appoint>
         <div class="bid_footer">
                 <el-pagination
                         @current-change="handleCurrentChange"
@@ -115,21 +120,29 @@
 
 <script>
     import {httpGet} from "@/utils/http.js";
-    import {message, errTips, successTips} from "@/utils/tips.js";
+    import {message, errTips} from "@/utils/tips.js";
     import {mapMutations} from "vuex";
     import {hoursSeconds} from "@/utils/getDate.js";
     import defectAdd from "@/view/desk/projectManagement/projectManageContent/component/defectAdd"
     import viewDefectHistory from "../component/viewDefectHistory";
+    import issueEditCreator from "../component/issueEditCreator";
+    import issueEditAppoint from "../component/issueEditAppoint"
+    import router from "@/router";
     export default {
         name: "codeDefect",
         components: {
             defectAdd,
-            viewDefectHistory
+            viewDefectHistory,
+            issueEditCreator,
+            issueEditAppoint
         },
         data() {
             return {
                 defectAddDialog:false,//控制新增对话框
                 historyDialog:false,//控制查看历史对话框
+                editCreatorDialog:false,//控制编辑-创建者对话框
+                editAppointDialog:false,//控制编辑-指派人对话框
+                issueId: null,
                 defectTitle:null,
                 historyForm:[],
                 projectName:null,
@@ -164,7 +177,7 @@
         },
         created: function () {
             this.projectName = this.$route.query.projectName;
-            this.projectId = this.$route.query.projectId;
+            this.projectId = parseInt(this.$route.query.projectId);
             this.getAppointList(this.projectId);
             this.getView();
         },
@@ -209,8 +222,9 @@
             },
             closeDefectAddDialog() {
                 this.defectAddDialog=false;
+                router.go(0);
             },
-            changeRadio: function (event) {
+            changeRadio: function () {
                 if (this.checked === true) {
                     this.checked = false;
                     this.searchData.is = 0;
@@ -263,16 +277,32 @@
                 });
             },
             edit(creatorId, appointId, id) {
-                if (creatorId === this.userId) {
-                    this.$router.push({path: 'issueEditCreator', query: {id: id}});
-                } else {
-                    if (appointId === this.userId) {
-                        this.$router.push({path: 'issueEditAppoint', query: {id: id}});
+                this.issueId = id;
+                this.$nextTick(()=>{
+                    if (creatorId === this.userId) {
+                        this.$refs.editCreator.getIssue();
+                        this.$refs.editCreator.getUsers();
+                        this.editCreatorDialog = true;
                     } else {
-                        message("没有权限编辑！");
+                        if (appointId === this.userId) {
+                            this.$refs.editAppoint.getIssue();
+                            this.$refs.editAppoint.getUsers();
+                            this.editAppointDialog = true;
+                        } else {
+                            message("没有权限编辑！");
+                        }
                     }
-                }
-            }
+                })
+               
+            },
+            closeEditCreatorDialog() {
+                this.editCreatorDialog = false;
+                router.go(0);
+            },
+            closeEditAppointDialog() {
+                this.editAppointDialog = false;
+                router.go(0);
+            },
         }
     };
 </script>
