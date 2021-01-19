@@ -214,7 +214,7 @@ export default {
     this.getNotification(this.pageData);
     // this.searchData.id = this.$route.query.id;
     // this.testIssueList(this.searchData.id);
-    this.getMissionList(this.searchData.Id);
+    // this.getMissionList(this.searchData.Id);
     //alert(this.id);
   },
 
