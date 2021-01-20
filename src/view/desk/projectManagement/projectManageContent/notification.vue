@@ -10,10 +10,6 @@
           <el-option label="会议通知" value="1"></el-option>
           <el-option label="其他" value="2"></el-option>
         </el-select>
-        <el-select v-model="searchData.participantsId" clearable placeholder="发起人">
-          <el-option v-for="item in missionList" :key="item.id" :label="item.missionName"
-                     :value="item"></el-option>
-        </el-select>
         <el-select v-model="searchData.participantsId" clearable placeholder="相关人员">
           <el-option v-for="item in missionList" :key="item.id" :label="item.missionName"
                      :value="item"></el-option>
@@ -191,6 +187,9 @@ export default {
         startTime: null,
         endTime: null
       },
+      name2Id:{
+
+      },
       pageData: {
         pageNo: 1,
         pageSize: 10,
@@ -247,7 +246,6 @@ export default {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
           this.getNotification();
-
         } else {
           errTips(msg);
         }
@@ -335,9 +333,9 @@ export default {
       httpGet('/v1/authorization/notification/notification/teammember/get', {teamId: this.teamId, projectId: this.projectId}).then(results => {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
-          console.log("344", data);
           for(let i=0; i<data.teamUserList.length; i++){
             this.missionList.push(data.teamUserList[i].name);
+            this.name2Id[data.teamUserList[i].name] = data.teamUserList[i].userId;
           }
         } else {
           errTips(msg);
@@ -363,9 +361,7 @@ export default {
     searchList() {
 
       ///v1/authorization/notification/search/list
-
-      console.log("pageData", this.pageData);
-      console.log("searchData", this.searchData);
+      this.searchData.participantsId = this.name2Id[this.searchData.participantsId];
       httpGet('v1/authorization/notification/search/list', this.searchData).then(results => {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
