@@ -10,7 +10,7 @@
           <el-option label="会议通知" value="1"></el-option>
           <el-option label="其他" value="2"></el-option>
         </el-select>
-        <el-select v-model="searchData.participantsId" clearable placeholder="相关人员">
+        <el-select v-model="searchData.participantsName" clearable placeholder="相关人员">
           <el-option v-for="item in missionList" :key="item.id" :label="item.missionName"
                      :value="item"></el-option>
         </el-select>
@@ -183,6 +183,7 @@ export default {
         teamId: null,
         theme: null,
         participantsId: null,
+        participantsName: null,
         type: null,
         startTime: null,
         endTime: null
@@ -362,7 +363,7 @@ export default {
     searchList() {
 
       ///v1/authorization/notification/search/list
-      this.searchData.participantsId = this.name2Id[this.searchData.participantsId];
+      this.searchData.participantsId = this.name2Id[this.searchData.participantsName];
       httpGet('v1/authorization/notification/search/list', this.searchData).then(results => {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
