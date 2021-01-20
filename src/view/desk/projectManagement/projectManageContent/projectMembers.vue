@@ -201,10 +201,10 @@
         created: function () {
             this.projectName = this.$route.query.projectName;
             this.projectId = this.$route.query.projectId;
-            this.userId = this.$route.query.userId;
+            this.userId = sessionStorage.getItem('userId');
             this.manager_role = parseInt(sessionStorage.getItem('projectRole')) === 2;
             if (!this.projectId && !this.userId) {
-                console.log("没有团队消息！");
+                errTips("没有团队消息！");
             }
             this.getView();
             this.getApplication();

@@ -87,6 +87,30 @@
                         name: "项目进度",
                         url: "projectProgress",
                     },
+                    {
+                        name: "任务管理",
+                        url: "developerTask",
+                    },
+                    {
+                        name: "项目文件",
+                        url: "projectFile",
+                    },
+                    {
+                        name: "项目成员",
+                        url: "projectMembers",
+                    },
+                    {
+                        name: "git提交信息",
+                        url: "gitSubmitInfo",
+                    },
+                    {
+                        name: "通知",
+                        url: "notification",
+                    },
+                    {
+                        name: "缺陷管理",
+                        url: "defectManagement",
+                    },
 
                 ],
                 projectName:"", //项目名称
@@ -101,8 +125,14 @@
             this.setLeft(this.$router.currentRoute.name);
             this.showDataLeftOne = parseInt(sessionStorage.getItem('projectRole')) === 2; //true 项目经理角色 false 开发者角色
             this.teamId = this.$route.query.teamId;
+            this.userId = this.$route.query.userId;
             if(this.teamId === undefined){
                 this.teamId = sessionStorage.getItem("teamId");
+            }
+            if(this.userId === undefined){
+                this.userId = sessionStorage.getItem("userId");
+            } else {
+                sessionStorage.setItem("userId",this.userId);
             }
             this.getTeamInfo(this.teamId);
         },

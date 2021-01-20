@@ -69,7 +69,7 @@
             <el-table-column prop="projectName" label="项目/比赛" align="center">
                 <template slot-scope="scope">
                     <router-link :to="{name:'projectManageContent',
-                                       query:{teamId:scope.row.teamId}}" >
+                                       query:{teamId:scope.row.teamId,userId:scope.row.userId}}" >
                         <el-tooltip class="item" effect="dark" :content="scope.row.projectName" placement="top-start">
                             <span class="tablehidden">{{scope.row.projectName}}</span>
                         </el-tooltip>

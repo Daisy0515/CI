@@ -288,7 +288,7 @@
             this.routerIndex = this.$route.name;
             this.projectId = this.$route.query.teamId;
             if (!this.projectId) {
-                console.log("no project");
+                errTips("no project");
             }
             this.getContent();
             // this.settaskList([]);
@@ -318,7 +318,6 @@
             //打开任务信息对话框并获取任务信息
             showTaskInfoDialog(val){
                 this.dialogTaskInfoView=true;
-                console.log("val",val);
                 httpGet('/v1/authorization/manage/mission/get', {id:val}).then(results => {
                     const {msg, data, httpCode} = results.data;
                     if (httpCode == 200) {
@@ -332,16 +331,13 @@
                         if(form.status == 2) form.status = "完成";
                         if(form.status == 3) form.status = "放弃";
                         this.taskForm = form;
-                        //console.log(this.taskForm);
                     } else {
                         errTips(msg);
                     }
                 });
             },
             showSubTask(val){
-                //console.log(val);
                 this.taskTable = this.allMissionList[val].missionInfoList;
-                console.log("tasktable",taskTable);
             },
             getAllMissionList(){
                 httpGet('/v1/authorization/manage/mission/list', {teamId: this.projectId}).then(results => {
@@ -394,7 +390,7 @@
                     return false;
                 }
                 httpPost('/v1/authorization/mission/missiontitle/insert', this.missionForm).then(results => {
-                    const {msg, httpCode, data} = results.data;
+                    const {msg, httpCode} = results.data;
                     if (httpCode === 200) {
                         successTips('添加任务成功！');
                         this.getAllMissionList();
@@ -414,7 +410,7 @@
                     return false;
                 }
                 httpPost('/v1/authorization/mission/missiontype/insert', this.typeForm).then(results => {
-                    const {msg, httpCode, data} = results.data;
+                    const {msg, httpCode} = results.data;
                     if (httpCode === 200) {
                         successTips('添加任务类型成功！');
                         this.getAllMissionList();
@@ -472,14 +468,12 @@
                     }
                 });
                 clipboard.on('success', e => {
-                    console.log('复制成功');
                     successTips('复制git地址成功');
                     // 释放内存
                     clipboard.destroy();
                 });
                 clipboard.on('error', e => {
                     // 不支持复制
-                    console.log('该浏览器不支持自动复制');
                     errTips('该浏览器不支持自动复制');
                     // 释放内存
                     clipboard.destroy();
@@ -550,7 +544,7 @@
             setIdCard2(data) {
                 data && (this.ruleForm.sourceFile = data.fileName);
                 httpPost('/v1/authorization/bids/missioninfo/add', this.ruleForm).then(results => {
-                    const {msg, httpCode, data} = results.data;
+                    const {msg, httpCode} = results.data;
                     if (httpCode === 200) {
                         successTips('添加任务成功！');
                     } else {
