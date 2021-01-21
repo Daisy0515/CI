@@ -49,6 +49,16 @@
               </div>
             </ul>
           </el-card>
+
+          <div class="pagerHold">
+            <el-pagination
+                @current-change="handleCurrentChange"
+                :current-page.sync="pageData.pageNo"
+                :page-count="totalPage"
+                layout="prev, pager, next"
+            ></el-pagination>
+          </div>
+
         </div>
 
         <el-dialog :visible.sync="noticeVisible"
@@ -80,6 +90,8 @@
                 </el-form-item>
               </el-col>
             </el-row>
+
+
 
             <el-row :gutter="20">
               <el-col :span="21">
@@ -159,6 +171,7 @@ export default {
       ruleForm: {},
       noticeVisible: false,
       selectedNotice: 0,
+
       noticeTable: {
         theme: '',
         participantsList: '',
@@ -166,6 +179,8 @@ export default {
         id: '',
 
       },
+      totalCount:1,
+      totalPage:1,
       noticeData: {
         theme: "",
         participantsList: '',
@@ -177,7 +192,7 @@ export default {
       noticeTableList: [],
       searchData: {
         pageNo: 1,
-        pageSize: 10,
+        pageSize: 5,
         orderType: 'DESC',
         orderBy: 'id',
         teamId: null,
@@ -193,7 +208,7 @@ export default {
       },
       pageData: {
         pageNo: 1,
-        pageSize: 10,
+        pageSize: 5,
         orderType: 'DESC',
         orderBy: 'id',
         teamId: null,
@@ -225,6 +240,8 @@ export default {
       httpGet('v1/authorization/notification/search/list', val).then(results => {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
+          this.totalCount = data.totalCount;
+          this.totalPage = data.totalPage;
           this.notificationList = data.list;
           for (let i = 0; i < this.notificationList.length; i++) {
             this.notificationList[i].notificationTime = specificDate(this.notificationList[i].notificationTime);
@@ -235,6 +252,10 @@ export default {
         this.showNotice(this.selectedNotice);
         this.loading = false;
       });
+    },
+    handleCurrentChange(val) {
+      this.pageData.pageNo = val;
+      this.getNotification();
     },
     closeNoticeDialog() {
       this.noticeVisible = false;
