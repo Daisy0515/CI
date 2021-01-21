@@ -240,6 +240,7 @@ export default {
       httpGet('v1/authorization/notification/search/list', val).then(results => {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
+          console.log("244data", data);
           this.totalCount = data.totalCount;
           this.totalPage = data.totalPage;
           this.notificationList = data.list;
@@ -385,19 +386,8 @@ export default {
 
       ///v1/authorization/notification/search/list
       this.searchData.participantsId = this.name2Id[this.searchData.participantsName];
-      httpGet('v1/authorization/notification/search/list', this.searchData).then(results => {
-        const {msg, data, httpCode} = results.data;
-        if (httpCode === 200) {
-          this.notificationList = data.list;
-          for (let i = 0; i < this.notificationList.length; i++) {
-            this.notificationList[i].notificationTime = specificDate(this.notificationList[i].notificationTime);
-          }
-        } else {
-          errTips(msg);
-        }
-        this.showNotice(this.selectedNotice);
-        this.loading = false;
-      });
+      this.getNotification(this.searchData);
+
     },
 
 
