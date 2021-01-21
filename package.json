@@ -54,7 +54,6 @@
   },
   "eslintConfig": {
     "root": false,
-
     "env": {
       "node": true
     },
