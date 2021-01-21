@@ -240,7 +240,6 @@ export default {
       httpGet('v1/authorization/notification/search/list', val).then(results => {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
-          console.log("244data", data);
           this.totalCount = data.totalCount;
           this.totalPage = data.totalPage;
           this.notificationList = data.list;
