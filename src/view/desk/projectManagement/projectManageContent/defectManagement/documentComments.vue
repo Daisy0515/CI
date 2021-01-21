@@ -18,17 +18,18 @@
                 </el-select>
 <!--                <input type="radio" v-on:click="changeRadio" :checked="checked"/>是否指派给我-->
                 <!-- <div class="buttons"> -->
-                <router-link :to="{path:'opinionAdd'}">
-                    <el-button type="primary" size="middle"
-                               @click="routerIndex='opinionAdd'"
-                    >新增
-                    </el-button>
-                </router-link>
+                <el-button type="primary" @click.native="addComments()">新增</el-button>
                 <el-button size="primary" @click="searchList()">搜索</el-button>
                 <!-- </div> -->
-                <el-button type="primary" @click="toOpinionSum" size="large" style="width:150px">意见汇总</el-button>
+                <el-button type="primary" @click="sumComments()" size="large" style="width:150px">意见汇总</el-button>
                 <br>
             </div>
+        <comments-Add :dialogFormVisible="commentsAddDialog" :projectId="projectId" 
+                      :missionTitle="missionTitle" @closeDialog="closeCommentsAddDialog"></comments-add>
+
+        <comments-Sum :dialogFormVisible="commentsSumDialog" :opinionSummaryList="opinionSummaryList"
+                      :projectName="projectName" @closeDialog="closeCommentsSumDialog"></comments-Sum>
+
         <el-table
                     :data="tableData"
                     style="width: 100%"
@@ -120,21 +121,21 @@
                 </el-table-column>
                 <el-table-column prop="operation" label="操作" align="center" width="200">
                     <template slot-scope="scope">
-                        <router-link @click.native="edit(scope.row.documentsType,scope.row.id)" to>
+                        <!-- <router-link @click.native="edit(scope.row.documentsType,scope.row.id)" to>
                             <i class="el-icon-edit"></i>
                             编辑
-                        </router-link>
+                        </router-link> -->
 
 
-                        <router-link
-                                :to="{ path: 'opinionView', query: { id: scope.row.id } }"
-                        >
+                        <el-button plain type="primary" size="small" @click.native="viewComments(scope.row.id)">
                             <i class="el-icon-search"></i>
                             查看意见
-                        </router-link>
+                        </el-button>
                     </template>
                 </el-table-column>
             </el-table>
+        <comments-view :dialogFormVisible="commentsViewDialog" :id="id" v-if="this.id" @closeDialog="closeCommentsViewDialog" ref="commentsView"></comments-view>
+        
         <div class="bid_footer">
                 <el-pagination
                         @current-change="handleCurrentChange"
@@ -151,13 +152,27 @@
     import {message, errTips} from "@/utils/tips.js";
     import {mapMutations} from "vuex";
     import {hoursSeconds} from "@/utils/getDate.js";
+    import commentsAdd from "../component/commentsAdd.vue";
+    import commentsView from "../component/commentsView.vue";
+    import commentsSum from "../component/commentsSum.vue"
+    import router from "@/router"
 
     export default {
         name: "documentOpinion",
+        components: {
+            commentsAdd,
+            commentsView,
+            commentsSum,
+        },
         data() {
             return {
+                commentsAddDialog:false,//控制查看意见对话框
+                commentsViewDialog:false,//控制查看意见对话框
+                commentsSumDialog:false,//控制意见汇总对话框
+                id: null,
+                missionTitle: [],
+                opinionSummaryList: [],
                 projectId:null,
-                projectList: [],
                 demandList: [],
                 userId: null,
                 checked: false,
@@ -187,8 +202,8 @@
             };
         },
         created: function () {
-            this.projectId = this.$route.query.projectId;
-
+            this.projectId = parseInt(sessionStorage.getItem('projectId'));
+            this.projectName = sessionStorage.getItem('projectName');
             this.getDemandList(this.projectId);
             this.getView();
         },
@@ -208,25 +223,8 @@
                 });
             },
 
-            changeRadio: function (event) {
-                if (this.checked === true) {
-                    this.checked = false;
-                    this.searchData.is = 0;
-                    this.pageData.is = 0;
-                } else {
-                    this.checked = true;
-                    this.searchData.is = 1;
-                    this.pageData.is = 1;
-                }
-            },
             toOpinionSum() {
                 this.$router.push({path: "./opinionSum"});
-            },
-            toIssueManage() {
-                this.$router.push({path: "./issueManage"});
-            },
-            toDocumentOpinion() {
-                this.$router.push({path: "./documentOpinion"});
             },
 
             rowClass() {
@@ -287,6 +285,58 @@
                         this.$router.push({path: 'editDetailedDesign', query: {id: id}});
                     }
                 }
+            },
+
+            addComments() {
+                httpGet('/v1/authorization/documents/title/get', {id: this.projectId}).then(results => {
+                    const {msg, data, httpCode} = results.data;
+                    if (httpCode === 200) {
+                        this.missionTitle = data.missionTitle;
+                    } else if (httpCode !== 401) {
+                        errTips(msg);
+                    }
+                });
+                this.commentsAddDialog = true;
+            },
+
+            closeCommentsAddDialog() {
+                this.commentsAddDialog = false;
+                router.go(0);
+            },
+
+            viewComments(val) {
+                this.id = val;
+                this.$nextTick(()=>{
+                    this.$refs.commentsView.getView();
+                    this.commentsViewDialog = true;
+                })
+            },
+
+            closeCommentsViewDialog() {
+                this.commentsViewDialog = false;
+            },
+
+            sumComments() {
+                this.loading = true;
+                httpGet("/v1/authorization/documents/Opinionsummary/get", {projectId: this.projectId}).then(results => {
+                    const {httpCode, msg, data} = results.data;
+                    if (httpCode === 200) {
+                        //alert(1000);
+                        //alert(data[0].opinionTitle)
+                        this.opinionSummaryList = data.opinionSummaryList;
+
+                        // alert(this.opinionSummaryList[0].opinionTitle);
+                    } else if (msg === "该条件暂无数据") {
+                        this.opinionSummaryList = [];
+                        message("该条件暂无数据");
+                    }
+                    this.loading = false;
+                });
+                this.commentsSumDialog = true;
+            },
+
+            closeCommentsSumDialog() {
+                this.commentsSumDialog = false;
             }
         }
     };

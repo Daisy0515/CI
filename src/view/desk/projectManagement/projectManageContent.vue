@@ -87,6 +87,27 @@
                         name: "项目进度",
                         url: "projectProgress",
                     },
+                    {
+                        name: "我的任务",
+                        url: "developerTask",
+                    },
+                    {
+                        name: "项目文件",
+                        url: "projectFile",
+                    },
+                    {
+                        name: "项目成员",
+                        url: "projectMembers",
+                    },
+                    {
+                        name: "通知",
+                        url: "notification",
+                    },
+                    {
+                        name: "缺陷管理",
+                        url: "defectManagement",
+                    },
+
 
                 ],
                 projectName:"", //项目名称

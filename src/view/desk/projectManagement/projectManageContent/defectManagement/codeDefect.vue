@@ -176,8 +176,8 @@
             };
         },
         created: function () {
-            this.projectName = this.$route.query.projectName;
-            this.projectId = parseInt(this.$route.query.projectId);
+            this.projectName = sessionStorage.getItem('projectName');
+            this.projectId = parseInt(sessionStorage.getItem('projectId'));
             this.getAppointList(this.projectId);
             this.getView();
         },

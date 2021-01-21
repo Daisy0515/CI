@@ -150,8 +150,8 @@
 
 <script>
     import {httpGet, httpPost, httpDelete} from "@/utils/http.js";
-    import {mapGetters, mapMutations} from "vuex";
-    import {successTips, errTips} from "@/utils/tips.js";
+    import {mapGetters} from "vuex";
+    import {successTips, errTips, message} from "@/utils/tips.js";
     import {MessageBox} from "element-ui";
     import {specificDate} from "@/utils/getDate.js";
     export default {
@@ -199,12 +199,12 @@
             ...mapGetters(["getHeader", "getnoImg"])
         },
         created: function () {
-            this.projectName = this.$route.query.projectName;
-            this.projectId = this.$route.query.projectId;
-            this.userId = this.$route.query.userId;
+            this.projectName = sessionStorage.getItem('projectName');
+            this.projectId = sessionStorage.getItem('projectId');
+            this.userId = sessionStorage.getItem('userId');
             this.manager_role = parseInt(sessionStorage.getItem('projectRole')) === 2;
             if (!this.projectId && !this.userId) {
-                console.log("没有团队消息！");
+                message("没有团队消息！");
             }
             this.getView();
             this.getApplication();
@@ -245,7 +245,7 @@
                     type: "warning"
                 })
                     .then(() => {
-                        let {teamId, competeTeamList} = this.userList;
+                        let {teamId} = this.userList;
                         httpGet("/v1/authorization/bids/invite/teamuser", {
                             userId: id,
                             teamId: teamId
@@ -275,7 +275,7 @@
                     type: "warning"
                 })
                     .then(() => {
-                        let {teamId, competeTeamList} = this.userList;
+                        let {teamId} = this.userList;
                         httpGet("/v1/authorization/bids/cancel/user", {
                             userId: id,
                             teamId: teamId
@@ -306,7 +306,7 @@
                 this.search_flag = true;
                 //将领域用户列表清空
                 this.typeList = [];
-                let {teamId, competeTeamList} = this.userList;
+                let {teamId} = this.userList;
                 httpGet("/v1/authorization/bids/select/user", {
                     userNamePhoneEmail: this.userNamePhoneEmail,
                     teamId: teamId
@@ -334,7 +334,7 @@
                 this.search_flag = false;
                 //将单个搜索用户清空
                 this.addList = "";
-                let {teamId, competeTeamList} = this.userList;
+                let {teamId} = this.userList;
                 httpGet("/v1/authorization/bids/select/type", {
                     id: this.typeId,
                     teamId: teamId

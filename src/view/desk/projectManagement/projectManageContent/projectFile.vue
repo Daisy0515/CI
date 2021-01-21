@@ -80,34 +80,20 @@
                 fileTable: [],
                 userList:[],
                 missionTitleList:[],
-                subtitleList: [],
             };
         },
         created: function () {
-            this.teamId = this.$route.query.teamId;
+            this.teamId = sessionStorage.getItem('teamId');
             this.pageData.teamId = this.teamId;
             this.getView();
             this.getUserList();
             this.getMissionList();
-            this.getSubtitleList();
         },
         computed: {
         },
         methods: {
             ...mapMutations(["setCache"]),
             getMissionList(){
-                httpGet("/v1/authorization/manage/missiontitle/list", {
-                    teamId: this.teamId
-                }).then(results => {
-                    const {httpCode, msg, data} = results.data;
-                    if (httpCode === 200) {
-                        this.missionTitleList = data.missionTitle;
-                    } else {
-                        errTips(msg);
-                    }
-                });
-            },
-            getSubtitleList() {
                 httpGet("/v1/authorization/manage/missiontitle/list", {
                     teamId: this.teamId
                 }).then(results => {
