@@ -198,7 +198,7 @@
 
 <script>
     import Clipboard from 'clipboard';
-    import {mapGetters, mapMutations} from 'vuex';
+    import {mapMutations} from 'vuex';
     import dialogTaskInfo from '@/view/desk/projectManagement/projectManageContent/component/dialogTaskInfo'
     import {httpGet, httpDelete, httpPost} from '@/utils/http.js';
     import {specificDate} from '@/utils/getDate.js';
@@ -460,19 +460,19 @@
                 });
             },
             //复制Git地址
-            copyAddress: function (event) {
+            copyAddress: function () {
                 var gitAddress = this.httpUrlToRepo;
                 var clipboard = new Clipboard('.btn', {
                     text: function () {
                         return gitAddress;
                     }
                 });
-                clipboard.on('success', e => {
+                clipboard.on('success', () => {
                     successTips('复制git地址成功');
                     // 释放内存
                     clipboard.destroy();
                 });
-                clipboard.on('error', e => {
+                clipboard.on('error', () => {
                     // 不支持复制
                     errTips('该浏览器不支持自动复制');
                     // 释放内存
@@ -566,9 +566,9 @@
             },
 
             //添加任务
-            submitForm(formName) {
+            submitForm() {
                 //alert(1111111);
-                if (new Date(this.ruleForm.startTime.replace(/\-/g, '/')) > new Date(this.ruleForm.endTime.replace(/\-/g, '/'))) {
+                if (new Date(this.ruleForm.startTime.replace(/-/g, '/')) > new Date(this.ruleForm.endTime.replace(/-/g, '/'))) {
                     errTips('开始时间不能大于结束时间');
                     return false;
                 }

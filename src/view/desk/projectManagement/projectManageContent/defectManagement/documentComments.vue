@@ -155,7 +155,6 @@
     import commentsAdd from "../component/commentsAdd.vue";
     import commentsView from "../component/commentsView.vue";
     import commentsSum from "../component/commentsSum.vue"
-    import router from "@/router"
 
     export default {
         name: "documentOpinion",
@@ -301,7 +300,7 @@
 
             closeCommentsAddDialog() {
                 this.commentsAddDialog = false;
-                router.go(0);
+                this.getView();
             },
 
             viewComments(val) {

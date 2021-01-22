@@ -21,9 +21,14 @@
                 </el-button>
 
                 <el-button size="primary" @click="searchList()">搜索</el-button>
+                <el-button size="primary" @click="getIssueVisualization()">可视化</el-button>
+                <el-button size="primary" @click="gotoTest()">招聘测试人员</el-button>
                 <!-- </div> -->
             </div>
-        <defect-add :dialogFormVisible="defectAddDialog" :userList="userList" :projectId="projectId" @closeDialog="closeDefectAddDialog"></defect-add>
+        <defect-add :dialogFormVisible="defectAddDialog" :userList="userList" 
+                    :projectId="projectId" @closeDialog="closeDefectAddDialog"></defect-add>
+        <issue-visualization :dialogFormVisible="visualizationDialog" :projectList="projectList" 
+                             @closeDialog="closeVisualizationDialog" ref="issueVisualization"></issue-visualization>
         <el-table
                     :data="tableData"
                     style="width: 100%"
@@ -103,9 +108,12 @@
                 </el-table-column>
             </el-table>
         
-        <view-defect-history :dialogFormVisible="historyDialog" :rule-form="historyForm" :title="defectTitle" @closeDialog="closeHistoryDialog"></view-defect-history>
-        <issue-edit-creator :dialogFormVisible="editCreatorDialog" :issueId="issueId" v-if="this.issueId" @closeDialog="closeEditCreatorDialog" ref="editCreator"></issue-edit-creator>
-        <issue-edit-appoint :dialogFormVisible="editAppointDialog" :issueId="issueId" v-if="this.issueId" @closeDialog="closeEditAppointDialog" ref="editAppoint"></issue-edit-appoint>
+        <view-defect-history :dialogFormVisible="historyDialog" :rule-form="historyForm" 
+                             :title="defectTitle" @closeDialog="closeHistoryDialog"></view-defect-history>
+        <issue-edit-creator :dialogFormVisible="editCreatorDialog" :issueId="issueId" 
+                            v-if="this.issueId" @closeDialog="closeEditCreatorDialog" ref="editCreator"></issue-edit-creator>
+        <issue-edit-appoint :dialogFormVisible="editAppointDialog" :issueId="issueId" 
+                            v-if="this.issueId" @closeDialog="closeEditAppointDialog" ref="editAppoint"></issue-edit-appoint>
         <div class="bid_footer">
                 <el-pagination
                         @current-change="handleCurrentChange"
@@ -127,14 +135,17 @@
     import viewDefectHistory from "../component/viewDefectHistory";
     import issueEditCreator from "../component/issueEditCreator";
     import issueEditAppoint from "../component/issueEditAppoint"
-    import router from "@/router";
+    import issueVisualization from "../component/issueVisualization"
+    import {MessageBox} from 'element-ui';
+
     export default {
         name: "codeDefect",
         components: {
             defectAdd,
             viewDefectHistory,
             issueEditCreator,
-            issueEditAppoint
+            issueEditAppoint,
+            issueVisualization,
         },
         data() {
             return {
@@ -142,6 +153,8 @@
                 historyDialog:false,//控制查看历史对话框
                 editCreatorDialog:false,//控制编辑-创建者对话框
                 editAppointDialog:false,//控制编辑-指派人对话框
+                visualizationDialog:false,//控制可视化对话框
+                projectList: [],
                 issueId: null,
                 defectTitle:null,
                 historyForm:[],
@@ -222,8 +235,9 @@
             },
             closeDefectAddDialog() {
                 this.defectAddDialog=false;
-                router.go(0);
+                this.getView();
             },
+
             changeRadio: function () {
                 if (this.checked === true) {
                     this.checked = false;
@@ -297,12 +311,43 @@
             },
             closeEditCreatorDialog() {
                 this.editCreatorDialog = false;
-                router.go(0);
+                this.getView();
             },
             closeEditAppointDialog() {
                 this.editAppointDialog = false;
-                router.go(0);
+                this.getView();
             },
+
+            getIssueVisualization() {
+                httpGet('/v1/authorization/bug/get/userproject').then(results => {
+                    const {msg, data, httpCode} = results.data;
+                    if (httpCode === 200) {
+                        this.projectList = data.projectList;
+                    } else if (httpCode !== 401) {
+                        errTips(msg);
+                    }
+                });
+                this.visualizationDialog = true;
+                this.$nextTick(()=>{
+                    this.$refs.issueVisualization.drawInit();
+                })
+                
+            },
+
+            closeVisualizationDialog() {
+                this.visualizationDialog = false;
+            },
+
+            gotoTest() {
+                MessageBox.confirm("是否进入“内测管理”，招募外来人员测试产品？", "提示", {
+                    confirmButtonText: "进入",
+                    cancelButtonText: "取消",
+                    type: "info"
+                }).then(() => {
+                    this.$router.push({path:"/desk/myTest"});
+                });
+
+            }
         }
     };
 </script>
