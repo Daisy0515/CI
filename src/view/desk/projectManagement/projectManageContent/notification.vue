@@ -234,7 +234,6 @@ export default {
   methods: {
     ...mapMutations(["setCache"]),
     getNotification(val=this.pageData) {
-
       ///v1/authorization/notification/search/list
 
       httpGet('v1/authorization/notification/search/list', val).then(results => {
@@ -249,7 +248,11 @@ export default {
         } else {
           errTips(msg);
         }
-        this.showNotice(this.selectedNotice);
+
+        if(this.selectedNotice != 0){
+          this.showNotice(this.selectedNotice);
+        }
+
         this.loading = false;
       });
     },
