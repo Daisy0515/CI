@@ -49,6 +49,15 @@
               </div>
             </ul>
           </el-card>
+          <div class="pagerHold">
+            <el-pagination
+                @current-change="handleCurrentChange"
+                :current-page.sync="pageData.pageNo"
+                :total="totalCount"
+                :page-size="pageData.pageSize"
+                layout="total, prev, pager, next"
+            ></el-pagination>
+</div>
         </div>
 
         <el-dialog :visible.sync="noticeVisible"
@@ -177,7 +186,7 @@ export default {
       noticeTableList: [],
       searchData: {
         pageNo: 1,
-        pageSize: 10,
+        pageSize: 5,
         orderType: 'DESC',
         orderBy: 'id',
         teamId: null,
@@ -191,9 +200,11 @@ export default {
       name2Id:{
 
       },
+      totalPage: 1,
+      totalCount: 0,
       pageData: {
         pageNo: 1,
-        pageSize: 10,
+        pageSize: 5,
         orderType: 'DESC',
         orderBy: 'id',
         teamId: null,
@@ -225,10 +236,14 @@ export default {
       httpGet('v1/authorization/notification/search/list', val).then(results => {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
+          console.log("237data",data);
+          this.totalPage = data.totalPage;
+          this.totalCount = data.totalCount;
           this.notificationList = data.list;
           for (let i = 0; i < this.notificationList.length; i++) {
             this.notificationList[i].notificationTime = specificDate(this.notificationList[i].notificationTime);
           }
+          console.log("241this.notificationList", this.notificationList);
         } else {
           errTips(msg);
         }
@@ -241,6 +256,11 @@ export default {
     },
     showInitNewNotification() {
       this.newNotificationView = true;
+    },
+    handleCurrentChange(val) {
+      console.log("this.handleCurrentChange", val);
+      this.pageData.pageNo = val;
+      this.getNotification();
     },
     deleteNotice(val) {
       httpDelete(`v1/authorization/notification/notification/delete/${val}`).then(results => {
