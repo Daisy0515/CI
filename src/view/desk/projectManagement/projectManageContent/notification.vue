@@ -15,20 +15,20 @@
                      :value="item"></el-option>
         </el-select>
         <div>
-        <el-date-picker
-            v-model="searchData.startTime"
-            type="date"
-            placeholder="通知开始时间"
-            value-format="yyyy-MM-dd"
-        ></el-date-picker>
-        <span style="margin-right: 15px;">到</span>
-        <el-date-picker
-            v-model="searchData.endTime"
-            type="date"
-            placeholder="通知结束时间"
-            value-format="yyyy-MM-dd"
-        ></el-date-picker>
-        <el-button size="primary" @click="searchList">搜索</el-button>
+          <el-date-picker
+              v-model="searchData.startTime"
+              type="date"
+              placeholder="通知开始时间"
+              value-format="yyyy-MM-dd"
+          ></el-date-picker>
+          <span style="margin-right: 15px;">到</span>
+          <el-date-picker
+              v-model="searchData.endTime"
+              type="date"
+              placeholder="通知结束时间"
+              value-format="yyyy-MM-dd"
+          ></el-date-picker>
+          <el-button size="primary" @click="searchList">搜索</el-button>
         </div>
       </div>
       <div style="margin-top: 30px">
@@ -49,15 +49,16 @@
               </div>
             </ul>
           </el-card>
+
           <div class="pagerHold">
             <el-pagination
                 @current-change="handleCurrentChange"
                 :current-page.sync="pageData.pageNo"
-                :total="totalCount"
-                :page-size="pageData.pageSize"
-                layout="total, prev, pager, next"
+                :page-count="totalPage"
+                layout="prev, pager, next"
             ></el-pagination>
-</div>
+          </div>
+
         </div>
 
         <el-dialog :visible.sync="noticeVisible"
@@ -89,6 +90,8 @@
                 </el-form-item>
               </el-col>
             </el-row>
+
+
 
             <el-row :gutter="20">
               <el-col :span="21">
@@ -141,19 +144,17 @@
   </div>
 </template>
 <script>
-import {httpGet, httpPost, httpDelete} from "@/utils/http.js";
+import {httpGet, httpDelete} from "@/utils/http.js";
 import {specificDate} from "@/utils/getDate.js";
 import {errTips} from "@/utils/tips.js";
-import {mapMutations, mapActions, mapGetters} from "vuex";
+import {mapMutations} from "vuex";
 import initNewNotification from '@/view/desk/projectManagement/projectManageContent/component/initNewNotification'
-import {quillEditor} from 'vue-quill-editor'; //调用编辑器
 import 'quill/dist/quill.core.css';
 import 'quill/dist/quill.snow.css';
 import 'quill/dist/quill.bubble.css';
-
 export default {
   components: {
-    quillEditor,
+
     initNewNotification,
   },
   data() {
@@ -173,8 +174,9 @@ export default {
         participantsList: '',
         notificationTime: '',
         id: '',
-
       },
+      totalCount:1,
+      totalPage:1,
       noticeData: {
         theme: "",
         participantsList: '',
@@ -198,10 +200,7 @@ export default {
         endTime: null
       },
       name2Id:{
-
       },
-      totalPage: 1,
-      totalCount: 0,
       pageData: {
         pageNo: 1,
         pageSize: 5,
@@ -226,30 +225,39 @@ export default {
     this.getNotification(this.pageData);
     this.getMissionList();
   },
-
   methods: {
     ...mapMutations(["setCache"]),
     getNotification(val=this.pageData) {
-
       ///v1/authorization/notification/search/list
-
+      console.log("237", val);
       httpGet('v1/authorization/notification/search/list', val).then(results => {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
-          console.log("237data",data);
-          this.totalPage = data.totalPage;
           this.totalCount = data.totalCount;
+          this.totalPage = data.totalPage;
           this.notificationList = data.list;
           for (let i = 0; i < this.notificationList.length; i++) {
             this.notificationList[i].notificationTime = specificDate(this.notificationList[i].notificationTime);
           }
-          console.log("241this.notificationList", this.notificationList);
-        } else {
-          errTips(msg);
         }
-        this.showNotice(this.selectedNotice);
+        else {
+          if(msg == "该条件暂无数据"){
+            this.totalCount = 0;
+            this.totalPage = 0;
+            this.notificationList = [];
+          }else {
+            errTips(msg);
+          }
+        }
+        if(this.selectedNotice != 0){
+          this.showNotice(this.selectedNotice);
+        }
         this.loading = false;
       });
+    },
+    handleCurrentChange(val) {
+      this.pageData.pageNo = val;
+      this.getNotification();
     },
     closeNoticeDialog() {
       this.noticeVisible = false;
@@ -257,23 +265,16 @@ export default {
     showInitNewNotification() {
       this.newNotificationView = true;
     },
-    handleCurrentChange(val) {
-      console.log("this.handleCurrentChange", val);
-      this.pageData.pageNo = val;
-      this.getNotification();
-    },
     deleteNotice(val) {
       httpDelete(`v1/authorization/notification/notification/delete/${val}`).then(results => {
-        const {msg, data, httpCode} = results.data;
+        const {msg, httpCode} = results.data;
         if (httpCode === 200) {
           this.getNotification();
         } else {
           errTips(msg);
         }
-
         this.loading = false;
       });
-
     },
     showNotice(val) {
       this.noticeTable.theme = this.notificationList[val].theme;
@@ -282,11 +283,9 @@ export default {
       this.noticeTable.participantsList = "";
       for (let i = 0; i < this.notificationList[val].userList.length; i++) {
         this.noticeTable.participantsList += this.notificationList[val].userList[i].userName + "; "
-
       }
       this.noticeTableList.pop();
       this.noticeTableList.push(this.noticeTable);
-
     },
     showNoticeInfoDialog(val) {
       this.noticeVisible = true;
@@ -295,7 +294,6 @@ export default {
         if (httpCode === 200) {
           this.loading = false;
           this.noticeData.theme = data.theme;
-
           this.noticeData.id = data.id;
           if (data.type == 1) {
             this.noticeData.type = "会议";
@@ -311,9 +309,7 @@ export default {
         } else {
           errTips(msg);
         }
-
       });
-
       httpGet('v1/authorization/notification/resource/list', {id: val}).then(results => {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
@@ -325,8 +321,6 @@ export default {
             resourceUrl: '',
           }
           resource.gmtCreate = specificDate(data.gmtCreate);
-
-
           this.noticeData.resourceList.length = 0;
           for (let i = 0; i < data.resourceList.length; i++) {
             if (data.resourceList[i].resource == "") {
@@ -341,10 +335,7 @@ export default {
         } else {
           errTips(msg);
         }
-
       });
-
-
     },
     closeNewNotification() {
       this.getNotification();
@@ -379,94 +370,65 @@ export default {
         this.loading = false;
       });
     },
-
     searchList() {
-
       ///v1/authorization/notification/search/list
       this.searchData.participantsId = this.name2Id[this.searchData.participantsName];
-      httpGet('v1/authorization/notification/search/list', this.searchData).then(results => {
-        const {msg, data, httpCode} = results.data;
-        if (httpCode === 200) {
-          this.notificationList = data.list;
-          for (let i = 0; i < this.notificationList.length; i++) {
-            this.notificationList[i].notificationTime = specificDate(this.notificationList[i].notificationTime);
-          }
-        } else {
-          errTips(msg);
-        }
-        this.showNotice(this.selectedNotice);
-        this.loading = false;
-      });
+      this.getNotification(this.searchData);
     },
-
-
   }
 };
 </script>
 <style lang='scss'>
 /*@import "@/assets/scss/applicationView.scss";*/
-
 .applicationView {
   .seeClass {
     color: #3e76b8;
     cursor: pointer;
   }
-
   .bid_footer {
     .el-input__inner {
       width: 70px;
     }
-
     .el-pagination {
       text-align: center;
       margin: 50px 0 50px 0;
     }
-
     .el-pagination.is-background .el-pager li:not(.disabled).active {
       background: #3e76b8;
     }
   }
-
   .el-table {
     border: 1px solid #d8d8d8;
   }
-
   /*.buttons {*/
   /*    float: right;*/
   /*}*/
-
   .header_top {
     margin-top: 15px;
     padding-bottom: 20px;
-
   }
-
   .button {
     display: inline-block;
     margin-left: 20px;
   }
-
   .el-input {
     display: inline-block;
     width: 200px;
     margin-right: 25px;
     margin-bottom: 25px;
   }
-
   .el-input__inner {
     border: 1px solid #c0c0c0;
     width: 200px;
     height: 35px;
     line-height: 35px;
   }
-
   .el-table td,
   .el-table th.is-leaf {
     color: black;
     border-bottom: 1px solid #d8d8d8;
   }
 }
-
 .box-card0 {
   li {
     margin-top: 15px;
@@ -474,7 +436,6 @@ export default {
     color: #666;
     position: relative;
     cursor: pointer;
-
   }
 }
 </style>

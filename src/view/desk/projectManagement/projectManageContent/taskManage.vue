@@ -118,6 +118,16 @@
               </div>
               <el-table :data="subtitleList" style="width:100%;" :header-cell-style="rowClass"
                         v-loading="loading">
+
+                <!--                <el-table-column prop="id" label="任务Id" align="center">-->
+                <!--                  <template slot-scope="scope">-->
+                <!--&lt;!&ndash;                    <el-tooltip class="item" effect="dark"&ndash;&gt;-->
+                <!--&lt;!&ndash;                                placement="top-start">&ndash;&gt;-->
+                <!--                      <span class="tablehidden">{{ scope.row.id }}</span>-->
+                <!--&lt;!&ndash;                    </el-tooltip>&ndash;&gt;-->
+                <!--                  </template>-->
+                <!--                </el-table-column>-->
+
                 <el-table-column prop="subtitle" label="任务名称" align="center">
                   <template slot-scope="scope">
                     <el-tooltip class="item" effect="dark" :content="scope.row.subtitle"
@@ -173,9 +183,9 @@
                   <el-table-column prop="status" label="状态" width="180"></el-table-column>
                   <el-table-column label="操作" width="180">
                     <template slot-scope="scope">
-                      <el-button type="text" @click="showTaskInfoDialog(scope.row.id)"><i class="el-icon-search"></i>查看
+                      <el-button type="text" @click="showTaskInfoDialog(scope.row.id)"><i
+                          class="el-icon-search"></i>查看
                       </el-button>
-
                     </template>
                   </el-table-column>
 
@@ -208,7 +218,6 @@ import {errTips, successTips} from '@/utils/tips.js';
 import sourceUpload from '@/common/upload/resourceUpload';
 import timeLimit from '@/mixins/regular/timeLimit.js';
 import DialogTaskInfo from "./component/dialogTaskInfo";
-
 export default {
   mixins: [timeLimit],
   components: {
@@ -246,7 +255,8 @@ export default {
         sourceFile: '',
         startTime: '',
         subtitle: '',
-        titleId: ''
+        titleId: '',
+        resourceName: '',
       },
       uploadIndex: false,
       testUploadIndex: false,
@@ -289,15 +299,17 @@ export default {
   },
   created: function () {
     this.routerIndex = this.$route.name;
-    this.projectId = this.$route.query.teamId;
+    this.teamId = sessionStorage.getItem("teamId");
+    this.projectId = sessionStorage.getItem("projectId");
     if (!this.projectId) {
       errTips("no project");
     }
-    this.getContent();
+    //this.getContent();
     // this.settaskList([]);
+    this.getMissionList(sessionStorage.getItem("teamId"));
     this.getTask();
+    this.getMissionType(sessionStorage.getItem("teamId"));
     this.getAllMissionList();
-
   },
   watch: {
     //监听路由高亮
@@ -305,18 +317,17 @@ export default {
       this.watchIndex = false;
       this.showIndex = true;
     },
-
     // 'selectedMission':function(val) { //监听切换状态-计划单
     //     console.log()
     //     // 注释，根据val的不同，跳转到不同
     // },
-
   },
   methods: {
     ...mapMutations(['settaskList', 'setResource', 'setCache']),
     //关闭任务信息对话框
     closeTaskInfoDialog() {
       this.dialogTaskInfoView = false;
+      this.getAllMissionList();
     },
     //打开任务信息对话框并获取任务信息
     showTaskInfoDialog(val) {
@@ -324,6 +335,7 @@ export default {
       httpGet('/v1/authorization/manage/mission/get', {id: val}).then(results => {
         const {msg, data, httpCode} = results.data;
         if (httpCode == 200) {
+          console.log("342", data);
           let form = data;
           form.endTime = specificDate(form.endTime);
           form.gmtCreate = specificDate(form.gmtCreate);
@@ -338,21 +350,96 @@ export default {
           errTips(msg);
         }
       });
+      // httpGet('/v1/authorization/bids/score/resource', {
+      //   id: sessionStorage.getItem("id"), projectId: sessionStorage.getItem("projectId")
+      // }).then(results => {
+      //   const {msg, data, httpCode} = results.data;
+      //   console.log("361", data);
+      //   if (httpCode === 200) {
+      //     console.log("363", data);
+      //     //this.taskForm.resourceName=data.uploadResource;
+      //   } else if (httpCode === 400) {
+      //     this.setCache('myBid');
+      //   } else if (httpCode !== 401) {
+      //     errTips(msg);
+      //   }
+      // });
+      httpGet('/v1/authorization/manage/resource/list', ).then(results => {
+        const {msg, data, httpCode} = results.data;
+        console.log("361", data);
+        if (httpCode === 200) {
+          console.log("363", data);
+          //this.taskForm.resourceName=data.uploadResource;
+        } else if (httpCode === 400) {
+          this.setCache('myBid');
+        } else if (httpCode !== 401) {
+          errTips(msg);
+        }
+      });
     },
     showSubTask(val) {
       this.taskTable = this.allMissionList[val].missionInfoList;
     },
     getAllMissionList() {
-      httpGet('/v1/authorization/manage/mission/list', {teamId: this.projectId}).then(results => {
+      httpGet('/v1/authorization/manage/mission/list', {teamId: this.teamId}).then(results => {
         const {msg, data, httpCode} = results.data;
-        if (httpCode == 200) {
+        if (httpCode === 200) {
           this.allMissionList = data.missionTitleList;
+          //this.getTask(this.selectedMission);
           this.showSubTask(this.selectedMission);
+          console.log("366", this.allMissionList);
         } else {
           errTips(msg);
         }
       });
     },
+    //获取任务数据
+    getTask() {
+    },
+    // getTask() {
+    //   httpGet('/v1/authorization/bids/missioninfo/get', {
+    //     castId: this.projectId
+    //   }).then(results => {
+    //     const {msg, data, httpCode} = results.data;
+    //     if (httpCode === 200) {
+    //       this.$set(this, 'httpUrlToRepo', data.httpUrlToRepo);
+    //       this.$set(this, 'teamId', data.teamId);
+    //       this.userList = data.userList;
+    //       this.setResource(data.uploadResource);
+    //       let taskList = [...data.missList];
+    //       taskList.forEach(item => {
+    //         item.userList = this.userList;
+    //         item.participantNames = '';
+    //         for (let i of item.participantList) {
+    //           for (let p of this.userList) {
+    //             if (i === p.id) {
+    //               item.participantNames = item.participantNames + p.userName + ' ';
+    //             }
+    //           }
+    //         }
+    //
+    //         item.endTime = specificDate(item.endTime);
+    //         item.startTime = specificDate(item.startTime);
+    //         item.changeTask = false;
+    //         item.changeTitle = item.content;
+    //         item.describeModel = item.description;
+    //         item.upData = {
+    //           accomplishProgress: item.accomplishProgress,
+    //           endTime: item.endTime,
+    //           id: item.id,
+    //           startTime: item.startTime
+    //         };
+    //       });
+    //       this.settaskList(taskList);
+    //       this.getMissionList(this.teamId);
+    //       this.getMissionType(this.teamId);
+    //     } else if (httpCode === 400) {
+    //       this.setCache('myBid');
+    //     } else if (httpCode !== 401) {
+    //       errTips(msg);
+    //     }
+    //   });
+    // },
     deleteMission(id) {
       httpDelete(`/v1/authorization/mission/missionsubtitle/delete/${id}`).then(results => {
         const {httpCode, msg} = results.data;
@@ -367,18 +454,22 @@ export default {
       });
     },
     getSubList: function (value) {
+      console.log("433", this.ruleForm.titleId);
+      console.log("434", value);
       this.selected = this.missionList.find(item => {
         return item.id === value;
       }).title;
       this.titleId = value;
       this.loading = true;
       httpGet('/v1/authorization/mission/subtitle/list', {
-        teamId: this.teamId,
+        teamId: sessionStorage.getItem("teamId"),
         titleId: value
       }).then(results => {
         const {msg, data, httpCode} = results.data;
+        console.log("442", data);
         if (httpCode == 200) {
           this.subtitleList = data.subtitleList;
+          this.getAllMissionList();
         } else {
           errTips(msg);
         }
@@ -429,8 +520,9 @@ export default {
     getMissionList(val) {
       httpGet('/v1/authorization/mission/missiontitle/list', {teamId: val}).then(results => {
         const {msg, data, httpCode} = results.data;
-        if (httpCode == 200) {
+        if (httpCode === 200) {
           this.missionList = data.missionTitle;
+          this.getAllMissionList();
         } else {
           errTips(msg);
         }
@@ -442,22 +534,8 @@ export default {
         const {msg, data, httpCode} = results.data;
         if (httpCode == 200) {
           this.missionTypeList = data.missionTypeList;
+          this.getAllMissionList();
         } else {
-          errTips(msg);
-        }
-      });
-    },
-    //上传资源
-    setIdCard(data) {
-      httpGet('/v1/authorization/bids/resource/upload', {
-        castId: this.projectId,
-        uploadResource: data.fileName
-      }).then(results => {
-        const {httpCode, msg} = results.data;
-        if (httpCode === 200) {
-          successTips('上传成功');
-          this.setResource(data);
-        } else if (httpCode !== 401) {
           errTips(msg);
         }
       });
@@ -482,53 +560,6 @@ export default {
         clipboard.destroy();
       });
     },
-
-    //获取任务数据
-    getTask() {
-      httpGet('/v1/authorization/bids/missioninfo/get', {
-        castId: this.projectId
-      }).then(results => {
-        const {msg, data, httpCode} = results.data;
-        if (httpCode === 200) {
-          this.$set(this, 'httpUrlToRepo', data.httpUrlToRepo);
-          this.$set(this, 'teamId', data.teamId);
-          this.userList = data.userList;
-          this.setResource(data.uploadResource);
-          let taskList = [...data.missList];
-          taskList.forEach(item => {
-            item.userList = this.userList;
-            item.participantNames = '';
-            for (let i of item.participantList) {
-              for (let p of this.userList) {
-                if (i === p.id) {
-                  item.participantNames = item.participantNames + p.userName + ' ';
-                }
-              }
-            }
-
-            item.endTime = specificDate(item.endTime);
-            item.startTime = specificDate(item.startTime);
-            item.changeTask = false;
-            item.changeTitle = item.content;
-            item.describeModel = item.description;
-            item.upData = {
-              accomplishProgress: item.accomplishProgress,
-              endTime: item.endTime,
-              id: item.id,
-              startTime: item.startTime
-            };
-          });
-          this.settaskList(taskList);
-          this.getMissionList(this.teamId);
-          this.getMissionType(this.teamId);
-        } else if (httpCode === 400) {
-          this.setCache('myBid');
-        } else if (httpCode !== 401) {
-          errTips(msg);
-        }
-      });
-    },
-
     //获得标题下拉框及可选成员信息
     getContent() {
       httpGet(`/v1/authorization/bids/get/content?castId=${this.projectId}`).then(results => {
@@ -536,6 +567,7 @@ export default {
         if (httpCode === 200) {
           this.contentList = data.contentList;
           this.userList = data.userList;
+          this.getAllMissionList();
         } else if (httpCode === 400) {
           this.setCache('');
         } else if (httpCode !== 401) {
@@ -543,12 +575,16 @@ export default {
         }
       });
     },
-
     setIdCard2(data) {
-      data && (this.ruleForm.sourceFile = data.fileName);
+      console.log("545", data);
+      (data) && (this.ruleForm.sourceFile = data.fileName);
+      let dataForm = this.ruleForm.sourceFile.split('/');
+      this.ruleForm.resourceName = dataForm[dataForm.length - 1];
+      console.log("URL", this.ruleForm.sourceFile);
       httpPost('/v1/authorization/bids/missioninfo/add', this.ruleForm).then(results => {
         const {msg, httpCode} = results.data;
         if (httpCode === 200) {
+          this.getAllMissionList();
           successTips('添加任务成功！');
         } else {
           errTips(msg);
@@ -567,7 +603,6 @@ export default {
         this.ruleForm.titleId = '';
       });
     },
-
     //添加任务
     submitForm(formName) {
       //alert(1111111);
@@ -576,7 +611,8 @@ export default {
         return false;
       }
       this.ruleForm.castId = this.projectId;
-      this.ruleForm.sourceFile ? this.setIdCard2() : (this.testUploadIndex = !this.testUploadIndex);
+      this.setIdCard2();
+      //this.ruleForm.sourceFile ? this.setIdCard2() : (this.testUploadIndex = !this.testUploadIndex);
     },
     returnSquare() {
       this.$router.push({path: '/desk/taskManage'});
@@ -595,145 +631,116 @@ export default {
     margin-top: 15px;
     color: #909399a8;
   }
-
   .header {
     padding: 15px 0 15px 0;
-
     h4 {
       margin: 0;
     }
   }
-
   a {
     color: black;
     text-decoration: none;
   }
-
   .taskdata {
     background: transparent;
     border-color: transparent;
     font-size: 14px;
   }
-
   .taskdata:focus,
   .taskdata:hover {
     color: black;
     border-color: transparent;
     background: transparent;
   }
-
   .getBtn {
     margin-top: 15px;
   }
-
   .el-input {
     width: 250px;
     margin-right: 20px;
   }
-
   .el-input--suffix .el-input__inner {
     width: 250px;
   }
-
   .ganttHeader {
     margin-top: 5px;
     margin-bottom: 5px;
     padding-bottom: 10px;
   }
-
   .ganttHeader_left {
     float: left;
-
     p {
       display: inline-block;
       margin-right: 10px;
       font-size: 17px;
     }
-
     .ganttHeader_addTask {
       cursor: pointer;
       font-size: 13px;
       margin-top: 3px;
-
       &:hover {
         color: #3e76b8;
       }
     }
   }
-
   .ganttHeader_right {
     float: right;
   }
-
   .ganttHeader_right p {
     float: left;
     margin-left: 20px;
   }
-
   .ganttHeader::after {
     content: '';
     display: table;
     clear: both;
   }
-
   .el-range-editor.el-input__inner {
     width: 400px;
   }
-
   .left-container {
     margin-top: 20px;
   }
 }
-
 .popo-item {
   margin-bottom: 10px;
 }
-
 .is-active {
   color: #3e76b8;
 }
-
 .el-icon-circle-plus {
   font-size: 16px;
 }
-
 .gantt_hor_scroll {
   display: none;
 }
-
 .ganttIndex {
   .ganttIndexMain {
     border-top: 1px solid #e8e8e8;
     margin-top: 30px;
-
     & > ul {
       margin-top: 35px;
     }
   }
-
   .gitAddress {
     margin-top: 20px;
     font-size: 14px;
-
     i:hover {
       cursor: pointer;
     }
   }
 }
-
 .ganttHeader_main {
   // width: 50%;
   // float: left;
   .add {
     cursor: pointer;
     color: #8c8c8c;
-
     &:hover {
       color: #3e76b8;
     }
   }
 }
-
 .leftTable {
   width: 45%;
   height: 100%;
@@ -742,5 +749,4 @@ export default {
   padding-left: 30px;
   border-left: 1px solid #e8e8e8;
 }
-
 </style>

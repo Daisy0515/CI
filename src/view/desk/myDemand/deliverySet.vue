@@ -33,7 +33,8 @@
             <el-table-column prop="gmtModified" label="上传时间" align="center"></el-table-column>
             <el-table-column prop="uploader" label="上传者" align="center"></el-table-column>
             <el-table-column prop="fileName" label="文件名" align="center"></el-table-column>
-            <el-table-column type="selection"  align="center"></el-table-column>
+            <el-table-column type="selection"  align="center" header-align="center" width="70px"
+                             label-class-name="setDownloadName"></el-table-column>
         </el-table>
         <div class="bid_footer ">
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="searchData.pageNo"
@@ -46,8 +47,8 @@
 </template>
 
 <script>
-    import {httpGet, httpPost} from "@/utils/http.js";
-    import {message, successTips, errTips} from "@/utils/tips.js";
+    import {httpGet} from "@/utils/http.js";
+    import {message, errTips} from "@/utils/tips.js";
     import {specificDate} from '@/utils/getDate.js';
     import timeLimit from "@/mixins/regular/timeLimit.js";
     import {handleBatchDownload} from '@/utils/downloadFiles.js';
@@ -98,10 +99,10 @@
 
            getView(val=this.searchData){
                this.loading = true;
-               console.log("searchData",JSON.stringify(this.searchData));
+            //    console.log("searchData",JSON.stringify(this.searchData));
                httpGet("/v1/authorization/bid/teamresource/list",val).then(results => {
                    const {httpCode, msg, data} = results.data;
-                   console.log("data",data);
+                //    console.log("data",data);
                    if (httpCode === 200) {
                        this.totalPage = data.totalPage;
                        this.totalCount = data.totalCount;
@@ -132,7 +133,7 @@
                 }
                 let urlList = this.multipleSelection.map(item => item.resourceUrl);
                 // let urlList = ['https://pic3.zhimg.com/50/v2-d46d98e86c8badbf8e799eff33646c5a_hd.jpg'];
-                console.log(urlList);
+                // console.log(urlList);
                 handleBatchDownload(urlList);
             },
             /**点击多选框触发*/
@@ -175,4 +176,15 @@
         width:100px;
     }
 
+    .el-table /deep/.setDownloadName .cell .el-checkbox__inner{
+        margin-left: -30px;
+        position:relative;
+    }
+    .el-table /deep/.setDownloadName .cell:before{
+        content:"下载";
+        position:absolute;
+        right:11px;
+    }
+
 </style>
+

@@ -38,7 +38,7 @@
 
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                    <el-button type="primary" size="small" @click="taskView(filePageData, scope.row.id)">
+                    <el-button type="primary" plain size="small" @click="taskView(filePageData, scope.row.id)">
                         <i class="el-icon-search"></i>
                         查看任务
                     </el-button>
@@ -206,8 +206,7 @@
         computed: {
         },
         created: function () {
-            // this.projectName = this.$route.query.projectName;
-            this.projectName = sessionStorage.getItem("projectName");
+            this.projectName = sessionStorage.getItem('projectName');
             this.teamId = this.$route.query.teamId;
             this.getMissionType(this.teamId);
             // this.searchList();

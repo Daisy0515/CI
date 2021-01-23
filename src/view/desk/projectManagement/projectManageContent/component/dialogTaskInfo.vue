@@ -8,7 +8,7 @@
             <el-row :gutter="20">
                 <el-col :span="10">
                     <el-form-item label="任务名称" :label-width="formLabelWidth">
-                        <el-input v-model="form.missionTypeName" auto-complete="off" :readonly="isReadOnly"/>
+                        <el-input v-model="form.missionTypeName" auto-complete="off"/>
                     </el-form-item>
                 </el-col>
                 <el-col :span="10">
@@ -117,12 +117,13 @@
             },
             submit() {
                 let dataForm = this.form;
-                console.log(dataForm);
+                console.log("120", dataForm);
                 httpPut("/v1/authorization/manage/mission/update",dataForm).then(results => {
                     const {httpCode} = results.data;
                     if (httpCode===200) {
                         successTips("修改成功！");
                     } else {
+                        console.log("126", httpCode);
                         errTips("修改失败！");
                     }
                 })

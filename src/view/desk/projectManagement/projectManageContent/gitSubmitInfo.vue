@@ -9,7 +9,7 @@
             <el-row>
                 <el-col :span="6" :offset="4">
                     <el-card style="width: 150px;height: 150px; margin: 10px auto;">
-                        <img :src="gitLabLogo" class="logoCSS">
+                        <img :src="gitlabInfo.logo" class="logoCSS">
                     </el-card>
                     <div style="text-align: center;">
                         <el-button type="primary" @click="bindCosineGitLab()"> 平台的gitLab</el-button>
@@ -17,31 +17,34 @@
                 </el-col>
                 <el-col :span="6" :offset="4">
                     <el-card style="width: 150px;height: 150px; margin: 10px auto;">
-                        <img :src="gitLabLogo" class="logoCSS">
+                        <img :src="gitlabInfo.logo" class="logoCSS">
                     </el-card>
                     <div style="text-align: center;">
-                        <el-button type="primary" @click="chooseThirdPartyGit('gitlabOfficial')"> 连接gitLab(官方)</el-button>
+                        <a :href="gitlabInfo.authUrl">
+                            <el-button type="primary" > 连接gitlab</el-button>
+                        </a>
                     </div>
                 </el-col>
             </el-row>
             <el-row>
                 <el-col :span="6" :offset="4">
                     <el-card style="width: 150px;height: 150px; margin: 10px auto;">
-                        <img :src="githubInfo.githubLogo" class="logoCSS">
+                        <img :src="githubInfo.logo" class="logoCSS">
                     </el-card>
                     <div style="text-align: center;">
-                        <a :href="'https://github.com/login/oauth/authorize?client_id=' +githubInfo.clientId+ '&redirect_uri='+githubInfo.redirectUrl">
+                        <a :href="githubInfo.authUrl">
                             <el-button type="primary" > 连接github</el-button>
                         </a>
-<!--                        <el-button type="primary" @click="chooseThirdPartyGit('github')"> 连接github</el-button>-->
                     </div>
                 </el-col>
                 <el-col :span="6" :offset="4">
                     <el-card style="width: 150px;height: 150px; margin: 10px auto;">
-                        <img :src="giteeLogo" class="logoCSS">
+                        <img :src="giteeInfo.logo" class="logoCSS">
                     </el-card>
                     <div style="text-align: center;">
-                        <el-button type="primary" @click="chooseThirdPartyGit('gitee')"> 连接gitee</el-button>
+                        <a :href="giteeInfo.authUrl">
+                            <el-button type="primary"> 连接gitee</el-button>
+                        </a>
                     </div>
                 </el-col>
             </el-row>
@@ -191,7 +194,7 @@
     import {httpGet,httpPost} from "@/utils/http";
     import {specificDate} from "@/utils/getDate";
     import {MessageBox} from 'element-ui';
-
+    import {githubInfo,gitlabInfo,giteeInfo} from '@/common/oauth/oauthSetting'
     export default {
         name: "gitSubmitInfo",
         created(){
@@ -223,16 +226,10 @@
                 gitUrl:null,             //当前仓库的地址
 
                 /**git平台绑定阶段用到的信息**/
-                gitLabLogo: require("@/assets/img/git/gitLab.jpg"),
+                githubInfo:githubInfo, //官方github授权相关的信息
+                gitlabInfo:gitlabInfo, //官方gitlab授权相关的信息
+                giteeInfo:giteeInfo,   //官方gitee授权相关的信息
 
-                giteeLogo: require("@/assets/img/git/gitee.png"),
-
-                githubInfo:{ //github授权相关的信息
-                    githubLogo: require("@/assets/img/git/github.jpg"),
-                    clientId:"3aec007a081933c8a3ad",
-                    clientSecret:"aa01e4f4fac25aee9439d50293b11305dbfb7b09",
-                    redirectUrl:"http://localhost:8080/oauth/github/redirect",
-                },
                 verifyGitBindLoading:false,      //查询团队git绑定信息时，加载提示信息
                 showBindGitProcess: true,        //显示绑定git平台过程的部分，用户没有绑定git平台时使用
                 showBindGitDialog: false,        //显示用户输入平台名称与仓库名的界面

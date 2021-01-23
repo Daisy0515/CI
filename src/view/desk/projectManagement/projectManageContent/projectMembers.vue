@@ -45,7 +45,7 @@
                         </router-link>
                         <div class="item_title">
                             <span>{{addList.name}}</span>
-                            <span @click="invite(addList.userId)">
+                            <span @click="invite(addList.userId)" v-if="addList.status===0">
                 <i class="el-icon-circle-plus"></i>邀请
               </span>
                             <span @click="cancelInvitation(addList.userId)" v-if="addList.status===1">
@@ -100,8 +100,30 @@
             </div>
         </div>
 <!--        队员申请模块-->
-        <div class="teamApplication" v-show="selected === 2" v-if="manager_role">
+        <div class="teamApplication" v-if="manager_role && selected === 2">
         <div class="container deskHeader" >
+            <!-- <div class="header_top">
+                <br/>
+                <el-date-picker
+                    v-model="searchData.startTime"
+                    type="date"
+                    placeholder="申请开始时间"
+                    value-format="yyyy-MM-dd"
+                    :picker-options="endDatePicker"
+                ></el-date-picker>
+                <span style="margin-right: 15px;">到</span>
+                <el-date-picker
+                        v-model="searchData.endTime"
+                        :picker-options="endDatePicker"
+                        type="date"
+                        placeholder="申请结束时间"
+                        value-format="yyyy-MM-dd"
+                ></el-date-picker>
+                <el-select placeholder="申请状态" v-model="pageData.missionTypeId" clearable>
+                    <el-option v-for="item in missionTypeList" :key="item.id" :label="item.missionName" :value="item.id"></el-option>
+                </el-select>
+                <el-button type="primary" @click="searchList()">搜索</el-button>
+            </div> -->
             <el-table
                     :data="teamFrom"
                     style="width: 100%"
@@ -109,16 +131,20 @@
                 <el-table-column prop="proposer" label="申请人" align="center"></el-table-column>
                 <el-table-column prop="gmtCreate" label="申请时间" align="center"></el-table-column>
                 <el-table-column prop="status" label="状态" align="center"></el-table-column>
-                <el-table-column label="操作" prop="province" align="center" width="250">
+                <el-table-column label="操作" prop="province" align="center" width="250">=
                     <template slot-scope="scope">
-                        <router-link @click.native="dele(scope)" to v-if="scope.row.status==='失败'">
+                        <router-link @click.native="viewUserInfo(scope.row.id)" to>
+                            <i class="el-icon-search"></i>
+                            查看
+                        </router-link>
+                        <router-link @click.native="dele(scope.row.id)" to v-if="scope.row.status==='失败'">
                             <i class="el-icon-delete"></i>
                             删除
                         </router-link>
                         <router-link
                                 @click.native="pass(scope.row)"
                                 to
-                                v-if="scope.row.status==='审核中'&&scope.row.show"
+                                v-if="scope.row.status==='审核中'"
                         >
                             <i class="el-icon-circle-check"></i>
                             通过
@@ -126,7 +152,7 @@
                         <router-link
                                 @click.native="nopass(scope.row)"
                                 to
-                                v-if="scope.row.status==='审核中'&&scope.row.show"
+                                v-if="scope.row.status==='审核中'"
                         >
                             <i class="el-icon-error"></i>
                             不通过
@@ -143,20 +169,27 @@
                         layout="prev, pager, next, jumper"
                 ></el-pagination>
             </div>
+        <team-application-user-info :dialogFormVisible="userInfoDialog" :userData="userData" 
+                                    @closeDialog="closeUserInfoDialog"></team-application-user-info>    
         </div>
         </div>
     </div>
 </template>
 
 <script>
-    import {httpGet, httpPost, httpDelete} from "@/utils/http.js";
-    import {mapGetters, mapMutations} from "vuex";
-    import {successTips, errTips} from "@/utils/tips.js";
+    import {httpGet, httpPut, httpPost, httpDelete} from "@/utils/http.js";
+    import {mapGetters} from "vuex";
+    import {successTips, errTips, message} from "@/utils/tips.js";
     import {MessageBox} from "element-ui";
     import {specificDate} from "@/utils/getDate.js";
+    import teamApplicationUserInfo from "./component/teamApplicationUserInfo.vue";
     export default {
+        components: {
+            teamApplicationUserInfo
+        },
         data() {
             return {
+                userInfoDialog: false,
                 manager_role: true,
                 projectName:null,
                 selected:1,//决定显示哪一个页面
@@ -192,19 +225,20 @@
                     orderBy: "id",
                     role:2
                 },
-                teamFrom: []
+                teamFrom: [],
+                userData: {},
             };
         },
         computed: {
             ...mapGetters(["getHeader", "getnoImg"])
         },
         created: function () {
-            this.projectName = this.$route.query.projectName;
-            this.projectId = this.$route.query.projectId;
+            this.projectName = sessionStorage.getItem('projectName');
+            this.projectId = sessionStorage.getItem('projectId');
             this.userId = sessionStorage.getItem('userId');
             this.manager_role = parseInt(sessionStorage.getItem('projectRole')) === 2;
             if (!this.projectId && !this.userId) {
-                errTips("没有团队消息！");
+                message("没有团队消息！");
             }
             this.getView();
             this.getApplication();
@@ -245,7 +279,7 @@
                     type: "warning"
                 })
                     .then(() => {
-                        let {teamId, competeTeamList} = this.userList;
+                        let {teamId} = this.userList;
                         httpGet("/v1/authorization/bids/invite/teamuser", {
                             userId: id,
                             teamId: teamId
@@ -275,7 +309,7 @@
                     type: "warning"
                 })
                     .then(() => {
-                        let {teamId, competeTeamList} = this.userList;
+                        let {teamId} = this.userList;
                         httpGet("/v1/authorization/bids/cancel/user", {
                             userId: id,
                             teamId: teamId
@@ -306,7 +340,7 @@
                 this.search_flag = true;
                 //将领域用户列表清空
                 this.typeList = [];
-                let {teamId, competeTeamList} = this.userList;
+                let {teamId} = this.userList;
                 httpGet("/v1/authorization/bids/select/user", {
                     userNamePhoneEmail: this.userNamePhoneEmail,
                     teamId: teamId
@@ -334,7 +368,7 @@
                 this.search_flag = false;
                 //将单个搜索用户清空
                 this.addList = "";
-                let {teamId, competeTeamList} = this.userList;
+                let {teamId} = this.userList;
                 httpGet("/v1/authorization/bids/select/type", {
                     id: this.typeId,
                     teamId: teamId
@@ -405,6 +439,79 @@
                         this.teamFrom = [];
                     }
                 });
+            },
+            handleCurrentChange(val) {
+                this.pageData.pageNo = val;
+                this.getApplication();
+            },
+            pass(row) {
+                httpPut("/v1/authorization/team/statussucceed/update", {
+                    id: row.id
+                }).then(results => {
+                    const {httpCode, msg} = results.data;
+                    if (httpCode === 200) {
+                        row.status = "成功";
+                        successTips("已同意此用户加入团队！");
+                    } else if (httpCode === 400) {
+                        this.setCache("teamApplication");
+                    } else if (httpCode !== 401) {
+                        errTips(msg);
+                    }
+                });
+                this.getView();
+            },
+            nopass(row) {
+                httpPut("/v1/authorization/team/statuscome/update", {id: row.id}).then(
+                    results => {
+                        const {httpCode, msg} = results.data;
+                        if (httpCode === 200) {
+                            row.status = "失败";
+                            message("已拒绝此用户加入此团队！");
+                        } else if (httpCode === 400) {
+                            this.setCache("teamApplication");
+                        } else if (httpCode !== 401) {
+                            errTips(msg);
+                        }
+                    }
+                );
+            },
+            dele(val) {
+                MessageBox.confirm("此操作将删除此条申请记录, 是否继续?", "提示", {
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消",
+                    type: "warning"
+                }).then(() => {
+                    httpDelete(
+                        `/v1/authorization/team/teamapplyforid/delete/${val}`
+                    ).then(results => {
+                        const {msg, httpCode} = results.data;
+                        if (httpCode === 200) {
+                            this.getView()
+                            successTips("已成功删除此项申请信息！");
+                            this.getApplication();
+                        } else if (httpCode === 400) {
+                            this.setCache("teamApplication");
+                        } else if (httpCode !== 401) {
+                            errTips(msg);
+                        }
+                    });
+                });
+            },
+            viewUserInfo(val) {
+                httpGet("/v1/authorization/bids/getuserinfo/user", {
+                    id: val
+                }).then(results => {
+                    const {httpCode, msg, data} = results.data;
+                    if (httpCode === 200) {
+                        this.userData = data;
+                        this.userInfoDialog = true;
+                    } else if (httpCode !== 401) {
+                        errTips(msg);
+                    }
+                });
+            },
+            closeUserInfoDialog() {
+                this.userInfoDialog = false;
             }
         }
 
@@ -412,6 +519,9 @@
 </script>
 
 <style lang='scss' scoped>
+    .Crumbs {
+        margin-bottom: 20px;
+    }
     .editorialTeam {
         .el-card__body {
             padding: 0;

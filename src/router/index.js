@@ -19,6 +19,23 @@ const vueRouter = new Router({
     mode:'history',
     routes: [
         {
+            path: '/oauth/gitee/redirect',
+            name: 'giteeOauth',
+            component: () => import('@/view/git/giteeOauth'),
+            meta: {
+                title: 'gitee授权'
+            }
+        },
+        {
+
+            path: '/oauth/gitlab/redirect',
+            name: 'gitlabOauth',
+            component: () => import('@/view/git/gitlabOauth'),
+            meta: {
+                title: 'gitlab授权'
+            }
+        },
+        {
 
             path: '/oauth/github/redirect',
             name: 'githubOauth',
