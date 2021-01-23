@@ -10,11 +10,7 @@
           <el-option label="会议通知" value="1"></el-option>
           <el-option label="其他" value="2"></el-option>
         </el-select>
-        <el-select v-model="searchData.participantsId" clearable placeholder="发起人">
-          <el-option v-for="item in missionList" :key="item.id" :label="item.missionName"
-                     :value="item"></el-option>
-        </el-select>
-        <el-select v-model="searchData.participantsId" clearable placeholder="相关人员">
+        <el-select v-model="searchData.participantsName" clearable placeholder="相关人员">
           <el-option v-for="item in missionList" :key="item.id" :label="item.missionName"
                      :value="item"></el-option>
         </el-select>
@@ -53,6 +49,16 @@
               </div>
             </ul>
           </el-card>
+
+          <div class="pagerHold">
+            <el-pagination
+                @current-change="handleCurrentChange"
+                :current-page.sync="pageData.pageNo"
+                :page-count="totalPage"
+                layout="prev, pager, next"
+            ></el-pagination>
+          </div>
+
         </div>
 
         <el-dialog :visible.sync="noticeVisible"
@@ -84,6 +90,8 @@
                 </el-form-item>
               </el-col>
             </el-row>
+
+
 
             <el-row :gutter="20">
               <el-col :span="21">
@@ -136,19 +144,18 @@
   </div>
 </template>
 <script>
-import {httpGet, httpPost, httpDelete} from "@/utils/http.js";
+import {httpGet, httpDelete} from "@/utils/http.js";
 import {specificDate} from "@/utils/getDate.js";
 import {errTips} from "@/utils/tips.js";
-import {mapMutations, mapActions, mapGetters} from "vuex";
+import {mapMutations} from "vuex";
 import initNewNotification from '@/view/desk/projectManagement/projectManageContent/component/initNewNotification'
-import {quillEditor} from 'vue-quill-editor'; //调用编辑器
 import 'quill/dist/quill.core.css';
 import 'quill/dist/quill.snow.css';
 import 'quill/dist/quill.bubble.css';
 
 export default {
   components: {
-    quillEditor,
+    
     initNewNotification,
   },
   data() {
@@ -163,6 +170,7 @@ export default {
       ruleForm: {},
       noticeVisible: false,
       selectedNotice: 0,
+
       noticeTable: {
         theme: '',
         participantsList: '',
@@ -170,6 +178,8 @@ export default {
         id: '',
 
       },
+      totalCount:1,
+      totalPage:1,
       noticeData: {
         theme: "",
         participantsList: '',
@@ -181,19 +191,23 @@ export default {
       noticeTableList: [],
       searchData: {
         pageNo: 1,
-        pageSize: 10,
+        pageSize: 5,
         orderType: 'DESC',
         orderBy: 'id',
         teamId: null,
         theme: null,
         participantsId: null,
+        participantsName: null,
         type: null,
         startTime: null,
         endTime: null
       },
+      name2Id:{
+
+      },
       pageData: {
         pageNo: 1,
-        pageSize: 10,
+        pageSize: 5,
         orderType: 'DESC',
         orderBy: 'id',
         teamId: null,
@@ -219,12 +233,13 @@ export default {
   methods: {
     ...mapMutations(["setCache"]),
     getNotification(val=this.pageData) {
-
       ///v1/authorization/notification/search/list
 
       httpGet('v1/authorization/notification/search/list', val).then(results => {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
+          this.totalCount = data.totalCount;
+          this.totalPage = data.totalPage;
           this.notificationList = data.list;
           for (let i = 0; i < this.notificationList.length; i++) {
             this.notificationList[i].notificationTime = specificDate(this.notificationList[i].notificationTime);
@@ -232,9 +247,17 @@ export default {
         } else {
           errTips(msg);
         }
-        this.showNotice(this.selectedNotice);
+
+        if(this.selectedNotice != 0){
+          this.showNotice(this.selectedNotice);
+        }
+
         this.loading = false;
       });
+    },
+    handleCurrentChange(val) {
+      this.pageData.pageNo = val;
+      this.getNotification();
     },
     closeNoticeDialog() {
       this.noticeVisible = false;
@@ -244,13 +267,13 @@ export default {
     },
     deleteNotice(val) {
       httpDelete(`v1/authorization/notification/notification/delete/${val}`).then(results => {
-        const {msg, data, httpCode} = results.data;
+        const {msg, httpCode} = results.data;
         if (httpCode === 200) {
           this.getNotification();
-
         } else {
           errTips(msg);
         }
+
         this.loading = false;
       });
 
@@ -335,9 +358,9 @@ export default {
       httpGet('/v1/authorization/notification/notification/teammember/get', {teamId: this.teamId, projectId: this.projectId}).then(results => {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
-          console.log("344", data);
           for(let i=0; i<data.teamUserList.length; i++){
             this.missionList.push(data.teamUserList[i].name);
+            this.name2Id[data.teamUserList[i].name] = data.teamUserList[i].userId;
           }
         } else {
           errTips(msg);
@@ -363,22 +386,9 @@ export default {
     searchList() {
 
       ///v1/authorization/notification/search/list
+      this.searchData.participantsId = this.name2Id[this.searchData.participantsName];
+      this.getNotification(this.searchData);
 
-      console.log("pageData", this.pageData);
-      console.log("searchData", this.searchData);
-      httpGet('v1/authorization/notification/search/list', this.searchData).then(results => {
-        const {msg, data, httpCode} = results.data;
-        if (httpCode === 200) {
-          this.notificationList = data.list;
-          for (let i = 0; i < this.notificationList.length; i++) {
-            this.notificationList[i].notificationTime = specificDate(this.notificationList[i].notificationTime);
-          }
-        } else {
-          errTips(msg);
-        }
-        this.showNotice(this.selectedNotice);
-        this.loading = false;
-      });
     },
 
 

@@ -38,7 +38,7 @@
 
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                    <el-button type="primary" size="small" @click="taskView(filePageData, scope.row.id)">
+                    <el-button type="primary" plain size="small" @click="taskView(filePageData, scope.row.id)">
                         <i class="el-icon-search"></i>
                         查看任务
                     </el-button>
@@ -55,7 +55,7 @@
             ></el-pagination>
         </div>
 
-        <el-dialog  :title="taskInfo.titleName" :visible.sync="dialogTaskInfoVisible" 
+        <el-dialog  :title="taskInfo.titleName" :visible.sync="dialogTaskInfoVisible"
                     :close-on-click-modal="true" @close='closeDialog' class="myDialog">
             <el-form :model="taskInfo" ref="taskInfo" class="myForm">
             <hr>
@@ -105,7 +105,7 @@
             <el-table-column prop="resourceName" label="文件名称" align="center"></el-table-column>
             <el-table-column prop="userName" label="上传者" align="center"></el-table-column>
             <el-table-column prop="userRole" label="角色" align="center"></el-table-column>
-            <el-table-column prop="gmtCreate" label="上传时间" align="center"></el-table-column>  
+            <el-table-column prop="gmtCreate" label="上传时间" align="center"></el-table-column>
             <el-table-column label="下载" align="center">
                 <template slot-scope="scope">
                     <el-button type="primary" size="small" @click="downloadFile(scope.row)">
@@ -113,7 +113,7 @@
                         下载
                     </el-button>
                 </template>
-            </el-table-column>  
+            </el-table-column>
             </el-table>
             <div class="bid_footer">
             <el-pagination
@@ -206,7 +206,7 @@
         computed: {
         },
         created: function () {
-            this.projectName = this.$route.query.projectName;
+            this.projectName = sessionStorage.getItem('projectName');
             this.teamId = this.$route.query.teamId;
             this.getMissionType(this.teamId);
             // this.searchList();
@@ -215,7 +215,7 @@
         methods: {
             getMissionType(val) {
                 this.loading = true;
-                
+
                 httpGet("/v1/authorization/manage/missiontype/list", {teamId: val}).then(results => {
                     const {
                         msg,
@@ -305,7 +305,7 @@
                         }else {
                             this.taskInfo.statusName = "放弃";
                         }
-                        
+
                         this.taskInfo.participants = data.participantList.join(',');
                     }else{
                         errTips("获取任务信息失败:",msg);
@@ -344,8 +344,8 @@
                     errTips("请先选择文件！")
                 }  else {
                     data && (this.sourceFile = data);
-                    httpPost("/v1/authorization/manage/resource/insert", 
-                    {missionId:this.filePageData.missionId, resource: this.sourceFile, 
+                    httpPost("/v1/authorization/manage/resource/insert",
+                    {missionId:this.filePageData.missionId, resource: this.sourceFile,
                     resourceName: this.sourceFile.split('/')[this.sourceFile.split('/').length - 1]}).then(results => {
                         const {msg, httpCode} = results.data;
                         if (httpCode === 200) {
@@ -358,7 +358,7 @@
                         }
                     });
                 }
-                
+
             },
 
             uploadFile() {
@@ -374,7 +374,7 @@
 </script>
 
 <style lang='scss' scoped>
-    @import "@/assets/scss/myTable.scss";   
+    @import "@/assets/scss/myTable.scss";
     .header_two0 {
         a {
             color: #666;

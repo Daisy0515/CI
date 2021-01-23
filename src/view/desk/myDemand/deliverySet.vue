@@ -33,7 +33,8 @@
             <el-table-column prop="gmtModified" label="上传时间" align="center"></el-table-column>
             <el-table-column prop="uploader" label="上传者" align="center"></el-table-column>
             <el-table-column prop="fileName" label="文件名" align="center"></el-table-column>
-            <el-table-column type="selection"  align="center"></el-table-column>
+            <el-table-column type="selection"  align="center" header-align="center" width="70px"
+                             label-class-name="setDownloadName"></el-table-column>
         </el-table>
         <div class="bid_footer ">
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="searchData.pageNo"
@@ -175,4 +176,15 @@
         width:100px;
     }
 
+    .el-table /deep/.setDownloadName .cell .el-checkbox__inner{
+        margin-left: -30px;
+        position:relative;
+    }
+    .el-table /deep/.setDownloadName .cell:before{
+        content:"下载";
+        position:absolute;
+        right:11px;
+    }
+
 </style>
+

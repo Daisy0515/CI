@@ -117,12 +117,13 @@
             },
             submit() {
                 let dataForm = this.form;
-                console.log(dataForm);
+                console.log("120", dataForm);
                 httpPut("/v1/authorization/manage/mission/update",dataForm).then(results => {
                     const {httpCode} = results.data;
                     if (httpCode===200) {
                         successTips("修改成功！");
                     } else {
+                        console.log("126", httpCode);
                         errTips("修改失败！");
                     }
                 })
