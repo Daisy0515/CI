@@ -45,7 +45,7 @@
                         </router-link>
                         <div class="item_title">
                             <span>{{addList.name}}</span>
-                            <span @click="invite(addList.userId)">
+                            <span @click="invite(addList.userId)" v-if="addList.status===0">
                 <i class="el-icon-circle-plus"></i>邀请
               </span>
                             <span @click="cancelInvitation(addList.userId)" v-if="addList.status===1">
@@ -458,6 +458,7 @@
                         errTips(msg);
                     }
                 });
+                this.getView();
             },
             nopass(row) {
                 httpPut("/v1/authorization/team/statuscome/update", {id: row.id}).then(

@@ -4,7 +4,7 @@
             <div class="container deskHeader">
                 <h4>
                     您的位置：
-                    <router-link to="./myTest">我的测试</router-link>
+                    <router-link to="./myTest">内测管理</router-link>
                     >
                     <span class="active">查看测试</span>
                 </h4>
@@ -53,7 +53,7 @@
     </div>
 </template>
 <script>
-    import {httpGet, httpPost} from "@/utils/http.js";
+    import {httpGet} from "@/utils/http.js";
     import {specificDate} from "@/utils/getDate.js";
     import {errTips, successTips} from "@/utils/tips.js";
     import {mapMutations, mapActions, mapGetters} from "vuex";
