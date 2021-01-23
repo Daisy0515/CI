@@ -14,16 +14,16 @@
                     </el-input>
                 </el-col>
                 <el-col :span="6" :offset="2">
-                    <el-select v-model="reposIndex" placeholder="请选择仓库" style="width:83%;"
-                               :loading="reposLoading">
-                        <el-option
-                                v-for="(item,index) in reposList"
-                                :key="index"
-                                :label="item.name"
-                                :value="index">
-                        </el-option>
-                    </el-select>
-                </el-col>
+                <el-select v-model="reposIndex" placeholder="请选择仓库" style="width:83%;"
+                           :loading="reposLoading">
+                    <el-option
+                            v-for="(item,index) in reposList"
+                            :key="index"
+                            :label="item.name"
+                            :value="index">
+                    </el-option>
+                </el-select>
+            </el-col>
                 <el-col :span="5">
                     <el-button type="primary" size="small" @click="beforeBindThirdGit"
                                :loading="bindGitLoading">绑定
@@ -35,10 +35,10 @@
 </template>
 
 <script>
-    import {httpGet, httpDelete, httpPost} from '@/utils/http.js';
+    import {httpGet, httpPost} from '@/utils/http.js';
     import {errTips, successTips} from '@/utils/tips.js';
     export default {
-        name: "githubOauth",
+        name: "gitlabOauth",
         created(){
             this.getCallbackInfo();
         },
@@ -48,7 +48,7 @@
                 teamId:sessionStorage.getItem("teamId"),
 
                 showBindGitDialog:false,            //显示绑定仓库的界面
-                gitName:"github",
+                gitName:"gitlab",
                 gitUserName:null,                   //git用户名
                 gitUserId:null,                     //git用户id
                 reposList:[],                       //用户的公共仓库列表
@@ -57,7 +57,7 @@
                 bindGitLoading:false,               //绑定git时的加载提示
 
                 oauthTypeMapping:{               //oauthType类型的映射
-                    "gitlabOfficial":1,
+                    "gitlab":1,
                     "github":2,
                     "gitee":3,
                 },
@@ -69,10 +69,11 @@
                 if(code !== null){
                     let data = {
                         code:code,
-                        oauthType:2,//1 官方的gitlab 2 github 3 gitee
+                        oauthType:1,//1 官方的gitlab 2 github 3 gitee
                     };
-                    httpPost('/v1/authorization/coreGitOauth/github/insert', data).then(results => {
+                    httpPost('/v1/authorization/coreGitOauth/gitlab/insert', data).then(results => {
                         const {msg, httpCode, data} = results.data;
+                        console.log("getCallbackInfo");
                         if (httpCode === 200) {
                             this.showBindGitDialog = true;
                             this.gitUserName = data.gitUserName;
@@ -85,7 +86,7 @@
                     });
                 }else{
                     let error = this.$route.query.error;
-                    if(error !== null){     //跳转到git提交信息页面
+                    if(error !== null){     //用户点击拒绝，跳转到git提交信息页面
                         this.goToGitSubmitInfo();
                     }
                 }
@@ -93,7 +94,7 @@
             /**获取git用户的公开仓库列表**/
             getReposList(gitUserName) {
                 this.reposLoading = true;
-                httpGet("/v1/authorization/github/repos/list", {userName: gitUserName}).then(results => {
+                httpGet("/v1/authorization/gitlabOfficial/repos/list", {userName: gitUserName}).then(results => {
                     const {httpCode, msg, data} = results.data;
                     if (httpCode === 200){
                         this.reposList = data.reposList; //单个仓库信息包含name,htmlUrl,url,sshUrl
