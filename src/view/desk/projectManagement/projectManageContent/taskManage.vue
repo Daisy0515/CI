@@ -338,8 +338,8 @@
                 this.dialogTaskInfoView = true;
                 httpGet('/v1/authorization/manage/mission/get', {id: val}).then(results => {
                     const {msg, data, httpCode} = results.data;
-                    console.log("324", data);
                     if (httpCode == 200) {
+                      console.log("342", data);
                         let form = data;
                         form.endTime = specificDate(form.endTime);
                         form.gmtCreate = specificDate(form.gmtCreate);
@@ -355,11 +355,12 @@
                     }
                 });
                 // httpGet('/v1/authorization/bids/score/resource', {
-                //   castId: this.projectId
+                //   id: sessionStorage.getItem("id"), projectId: sessionStorage.getItem("projectId")
                 // }).then(results => {
                 //   const {msg, data, httpCode} = results.data;
+                //   console.log("361", data);
                 //   if (httpCode === 200) {
-                //     console.log("344", data);
+                //     console.log("363", data);
                 //     //this.taskForm.resourceName=data.uploadResource;
                 //   } else if (httpCode === 400) {
                 //     this.setCache('myBid');
@@ -367,6 +368,18 @@
                 //     errTips(msg);
                 //   }
                 // });
+              httpGet('/v1/authorization/manage/resource/list', ).then(results => {
+                const {msg, data, httpCode} = results.data;
+                console.log("361", data);
+                if (httpCode === 200) {
+                  console.log("363", data);
+                  //this.taskForm.resourceName=data.uploadResource;
+                } else if (httpCode === 400) {
+                  this.setCache('myBid');
+                } else if (httpCode !== 401) {
+                  errTips(msg);
+                }
+              });
             },
             showSubTask(val) {
                 this.taskTable = this.allMissionList[val].missionInfoList;
