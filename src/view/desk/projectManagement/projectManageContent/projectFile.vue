@@ -21,22 +21,25 @@
             <el-button type="primary" @click="searchList()">搜索</el-button>
 
         </div>
-        <el-table :data="fileTable" style="width:1200px;margin:0 auto" :header-cell-style="rowClass" v-loading="loading" >
+        <el-table :data="fileTable" style="width:1200px;margin:0 auto"
+                  ref="multipleTable" @selection-change="handleSelectionChange"
+                  :header-cell-style="rowClass" v-loading="loading" >
             <el-table-column fixed prop="resourceName" label="文件名称" align="center"></el-table-column>
             <el-table-column prop="titleName" label="所属任务" align="center"></el-table-column>
             <el-table-column prop="subtitle" label="子任务标题" align="center"></el-table-column>
             <el-table-column prop="missionTypeName" label="子任务类型" align="center"></el-table-column>
             <el-table-column prop="gmtCreate" label="上传时间" align="center"></el-table-column>
             <el-table-column prop="userName" label="上传者" align="center"></el-table-column>
-
-            <el-table-column label="操作" align="center" >
+            <el-table-column type="selection" :disable="isdisable" width="70px" header-align="center"
+                             label-class-name="setDownloadName" align="center"></el-table-column>
+            <!-- <el-table-column label="操作" align="center" >
                 <template slot-scope="scope">
                     <router-link @click.native="downloadFile(scope.row)" to>
                             <i class="el-icon-download"></i>
                             下载
                     </router-link>
                 </template>
-            </el-table-column>
+            </el-table-column> -->
         </el-table>
         <div class="bid_footer">
             <el-pagination
@@ -61,6 +64,8 @@
         mixins: [timeLimit],
         data() {
             return {
+                multipleSelection: [],
+                isdisable:false, //控制下载选择框
                 teamId:null,
                 loading: false,
                 totalPage: 0,
@@ -80,34 +85,24 @@
                 fileTable: [],
                 userList:[],
                 missionTitleList:[],
-                subtitleList: [],
             };
         },
         created: function () {
-            this.teamId = this.$route.query.teamId;
+            this.teamId = sessionStorage.getItem('teamId');
             this.pageData.teamId = this.teamId;
             this.getView();
             this.getUserList();
             this.getMissionList();
-            this.getSubtitleList();
         },
         computed: {
         },
         methods: {
             ...mapMutations(["setCache"]),
-            getMissionList(){
-                httpGet("/v1/authorization/manage/missiontitle/list", {
-                    teamId: this.teamId
-                }).then(results => {
-                    const {httpCode, msg, data} = results.data;
-                    if (httpCode === 200) {
-                        this.missionTitleList = data.missionTitle;
-                    } else {
-                        errTips(msg);
-                    }
-                });
+            handleSelectionChange(val) {
+            //val 为选中数据的集合
+                this.multipleSelection = val;
             },
-            getSubtitleList() {
+            getMissionList(){
                 httpGet("/v1/authorization/manage/missiontitle/list", {
                     teamId: this.teamId
                 }).then(results => {
@@ -178,6 +173,15 @@
 </script>
 <style lang='scss'>
     @import "@/assets/scss/myTable.scss";
+    .el-table /deep/.setDownloadName .cell .el-checkbox__inner{
+        margin-left: -30px;
+        position:relative;
+    }
+    .el-table /deep/.setDownloadName .cell:before{
+        content:"下载";
+        position:absolute;
+        right:11px;
+    }
     .header_two0 {
         .userImg {
             float: right;

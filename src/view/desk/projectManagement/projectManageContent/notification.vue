@@ -144,19 +144,18 @@
   </div>
 </template>
 <script>
-import {httpGet, httpPost, httpDelete} from "@/utils/http.js";
+import {httpGet, httpDelete} from "@/utils/http.js";
 import {specificDate} from "@/utils/getDate.js";
 import {errTips} from "@/utils/tips.js";
-import {mapMutations, mapActions, mapGetters} from "vuex";
+import {mapMutations} from "vuex";
 import initNewNotification from '@/view/desk/projectManagement/projectManageContent/component/initNewNotification'
-import {quillEditor} from 'vue-quill-editor'; //调用编辑器
 import 'quill/dist/quill.core.css';
 import 'quill/dist/quill.snow.css';
 import 'quill/dist/quill.bubble.css';
 
 export default {
   components: {
-    quillEditor,
+    
     initNewNotification,
   },
   data() {
@@ -268,7 +267,7 @@ export default {
     },
     deleteNotice(val) {
       httpDelete(`v1/authorization/notification/notification/delete/${val}`).then(results => {
-        const {msg, data, httpCode} = results.data;
+        const {msg, httpCode} = results.data;
         if (httpCode === 200) {
           this.getNotification();
         } else {

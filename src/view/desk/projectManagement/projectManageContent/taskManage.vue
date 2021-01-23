@@ -119,14 +119,14 @@
               <el-table :data="subtitleList" style="width:100%;" :header-cell-style="rowClass"
                         v-loading="loading">
 
-<!--                <el-table-column prop="id" label="任务Id" align="center">-->
-<!--                  <template slot-scope="scope">-->
-<!--&lt;!&ndash;                    <el-tooltip class="item" effect="dark"&ndash;&gt;-->
-<!--&lt;!&ndash;                                placement="top-start">&ndash;&gt;-->
-<!--                      <span class="tablehidden">{{ scope.row.id }}</span>-->
-<!--&lt;!&ndash;                    </el-tooltip>&ndash;&gt;-->
-<!--                  </template>-->
-<!--                </el-table-column>-->
+                <!--                <el-table-column prop="id" label="任务Id" align="center">-->
+                <!--                  <template slot-scope="scope">-->
+                <!--&lt;!&ndash;                    <el-tooltip class="item" effect="dark"&ndash;&gt;-->
+                <!--&lt;!&ndash;                                placement="top-start">&ndash;&gt;-->
+                <!--                      <span class="tablehidden">{{ scope.row.id }}</span>-->
+                <!--&lt;!&ndash;                    </el-tooltip>&ndash;&gt;-->
+                <!--                  </template>-->
+                <!--                </el-table-column>-->
 
                 <el-table-column prop="subtitle" label="任务名称" align="center">
                   <template slot-scope="scope">

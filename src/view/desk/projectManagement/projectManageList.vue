@@ -68,8 +68,10 @@
             </el-table-column>
             <el-table-column prop="projectName" label="项目/比赛" align="center">
                 <template slot-scope="scope">
-                    <router-link :to="{name:'projectManageContent',
-                                       query:{teamId:scope.row.teamId,userId:scope.row.userId}}" >
+                    <router-link @click.native="storeUserId(scope.row.userId)"
+                                 :to="{name:'projectManageContent',
+                                       query:{teamId:scope.row.teamId}}" 
+                                    >
                         <el-tooltip class="item" effect="dark" :content="scope.row.projectName" placement="top-start">
                             <span class="tablehidden">{{scope.row.projectName}}</span>
                         </el-tooltip>
@@ -263,7 +265,10 @@
             },
             rowClass() {
                 return "background:#F4F6F9;";
-            }
+            },
+            storeUserId(val) {
+                sessionStorage.setItem('userId', val)
+            },
         }
     };
 </script>
