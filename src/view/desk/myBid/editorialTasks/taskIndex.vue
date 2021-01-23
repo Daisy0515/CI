@@ -32,8 +32,7 @@
                 </div>
                 <div class="ganttHeader_right">
                     <router-link :to="{ path: 'taskGantt', query: { projectId: projectId } }" style="margin-right:20px">
-                        <p @click="routerIndex = 'taskGantt'" :class="routerIndex == 'taskGantt' ? 'is-active' : ''">
-                            甘特图</p>
+                        <el-button type="primary" size="mini" @click="routerIndex = 'taskGantt'">甘特图</el-button>
                     </router-link>
                     <router-link :to="{ path: 'submitHistory', query: { teamId: teamId } }">
                         <el-button type="primary" size="mini" @click="routerIndex = 'submitHistory'">提交历史</el-button>
@@ -211,7 +210,7 @@
     import {errTips, successTips} from '@/utils/tips.js';
     import sourceUpload from '@/common/upload/resourceUpload';
     import timeLimit from '@/mixins/regular/timeLimit.js';
-    import {MessageBox} from 'element-ui';
+    // import {MessageBox} from 'element-ui';
 
     export default {
         //结束时间大于等于开始时间
@@ -362,7 +361,7 @@
                     return false;
                 }
                 httpPost('/v1/authorization/mission/missiontitle/insert', this.missionForm).then(results => {
-                    const {msg, httpCode, data} = results.data;
+                    const {msg, httpCode} = results.data;
                     if (httpCode === 200) {
                         successTips('添加任务成功！');
                     } else {
@@ -381,7 +380,7 @@
                     return false;
                 }
                 httpPost('/v1/authorization/mission/missiontype/insert', this.typeForm).then(results => {
-                    const {msg, httpCode, data} = results.data;
+                    const {msg, httpCode} = results.data;
                     if (httpCode === 200) {
                         successTips('添加任务类型成功！');
                     } else {
@@ -430,22 +429,22 @@
                 });
             },
             //复制Git地址
-            copyAddress: function (event) {
+            copyAddress: function () {
                 var gitAddress = this.httpUrlToRepo;
                 var clipboard = new Clipboard('.btn', {
                     text: function () {
                         return gitAddress;
                     }
                 });
-                clipboard.on('success', e => {
-                    console.log('复制成功');
+                clipboard.on('success', () => {
+                    // console.log('复制成功');
                     successTips('复制git地址成功');
                     // 释放内存
                     clipboard.destroy();
                 });
-                clipboard.on('error', e => {
+                clipboard.on('error', () => {
                     // 不支持复制
-                    console.log('该浏览器不支持自动复制');
+                    // console.log('该浏览器不支持自动复制');
                     errTips('该浏览器不支持自动复制');
                     // 释放内存
                     clipboard.destroy();
@@ -516,7 +515,7 @@
             setIdCard2(data) {
                 data && (this.ruleForm.sourceFile = data.fileName);
                 httpPost('/v1/authorization/bids/missioninfo/add', this.ruleForm).then(results => {
-                    const {msg, httpCode, data} = results.data;
+                    const {msg, httpCode} = results.data;
                     if (httpCode === 200) {
                         successTips('添加任务成功！');
                     } else {
@@ -537,9 +536,9 @@
             },
 
             //添加任务
-            submitForm(formName) {
+            submitForm() {
                 //alert(1111111);
-                if (new Date(this.ruleForm.startTime.replace(/\-/g, '/')) > new Date(this.ruleForm.endTime.replace(/\-/g, '/'))) {
+                if (new Date(this.ruleForm.startTime.replace(/-/g, '/')) > new Date(this.ruleForm.endTime.replace(/-/g, '/'))) {
                     errTips('开始时间不能大于结束时间');
                     return false;
                 }
