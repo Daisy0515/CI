@@ -234,7 +234,7 @@ export default {
     ...mapMutations(["setCache"]),
     getNotification(val=this.pageData) {
       ///v1/authorization/notification/search/list
-
+      console.log("237", val);
       httpGet('v1/authorization/notification/search/list', val).then(results => {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
@@ -244,8 +244,15 @@ export default {
           for (let i = 0; i < this.notificationList.length; i++) {
             this.notificationList[i].notificationTime = specificDate(this.notificationList[i].notificationTime);
           }
-        } else {
-          errTips(msg);
+        }
+        else {
+          if(msg == "该条件暂无数据"){
+            this.totalCount = 0;
+            this.totalPage = 0;
+            this.notificationList = [];
+          }else {
+            errTips(msg);
+          }
         }
 
         if(this.selectedNotice != 0){

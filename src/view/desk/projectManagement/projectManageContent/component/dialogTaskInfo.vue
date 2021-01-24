@@ -8,7 +8,7 @@
             <el-row :gutter="20">
                 <el-col :span="10">
                     <el-form-item label="任务名称" :label-width="formLabelWidth">
-                        <el-input v-model="form.missionTypeName" auto-complete="off" :readonly="isReadOnly"/>
+                        <el-input v-model="form.missionTypeName" auto-complete="off"/>
                     </el-form-item>
                 </el-col>
                 <el-col :span="10">

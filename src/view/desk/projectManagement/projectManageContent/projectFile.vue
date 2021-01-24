@@ -21,16 +21,15 @@
             <el-button type="primary" @click="searchList()">搜索</el-button>
 
         </div>
-        <el-table :data="fileTable" style="width:1200px;margin:0 auto"
-                  ref="multipleTable" @selection-change="handleSelectionChange"
-                  :header-cell-style="rowClass" v-loading="loading" >
+        <el-table :data="fileTable" style="width:1200px;margin:0 auto" v-loading="loading"
+                  @selection-change="handleSelectionChange" :header-cell-style="rowClass" >
             <el-table-column fixed prop="resourceName" label="文件名称" align="center"></el-table-column>
             <el-table-column prop="titleName" label="所属任务" align="center"></el-table-column>
             <el-table-column prop="subtitle" label="子任务标题" align="center"></el-table-column>
             <el-table-column prop="missionTypeName" label="子任务类型" align="center"></el-table-column>
             <el-table-column prop="gmtCreate" label="上传时间" align="center"></el-table-column>
             <el-table-column prop="userName" label="上传者" align="center"></el-table-column>
-            <el-table-column type="selection" :disable="isdisable" width="70px" header-align="center"
+            <el-table-column type="selection" width="70px" header-align="center"
                              label-class-name="setDownloadName" align="center"></el-table-column>
             <!-- <el-table-column label="操作" align="center" >
                 <template slot-scope="scope">
@@ -64,8 +63,6 @@
         mixins: [timeLimit],
         data() {
             return {
-                multipleSelection: [],
-                isdisable:false, //控制下载选择框
                 teamId:null,
                 loading: false,
                 totalPage: 0,
