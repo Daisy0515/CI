@@ -4,7 +4,7 @@
         <div v-if="!hasBind">
             <p class="Tips">
                 <i class="el-icon-info"></i>平台提供了基于gitLab的代码托管(私有仓库模式)以及对第三方托管平台公开仓库的支持，例如：github,gitlab,gitee等。用户可以查看仓库的提交记录、pull
-                requests等信息。代码的托管平台只能选择1个，选择后将不能修改。
+                requests等信息。代码的托管平台只能选择1个，选择后将不能修改。受限于网络限制，平台提供的gitlab以及gitee能提供较为友好的体验！
             </p>
             <el-row>
                 <el-col :span="6" :offset="4">
@@ -17,11 +17,11 @@
                 </el-col>
                 <el-col :span="6" :offset="4">
                     <el-card style="width: 150px;height: 150px; margin: 10px auto;">
-                        <img :src="gitlabInfo.logo" class="logoCSS">
+                        <img :src="giteeInfo.logo" class="logoCSS">
                     </el-card>
                     <div style="text-align: center;">
-                        <a :href="gitlabInfo.authUrl">
-                            <el-button type="primary" > 连接gitlab</el-button>
+                        <a :href="giteeInfo.authUrl">
+                            <el-button type="primary"> 连接gitee</el-button>
                         </a>
                     </div>
                 </el-col>
@@ -39,55 +39,15 @@
                 </el-col>
                 <el-col :span="6" :offset="4">
                     <el-card style="width: 150px;height: 150px; margin: 10px auto;">
-                        <img :src="giteeInfo.logo" class="logoCSS">
+                        <img :src="gitlabInfo.logo" class="logoCSS">
                     </el-card>
                     <div style="text-align: center;">
-                        <a :href="giteeInfo.authUrl">
-                            <el-button type="primary"> 连接gitee</el-button>
+                        <a :href="gitlabInfo.authUrl">
+                            <el-button type="primary" > 连接gitlab</el-button>
                         </a>
                     </div>
                 </el-col>
             </el-row>
-            <!-- 绑定平台的对话框 -->
-            <el-dialog :visible.sync="showBindGitDialog">
-                <el-row>
-                    <h3>已选择：{{gitName}}平台</h3>
-                </el-row>
-                <el-row style="margin-bottom: 10px;">
-                    <el-col :span="5" :offset="2">
-                        <el-input v-model="gitUserName" placeholder="请输入用户名">
-                        </el-input>
-                    </el-col>
-                    <el-col :span="2" :offset="1" v-if="!showVerifyResult">
-                        <el-button type="primary" size="small" @click="verifyGitUser(gitUserName)"
-                                   :loading="existUserLoading">验证
-                        </el-button>
-                    </el-col>
-                    <el-col :span="2" :offset="1">
-                        <i class="el-icon-success" v-if="showVerifyResult"
-                           style="color: #5daf34;margin-top: 10%;margin-left: 20%;">
-                        </i>
-                    </el-col>
-                </el-row>
-                <el-row v-if="showReposList">
-                    <el-col :span="6" :offset="2">
-                        <el-select v-model="reposIndex" placeholder="请选择仓库" style="width:83%;"
-                                   :loading="reposLoading">
-                            <el-option
-                                v-for="(item,index) in reposList"
-                                    :key="index"
-                                    :label="item.name"
-                                    :value="index">
-                            </el-option>
-                        </el-select>
-                    </el-col>
-                    <el-col :span="5">
-                        <el-button type="primary" size="small" @click="beforeBindThirdGit"
-                                   :loading="bindGitLoading">绑定
-                        </el-button>
-                    </el-col>
-                </el-row>
-            </el-dialog>
         </div >
         <!--展示代码托管平台信息的阶段-->
         <div v-if="hasBind">
@@ -98,7 +58,7 @@
                 </el-card>
             </div>
             <el-tabs v-model="activeName" @tab-click="handleTabClick" :tab-position="tabPosition" >
-                <el-tab-pane label="branches" name="branches" v-loading="gitInfoListLoading" element-loading-text="拼命加载中"
+                <el-tab-pane label="branches" name="branches" v-loading="branches.listLoading" element-loading-text="拼命加载中"
                              element-loading-background="rgba(255, 255, 255, 1)">
                     <div class="panelHold boxSize">
                         <div class="panel" >
@@ -115,7 +75,7 @@
                         </div>
                     </div>
                 </el-tab-pane>
-                <el-tab-pane label="issues" name="issues" v-loading="gitInfoListLoading" element-loading-text="拼命加载中"
+                <el-tab-pane label="issues" name="issues" v-loading="issues.listLoading" element-loading-text="拼命加载中"
                              element-loading-background="rgba(255, 255, 255, 1)">
                     <div class="panelHold boxSize">
                         <div class="panel" >
@@ -135,7 +95,7 @@
                         </div>
                     </div>
                 </el-tab-pane>
-                <el-tab-pane label="pull request" name="pulls" v-loading="gitInfoListLoading" element-loading-text="拼命加载中"
+                <el-tab-pane label="pull request" name="pulls" v-loading="pulls.listLoading" element-loading-text="拼命加载中"
                              element-loading-background="rgba(255, 255, 255, 1)">
                     <div class="panelHold boxSize">
                         <div class="panel">
@@ -156,7 +116,7 @@
                     </div>
                 </el-tab-pane>
 
-                <el-tab-pane label="commits" name="commits" v-loading="gitInfoListLoading" element-loading-text="拼命加载中"
+                <el-tab-pane label="commits" name="commits" v-loading="commits.listLoading" element-loading-text="拼命加载中"
                              element-loading-background="rgba(255, 255, 255, 1)">
                     <div class="panelHold boxSize">
                         <div class="panel" >
@@ -224,23 +184,13 @@
                 reposSshUrl:null,        //团队绑定的仓库名称的ssh地址
                 gitProjectId:null,       //仓库的id(gitlab专用)
                 gitUrl:null,             //当前仓库的地址
+                verifyGitBindLoading:false, //加载用户平台绑定信息时查看的数据
 
                 /**git平台绑定阶段用到的信息**/
                 githubInfo:githubInfo, //官方github授权相关的信息
                 gitlabInfo:gitlabInfo, //官方gitlab授权相关的信息
                 giteeInfo:giteeInfo,   //官方gitee授权相关的信息
 
-                verifyGitBindLoading:false,      //查询团队git绑定信息时，加载提示信息
-                showBindGitProcess: true,        //显示绑定git平台过程的部分，用户没有绑定git平台时使用
-                showBindGitDialog: false,        //显示用户输入平台名称与仓库名的界面
-
-                reposIndex:null,                 //用户选择的仓库在仓库列表中的下标
-                existUserLoading: false,         //验证用户是否存在时加载
-                showReposList:false,             //连接git平台时，展示git仓库列表
-                showVerifyResult:false,          //验证通过时，显示的图标结果
-                reposLoading:false,              //公开仓库加载时的提示
-
-                bindGitLoading:false,            //绑定git时的加载提示
                 oauthTypeMapping:{               //oauthType类型的映射
                     "gitlab":0,
                     "gitlabOfficial":1,
@@ -259,23 +209,25 @@
                     list:[],                        //仓库分支列表
                     currentList:[],                 //当前页的提交记录
                     pageNo:1,                       //当前页的页码
+                    listLoading: false,             //当前页面列表的加载
                 },
                 issues:{
                     list:[],                        //仓库的issues列表
                     currentList:[],                 //当前页的提交记录
                     pageNo:1,                       //当前页的页码
+                    listLoading: false,             //当前页面列表的加载
                 },
                 pulls:{                             //仓库的Pull request数据
                     list:[],                        //仓库分支列表
                     currentList:[],                 //当前页的提交记录
                     pageNo:1,                       //当前页的页码
+                    listLoading: false,             //当前页面列表的加载
                 },
                 commits:{                           //仓库的commits数据
                     list:[],
                     currentList:[],
                     pageNo:1,
-                    selectedBranch:null,            //用户选择的分支
-                    branchesLoading:false           //commits页面获取用户分支时加载的提示
+                    listLoading: false,             //当前页面列表的加载
                 },
                 currentGitInfo:{                    //存储当前页git信息显示的数据
                     list:[],
@@ -305,18 +257,6 @@
                     }
                     this.verifyGitBindLoading = false;
                 });
-            },
-
-            /**选择第三方的git平台**/
-            chooseThirdPartyGit(gitName) {
-                this.showBindGitDialog = true;
-                this.gitName = gitName;
-                //对话框属性置空
-                this.gitUserName = null;      //用户名
-                this.showVerifyResult = false;//用户名验证结果
-                this.showReposList = false;   //公开仓库显示
-                this.reposList = [];          //仓库列表
-                this.reposIndex = null;       //用户选择的仓库的下标
             },
 
             /**绑定平台的gitlab平台**/
@@ -350,32 +290,9 @@
                 }).catch(() => {
                 });
             },
-            /**准备绑定git的数据**/
-            beforeBindThirdGit(){
-                if(this.reposIndex===null){
-                    errTips("请选择仓库!");
-                    return;
-                }
-                let data = {
-                    gitUserName:this.gitUserName,
-                    projectId:this.projectId,
-                    teamId:this.teamId,
-                    isThirdOauth:true,
-                    oauthType : this.oauthTypeMapping[this.gitName],
-                };
-                let reposInfo = this.reposList[this.reposIndex];
-                if(this.gitName.indexOf("gitlab")>=0){      //团队选择的是gitlab平台
-                    data.gitProjectId = reposInfo.id;
-                }
-                data.reposName = reposInfo.name;
-                data.reposHttpUrl = reposInfo.htmlUrl;
-                data.reposSshUrl = reposInfo.sshUrl;
-                console.log("bind data:",data);
-                this.bindGit(data);
-            },
-            /**绑定第三方的git平台**/
+
+            /**绑定git平台**/
             bindGit(data){
-                this.bindGitLoading = true;
                 httpPost("/v1/authorization/manage/projectManageGitOauth/insert",data).then(results=>{
                     const {httpCode, msg} = results.data;
                     if (httpCode === 200){
@@ -384,39 +301,10 @@
                     }else{
                         errTips(msg);
                     }
-                    this.bindGitLoading = false;
                 });
             },
-
 
             /**-----------------------------------------展示git信息部分的函数-----------------------------------------**/
-            /**验证用户名是否存在**/
-            verifyGitUser(gitUserName) {
-                if(gitUserName === null || gitUserName.trim() === ""){
-                    errTips("请输入用户名！");
-                    return;
-                }
-                this.existUserLoading = true;       //加载验证的提示
-                let url = "/v1/authorization/"+this.gitName+"/verify/get";
-                httpGet(url, {userName: gitUserName}).then(results => {
-                    const {httpCode, msg, data} = results.data;
-                    if (httpCode === 200){
-                        if (data.userName === null){
-                            errTips("当前用户不存在，请重新输入！");
-                        } else {
-                            this.gitUserName = data.userName;
-                            this.showVerifyResult = true;               //验证通过
-                            this.showReposList = true;                  //显示仓库的列表
-                            this.reposLoading = true;                   //仓库加载提示
-                            this.getReposList(this.gitUserName);
-
-                        }
-                    } else {
-                        errTips(msg);
-                    }
-                    this.existUserLoading = false;
-                });
-            },
 
             /**处理git展示信息的切换**/
             handleTabClick(tab) {
@@ -432,6 +320,7 @@
                 if(tab.label==="commits"&&this.commits.list.length===0){
                     this.getCommitsList(this.gitUserName,this.gitName,this.reposName,this.gitProjectId);
                 }
+                this.handleCurrentChange(this[this.activeName].pageNo);//未加载新数据时，恢复原来数据访问的页数
             },
 
             /**获取git用户的公开仓库列表**/
@@ -443,7 +332,6 @@
                     } else {
                         errTips(msg);
                     }
-                    this.reposLoading = false;
                 });
             },
 
@@ -456,7 +344,7 @@
                 }else{
                     data.repos = reposName;
                 }
-                this.gitInfoListLoading = true;
+                this.issues.listLoading = true;
                 httpGet(url,data).then(results=>{
                     const {httpCode, msg, data} = results.data;
                     if(httpCode === 200){
@@ -467,7 +355,7 @@
                     } else {
                         errTips(msg);
                     }
-                    this.gitInfoListLoading = false;
+                    this.issues.listLoading = false;
                     this.handleCurrentChange(1);
                 });
             },
@@ -481,7 +369,7 @@
                 }else{
                     data.repos = reposName;
                 }
-                this.gitInfoListLoading = true;
+                this.pulls.listLoading = true;
                 httpGet(url,data).then(results=>{
                     const {httpCode, msg, data} = results.data;
                     if(httpCode === 200){
@@ -492,7 +380,7 @@
                     } else {
                         errTips(msg);
                     }
-                    this.gitInfoListLoading = false;
+                    this.pulls.listLoading = false;
                     this.handleCurrentChange(1);
                 });
             },
@@ -506,7 +394,7 @@
                 }else{
                     data.repos = reposName;
                 }
-                this.gitInfoListLoading = true;
+                this.branches.listLoading = true;
                 httpGet(url,data).then(results=>{
                     const {httpCode, msg, data} = results.data;
                     if(httpCode === 200){
@@ -514,11 +402,10 @@
                     } else {
                         errTips(msg);
                     }
-                    this.gitInfoListLoading = false;
+                    this.branches.listLoading = false;
                     this.handleCurrentChange(1);
                 });
             },
-
 
             /**获取git公开仓库的提交记录**/
             getCommitsList(userName, gitName, reposName, gitProjectId){
@@ -530,7 +417,7 @@
                     data.userName = userName;
                     data.repos = reposName;
                 }
-                this.gitInfoListLoading = true;
+                this.commits.listLoading = true;
                 httpGet(url,data).then(results=>{
                     const {httpCode, msg, data} = results.data;
                     if(httpCode === 200){
@@ -541,7 +428,7 @@
                     } else {
                         errTips(msg);
                     }
-                    this.gitInfoListLoading = false;
+                    this.commits.listLoading = false;
                     this.handleCurrentChange(1);
                 });
             },
