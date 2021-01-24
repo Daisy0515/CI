@@ -40,7 +40,7 @@
     export default {
         name: "giteeOauth",
         created(){
-            // this.getCallbackInfo();
+            this.getCallbackInfo();
         },
         data(){
             return{
@@ -69,7 +69,7 @@
                 if(code !== null){
                     let data = {
                         code:code,
-                        oauthType:1,//1 官方的gitlab 2 github 3 gitee
+                        oauthType:3,//1 官方的gitlab 2 github 3 gitee
                     };
                     httpPost('/v1/authorization/coreGitOauth/gitee/insert', data).then(results => {
                         const {msg, httpCode, data} = results.data;
