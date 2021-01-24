@@ -982,7 +982,7 @@ const vueRouter = new Router({
                                     path: '/desk/defectManagement',
                                     name: 'defectManagement',
                                     component: () => import('@/view/desk/projectManagement/projectManageContent/defectManagement'),
-                                    redirect:'/desk/projectManageContent/codeDefect',
+                                    redirect:'/desk/codeDefect',
                                     meta: {
                                         title: "项目进度",
                                         routerIndex: "projectManagement", //children的routerIndex与父路由的routerIndex要一致，在common/header/deskHeader中保持被选择导航项的样式
@@ -991,7 +991,7 @@ const vueRouter = new Router({
                                     },
                                     children:[
                                         {
-                                            path:'/desk/projectManageContent/codeDefect',
+                                            path:'/desk/codeDefect',
                                             name:'codeDefect',
                                             component:() => import('@/view/desk/projectManagement/projectManageContent/defectManagement/codeDefect'),
                                             meta:{
@@ -1001,7 +1001,7 @@ const vueRouter = new Router({
                                             }
                                         },
                                         {
-                                            path:'/desk/projectManageContent/documentComments',
+                                            path:'/desk/documentComments',
                                             name:'codeDefect',
                                             component:() => import('@/view/desk/projectManagement/projectManageContent/defectManagement/documentComments'),
                                             meta:{

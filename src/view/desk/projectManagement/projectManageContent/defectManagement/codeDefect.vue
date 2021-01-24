@@ -22,12 +22,12 @@
 
                 <el-button size="primary" @click="searchList()">搜索</el-button>
                 <el-button size="primary" @click="getIssueVisualization()">可视化</el-button>
-                <el-button size="primary" @click="gotoTest()">招聘测试人员</el-button>
+                <!-- <el-button size="primary" @click="gotoTest()">招聘测试人员</el-button> -->
                 <!-- </div> -->
             </div>
         <defect-add :dialogFormVisible="defectAddDialog" :userList="userList" 
                     :projectId="projectId" @closeDialog="closeDefectAddDialog"></defect-add>
-        <issue-visualization :dialogFormVisible="visualizationDialog" :projectList="projectList" 
+        <issue-visualization :dialogFormVisible="visualizationDialog" :projectId="projectId" 
                              @closeDialog="closeVisualizationDialog" ref="issueVisualization"></issue-visualization>
         <el-table
                     :data="tableData"
@@ -319,14 +319,6 @@
             },
 
             getIssueVisualization() {
-                httpGet('/v1/authorization/bug/get/userproject').then(results => {
-                    const {msg, data, httpCode} = results.data;
-                    if (httpCode === 200) {
-                        this.projectList = data.projectList;
-                    } else if (httpCode !== 401) {
-                        errTips(msg);
-                    }
-                });
                 this.visualizationDialog = true;
                 this.$nextTick(()=>{
                     this.$refs.issueVisualization.drawInit();
