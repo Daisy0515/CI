@@ -4,7 +4,7 @@
         <div v-if="!hasBind">
             <p class="Tips">
                 <i class="el-icon-info"></i>平台提供了基于gitLab的代码托管(私有仓库模式)以及对第三方托管平台公开仓库的支持，例如：github,gitlab,gitee等。用户可以查看仓库的提交记录、pull
-                requests等信息。代码的托管平台只能选择1个，选择后将不能修改。
+                requests等信息。代码的托管平台只能选择1个，选择后将不能修改。受限于网络限制，平台提供的gitlab以及gitee能提供较为友好的体验！
             </p>
             <el-row>
                 <el-col :span="6" :offset="4">
@@ -17,11 +17,11 @@
                 </el-col>
                 <el-col :span="6" :offset="4">
                     <el-card style="width: 150px;height: 150px; margin: 10px auto;">
-                        <img :src="gitlabInfo.logo" class="logoCSS">
+                        <img :src="giteeInfo.logo" class="logoCSS">
                     </el-card>
                     <div style="text-align: center;">
-                        <a :href="gitlabInfo.authUrl">
-                            <el-button type="primary" > 连接gitlab</el-button>
+                        <a :href="giteeInfo.authUrl">
+                            <el-button type="primary"> 连接gitee</el-button>
                         </a>
                     </div>
                 </el-col>
@@ -39,11 +39,11 @@
                 </el-col>
                 <el-col :span="6" :offset="4">
                     <el-card style="width: 150px;height: 150px; margin: 10px auto;">
-                        <img :src="giteeInfo.logo" class="logoCSS">
+                        <img :src="gitlabInfo.logo" class="logoCSS">
                     </el-card>
                     <div style="text-align: center;">
-                        <a :href="giteeInfo.authUrl">
-                            <el-button type="primary"> 连接gitee</el-button>
+                        <a :href="gitlabInfo.authUrl">
+                            <el-button type="primary" > 连接gitlab</el-button>
                         </a>
                     </div>
                 </el-col>
@@ -184,6 +184,7 @@
                 reposSshUrl:null,        //团队绑定的仓库名称的ssh地址
                 gitProjectId:null,       //仓库的id(gitlab专用)
                 gitUrl:null,             //当前仓库的地址
+                verifyGitBindLoading:false, //加载用户平台绑定信息时查看的数据
 
                 /**git平台绑定阶段用到的信息**/
                 githubInfo:githubInfo, //官方github授权相关的信息
