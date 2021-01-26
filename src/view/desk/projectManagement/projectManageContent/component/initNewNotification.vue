@@ -55,11 +55,11 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="16">
-          <el-form-item label="上传附件" :label-width="formLabelWidth">
+          <form-item label="上传附件" :label-width="formLabelWidth">
             <!--此处改为文件上传 -->
             <sourceUpload :uploadIndex="testUploadIndex" :fileIndex="2"
                           v-on:setIdCard="setIdCard2($event)"/>
-          </el-form-item>
+          </form-item>
         </el-col>
       </el-row>
       <div style="text-align: center;margin-top: 50px">

@@ -20,6 +20,7 @@
               type="date"
               placeholder="通知开始时间"
               value-format="yyyy-MM-dd"
+              :picker-options="endDatePicker"
           ></el-date-picker>
           <span style="margin-right: 15px;">到</span>
           <el-date-picker
@@ -27,6 +28,7 @@
               type="date"
               placeholder="通知结束时间"
               value-format="yyyy-MM-dd"
+              :picker-options="endDatePicker"
           ></el-date-picker>
           <el-button size="primary" @click="searchList">搜索</el-button>
         </div>
@@ -152,11 +154,13 @@ import initNewNotification from '@/view/desk/projectManagement/projectManageCont
 import 'quill/dist/quill.core.css';
 import 'quill/dist/quill.snow.css';
 import 'quill/dist/quill.bubble.css';
+import timeLimit from "@/mixins/regular/timeLimit.js";
 export default {
   components: {
 
     initNewNotification,
   },
+  mixins: [timeLimit],
   data() {
     return {
       testIssueSumList: [],
