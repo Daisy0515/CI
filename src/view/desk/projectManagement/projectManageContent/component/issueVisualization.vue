@@ -1,41 +1,41 @@
 <template>
-    <el-dialog :visible.sync="dialogFormVisible" :before-close="changeVisible" class="myDialog">
+    <el-dialog :visible.sync="dialogFormVisible" :before-close="changeVisible" width="80%">
         <div class="teamApplication">
-            <div style="width: 100%; height: 25rem;padding-left: 15%;">
-                <div style="float:left;width: 40%;height: 100%;">
+            <div style="width: 100%; height: 25rem;">
+                <div style="float:left;width: 50%;height: 100%;">
 
                     <div id="main1" style="width: 100%;height: 100%;margin-top: 2.5rem;"></div>
                 </div>
 
-                <div style="float:left;width: 40%;height: 100%;">
-                    <div style="margin-left: 60%;">
+                <div style="float:left;width: 50%;height: 100%;">
+                    <!-- <div style="margin-left: 40%;">
                         <el-select v-model="selected2" placeholder="请选择" @change="getLine">
                             <el-option v-for="item in projectList" :key="item.projectId" :label="item.projectName"
                                     :value="item.projectId"></el-option>
                         </el-select>
-                    </div>
+                    </div> -->
 
                     <div id="main2" style="width: 100%;height: 100%;"></div>
                 </div>
             </div>
-            <div style="width: 100%; height: 25rem; padding-left: 10%;">
-                <div style="margin-top:50px ; width: 40%;height: 100%;float: left;">
-                    <div style="margin-left: 60%;">
+            <div style="width: 100%; height: 25rem;">
+                <div style="margin-top:20px ; width: 50%;height: 100%;float: left;">
+                    <!-- <div style="margin-left: 60%;">
                         <el-select v-model="selected3" placeholder="请选择" @change="getPie1">
                             <el-option v-for="item in projectList" :key="item.projectId" :label="item.projectName"
                                     :value="item.projectId"></el-option>
                         </el-select>
-                    </div>
+                    </div> -->
                     <div id="main3" style="width: 100%;height: 100%;"></div>
                 </div>
 
-                <div style="margin-top:50px ;width: 40%; height: 100%;float: left;">
-                    <div style="margin-left: 60%;">
+                <div style="margin-top:20px ;width: 50%; height: 100%;float: left;">
+                    <!-- <iv style="margin-left: 60%;">
                         <el-select v-model="selected4" placeholder="请选择" @change="getPie2">
                             <el-option v-for="item in projectList" :key="item.projectId" :label="item.projectName"
                                     :value="item.projectId"></el-option>
                         </el-select>
-                    </div>
+                    </div> -->
                     <div id="main4" style="width: 100%;height: 100%;"></div>
                 </div>
             </div>
@@ -60,8 +60,8 @@
                 type: Boolean,
                 default: false,
             },
-            projectList: {
-                type: Array,
+            projectId: {
+                type: Number,
                 default: null,
             }
         },
@@ -70,9 +70,6 @@
                 myChart2: '',
                 myChart3: '',
                 myChart4: '',
-                selected2: '总体',
-                selected3: '总体',
-                selected4: '总体',
                 Status: ['待解决', '解决中', '已解决', '结束'],
                 Levels: ['马上解决', '急需解决', '高度重视', '正常处理', '低优先级'],
                 bugList1: [], //柱状图
@@ -186,7 +183,7 @@
                 });
 
                 this.myChart2.showLoading();
-                httpGet('/v1/authorization/bug/get/linechart', {id: null}).then(results => {
+                httpGet('/v1/authorization/bug/get/linechart', {id: this.projectId}).then(results => {
                     const {msg, data, httpCode} = results.data;
                     if (httpCode === 200) {
                         this.bugList2 = data.bugList;
@@ -259,7 +256,7 @@
                     ]
                 });
                 this.myChart3.showLoading();
-                httpGet('/v1/authorization/bug/get/statuscondition', {id: null}).then(results => {
+                httpGet('/v1/authorization/bug/get/statuscondition', {id: this.projectId}).then(results => {
                     const {msg, data, httpCode} = results.data;
                     if (httpCode === 200) {
                         this.bugInfoList1 = data.bugInfoList;
@@ -320,7 +317,7 @@
                         }
                     ]
                 });
-                this.getPie2(null);
+                this.getPie2(this.projectId);
             },
 
             getPie2: function (value) {
@@ -368,123 +365,115 @@
                 });
             },
 
-            getPie1: function (value) {
-                this.myChart3.showLoading();
-                httpGet('/v1/authorization/bug/get/statuscondition', {id: value}).then(results => {
-                    const {msg, data, httpCode} = results.data;
-                    if (httpCode === 200) {
-                        this.bugInfoList1 = data.bugInfoList;
-                        var res = [];
-                        var len = this.bugInfoList1.length;
+        //     getPie1: function (value) {
+        //         this.myChart3.showLoading();
+        //         httpGet('/v1/authorization/bug/get/statuscondition', {id: value}).then(results => {
+        //             const {msg, data, httpCode} = results.data;
+        //             if (httpCode === 200) {
+        //                 this.bugInfoList1 = data.bugInfoList;
+        //                 var res = [];
+        //                 var len = this.bugInfoList1.length;
 
-                        while (len--) {
-                            res.push({
-                                name: this.Status[len],
-                                value: this.bugInfoList1[len].value
-                            });
-                        }
-                        this.myChart3.hideLoading();
-                        this.myChart3.setOption({
-                            title: {
-                                text: '缺陷解决情况',
-                                subtext: '缺陷数（个）',
-                                x: 'center'
-                            },
-                            series: [
-                                {
-                                    name: '详情',
-                                    type: 'pie',
-                                    label: {
-                                        normal: {
-                                            show: true,
-                                            formatter: '{b}: {c}({d}%)'
-                                        }
-                                    },
+        //                 while (len--) {
+        //                     res.push({
+        //                         name: this.Status[len],
+        //                         value: this.bugInfoList1[len].value
+        //                     });
+        //                 }
+        //                 this.myChart3.hideLoading();
+        //                 this.myChart3.setOption({
+        //                     title: {
+        //                         text: '缺陷解决情况',
+        //                         subtext: '缺陷数（个）',
+        //                         x: 'center'
+        //                     },
+        //                     series: [
+        //                         {
+        //                             name: '详情',
+        //                             type: 'pie',
+        //                             label: {
+        //                                 normal: {
+        //                                     show: true,
+        //                                     formatter: '{b}: {c}({d}%)'
+        //                                 }
+        //                             },
 
-                                    center: ['50%', '60%'],
-                                    data: res
-                                }
-                            ]
-                        });
-                    } else if (httpCode === 400) {
-                        this.setCache('issueManage');
-                    } else if (httpCode !== 401) {
-                        errTips(msg);
-                    }
-                });
-            },
+        //                             center: ['50%', '60%'],
+        //                             data: res
+        //                         }
+        //                     ]
+        //                 });
+        //             } else if (httpCode === 400) {
+        //                 this.setCache('issueManage');
+        //             } else if (httpCode !== 401) {
+        //                 errTips(msg);
+        //             }
+        //         });
+        //     },
 
-            getLine: function (value) {
-                this.myChart2.showLoading();
-                httpGet('/v1/authorization/bug/get/linechart', {id: value}).then(results => {
-                    const {msg, data, httpCode} = results.data;
-                    if (httpCode === 200) {
-                        this.bugList2 = data.bugList;
-                        var x2 = [];
-                        var y2 = [];
-                        this.bugList2.forEach(item => {
-                            y2.push(item.value);
-                            x2.push(item.key);
-                        });
-                        this.myChart2.hideLoading();
-                        this.myChart2.setOption({
-                            title: {
-                                text: '缺陷解决情况'
-                            },
-                            tooltip: {},
-                            legend: {
-                                data: ['个数']
-                            },
+        //     getLine: function (value) {
+        //         this.myChart2.showLoading();
+        //         httpGet('/v1/authorization/bug/get/linechart', {id: value}).then(results => {
+        //             const {msg, data, httpCode} = results.data;
+        //             if (httpCode === 200) {
+        //                 this.bugList2 = data.bugList;
+        //                 var x2 = [];
+        //                 var y2 = [];
+        //                 this.bugList2.forEach(item => {
+        //                     y2.push(item.value);
+        //                     x2.push(item.key);
+        //                 });
+        //                 this.myChart2.hideLoading();
+        //                 this.myChart2.setOption({
+        //                     title: {
+        //                         text: '缺陷解决情况'
+        //                     },
+        //                     tooltip: {},
+        //                     legend: {
+        //                         data: ['个数']
+        //                     },
 
-                            xAxis: {
-                                data: x2
-                            },
-                            yAxis: [
-                                {
-                                    type: 'value',
-                                    name: '缺陷数（个）'
-                                }
-                            ],
+        //                     xAxis: {
+        //                         data: x2
+        //                     },
+        //                     yAxis: [
+        //                         {
+        //                             type: 'value',
+        //                             name: '缺陷数（个）'
+        //                         }
+        //                     ],
 
-                            series: [
-                                {
-                                    //顶上小图标名称
-                                    name: '缺陷数',
-                                    type: 'line',
-                                    data: y2,
+        //                     series: [
+        //                         {
+        //                             //顶上小图标名称
+        //                             name: '缺陷数',
+        //                             type: 'line',
+        //                             data: y2,
 
-                                    //平均值
-                                    markLine: {
-                                        data: [
-                                            {
-                                                type: 'average',
-                                                name: '平均值'
-                                            }
-                                        ]
-                                    }
-                                }
-                            ]
-                        });
-                    } else if (httpCode === 400) {
-                        this.setCache('issueManage');
-                    } else if (httpCode !== 401) {
-                        errTips(msg);
-                    }
-                });
-            }
+        //                             //平均值
+        //                             markLine: {
+        //                                 data: [
+        //                                     {
+        //                                         type: 'average',
+        //                                         name: '平均值'
+        //                                     }
+        //                                 ]
+        //                             }
+        //                         }
+        //                     ]
+        //                 });
+        //             } else if (httpCode === 400) {
+        //                 this.setCache('issueManage');
+        //             } else if (httpCode !== 401) {
+        //                 errTips(msg);
+        //             }
+        //         });
+        //     }
         }
     };
 </script>
-<style lang="scss">
-    .myDialog .el-dialog{
-        width: 70%;
-        height: 150%;
-    }
+<style lang="scss" scoped>
     .teamApplication {
-        .box-card0 {
-            padding: 20px 20px 20px 20px;
-            margin: 50px 350px 50px 350px;
-        }
 
         .title.el-input {
             width: 93%;
@@ -509,15 +498,5 @@
             height: 10px;
             background: red;
         }
-
-        /* .card-header__2npG h4 {
-          color: #8c8c8c;
-          font-size: 14px;
-          max-width: 300px;
-          cursor: pointer;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-      } */
     }
 </style>

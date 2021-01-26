@@ -516,7 +516,7 @@
         }
     };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
     .teamApplication {
         .box-card0 {
             padding: 20px 20px 20px 20px;
