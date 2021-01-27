@@ -146,7 +146,6 @@
             //获取页面数据
             getView(val = this.searchData) {
                 this.loading = true;
-                ///v1/authorization/manage/memberresource/list
                 httpGet("/v1/authorization/manage/resource/list", val).then(results => {
                     const {httpCode, msg, data} = results.data;
                     if (httpCode === 200) {
@@ -156,6 +155,11 @@
 
                         for (let i of list) {
                             i.gmtCreate = specificDate(i.gmtCreate);
+                            if(i.resourceName === null){
+                                let resouArray = i.resource.split('/');
+                                i.resourceName = resouArray[resouArray.length-1];
+                            }
+
                         }
                         Object.assign(this.searchData, val);
                         this.$set(this, "fileTable", list);
