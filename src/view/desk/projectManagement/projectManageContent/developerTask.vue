@@ -56,7 +56,7 @@
         </div>
 
         <el-dialog  :title="taskInfo.titleName" :visible.sync="dialogTaskInfoVisible"
-                    :close-on-click-modal="true" @close='closeDialog' class="myDialog">
+                    :close-on-click-modal="false" @close='closeDialog' class="myDialog">
             <el-form :model="taskInfo" ref="taskInfo" class="myForm">
             <hr>
             <el-col :span="21">
@@ -102,16 +102,28 @@
             </el-form>
             <hr style="margin-bottom:20px">
             <el-table :data="fileTable" style="width:1200px;margin:0 auto" v-loading="loading" >
-            <el-table-column prop="resourceName" label="文件名称" align="center"></el-table-column>
+            <el-table-column prop="resourceName" label="文件名称" align="center">
+                <template slot-scope="scope">
+                    <a :href="scope.row.resource" target="_blank">
+                        {{scope.row.resourceName}}
+                    </a>
+                </template>
+            </el-table-column>
             <el-table-column prop="userName" label="上传者" align="center"></el-table-column>
-            <el-table-column prop="userRole" label="角色" align="center"></el-table-column>
+            <el-table-column prop="userRole" label="角色" align="center">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.role === 1">项目经理</span>
+                    <span v-else>开发者</span>
+                </template>
+            </el-table-column>
             <el-table-column prop="gmtCreate" label="上传时间" align="center"></el-table-column>
             <el-table-column label="下载" align="center">
                 <template slot-scope="scope">
-                    <el-button type="primary" size="small" @click="downloadFile(scope.row)">
-                        <i class="el-icon-download"></i>
-                        下载
-                    </el-button>
+                    <a :href="scope.row.resource" target="_blank">
+                        <el-button type="primary" size="small">
+                            <i class="el-icon-download">下载</i>
+                        </el-button>
+                    </a>
                 </template>
             </el-table-column>
             </el-table>
@@ -139,7 +151,7 @@
     import {message, successTips, errTips} from "@/utils/tips.js";
     import {specificDate} from "@/utils/getDate.js";
     import sourceUpload from "@/common/upload/resourceUpload";
-    import router from "@/router"
+
     export default {
         components: {
             sourceUpload
@@ -319,6 +331,10 @@
                         this.filePageData.totalPage = parseInt(data.totalPage + "0");
                         for (let i of this.fileTable) {
                             i.gmtCreate = specificDate(i.gmtCreate);
+                            if(i.resourceName === null){
+                                let resouArray = i.resource.split('/');
+                                i.resourceName = resouArray[resouArray.length-1];
+                            }
                         }
                     }else if (msg === "该条件暂无数据") {
                         this.fileTable = [];
