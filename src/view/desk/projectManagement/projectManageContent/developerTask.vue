@@ -2,7 +2,8 @@
     <div class="myTable">
         <div class="header_two0">
             <ul class="c-header__navigation clearfix">
-                <li class="c-header__navigation__item" v-for="item in items" :key="item.title" @click="changeTaskStatus(item)">
+                <li class="c-header__navigation__item" v-for="item in items" :key="item.title"
+                    @click="changeTaskStatus(item)">
                     <router-link :class="selectedHeader === item.value ? 'header_active' : ''" to>
                         {{ item.title }}
                     </router-link>
@@ -13,19 +14,20 @@
 
         <div class="header_top">
             <br/>
-            <el-input v-model="pageData.content" placeholder="任务名称"></el-input>
-            <el-input v-model="pageData.subtitle" placeholder="子任务名称"></el-input>
+            <el-input v-model="pageData.content" placeholder="任务名称" clearable></el-input>
+            <el-input v-model="pageData.subtitle" placeholder="子任务名称" clearable></el-input>
             <el-select placeholder="请选择子任务类型" v-model="pageData.missionTypeId" clearable>
-                <el-option v-for="item in missionTypeList" :key="item.id" :label="item.missionName" :value="item.id"></el-option>
+                <el-option v-for="item in missionTypeList" :key="item.id" :label="item.missionName"
+                           :value="item.id"></el-option>
             </el-select>
             <el-button type="primary" @click="searchList()">搜索</el-button>
         </div>
 
-        <el-table :data="taskTable" style="width:1200px;margin:0 auto"  v-loading="loading" >
+        <el-table :data="taskTable" style="width:1200px;margin:0 auto" v-loading="missionTableLoading">
             <el-table-column fixed prop="subtitle" label="子任务名称" align="center">
                 <template slot-scope="scope">
-                    <el-tooltip class="item" effect="dark" :content="scope.row.projectName" placement="top-start" >
-                        <div style="color: #4c83c3" @click="taskView(filePageData, scope.row.id)">{{scope.row.subtitle}}</div>
+                    <el-tooltip class="item" effect="dark" :content="scope.row.projectName" placement="top-start">
+                        <div style="color: #4c83c3" @click="taskView(scope.row.id)">{{scope.row.subtitle}}</div>
                     </el-tooltip>
                 </template>
             </el-table-column>
@@ -38,7 +40,7 @@
 
             <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                    <el-button type="primary" plain size="small" @click="taskView(filePageData, scope.row.id)">
+                    <el-button type="primary" plain size="small" @click="taskView(scope.row.id)">
                         <i class="el-icon-search"></i>
                         查看任务
                     </el-button>
@@ -48,96 +50,97 @@
 
         <div class="bid_footer">
             <el-pagination
-                @current-change="handleCurrentChange"
-                :current-page.sync="pageData.pageNo"
-                :total="pageData.totalPage"
-                layout="prev, pager, next, jumper"
+                    @current-change="handleCurrentChange"
+                    :current-page.sync="pageData.pageNo"
+                    :total="pageData.totalPage"
+                    layout="prev, pager, next, jumper"
             ></el-pagination>
         </div>
 
-        <el-dialog  :title="taskInfo.titleName" :visible.sync="dialogTaskInfoVisible"
-                    :close-on-click-modal="false" @close='closeDialog' class="myDialog">
+        <el-dialog :title="taskInfo.titleName" :visible.sync="dialogTaskInfoVisible"
+                   :close-on-click-modal="false" @close='closeDialog' class="myDialog">
             <el-form :model="taskInfo" ref="taskInfo" class="myForm">
-            <hr>
-            <el-col :span="21">
-                <el-form-item label="任务类型:" >
-                    <h3 style="width:100%;margin:0px;">{{taskInfo.missionTypeName}}</h3>
+                <hr>
+                <el-col :span="21">
+                    <el-form-item label="任务类型:">
+                        <h3 style="width:100%;margin:0px;">{{taskInfo.missionTypeName}}</h3>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="3">
+                    <el-form-item v-if="typeTemplate!==null">
+                        <a :href="typeTemplate" style="font-size:17px; font-weight:bold;">参考模板</a>
+                    </el-form-item>
+                </el-col>
+                <el-form-item label="任务状态:" style="pointer-events: none;">
+                    <h3 style="width:100%;margin:0px;">{{taskInfo.statusName}}</h3>
                 </el-form-item>
-            </el-col>
-            <el-col :span="3">
-                <el-form-item>
-                    <a :href="typeTemplate" style="font-size:17px; font-weight:bold;">参考模板</a>
+                <el-col :span="12">
+                    <el-form-item label="任务创建时间:">
+                        <h3 style="width:100%;margin:0px;">{{taskInfo.gmtCreate}}</h3>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-form-item label="任务修改时间:">
+                        <h3 style="width:100%;margin:0px;">{{taskInfo.gmtModified}}</h3>
+                    </el-form-item>
+                </el-col>
+                <el-form-item label="执行人:">
+                    <h3 style="width:100%;margin:0px;">{{taskInfo.participants}}</h3>
                 </el-form-item>
-            </el-col>
-            <el-form-item label="任务状态:" style="pointer-events: none;">
-                <h3 style="width:100%;margin:0px;">{{taskInfo.statusName}}</h3>
-            </el-form-item>
-            <el-col :span="12">
-                <el-form-item label="任务创建时间:" >
-                    <h3 style="width:100%;margin:0px;">{{taskInfo.gmtCreate}}</h3>
-                </el-form-item>
-            </el-col>
-            <el-col :span="12">
-                <el-form-item label="任务修改时间:" >
-                    <h3 style="width:100%;margin:0px;">{{taskInfo.gmtModified}}</h3>
-                </el-form-item>
-            </el-col>
-            <el-form-item label="执行人:" >
-                <h3 style="width:100%;margin:0px;">{{taskInfo.participants}}</h3>
-            </el-form-item>
-            <el-col :span="12">
-                <el-form-item label="任务执行时间:" >
-                    <h3 style="width:100%;margin:0px;">{{taskInfo.startTime}}</h3>
-                </el-form-item>
-            </el-col>
-            <el-col :span="12">
-                <el-form-item label="到" >
-                    <h3 style="width:100%;margin:0px;">{{taskInfo.endTime}}</h3>
-                </el-form-item>
-            </el-col>
-            <el-form-item label="任务描述:">
-                <textarea style="resize:none;width:90%;border:2px solid gray;" row=1 readonly="readonly" :placeholder="taskInfo.description">
+                <el-col :span="12">
+                    <el-form-item label="任务执行时间:">
+                        <h3 style="width:100%;margin:0px;">{{taskInfo.startTime}}</h3>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-form-item label="到">
+                        <h3 style="width:100%;margin:0px;">{{taskInfo.endTime}}</h3>
+                    </el-form-item>
+                </el-col>
+                <el-form-item label="任务描述:">
+                <textarea style="resize:none;width:90%;border:2px solid gray;" row=1 readonly="readonly"
+                          :placeholder="taskInfo.description">
                 </textarea>
-            </el-form-item>
+                </el-form-item>
             </el-form>
             <hr style="margin-bottom:20px">
-            <el-table :data="fileTable" style="width:1200px;margin:0 auto" v-loading="loading" >
-            <el-table-column prop="resourceName" label="文件名称" align="center">
-                <template slot-scope="scope">
-                    <a :href="scope.row.resource" target="_blank">
-                        {{scope.row.resourceName}}
-                    </a>
-                </template>
-            </el-table-column>
-            <el-table-column prop="userName" label="上传者" align="center"></el-table-column>
-            <el-table-column prop="userRole" label="角色" align="center">
-                <template slot-scope="scope">
-                    <span v-if="scope.row.role === 1">项目经理</span>
-                    <span v-else>开发者</span>
-                </template>
-            </el-table-column>
-            <el-table-column prop="gmtCreate" label="上传时间" align="center"></el-table-column>
-            <el-table-column label="下载" align="center">
-                <template slot-scope="scope">
-                    <a :href="scope.row.resource" target="_blank">
-                        <el-button type="primary" size="small">
-                            <i class="el-icon-download">下载</i>
-                        </el-button>
-                    </a>
-                </template>
-            </el-table-column>
+            <el-table :data="fileTable" style="width:1200px;margin:0 auto" v-loading="fileTableLoading">
+                <el-table-column prop="resourceName" label="文件名称" align="center">
+                    <template slot-scope="scope">
+                        <a :href="scope.row.resource" target="_blank">
+                            {{scope.row.resourceName}}
+                        </a>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="userName" label="上传者" align="center"></el-table-column>
+                <el-table-column prop="userRole" label="角色" align="center">
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.role === 1">项目经理</span>
+                        <span v-else>开发者</span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="gmtCreate" label="上传时间" align="center"></el-table-column>
+                <el-table-column label="下载" align="center">
+                    <template slot-scope="scope">
+                        <a :href="scope.row.resource" target="_blank">
+                            <el-button type="primary" size="small">
+                                <i class="el-icon-download">下载</i>
+                            </el-button>
+                        </a>
+                    </template>
+                </el-table-column>
             </el-table>
             <div class="bid_footer">
-            <el-pagination
-                style = "margin: 10px"
-                @current-change="nextFilePage"
-                :current-page.sync="filePageData.pageNo"
-                :total="filePageData.totalPage"
-                layout="prev, pager, next, jumper"
-            ></el-pagination>
+                <el-pagination
+                        style="margin: 10px"
+                        @current-change="nextFilePage"
+                        :current-page.sync="filePageData.pageNo"
+                        :total="filePageData.totalPage"
+                        layout="prev, pager, next, jumper"
+                ></el-pagination>
             </div>
             <div style="text-align:center">
-                <sourceUpload  :uploadIndex="uploadIndex" v-on:setIdCard="setIdCard($event)"/>
+                <sourceUpload :uploadIndex="uploadIndex" v-on:setIdCard="setIdCard($event)"/>
                 <el-button type="primary" size="mini" @click="uploadFile()">确定上传</el-button>
             </div>
 
@@ -197,7 +200,7 @@
                     endTime: null,
                     participants: null,
                 },
-                fileTable:[],
+                fileTable: [],
                 taskTable: [],
                 items: [
                     {
@@ -213,35 +216,28 @@
                         value: 3
                     },
                 ],
+                fileTableLoading:false,
+                missionTableLoading:false,
             };
         },
-        computed: {
-        },
+        computed: {},
         created: function () {
             this.projectName = sessionStorage.getItem('projectName');
             this.teamId = sessionStorage.getItem("teamId");
             this.getMissionType(this.teamId);
-            // this.searchList();
             this.getView();
         },
         methods: {
+            /**获取子任务类型搜索下拉框**/
             getMissionType(val) {
-                this.loading = true;
-
                 httpGet("/v1/authorization/manage/missiontype/list", {teamId: val}).then(results => {
-                    const {
-                        msg,
-                        httpCode,
-                        data
-                    } = results.data;
+                    const {msg, httpCode, data} = results.data;
                     if (httpCode === 200) {
                         this.missionTypeList = data.missionTypeList;
-                    }
-                    else {
+                    } else {
                         errTips(msg);
                     }
                 });
-                this.loading = false;
             },
             searchList() {
                 let {selectedHeader, pageData} = this;
@@ -250,7 +246,7 @@
             },
 
             getView(val = this.pageData) {
-                this.loading = true;
+                this.missionTableLoading = true;
                 let {teamId, selectedHeader} = this;
                 val.teamId = teamId;
                 val.status = selectedHeader;
@@ -258,7 +254,7 @@
                     const {httpCode, msg, data} = results.data;
                     if (httpCode === 200) {
                         this.pageData.pageNo = data.pageNo;
-                        this.pageData.totalPage = parseInt(data.totalPage + "0");
+                        this.pageData.totalPage = parseInt(data.totalPage);
                         let {missList, missionTypeList} = data;
 
                         for (let i of missList) {
@@ -269,7 +265,7 @@
                             }
                             i.startTime = specificDate(i.startTime);
                             i.gmtModified = specificDate(i.gmtModified);
-                            i.endTime = specificDate(i.endTime)
+                            i.endTime = specificDate(i.endTime);
                         }
                         // Object.assign(this.pageData, val);
                         this.$set(this, "taskTable", missList);
@@ -279,11 +275,11 @@
                     } else if (httpCode !== 401) {
                         errTips(msg);
                     }
-                    this.loading = false;
+                    this.missionTableLoading = false;
                 });
             },
 
-            changeTaskStatus(item){
+            changeTaskStatus(item) {
                 this.selectedHeader = item.value;
                 this.getView();
             },
@@ -295,77 +291,95 @@
 
             nextFilePage(val) {
                 this.filePageData.pageNo = val;
-                this.taskView(this.filePageData, this.filePageData.missionId);
+                this.taskView(this.filePageData.missionId);
             },
 
-            taskView(filePageData, missionId){
-                this.dialogTaskInfoVisible =true;
-                filePageData.missionId = missionId;
-                this.filePageData.missionId = missionId;
-                httpGet("/v1/authorization/manage/mission/get",{id:missionId}).then(results=>{
+            /***获取单个任务的所有相关数据***/
+            taskView(missionId) {
+                this.dialogTaskInfoVisible = true;
+                this.getTaskDetail(missionId);
+                this.getFileTable(missionId);
+                this.getTemplate(missionId);
+            },
+            /***获取单个任务的详情(除了文件列表)***/
+            getTaskDetail(missionId) {
+                return httpGet("/v1/authorization/manage/mission/get", {id: missionId}).then(results => {
                     const {httpCode, msg, data} = results.data;
                     if (httpCode === 200) {
-                        this.taskInfo = data;
-                        this.taskInfo.gmtCreate = specificDate(data.gmtCreate);
-                        this.taskInfo.gmtModified = specificDate(data.gmtModified);
-                        this.taskInfo.startTime = specificDate(data.startTime);
-                        this.taskInfo.endTime = specificDate(data.endTime);
+                        data.gmtCreate = specificDate(data.gmtCreate);
+                        data.gmtModified = specificDate(data.gmtModified);
+                        data.startTime = specificDate(data.startTime);
+                        data.endTime = specificDate(data.endTime);
+
                         if (data.status === 1) {
-                            this.taskInfo.statusName = "执行中";
-                        }else if (data.status === 2) {
-                            this.taskInfo.statusName = "已完成";
-                        }else {
-                            this.taskInfo.statusName = "放弃";
+                            data.statusName = "执行中";
+                        } else if (data.status === 2) {
+                            data.statusName = "已完成";
+                        } else {
+                            data.statusName = "放弃";
                         }
 
-                        this.taskInfo.participants = data.participantList.join(',');
-                    }else{
-                        errTips("获取任务信息失败:",msg);
+                        data.participants = data.participantList.join(',');
+                        this.taskInfo = data;
+                    } else {
+                        errTips("获取任务信息失败:", msg);
                     }
-                })
-                httpGet("/v1/authorization/manage/resource/list", filePageData).then(results=>{
+                });
+            },
+
+            /***获取单个任务详情里的文件列表数据 分页***/
+            getFileTable(missionId) {
+                this.fileTableLoading = true;
+                this.filePageData.missionId = missionId;
+                return httpGet("/v1/authorization/manage/resource/list", this.filePageData).then(results => {
                     const {httpCode, msg, data} = results.data;
                     if (httpCode === 200) {
                         this.fileTable = data.list;
                         this.filePageData.pageNo = data.pageNo;
-                        this.filePageData.totalPage = parseInt(data.totalPage + "0");
+                        this.filePageData.totalPage = parseInt(data.totalPage);
                         for (let i of this.fileTable) {
                             i.gmtCreate = specificDate(i.gmtCreate);
-                            if(i.resourceName === null){
+                            if (i.resourceName === null) {
                                 let resouArray = i.resource.split('/');
-                                i.resourceName = resouArray[resouArray.length-1];
+                                i.resourceName = resouArray[resouArray.length - 1];
                             }
                         }
-                    }else if (msg === "该条件暂无数据") {
+                    } else if (msg === "该条件暂无数据") {
                         this.fileTable = [];
+                    } else {
+                        errTips("获取文件信息失败:", msg);
                     }
-                    else{
-                        errTips("获取文件信息失败:",msg);
-                    }
-                })
-                httpGet("/v1/authorization/manage/typetemplate/get", {id:missionId}).then(results=>{
+                    this.fileTableLoading = false;
+                });
+            },
+
+            /***根据任务id获取当前任务的参考模板**/
+            getTemplate(missionId) {
+                return httpGet("/v1/authorization/manage/typetemplate/get", {id: missionId}).then(results => {
                     const {httpCode, data} = results.data;
                     if (httpCode === 200) {
                         this.typeTemplate = data.resource;
-                    }
-                    else{
+                    } else {
                         errTips("获取参考模板失败:");
                     }
-                })
+                });
             },
 
             setIdCard(data) {
-                if (data == "") {
+                if (data === "") {
                     errTips("请先选择文件！")
-                }  else {
+                } else {
                     data && (this.sourceFile = data);
-                    httpPost("/v1/authorization/manage/resource/insert",
-                    {missionId:this.filePageData.missionId, resource: this.sourceFile,
-                    resourceName: this.sourceFile.split('/')[this.sourceFile.split('/').length - 1]}).then(results => {
+                    let param = {
+                        missionId: this.filePageData.missionId,
+                        resource: this.sourceFile,
+                        resourceName: this.sourceFile.split('/')[this.sourceFile.split('/').length - 1]
+                    };
+                    httpPost("/v1/authorization/manage/resource/insert", param).then(results => {
                         const {msg, httpCode} = results.data;
                         if (httpCode === 200) {
                             successTips('上传文件成功！');
-                            // this.setCache('testEmploy');
+                            this.getFileTable(this.filePageData.missionId);
                         } else if (httpCode !== 401) {
                             errTips(msg);
                         } else {
@@ -390,6 +404,7 @@
 
 <style lang='scss' scoped>
     @import "@/assets/scss/myTable.scss";
+
     .header_two0 {
         a {
             color: #666;
@@ -439,25 +454,27 @@
 </style>
 
 <style>
-    .myDialog .el-dialog{
+    .myDialog .el-dialog {
         width: 60%;
         height: auto;
     }
-    .myDialog .el-dialog__title{
+
+    .myDialog .el-dialog__title {
         font-size: 20px;
         font-weight: bolder;
     }
-    .myDialog .el-dialog__body{
+
+    .myDialog .el-dialog__body {
         padding-top: 0px;
     }
 
-    .myForm .el-form-item__label{
+    .myForm .el-form-item__label {
         font-size: 17px;
         color: black;
         font-weight: bolder;
     }
 
-    .myForm .el-form-item{
+    .myForm .el-form-item {
         padding: 0px;
         height: auto;
         margin: 0px;
