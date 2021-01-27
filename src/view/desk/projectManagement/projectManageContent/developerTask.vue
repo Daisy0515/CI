@@ -322,7 +322,6 @@
                         }
                     }else if (msg === "该条件暂无数据") {
                         this.fileTable = [];
-                        message("该条件暂无数据");
                     }
                     else{
                         errTips("获取文件信息失败:",msg);
@@ -366,7 +365,7 @@
             },
 
             closeDialog() {
-                router.go(0);
+                this.dialogTaskInfoVisible = false;
             }
         }
 
