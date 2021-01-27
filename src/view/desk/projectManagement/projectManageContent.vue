@@ -88,7 +88,7 @@
                         url: "projectProgress",
                     },
                     {
-                        name: "任务管理",
+                        name: "我的任务",
                         url: "developerTask",
                     },
                     {
