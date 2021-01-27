@@ -161,7 +161,7 @@
                 typeTemplate: null,
                 uploadIndex: false,
                 sourceFile: null,
-                teamID: null,
+                teamId: null,
                 projectName: null,
                 dialogTaskInfoVisible: false,
                 missionTypeList: [],
@@ -219,7 +219,7 @@
         },
         created: function () {
             this.projectName = sessionStorage.getItem('projectName');
-            this.teamId = this.$route.query.teamId;
+            this.teamId = sessionStorage.getItem("teamId");
             this.getMissionType(this.teamId);
             // this.searchList();
             this.getView();
@@ -251,8 +251,8 @@
 
             getView(val = this.pageData) {
                 this.loading = true;
-                let {projectName, selectedHeader} = this;
-                val.projectName = projectName;
+                let {teamId, selectedHeader} = this;
+                val.teamId = teamId;
                 val.status = selectedHeader;
                 httpGet("/v1/authorization/mission/missioninfo/listall", val).then(results => {
                     const {httpCode, msg, data} = results.data;
