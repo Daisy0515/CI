@@ -3,13 +3,13 @@
     <div class="container deskHeader">
       <div class="ganttHeader">
         <div class="ganttHeader_left">
-          <p :class="watchIndex == false ? 'is-active' : ''">
+          <p :class="watchIndex === false ? 'is-active' : ''">
             <i class="el-icon-menu"></i>
             任务管理
           </p>
-
+          <li>{{insertMissionTitle}}</li>
           <p class="ganttHeader_addTask" v-show="watchIndex || showIndex" @click="watchIndex = !watchIndex"
-             :class="watchIndex == true ? 'is-active' : ''">添加任务</p>
+             :class="watchIndex === true ? 'is-active' : ''">添加任务</p>
         </div>
       </div>
       <div class="ganttHeader_main" v-show="watchIndex">
@@ -68,7 +68,6 @@
                     </el-checkbox>
                   </el-checkbox-group>
                 </el-form-item>
-                <li>{{ addMission }}</li>
                 <el-form-item label="开始时间" prop="startTime">
                   <el-date-picker
                       style="margin-left:0%"
@@ -226,12 +225,12 @@ export default {
       showIndex: true,
       //subMissionTypeName:"",//子任务类型名称，添加新任务名称时使用
       insertMissionTitle: {//新建任务时，post命令需要的参数，/v1/authorization/mission/missiontitle/insert'
-        teamId: this.teamId,
+        teamId: sessionStorage.getItem("teamId"),
         title: "",
       },
       insertMissionType: {//添加新的任务类型时，post命令需要的参数，/v1/authorization/mission/missiontype/insert
         missionName: "",
-        teamId: this.teamId,
+        teamId: sessionStorage.getItem("teamId"),
       },
       missionData: {///v1/authorization/manage/mission/get返回的数据
         title: "",
@@ -321,8 +320,6 @@ export default {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
           this.userList = data.userList;
-          console.log("441", this.castId);
-          console.log("446", this.userList);
         } else {
           errTips(msg);
         }
@@ -332,27 +329,45 @@ export default {
   methods: {
     ...mapMutations(['settaskList', 'setResource', 'setCache']),
     //关闭任务信息对话框
-    insertNewMission() {
-      httpPost('/v1/authorization/mission/missiontitle/insert', this.insertMission).then(results => {
+    // insertNewMission() {//新建任务
+    //   console.log("334", this.insertMission)
+    //   httpPost('/v1/authorization/mission/missiontitle/insert', this.insertMission).then(results => {
+    //     const {msg, httpCode} = results.data;
+    //     if (httpCode === 200) {
+    //       successTips('添加任务成功！');
+    //     } else {
+    //       errTips(msg);
+    //     }
+    //     this.insertMissionTitle.title = '';
+    //     this.visible = false;
+    //   });
+    // },
+    insertNewMission() {//新建任务
+      console.log("346", this.insertMissionTitle);
+      if (this.insertMissionTitle.title === "") {
+        errTips('任务名称不能为空');
+        this.visible = false;
+        return false;
+      }
+      console.log("352", this.insertMissionTitle);
+      httpPost('/v1/authorization/mission/missiontitle/insert', this.insertMissionTitle).then(results => {
         const {msg, httpCode} = results.data;
         if (httpCode === 200) {
           successTips('添加任务成功！');
         } else {
           errTips(msg);
         }
+        //this.getMissionList(this.teamId);
         this.insertMissionTitle.title = '';
         this.visible = false;
       });
     },
-
     closeTaskInfoDialog() {
       this.dialogTaskInfoView1 = false;
       this.dialogTaskInfoView2 = false;
     },
     //打开任务信息对话框并获取任务信息
     showTaskInfoDialog(val) {
-      console.log("340id", val);
-      console.log("335", this.missionInfoList);
       //这个id是子任务Id，不是对应着上层任务
       httpGet('/v1/authorization/manage/mission/get', {id: val}).then(results => {//这个Id是subtitleId
         const {msg, data, httpCode} = results.data;
@@ -367,8 +382,6 @@ export default {
           if (this.taskForm.status === 1) this.taskForm.status = "执行中";
           if (this.taskForm.status === 2) this.taskForm.status = "完成";
           if (this.taskForm.status === 3) this.taskForm.status = "放弃";
-          console.log("349", this.missionData);
-          console.log("350", this.taskForm);
           this.dialogTaskInfoView1 = true;
         } else {
           errTips(msg);
@@ -376,7 +389,6 @@ export default {
       });
     },
     showSubTask(val) {
-      console.log("377", val);
       this.missionInfoList = this.missionTitleList[val].missionInfoList;
     },
     getMissionTitleList() {//ok
@@ -384,7 +396,6 @@ export default {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
           this.missionTitleList = data.missionTitleList;
-          console.log("396missionTitleList", this.missionTitleList);
           this.showSubTask(this.selectedMission);
         } else {
           errTips(msg);
@@ -397,7 +408,6 @@ export default {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
           this.missionTitle = data.missionTitle;
-          console.log("365missionTitle", this.missionTitle);
         } else {
           errTips(msg);
         }
@@ -409,7 +419,6 @@ export default {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
           this.missionTypeList = data.missionTypeList;
-          console.log("377missionTypeList", this.missionTypeList);
         } else {
           errTips(msg);
         }
@@ -420,7 +429,6 @@ export default {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
           this.subtitleList = data.subtitleList;
-          console.log("389subtitleList", this.subtitleList);
         } else {
           errTips(msg);
         }
@@ -431,8 +439,6 @@ export default {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
           this.userList = data.userList;
-          console.log("441", this.castId);
-          console.log("446", this.userList);
         } else {
           errTips(msg);
         }
@@ -443,7 +449,6 @@ export default {
       httpGet('/v1/authorization/manage/mission/list', {teamId: this.teamId}).then(results => {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
-          console.log("341", data);
           this.missionTitleList = data.missionTitleList;
         } else {
           errTips(msg);
@@ -460,24 +465,6 @@ export default {
           errTips(msg);
         }
         this.getSubTitleList(this.addMission.titleId);
-      });
-    },
-    insertMission() {//ok
-      if (this.insertMissionTitle.title === '') {
-        errTips('任务名称不能为空');
-        this.visible = false;
-        return false;
-      }
-      httpPost('/v1/authorization/mission/missiontitle/insert', this.insertMissionTitle).then(results => {
-        const {msg, httpCode} = results.data;
-        if (httpCode === 200) {
-          successTips('添加任务成功！');
-        } else {
-          errTips(msg);
-        }
-        this.getMissionList(this.teamId);
-        this.insertMission.title = '';
-        this.visible = false;
       });
     },
     getCastId(projectId) {
@@ -570,7 +557,6 @@ export default {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
           this.taskForm.resourceList = data.list;
-          console.log("137", this.taskForm.resourceList);
           this.dialogTaskInfoView2 = true;
         } else {
           errTips(msg);
