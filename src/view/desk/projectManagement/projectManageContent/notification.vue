@@ -203,8 +203,6 @@ export default {
         startTime: null,
         endTime: null
       },
-      name2Id:{
-      },
       pageData: {
         pageNo: 1,
         pageSize: 5,

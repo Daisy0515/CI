@@ -17,7 +17,7 @@
           <div style="width: 45%; display: inline-table;">
             <el-form :model="addMission" class="demo-ruleForm">
               <el-form-item label="任务名称" prop="titleId">
-                <el-select v-model="addMission.title" placeholder="请选择任务" @change="getSubList">
+                <el-select v-model="addMission.titleId" placeholder="请选择任务" @change="getSubtitleList">
                   <el-option v-for="item in missionTitle" :key="item.id" :label="item.title"
                              :value="item.id"></el-option>
                 </el-select>
@@ -36,7 +36,7 @@
 								</span>
                 </el-popover>
               </el-form-item>
-              <div v-show="addMission.castId !== 0">
+              <div v-show="addMission.titleId !== 0">
                 <el-form-item label="子任务类型" prop="missionTypeId">
                   <el-select v-model="addMission.missionTypeId" clearable placeholder="请选择任务类型">
 
@@ -60,15 +60,15 @@
                 <el-form-item label="子任务标题" prop="subtitle">
                   <el-input class="input_title title" v-model="addMission.subtitle"></el-input>
                 </el-form-item>
-
                 <el-form-item label="指派人员" prop="participantList">
                   <el-checkbox-group v-model="addMission.participantList">
-                    <el-checkbox v-for="(item, index) in teamList" :key="index" :label="item.id">{{item.userName }}
-<!--                      这里有问题，再改-->
+                    <el-checkbox v-for="(item, index) in userList" :key="index" :label="item.userName">{{
+                        item.userName
+                      }}
                     </el-checkbox>
                   </el-checkbox-group>
                 </el-form-item>
-
+                <li>{{ addMission }}</li>
                 <el-form-item label="开始时间" prop="startTime">
                   <el-date-picker
                       style="margin-left:0%"
@@ -96,36 +96,26 @@
                             :rows="5" style="width:80%;float:left"></el-input>
                 </el-form-item>
                 <el-form-item label="上传附件" prop="sourceFile">
-                  <sourceUpload  :fileIndex="2" :uploadIndex="testUploadIndex" v-on:setIdcard="uploadFile($event)"/>
+                  <sourceUpload :fileIndex="2" :uploadIndex="testUploadIndex" v-on:setIdCard="uploadFile($event)"/>
                 </el-form-item>
                 <el-form-item class="cancel">
                   <el-button type="primary" @click="watchIndex = !watchIndex" size="small"
                              style="width:100px;margin-left:20%">返回
                   </el-button>
-                  <el-button type="primary" @click="addNewMission('addMission')" size="small"
+                  <el-button type="primary" @click="addNewMission" size="small"
                              style="width:100px;margin-left:10%">保存
                   </el-button>
                 </el-form-item>
               </div>
             </el-form>
           </div>
-          <div class="leftTable" v-show="ruleForm.titleId != 0">
+          <div class="leftTable" v-show="addMission.titleId !== 0">
             <el-card :body-style="{ width: '90%' }">
               <div slot="header" style="color: #4c83c3;font-weight: 600;">
                 <span style="margin-left: 15px;">{{ selected }}</span>
               </div>
               <el-table :data="subtitleList" style="width:100%;" :header-cell-style="rowClass"
                         v-loading="loading">
-
-                <!--                <el-table-column prop="id" label="任务Id" align="center">-->
-                <!--                  <template slot-scope="scope">-->
-                <!--&lt;!&ndash;                    <el-tooltip class="item" effect="dark"&ndash;&gt;-->
-                <!--&lt;!&ndash;                                placement="top-start">&ndash;&gt;-->
-                <!--                      <span class="tablehidden">{{ scope.row.id }}</span>-->
-                <!--&lt;!&ndash;                    </el-tooltip>&ndash;&gt;-->
-                <!--                  </template>-->
-                <!--                </el-table-column>-->
-
                 <el-table-column prop="subtitle" label="任务名称" align="center">
                   <template slot-scope="scope">
                     <el-tooltip class="item" effect="dark" :content="scope.row.subtitle"
@@ -170,12 +160,12 @@
           <div style="margin-top: 30px">
             <el-tabs v-model="selectedMission" @tab-click="showSubTask(selectedMission)">
               <el-tab-pane
-                  v-for="(item,index) in allMissionList"
+                  v-for="(item,index) in missionTitleList"
                   :label="item.title"
                   :value="index"
                   :key="index"
               >
-                <el-table :data="taskTable" stripe style="width: 100%">
+                <el-table :data="missionInfoList" stripe style="width: 100%">
                   <el-table-column prop="title" label="子任务名称" width="180"></el-table-column>
                   <el-table-column prop="missionType" label="子任务类型" width="180"></el-table-column>
                   <el-table-column prop="status" label="状态" width="180"></el-table-column>
@@ -186,16 +176,9 @@
                       </el-button>
                     </template>
                   </el-table-column>
-
-
                 </el-table>
-
               </el-tab-pane>
-
             </el-tabs>
-
-            <!--                        <expert-information :ruleForm="personalForm" :dialogFormVisible="informationView"-->
-            <!--                                            @closeDialog="closeInformationDialog"></expert-information>-->
           </div>
           <dialog-task-info :form="taskForm" :dialogFormVisible="dialogTaskInfoView"
                             @closeDialog="closeTaskInfoDialog"></dialog-task-info>
@@ -226,22 +209,30 @@ export default {
   },
   data: function () {
     return {
-      testUploadIndex:false,
-      teamId:sessionStorage.getItem("teamId"),
-      userId:sessionStorage.getItem("userId"),
-      castId:0,
-      watchIndex:false,
+      testUploadIndex: false,
+      teamId: sessionStorage.getItem("teamId"),
+      userId: sessionStorage.getItem("userId"),
+      projectId: sessionStorage.getItem("projectId"),
+      visible: false,
+      visible1: false,
+      selected: "任务名称",//右上角的框
+      selectedMission: 0,//下边的框
+      loading: false,
+      taskForm: {},
+      dialogTaskInfoView: false,
+      castId: null,
+      watchIndex: false,
       showIndex: true,
       //subMissionTypeName:"",//子任务类型名称，添加新任务名称时使用
-      insertMissionTitle:{//新建任务时，post命令需要的参数，/v1/authorization/mission/missiontitle/insert'
-        teamId:this.teamId,
-        title:"",
+      insertMissionTitle: {//新建任务时，post命令需要的参数，/v1/authorization/mission/missiontitle/insert'
+        teamId: this.teamId,
+        title: "",
       },
-      insertMissionType:{//添加新的任务类型时，post命令需要的参数，/v1/authorization/mission/missiontype/insert
-        missionName:"",
+      insertMissionType: {//添加新的任务类型时，post命令需要的参数，/v1/authorization/mission/missiontype/insert
+        missionName: "",
         teamId: this.teamId,
       },
-      missionData: [{///v1/authorization/manage/mission/get返回的数据
+      missionData: {///v1/authorization/manage/mission/get返回的数据
         title: "",
         id: 0,//subtitleId
         description: "",
@@ -253,7 +244,10 @@ export default {
         paticipantList: [],
         status: 0,
         titleName: "",
-      }],
+      },
+      missionInfoList: [{
+        id: 0, missionType: "", status: "", title: "",
+      }],//当前任务的信息
       missionTitleList: [{missionInfoList: [{id: 0, missionType: "", status: "", title: ""}], title: ""}],//id是subtitleId
       // /v1/authorization/manage/mission/list返回值
       subtitleList: [{id: 0, description: "", subtitle: "",}],//id是subtitleId,相当于在titleId下一级
@@ -262,21 +256,34 @@ export default {
       // /v1/authorization/mission/missiontype/list返回值
       missionTitle: [{id: 0, title: ""}],//id是任务的id，即titleId
       // /v1/authorization/mission/missiontitle/list返回值
-      teamList:[{userId:0, name:"", headurl:"", status:0}],
+      userList: [{id: 0, userName: "",}],
       // /v1/authorization/bids/get/content 返回的userList
-      addMission:{// /v1/authorization/bids/missioninfo/add上传新任务时需要的参数
-        castId:0,
-        description:"",
-        endTime:"",
-        missionTypeId:"",
-        participantList:[],
-        resourceName:"",
-        sourceFile:"",
-        startTime:"",
-        subtitle:"",
-        titleId:0,
+      addMission: {// /v1/authorization/bids/missioninfo/add上传新任务时需要的参数
+        castId: 0,
+        description: "",
+        endTime: "",
+        missionTypeId: "",
+        participantList: [],
+        resourceName: "",
+        sourceFile: "",
+        startTime: "",
+        subtitle: "",
+        titleId: "",
       },
       httpUrlToRepo: '',
+      getFileInput: {
+        pageNo: 0,
+        pageSize: 3,
+        orderType: null,
+        orderBy: null,
+        teamId: sessionStorage.getItem("teamId"),
+        missionId: null,
+        titleId: null,
+        userId: null,
+        subtitle: null,
+        startTime: null,
+        endTime: null,
+      },
       endDatePicker: {
         disabledDate(time) {
           return time.getTime() < new Date().getTime() - 86400000;
@@ -286,20 +293,20 @@ export default {
     };
   },
   created: function () {
-    this.routerIndex = this.$route.name;
     this.teamId = sessionStorage.getItem("teamId");
+    this.userId = sessionStorage.getItem("userId");
     this.projectId = sessionStorage.getItem("projectId");
+    this.routerIndex = this.$route.name;
     if (!this.projectId) {
       errTips("no project");
     }
     this.getCastId(this.projectId);
-    this.getTeamList();
     this.getMissionTypeList();
     this.getMissionTitle();
     this.getMissionTitleList();
     // this.getSubtitleList(78);
     // this.showTaskInfoDialog(421);
-    //this.getMissionData(425);
+    // this.getMissionData(425);
   },
   watch: {
     //监听路由高亮
@@ -307,11 +314,24 @@ export default {
       this.watchIndex = false;
       this.showIndex = true;
     },
+    castId: function () { //ok
+      this.addMission.castId = this.castId;
+      httpGet("/v1/authorization/bids/get/content", {castId: this.castId}).then(results => {
+        const {msg, data, httpCode} = results.data;
+        if (httpCode === 200) {
+          this.userList = data.userList;
+          console.log("441", this.castId);
+          console.log("446", this.userList);
+        } else {
+          errTips(msg);
+        }
+      })
+    },
   },
   methods: {
     ...mapMutations(['settaskList', 'setResource', 'setCache']),
     //关闭任务信息对话框
-    insertNewMission(){
+    insertNewMission() {
       httpPost('/v1/authorization/mission/missiontitle/insert', this.insertMission).then(results => {
         const {msg, httpCode} = results.data;
         if (httpCode === 200) {
@@ -326,69 +346,36 @@ export default {
 
     closeTaskInfoDialog() {
       this.dialogTaskInfoView = false;
-      this.getAllMissionList();
     },
     //打开任务信息对话框并获取任务信息
     showTaskInfoDialog(val) {
-      this.dialogTaskInfoView = true;
+      console.log("340id", val);
+      console.log("335", this.missionInfoList);
+      //这个id是子任务Id，不是对应着上层任务
       httpGet('/v1/authorization/manage/mission/get', {id: val}).then(results => {//这个Id是subtitleId
         const {msg, data, httpCode} = results.data;
-        if (httpCode == 200) {
-          console.log("342", data);
-          let form = data;
-          form.endTime = specificDate(form.endTime);
-          form.gmtCreate = specificDate(form.gmtCreate);
-          form.gmtModified = specificDate(form.gmtModified);
-          form.startTime = specificDate(form.startTime);
-          form.participantList = form.participantList.toString();
-          if (form.status == 1) form.status = "执行中";
-          if (form.status == 2) form.status = "完成";
-          if (form.status == 3) form.status = "放弃";
-          this.taskForm = form;
-        } else {
-          errTips(msg);
-        }
-      });
-      // httpGet('/v1/authorization/bids/score/resource', {
-      //   id: sessionStorage.getItem("id"), projectId: sessionStorage.getItem("projectId")
-      // }).then(results => {
-      //   const {msg, data, httpCode} = results.data;
-      //   console.log("361", data);
-      //   if (httpCode === 200) {
-      //     console.log("363", data);
-      //     //this.taskForm.resourceName=data.uploadResource;
-      //   } else if (httpCode === 400) {
-      //     this.setCache('myBid');
-      //   } else if (httpCode !== 401) {
-      //     errTips(msg);
-      //   }
-      // });
-      httpGet('/v1/authorization/manage/resource/list',).then(results => {
-        const {msg, data, httpCode} = results.data;
-        console.log("361", data);
         if (httpCode === 200) {
-          console.log("363", data);
-          //this.taskForm.resourceName=data.uploadResource;
-        } else if (httpCode === 400) {
-          this.setCache('myBid');
-        } else if (httpCode !== 401) {
+          this.missionData = data;
+          this.taskForm = this.missionData;
+          this.taskForm["startTime"] = specificDate(this.taskForm["startTime"]);
+          this.taskForm["endTime"] = specificDate(this.taskForm["endTime"]);
+          this.taskForm["gmtCreate"] = specificDate(this.taskForm["gmtCreate"]);
+          this.taskForm["gmtModified"] = specificDate(this.taskForm["gmtModified"]);
+          this.taskForm.participantList = this.taskForm.participantList.toString();
+          if (this.taskForm.status === 1) this.taskForm.status = "执行中";
+          if (this.taskForm.status === 2) this.taskForm.status = "完成";
+          if (this.taskForm.status === 3) this.taskForm.status = "放弃";
+          console.log("349", this.missionData);
+          console.log("350", this.taskForm);
+          this.dialogTaskInfoView1 = true;
+        } else {
           errTips(msg);
         }
       });
     },
     showSubTask(val) {
-      this.taskTable = this.allMissionList[val].missionInfoList;
-    },
-    getMissionData(val){
-      httpGet('/v1/authorization/manage/mission/get', {id: val}).then(results => {
-        const {msg, data, httpCode} = results.data;
-        if (httpCode === 200) {
-          this.missionData = data;
-          console.log("356missionTitleList", this.missionData);
-        } else {
-          errTips(msg);
-        }
-      });
+      console.log("377", val);
+      this.missionInfoList = this.missionTitleList[val].missionInfoList;
     },
     getMissionTitleList() {//ok
       httpGet('/v1/authorization/manage/mission/list', {teamId: this.teamId}).then(results => {
@@ -396,69 +383,58 @@ export default {
         if (httpCode === 200) {
           this.missionTitleList = data.missionTitleList;
           console.log("396missionTitleList", this.missionTitleList);
+          this.showSubTask(this.selectedMission);
         } else {
           errTips(msg);
         }
       });
 
     },
-    getMissionTitle(){//ok
+    getMissionTitle() {//ok
       httpGet('/v1/authorization/mission/missiontitle/list', {teamId: this.teamId}).then(results => {
         const {msg, data, httpCode} = results.data;
-        if(httpCode === 200){
+        if (httpCode === 200) {
           this.missionTitle = data.missionTitle;
           console.log("365missionTitle", this.missionTitle);
-        }else{
+        } else {
           errTips(msg);
         }
       });
 
     },
-    getMissionTypeList(){//ok
+    getMissionTypeList() {//ok
       httpGet('/v1/authorization/mission/missiontype/list', {teamId: this.teamId}).then(results => {
         const {msg, data, httpCode} = results.data;
-        if(httpCode === 200){
+        if (httpCode === 200) {
           this.missionTypeList = data.missionTypeList;
           console.log("377missionTypeList", this.missionTypeList);
-        }else{
+        } else {
           errTips(msg);
         }
       });
     },
-    getSubtitleList(val){//ok
+    getSubtitleList(val) {//ok
       httpGet('/v1/authorization/mission/subtitle/list', {teamId: this.teamId, titleId: val}).then(results => {
         const {msg, data, httpCode} = results.data;
-        if(httpCode === 200){
+        if (httpCode === 200) {
           this.subtitleList = data.subtitleList;
           console.log("389subtitleList", this.subtitleList);
-        }else{
+        } else {
           errTips(msg);
         }
       });
     },
-    getContent(){ //ok
-      httpGet("/v1/authorization/bids/get/content", {castId: this.projectId}).then(results => {
+    getContent() { //ok
+      httpGet("/v1/authorization/bids/get/content", {castId: this.castId}).then(results => {
         const {msg, data, httpCode} = results.data;
-        if(httpCode === 200){
+        if (httpCode === 200) {
           this.userList = data.userList;
+          console.log("441", this.castId);
           console.log("446", this.userList);
-        }else{
+        } else {
           errTips(msg);
         }
       })
-    },
-    getTeamList(){
-      httpGet("/v1/authorization/bids/select/teamuser", {userId:this.userId, projectId: this.projectId})
-          .then(results =>{
-            const {msg, data, httpCode} = results.data;
-            console.log("458", this.teamList);
-            if(httpCode === 200){
-              this.teamList = data.competeTeamList;
-              console.log("458", this.teamList);
-            }else{
-              errTips(msg);
-            }
-      });
     },
     //获取任务数据
     getTask() {
@@ -481,36 +457,11 @@ export default {
         } else {
           errTips(msg);
         }
-        this.getSubList(this.titleId);
-        this.getAllMissionList();
-        this.getTask();
-      });
-    },
-    getSubList: function (value) {
-      console.log("433", this.ruleForm.titleId);
-      console.log("434", value);
-      this.selected = this.missionList.find(item => {
-        return item.id === value;
-      }).title;
-      this.titleId = value;
-      this.loading = true;
-      httpGet('/v1/authorization/mission/subtitle/list', {
-        teamId: sessionStorage.getItem("teamId"),
-        titleId: value
-      }).then(results => {
-        const {msg, data, httpCode} = results.data;
-        console.log("442", data);
-        if (httpCode == 200) {
-          this.subtitleList = data.subtitleList;
-          this.getAllMissionList();
-        } else {
-          errTips(msg);
-        }
-        this.loading = false;
+        this.getSubTitleList(this.addMission.titleId);
       });
     },
     insertMission() {//ok
-      if (this.insertMissionTitle.title == '') {
+      if (this.insertMissionTitle.title === '') {
         errTips('任务名称不能为空');
         this.visible = false;
         return false;
@@ -519,7 +470,6 @@ export default {
         const {msg, httpCode} = results.data;
         if (httpCode === 200) {
           successTips('添加任务成功！');
-          this.getAllMissionList();
         } else {
           errTips(msg);
         }
@@ -528,19 +478,18 @@ export default {
         this.visible = false;
       });
     },
-    getCastId(projectId){
-      httpGet("/v1/authorization/manage/castId/get", {projectId:projectId}).then(results => {
+    getCastId(projectId) {
+      httpGet("/v1/authorization/manage/castId/get", {projectId: projectId}).then(results => {
         const {msg, data, httpCode} = results.data;
-        if(httpCode == 200){
+        if (httpCode == 200) {
           this.castId = data.castId;
-          console.log("538", this.castId);
-        }else{
+        } else {
           errTips(msg);
         }
       })
     },
     insertNewMissionType() {
-      if (this.insertMissionType.missionName == '') {
+      if (this.insertMissionType.missionName === '') {
         errTips('任务类型名称不能为空');
         this.visible1 = false;
         return false;
@@ -562,7 +511,6 @@ export default {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
           this.missionList = data.missionTitle;
-          this.getAllMissionList();
         } else {
           errTips(msg);
         }
@@ -588,16 +536,11 @@ export default {
         clipboard.destroy();
       });
     },
-    uploadFile(file){
-      this.addMission.sourceFile = file.filename;
-      if(this.addMission.sourceFile !== ""){
-        let dataForm = this.addMission.sourceFile.split('/');
-        this.addMission.resourceName = dataForm[dataForm.length - 1];
-      }
-    },
-    //添加任务
-    addNewMission(){
-      if (new Date(this.ruleForm.startTime.replace(/\-/g, '/')) > new Date(this.ruleForm.endTime.replace(/\-/g, '/'))) {
+    uploadFile(file) {
+      (file) && (this.addMission.sourceFile = file.fileName);
+      let dataForm = this.addMission.sourceFile.split('/');
+      this.addMission.resourceName = dataForm[dataForm.length - 1];
+      if (new Date(this.addMission.startTime.replace(/\-/g, '/')) > new Date(this.addMission.endTime.replace(/\-/g, '/'))) {
         errTips('开始时间不能大于结束时间');
         return false;
       }
@@ -609,17 +552,34 @@ export default {
         } else {
           errTips(msg);
         }
+      }).then(() => {
+        for (let key in this.addMission) {
+          this.addMission[key] = "";
+        }
       });
-      for(let key in this.addMission){
-        this.addMission[key] = "";
-      }
+    },
+    //添加任务
+    addNewMission() {
+      this.testUploadIndex = !this.testUploadIndex;
+    },
+    getFile(val) {
+      this.getFileInput.missionId = val;
+      httpGet('/v1/authorization/manage/resource/list', this.getFileInput).then(results => {
+        const {msg, data, httpCode} = results.data;
+        if (httpCode === 200) {
+          this.form.resourceList = data.list;
+          console.log("137", this.form.resourceList);
+        } else {
+          errTips(msg);
+        }
+      });
     },
     returnSquare() {
       this.$router.push({path: '/desk/taskManage'});
     },
     rowClass() {
       return 'background:#F4F6F9;';
-    }
+    },
   }
 }
 </script>

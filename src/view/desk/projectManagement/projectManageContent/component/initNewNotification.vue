@@ -55,11 +55,11 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="16">
-          <form-item label="上传附件" :label-width="formLabelWidth">
+          <el-form-item label="上传附件" :label-width="formLabelWidth">
             <!--此处改为文件上传 -->
             <sourceUpload :uploadIndex="testUploadIndex" :fileIndex="2"
                           v-on:setIdCard="setIdCard2($event)"/>
-          </form-item>
+          </el-form-item>
         </el-col>
       </el-row>
       <div style="text-align: center;margin-top: 50px">
@@ -121,12 +121,8 @@ export default {
       })
     },
     setIdCard2(data) {
-
       console.log("127data", data);
-
       (data) && (this.noticeData.resource = data.fileName);
-      console.log(data.fileName);
-      console.log("noticeData", this.noticeData);
       let dataForm = this.noticeData.resource.split('/');
       this.noticeData.resourceName = dataForm[dataForm.length - 1];
       console.log("noticeData", this.noticeData);
@@ -162,7 +158,9 @@ export default {
     },
 
     submitNotice() {
-      this.noticeData.resource ? this.setIdCard2() : (this.testUploadIndex = !this.testUploadIndex);
+      console.log("161", this.testUploadIndex);
+      this.testUploadIndex = !this.testUploadIndex;
+      console.log("163", this.testUploadIndex);
     },
     rowClass() {
       return "background:#F4F6F9;";
