@@ -7,7 +7,6 @@
             <i class="el-icon-menu"></i>
             任务管理
           </p>
-          <li>{{insertMissionTitle}}</li>
           <p class="ganttHeader_addTask" v-show="watchIndex || showIndex" @click="watchIndex = !watchIndex"
              :class="watchIndex === true ? 'is-active' : ''">添加任务</p>
         </div>
@@ -353,13 +352,13 @@ export default {
       httpPost('/v1/authorization/mission/missiontitle/insert', this.insertMissionTitle).then(results => {
         const {msg, httpCode} = results.data;
         if (httpCode === 200) {
+          this.getMissionTitleList();
+          this.insertMissionTitle.title = '';
+          this.visible = false;
           successTips('添加任务成功！');
         } else {
           errTips(msg);
         }
-        //this.getMissionList(this.teamId);
-        this.insertMissionTitle.title = '';
-        this.visible = false;
       });
     },
     closeTaskInfoDialog() {
@@ -457,6 +456,7 @@ export default {
     },
 
     deleteMission(id) {
+      console.log("459", id);
       httpDelete(`/v1/authorization/mission/missionsubtitle/delete/${id}`).then(results => {
         const {httpCode, msg} = results.data;
         if (httpCode === 200) {
@@ -464,7 +464,8 @@ export default {
         } else {
           errTips(msg);
         }
-        this.getSubTitleList(this.addMission.titleId);
+        this.getSubtitleList(this.addMission.titleId);
+        this.getMissionTitleList();
       });
     },
     getCastId(projectId) {
@@ -486,6 +487,7 @@ export default {
       httpPost('/v1/authorization/mission/missiontype/insert', this.insertMissionType).then(results => {
         const {msg, httpCode} = results.data;
         if (httpCode === 200) {
+          this.getMissionTypeList();
           successTips('添加任务类型成功！');
         } else {
           errTips(msg);
