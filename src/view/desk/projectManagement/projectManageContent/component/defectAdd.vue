@@ -2,7 +2,7 @@
     调用页面：codeDefct
              -->
 <template>
-    <el-dialog :visible.sync="dialogFormVisible" :before-close="changeVisible"
+    <el-dialog :visible.sync="dialogFormVisible" :before-close="changeVisible" :close-on-click-modal="false"
                width="70%">
             <div class="container deskHeader">
 

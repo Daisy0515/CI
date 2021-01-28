@@ -1002,7 +1002,7 @@ const vueRouter = new Router({
                                         },
                                         {
                                             path:'/desk/documentComments',
-                                            name:'codeDefect',
+                                            name:'documentComments',
                                             component:() => import('@/view/desk/projectManagement/projectManageContent/defectManagement/documentComments'),
                                             meta:{
                                                 title:"文档意见",
