@@ -291,7 +291,7 @@
 
             nextFilePage(val) {
                 this.filePageData.pageNo = val;
-                this.taskView(this.filePageData.missionId);
+                this.getFileTable(this.filePageData.missionId);
             },
 
             /***获取单个任务的所有相关数据***/
