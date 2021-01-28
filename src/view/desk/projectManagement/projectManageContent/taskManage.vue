@@ -171,7 +171,7 @@
                   <el-table-column prop="status" label="状态" width="180"></el-table-column>
                   <el-table-column label="操作" width="180">
                     <template slot-scope="scope">
-                      <el-button type="text" @click="showTaskInfoDialog(scope.row.id)"><i
+                      <el-button type="text" @click="showTaskInfoDialog(scope.row.id);getFile(scope.row.id)"><i
                           class="el-icon-search"></i>查看
                       </el-button>
                     </template>
@@ -180,7 +180,7 @@
               </el-tab-pane>
             </el-tabs>
           </div>
-          <dialog-task-info :form="taskForm" :dialogFormVisible="dialogTaskInfoView"
+          <dialog-task-info :form="taskForm" :dialogFormVisible="dialogTaskInfoView1 && dialogTaskInfoView2"
                             @closeDialog="closeTaskInfoDialog"></dialog-task-info>
         </div>
       </div>
@@ -219,7 +219,8 @@ export default {
       selectedMission: 0,//下边的框
       loading: false,
       taskForm: {},
-      dialogTaskInfoView: false,
+      dialogTaskInfoView1: false,
+      dialogTaskInfoView2: false,
       castId: null,
       watchIndex: false,
       showIndex: true,
@@ -273,7 +274,7 @@ export default {
       httpUrlToRepo: '',
       getFileInput: {
         pageNo: 0,
-        pageSize: 3,
+        pageSize: 10,
         orderType: null,
         orderBy: null,
         teamId: sessionStorage.getItem("teamId"),
@@ -345,7 +346,8 @@ export default {
     },
 
     closeTaskInfoDialog() {
-      this.dialogTaskInfoView = false;
+      this.dialogTaskInfoView1 = false;
+      this.dialogTaskInfoView2 = false;
     },
     //打开任务信息对话框并获取任务信息
     showTaskInfoDialog(val) {
@@ -567,8 +569,9 @@ export default {
       httpGet('/v1/authorization/manage/resource/list', this.getFileInput).then(results => {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
-          this.form.resourceList = data.list;
-          console.log("137", this.form.resourceList);
+          this.taskForm.resourceList = data.list;
+          console.log("137", this.taskForm.resourceList);
+          this.dialogTaskInfoView2 = true;
         } else {
           errTips(msg);
         }
