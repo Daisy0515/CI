@@ -338,48 +338,18 @@
                 this.dialogTaskInfoView = true;
                 httpGet('/v1/authorization/manage/mission/get', {id: val}).then(results => {
                     const {msg, data, httpCode} = results.data;
-                    if (httpCode == 200) {
-                      console.log("342", data);
+                    if (httpCode === 200) {
                         let form = data;
                         form.endTime = specificDate(form.endTime);
                         form.gmtCreate = specificDate(form.gmtCreate);
                         form.gmtModified = specificDate(form.gmtModified);
                         form.startTime = specificDate(form.startTime);
                         form.participantList = form.participantList.toString();
-                        if (form.status == 1) form.status = "执行中";
-                        if (form.status == 2) form.status = "完成";
-                        if (form.status == 3) form.status = "放弃";
                         this.taskForm = form;
                     } else {
                         errTips(msg);
                     }
                 });
-                // httpGet('/v1/authorization/bids/score/resource', {
-                //   id: sessionStorage.getItem("id"), projectId: sessionStorage.getItem("projectId")
-                // }).then(results => {
-                //   const {msg, data, httpCode} = results.data;
-                //   console.log("361", data);
-                //   if (httpCode === 200) {
-                //     console.log("363", data);
-                //     //this.taskForm.resourceName=data.uploadResource;
-                //   } else if (httpCode === 400) {
-                //     this.setCache('myBid');
-                //   } else if (httpCode !== 401) {
-                //     errTips(msg);
-                //   }
-                // });
-              httpGet('/v1/authorization/manage/resource/list', ).then(results => {
-                const {msg, data, httpCode} = results.data;
-                console.log("361", data);
-                if (httpCode === 200) {
-                  console.log("363", data);
-                  //this.taskForm.resourceName=data.uploadResource;
-                } else if (httpCode === 400) {
-                  this.setCache('myBid');
-                } else if (httpCode !== 401) {
-                  errTips(msg);
-                }
-              });
             },
             showSubTask(val) {
                 this.taskTable = this.allMissionList[val].missionInfoList;

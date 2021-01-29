@@ -57,50 +57,59 @@
             ></el-pagination>
         </div>
 
-        <el-dialog :title="taskInfo.titleName" :visible.sync="dialogTaskInfoVisible"
+        <el-dialog :title="taskInfo.subtitle" :visible.sync="dialogTaskInfoVisible"
                    :close-on-click-modal="false" @close='closeDialog' class="myDialog">
             <el-form :model="taskInfo" ref="taskInfo" class="myForm">
-                <hr>
-                <el-col :span="21">
-                    <el-form-item label="任务类型:">
-                        <h3 style="width:100%;margin:0px;">{{taskInfo.missionTypeName}}</h3>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="3">
-                    <el-form-item v-if="typeTemplate!==null">
-                        <a :href="typeTemplate" style="font-size:17px; font-weight:bold;">参考模板</a>
-                    </el-form-item>
-                </el-col>
-                <el-form-item label="任务状态:" style="pointer-events: none;">
-                    <h3 style="width:100%;margin:0px;">{{taskInfo.statusName}}</h3>
-                </el-form-item>
-                <el-col :span="12">
-                    <el-form-item label="任务创建时间:">
-                        <h3 style="width:100%;margin:0px;">{{taskInfo.gmtCreate}}</h3>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item label="任务修改时间:">
+                <el-row>
+                    <el-col :span="8">
+                        <el-form-item label="任务类型:">
+                            <h3 style="width:100%;margin:0px;">{{taskInfo.missionTypeName}}</h3>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="13">
+                        <el-form-item label="任务状态:" style="pointer-events: none;">
+                            <h3 style="width:100%;margin:0px;">{{taskInfo.statusName}}</h3>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="3">
+                        <el-form-item v-if="typeTemplate!==null">
+                            <a :href="typeTemplate" target="_blank" style="font-size:17px; font-weight:bold;">参考模板</a>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="8">
+                        <el-form-item label="任务创建时间:">
+                            <h3 style="width:100%;margin:0px;">{{taskInfo.gmtCreate}}</h3>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-form-item label="任务修改时间:">
                         <h3 style="width:100%;margin:0px;">{{taskInfo.gmtModified}}</h3>
                     </el-form-item>
-                </el-col>
+                    </el-col>
+                </el-row>
+
                 <el-form-item label="执行人:">
                     <h3 style="width:100%;margin:0px;">{{taskInfo.participants}}</h3>
                 </el-form-item>
-                <el-col :span="12">
-                    <el-form-item label="任务执行时间:">
-                        <h3 style="width:100%;margin:0px;">{{taskInfo.startTime}}</h3>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item label="到">
-                        <h3 style="width:100%;margin:0px;">{{taskInfo.endTime}}</h3>
-                    </el-form-item>
-                </el-col>
+                <el-row>
+                    <el-col :span="5">
+                        <el-form-item label="任务执行时间:">
+                            <h3 style="width:100%;margin:0px;">{{taskInfo.startTime}}</h3>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-form-item label="到">
+                            <h3 style="width:100%;margin:0px;">{{taskInfo.endTime}}</h3>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+
                 <el-form-item label="任务描述:">
-                <textarea style="resize:none;width:90%;border:2px solid gray;" row=1 readonly="readonly"
-                          :placeholder="taskInfo.description">
-                </textarea>
+                    <el-input type="textarea" autosize style="resize:none;width:90%;border:2px solid gray;"  readonly="readonly"
+                              v-model="taskInfo.description">
+                    </el-input>
                 </el-form-item>
             </el-form>
             <hr style="margin-bottom:20px">
@@ -216,8 +225,8 @@
                         value: 3
                     },
                 ],
-                fileTableLoading:false,
-                missionTableLoading:false,
+                fileTableLoading: false,
+                missionTableLoading: false,
             };
         },
         computed: {},

@@ -203,5 +203,9 @@
 </script>
 
 <style scoped>
-
+    .myForm .el-form-item__label {
+        font-size: 17px;
+        color: black;
+        font-weight: bolder;
+    }
 </style>
