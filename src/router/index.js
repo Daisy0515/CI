@@ -978,39 +978,60 @@ const vueRouter = new Router({
                                 requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
                             },
                             children: [
+                                //此处的写法，会存在刷新页面后，缺陷管理的背景消失，codeDefect.vue和documentComments.vue没有移除defectManagement的文件夹，会出现奇怪的错误，暂时未动
+                                // {
+                                //     path: '/desk/defectManagement',
+                                //     name: 'defectManagement',
+                                //     component: () => import('@/view/desk/projectManagement/projectManageContent/defectManagement'),
+                                //     redirect:'/desk/codeDefect',
+                                //     meta: {
+                                //         title: "项目进度",
+                                //         routerIndex: "projectManagement", //children的routerIndex与父路由的routerIndex要一致，在common/header/deskHeader中保持被选择导航项的样式
+                                //         requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+                                //
+                                //     },
+                                //     children:[
+                                //         {
+                                //             path:'/desk/codeDefect',
+                                //             name:'codeDefect',
+                                //             component:() => import('@/view/desk/projectManagement/projectManageContent/defectManagement/codeDefect'),
+                                //             meta:{
+                                //                 title:"代码缺陷",
+                                //                 routerIndex:"projectManagement",
+                                //                 requireAuth:true,
+                                //             }
+                                //         },
+                                //         {
+                                //             path:'/desk/documentComments',
+                                //             name:'documentComments',
+                                //             component:() => import('@/view/desk/projectManagement/projectManageContent/defectManagement/documentComments'),
+                                //             meta:{
+                                //                 title:"文档意见",
+                                //                 routerIndex:"projectManagement",
+                                //                 requireAuth:true,
+                                //             }
+                                //         },
+                                //     ]
+                                // },
                                 {
-                                    path: '/desk/defectManagement',
-                                    name: 'defectManagement',
-                                    component: () => import('@/view/desk/projectManagement/projectManageContent/defectManagement'),
-                                    redirect:'/desk/codeDefect',
-                                    meta: {
-                                        title: "项目进度",
-                                        routerIndex: "projectManagement", //children的routerIndex与父路由的routerIndex要一致，在common/header/deskHeader中保持被选择导航项的样式
-                                        requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-
-                                    },
-                                    children:[
-                                        {
-                                            path:'/desk/codeDefect',
-                                            name:'codeDefect',
-                                            component:() => import('@/view/desk/projectManagement/projectManageContent/defectManagement/codeDefect'),
-                                            meta:{
-                                                title:"代码缺陷",
-                                                routerIndex:"projectManagement",
-                                                requireAuth:true,
-                                            }
-                                        },
-                                        {
-                                            path:'/desk/documentComments',
-                                            name:'documentComments',
-                                            component:() => import('@/view/desk/projectManagement/projectManageContent/defectManagement/documentComments'),
-                                            meta:{
-                                                title:"文档意见",
-                                                routerIndex:"projectManagement",
-                                                requireAuth:true,
-                                            }
-                                        },
-                                    ]
+                                    path:'/desk/codeDefect',
+                                    name:'codeDefect',
+                                    component:() => import('@/view/desk/projectManagement/projectManageContent/defectManagement/codeDefect'),
+                                    meta:{
+                                        title:"代码缺陷",
+                                        routerIndex:"projectManagement",
+                                        requireAuth:true,
+                                    }
+                                },
+                                {
+                                    path:'/desk/documentComments',
+                                    name:'documentComments',
+                                    component:() => import('@/view/desk/projectManagement/projectManageContent/defectManagement/documentComments'),
+                                    meta:{
+                                        title:"文档意见",
+                                        routerIndex:"projectManagement",
+                                        requireAuth:true,
+                                    }
                                 },
                                 {
                                     path: '/desk/projectProgress',
