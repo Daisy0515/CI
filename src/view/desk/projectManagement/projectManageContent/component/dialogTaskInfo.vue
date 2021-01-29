@@ -217,7 +217,6 @@ export default {
             if (!file) {
                 errTips("请先选择文件！");
             } else {
-                console.log("218", file);
                 (file) && (this.insertResource.resource = file);
                 let dataForm = this.insertResource.resource.split('/');
                 this.insertResource.resourceName = dataForm[dataForm.length - 1];
@@ -227,7 +226,6 @@ export default {
                     if (httpCode === 200) {
                         successTips('上传文件成功！');
                         this.getFileTable(this.filePageData.missionId);
-                        console.log("232", this.fileTable);
                     } else if (httpCode !== 401) {
                         errTips(msg);
                     } else {
