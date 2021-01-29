@@ -169,7 +169,7 @@
                   <el-table-column prop="status" label="状态" width="180"></el-table-column>
                   <el-table-column label="操作" width="180">
                     <template slot-scope="scope">
-                      <el-button type="text" @click="showTaskInfoDialog(scope.row.id);getFile(scope.row.id)"><i
+                      <el-button type="text" @click="showTaskInfoDialog(scope.row.id)"><i
                           class="el-icon-search"></i>查看
                       </el-button>
                     </template>
@@ -178,7 +178,7 @@
               </el-tab-pane>
             </el-tabs>
           </div>
-          <dialog-task-info :form="taskForm" :dialogFormVisible="dialogTaskInfoView1"
+          <dialog-task-info :form="taskForm" :dialogFormVisible="dialogTaskInfoView"
                             @closeDialog="closeTaskInfoDialog"></dialog-task-info>
         </div>
       </div>
@@ -217,8 +217,7 @@ export default {
       selectedMission: 0,//下边的框
       loading: false,
       taskForm: {},
-      dialogTaskInfoView1: false,
-      dialogTaskInfoView2: false,
+      dialogTaskInfoView: false,
       castId: null,
       watchIndex: false,
       showIndex: true,
@@ -249,7 +248,8 @@ export default {
       }],//当前任务的信息
       missionTitleList: [{missionInfoList: [{id: 0, missionType: "", status: "", title: ""}], title: ""}],//id是subtitleId
       // /v1/authorization/manage/mission/list返回值
-      subtitleList: [{id: 0, description: "", subtitle: "",}],//id是subtitleId,相当于在titleId下一级
+      // 下边的分页
+      subtitleList: [],//[{id: 0, description: "", subtitle: "",}],//id是subtitleId,相当于在titleId下一级，右上角的框
       // /v1/authorization/mission/subtitle/list返回值
       missionTypeList: [{id: 0, missionTypeId: 0, missionName: "",}],//id是subtitleId,missionTypeId是任务类型Id
       // /v1/authorization/mission/missiontype/list返回值
@@ -303,9 +303,6 @@ export default {
     this.getMissionTypeList();
     this.getMissionTitle();
     this.getMissionTitleList();
-    // this.getSubtitleList(78);
-    // this.showTaskInfoDialog(421);
-    // this.getMissionData(425);
   },
   watch: {
     //监听路由高亮
@@ -328,17 +325,15 @@ export default {
   methods: {
     ...mapMutations(['settaskList', 'setResource', 'setCache']),
     insertNewMission() {//新建任务
-      console.log("346", this.insertMissionTitle);
       if (this.insertMissionTitle.title === "") {
         errTips('任务名称不能为空');
         this.visible = false;
         return false;
       }
-      console.log("352", this.insertMissionTitle);
       httpPost('/v1/authorization/mission/missiontitle/insert', this.insertMissionTitle).then(results => {
         const {msg, httpCode} = results.data;
         if (httpCode === 200) {
-          this.getMissionTitleList();
+          this.getMissionTitle();
           this.insertMissionTitle.title = '';
           this.visible = false;
           successTips('添加任务成功！');
@@ -348,15 +343,22 @@ export default {
       });
     },
     closeTaskInfoDialog() {
-      this.dialogTaskInfoView1 = false;
-      this.dialogTaskInfoView2 = false;
+      this.getMissionTitleList();
+      let tmpId = 0;
+      for(let i=0; i<= this.missionTitle.length; i++){
+        if(this.missionTitle[i].title === this.missionTitleList[this.selectedMission].title){
+          tmpId = this.missionTitle[i].id;
+          break;
+        }
+      }
+      this.getSubtitleList(tmpId);
+      this.dialogTaskInfoView = false;
     },
     //打开任务信息对话框并获取任务信息
     showTaskInfoDialog(val) {
       httpGet('/v1/authorization/manage/mission/get', {id: val}).then(results => {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
-          console.log("378", data);
           let form = data;
           form.endTime = specificDate(form.endTime);
           form.gmtCreate = specificDate(form.gmtCreate);
@@ -364,7 +366,7 @@ export default {
           form.startTime = specificDate(form.startTime);
           form.participantList = form.participantList.toString();
           this.taskForm = form;
-          this.dialogTaskInfoView1 = true;
+          this.dialogTaskInfoView = true;
         } else {
           errTips(msg);
         }
@@ -379,7 +381,6 @@ export default {
         if (httpCode === 200) {
           this.missionTitleList = data.missionTitleList;
           this.showSubTask(this.selectedMission);
-          console.log("399", this.missionTitleList);
         } else {
           errTips(msg);
         }
@@ -412,7 +413,6 @@ export default {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
           this.subtitleList = data.subtitleList;
-          console.log("432", this.subtitleList);
         } else {
           errTips(msg);
         }
@@ -441,7 +441,6 @@ export default {
     },
 
     deleteMission(id) {
-      console.log("459", id);
       httpDelete(`/v1/authorization/mission/missionsubtitle/delete/${id}`).then(results => {
         const {httpCode, msg} = results.data;
         if (httpCode === 200) {
@@ -477,7 +476,8 @@ export default {
         } else {
           errTips(msg);
         }
-        this.typeForm.missionName = '';
+        this.getMissionTypeList();
+        this.insertMissionType.missionName = '';
         this.visible1 = false;
       });
     },
@@ -525,6 +525,7 @@ export default {
         const {msg, httpCode} = results.data;
         if (httpCode === 200) {
           successTips('添加任务成功！');
+          this.getMissionTitleList();
         } else {
           errTips(msg);
         }

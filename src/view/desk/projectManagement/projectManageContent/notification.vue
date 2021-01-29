@@ -263,6 +263,7 @@ export default {
     },
     closeNoticeDialog() {
       this.noticeVisible = false;
+
     },
     showInitNewNotification() {
       this.newNotificationView = true;
