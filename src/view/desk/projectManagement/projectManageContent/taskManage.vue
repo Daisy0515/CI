@@ -61,7 +61,7 @@
                 </el-form-item>
                 <el-form-item label="指派人员" prop="participantList">
                   <el-checkbox-group v-model="addMission.participantList">
-                    <el-checkbox v-for="(item, index) in userList" :key="index" :label="item.userName">{{
+                    <el-checkbox v-for="(item, index) in userList" :key="index" :label="item.id">{{
                         item.userName
                       }}
                     </el-checkbox>
@@ -178,7 +178,7 @@
               </el-tab-pane>
             </el-tabs>
           </div>
-          <dialog-task-info :form="taskForm" :dialogFormVisible="dialogTaskInfoView1 && dialogTaskInfoView2"
+          <dialog-task-info :form="taskForm" :dialogFormVisible="dialogTaskInfoView1"
                             @closeDialog="closeTaskInfoDialog"></dialog-task-info>
         </div>
       </div>
@@ -271,7 +271,7 @@ export default {
       },
       httpUrlToRepo: '',
       getFileInput: {
-        pageNo: 0,
+        pageNo: 1,
         pageSize: 10,
         orderType: null,
         orderBy: null,
@@ -327,20 +327,6 @@ export default {
   },
   methods: {
     ...mapMutations(['settaskList', 'setResource', 'setCache']),
-    //关闭任务信息对话框
-    // insertNewMission() {//新建任务
-    //   console.log("334", this.insertMission)
-    //   httpPost('/v1/authorization/mission/missiontitle/insert', this.insertMission).then(results => {
-    //     const {msg, httpCode} = results.data;
-    //     if (httpCode === 200) {
-    //       successTips('添加任务成功！');
-    //     } else {
-    //       errTips(msg);
-    //     }
-    //     this.insertMissionTitle.title = '';
-    //     this.visible = false;
-    //   });
-    // },
     insertNewMission() {//新建任务
       console.log("346", this.insertMissionTitle);
       if (this.insertMissionTitle.title === "") {
@@ -377,6 +363,7 @@ export default {
           this.taskForm["endTime"] = specificDate(this.taskForm["endTime"]);
           this.taskForm["gmtCreate"] = specificDate(this.taskForm["gmtCreate"]);
           this.taskForm["gmtModified"] = specificDate(this.taskForm["gmtModified"]);
+          console.log("366", this.taskForm.participantList);
           this.taskForm.participantList = this.taskForm.participantList.toString();
           if (this.taskForm.status === 1) this.taskForm.status = "执行中";
           if (this.taskForm.status === 2) this.taskForm.status = "完成";
@@ -396,6 +383,7 @@ export default {
         if (httpCode === 200) {
           this.missionTitleList = data.missionTitleList;
           this.showSubTask(this.selectedMission);
+          console.log("399", this.missionTitleList);
         } else {
           errTips(msg);
         }
@@ -428,6 +416,7 @@ export default {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
           this.subtitleList = data.subtitleList;
+          console.log("432", this.subtitleList);
         } else {
           errTips(msg);
         }
@@ -560,7 +549,12 @@ export default {
         if (httpCode === 200) {
           this.taskForm.resourceList = data.list;
           this.dialogTaskInfoView2 = true;
-        } else {
+        } else if(httpCode === 400){
+          this.taskForm.resourceList = [];
+          this.dialogTaskInfoView2 = true;
+          console.log("554", "httpCode = 400");
+        }
+        else {
           errTips(msg);
         }
       });
