@@ -352,22 +352,36 @@ export default {
       this.dialogTaskInfoView2 = false;
     },
     //打开任务信息对话框并获取任务信息
+    // showTaskInfoDialog(val) {
+    //   //这个id是子任务Id，不是对应着上层任务
+    //   httpGet('/v1/authorization/manage/mission/get', {id: val}).then(results => {//这个Id是subtitleId
+    //     const {msg, data, httpCode} = results.data;
+    //     if (httpCode === 200) {
+    //       this.missionData = data;
+    //       this.taskForm = this.missionData;
+    //       this.taskForm["startTime"] = specificDate(this.taskForm["startTime"]);
+    //       this.taskForm["endTime"] = specificDate(this.taskForm["endTime"]);
+    //       this.taskForm["gmtCreate"] = specificDate(this.taskForm["gmtCreate"]);
+    //       this.taskForm["gmtModified"] = specificDate(this.taskForm["gmtModified"]);
+    //       console.log("366", this.taskForm.participantList);
+    //       this.taskForm.participantList = this.taskForm.participantList.toString();
+    //       this.dialogTaskInfoView1 = true;
+    //     } else {
+    //       errTips(msg);
+    //     }
+    //   });
+    // },
     showTaskInfoDialog(val) {
-      //这个id是子任务Id，不是对应着上层任务
-      httpGet('/v1/authorization/manage/mission/get', {id: val}).then(results => {//这个Id是subtitleId
+      httpGet('/v1/authorization/manage/mission/get', {id: val}).then(results => {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
-          this.missionData = data;
-          this.taskForm = this.missionData;
-          this.taskForm["startTime"] = specificDate(this.taskForm["startTime"]);
-          this.taskForm["endTime"] = specificDate(this.taskForm["endTime"]);
-          this.taskForm["gmtCreate"] = specificDate(this.taskForm["gmtCreate"]);
-          this.taskForm["gmtModified"] = specificDate(this.taskForm["gmtModified"]);
-          console.log("366", this.taskForm.participantList);
-          this.taskForm.participantList = this.taskForm.participantList.toString();
-          if (this.taskForm.status === 1) this.taskForm.status = "执行中";
-          if (this.taskForm.status === 2) this.taskForm.status = "完成";
-          if (this.taskForm.status === 3) this.taskForm.status = "放弃";
+          let form = data;
+          form.endTime = specificDate(form.endTime);
+          form.gmtCreate = specificDate(form.gmtCreate);
+          form.gmtModified = specificDate(form.gmtModified);
+          form.startTime = specificDate(form.startTime);
+          form.participantList = form.participantList.toString();
+          this.taskForm = form;
           this.dialogTaskInfoView1 = true;
         } else {
           errTips(msg);
