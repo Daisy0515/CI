@@ -169,7 +169,7 @@
                   <el-table-column prop="status" label="状态" width="180"></el-table-column>
                   <el-table-column label="操作" width="180">
                     <template slot-scope="scope">
-                      <el-button type="text" @click="showTaskInfoDialog(scope.row.id);getFile(scope.row.id)"><i
+                      <el-button type="text" @click="showTaskInfoDialog(scope.row.id)"><i
                           class="el-icon-search"></i>查看
                       </el-button>
                     </template>
@@ -178,7 +178,7 @@
               </el-tab-pane>
             </el-tabs>
           </div>
-          <dialog-task-info :form="taskForm" :dialogFormVisible="dialogTaskInfoView1"
+          <dialog-task-info :form="taskForm" :dialogFormVisible="dialogTaskInfoView"
                             @closeDialog="closeTaskInfoDialog"></dialog-task-info>
         </div>
       </div>
@@ -207,7 +207,7 @@ export default {
   },
   data: function () {
     return {
-      testUploadIndex: false,
+      testUploadIndex: false,//sourceUpload组件内部定义，当这个变量发生变化时，开启文件上传，上传后会返回一个URL，即文件地址
       teamId: sessionStorage.getItem("teamId"),
       userId: sessionStorage.getItem("userId"),
       projectId: sessionStorage.getItem("projectId"),
@@ -217,8 +217,7 @@ export default {
       selectedMission: 0,//下边的框
       loading: false,
       taskForm: {},
-      dialogTaskInfoView1: false,
-      dialogTaskInfoView2: false,
+      dialogTaskInfoView: false,
       castId: null,
       watchIndex: false,
       showIndex: true,
@@ -249,7 +248,8 @@ export default {
       }],//当前任务的信息
       missionTitleList: [{missionInfoList: [{id: 0, missionType: "", status: "", title: ""}], title: ""}],//id是subtitleId
       // /v1/authorization/manage/mission/list返回值
-      subtitleList: [{id: 0, description: "", subtitle: "",}],//id是subtitleId,相当于在titleId下一级
+      // 下边的分页
+      subtitleList: [],//[{id: 0, description: "", subtitle: "",}],//id是subtitleId,相当于在titleId下一级，右上角的框
       // /v1/authorization/mission/subtitle/list返回值
       missionTypeList: [{id: 0, missionTypeId: 0, missionName: "",}],//id是subtitleId,missionTypeId是任务类型Id
       // /v1/authorization/mission/missiontype/list返回值
@@ -270,25 +270,11 @@ export default {
         titleId: "",
       },
       httpUrlToRepo: '',
-      getFileInput: {
-        pageNo: 1,
-        pageSize: 10,
-        orderType: null,
-        orderBy: null,
-        teamId: sessionStorage.getItem("teamId"),
-        missionId: null,
-        titleId: null,
-        userId: null,
-        subtitle: null,
-        startTime: null,
-        endTime: null,
-      },
       endDatePicker: {
         disabledDate(time) {
           return time.getTime() < new Date().getTime() - 86400000;
         },
       },
-
     };
   },
   created: function () {
@@ -303,9 +289,6 @@ export default {
     this.getMissionTypeList();
     this.getMissionTitle();
     this.getMissionTitleList();
-    // this.getSubtitleList(78);
-    // this.showTaskInfoDialog(421);
-    // this.getMissionData(425);
   },
   watch: {
     //监听路由高亮
@@ -328,16 +311,15 @@ export default {
   methods: {
     ...mapMutations(['settaskList', 'setResource', 'setCache']),
     insertNewMission() {//新建任务
-      console.log("346", this.insertMissionTitle);
       if (this.insertMissionTitle.title === "") {
         errTips('任务名称不能为空');
         this.visible = false;
         return false;
       }
-      console.log("352", this.insertMissionTitle);
       httpPost('/v1/authorization/mission/missiontitle/insert', this.insertMissionTitle).then(results => {
         const {msg, httpCode} = results.data;
         if (httpCode === 200) {
+          this.getMissionTitle();
           this.getMissionTitleList();
           this.insertMissionTitle.title = '';
           this.visible = false;
@@ -347,31 +329,20 @@ export default {
         }
       });
     },
-    closeTaskInfoDialog() {
-      this.dialogTaskInfoView1 = false;
-      this.dialogTaskInfoView2 = false;
+    closeTaskInfoDialog() {//关闭“查看”窗口
+      this.getMissionTitleList();
+      let tmpId = 0;
+      for(let i=0; i<= this.missionTitle.length; i++){
+        if(this.missionTitle[i].title === this.missionTitleList[this.selectedMission].title){
+          tmpId = this.missionTitle[i].id;
+          break;
+        }
+      }
+      this.getSubtitleList(tmpId);
+      this.dialogTaskInfoView = false;
     },
     //打开任务信息对话框并获取任务信息
-    // showTaskInfoDialog(val) {
-    //   //这个id是子任务Id，不是对应着上层任务
-    //   httpGet('/v1/authorization/manage/mission/get', {id: val}).then(results => {//这个Id是subtitleId
-    //     const {msg, data, httpCode} = results.data;
-    //     if (httpCode === 200) {
-    //       this.missionData = data;
-    //       this.taskForm = this.missionData;
-    //       this.taskForm["startTime"] = specificDate(this.taskForm["startTime"]);
-    //       this.taskForm["endTime"] = specificDate(this.taskForm["endTime"]);
-    //       this.taskForm["gmtCreate"] = specificDate(this.taskForm["gmtCreate"]);
-    //       this.taskForm["gmtModified"] = specificDate(this.taskForm["gmtModified"]);
-    //       console.log("366", this.taskForm.participantList);
-    //       this.taskForm.participantList = this.taskForm.participantList.toString();
-    //       this.dialogTaskInfoView1 = true;
-    //     } else {
-    //       errTips(msg);
-    //     }
-    //   });
-    // },
-    showTaskInfoDialog(val) {
+    showTaskInfoDialog(val) {//打开“查看”窗口
       httpGet('/v1/authorization/manage/mission/get', {id: val}).then(results => {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
@@ -382,29 +353,28 @@ export default {
           form.startTime = specificDate(form.startTime);
           form.participantList = form.participantList.toString();
           this.taskForm = form;
-          this.dialogTaskInfoView1 = true;
+          this.dialogTaskInfoView = true;
         } else {
           errTips(msg);
         }
       });
     },
-    showSubTask(val) {
+    showSubTask(val) {//显示下方分页
       this.missionInfoList = this.missionTitleList[val].missionInfoList;
     },
-    getMissionTitleList() {//ok
+    getMissionTitleList() {//获得所有任务的信息，展示在下面分页
       httpGet('/v1/authorization/manage/mission/list', {teamId: this.teamId}).then(results => {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
           this.missionTitleList = data.missionTitleList;
           this.showSubTask(this.selectedMission);
-          console.log("399", this.missionTitleList);
         } else {
           errTips(msg);
         }
       });
 
     },
-    getMissionTitle() {//ok
+    getMissionTitle() {//获取任务列表，用于“请选择任务”
       httpGet('/v1/authorization/mission/missiontitle/list', {teamId: this.teamId}).then(results => {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
@@ -415,7 +385,7 @@ export default {
       });
 
     },
-    getMissionTypeList() {//ok
+    getMissionTypeList() {//获取任务类型列表，用于“请选择任务类型”
       httpGet('/v1/authorization/mission/missiontype/list', {teamId: this.teamId}).then(results => {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
@@ -425,18 +395,17 @@ export default {
         }
       });
     },
-    getSubtitleList(val) {//ok
+    getSubtitleList(val) {//获得子任务信息，用在右上角处显示
       httpGet('/v1/authorization/mission/subtitle/list', {teamId: this.teamId, titleId: val}).then(results => {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
           this.subtitleList = data.subtitleList;
-          console.log("432", this.subtitleList);
         } else {
           errTips(msg);
         }
       });
     },
-    getContent() { //ok
+    getContent() { //获取团队成员，用在“指派人员”
       httpGet("/v1/authorization/bids/get/content", {castId: this.castId}).then(results => {
         const {msg, data, httpCode} = results.data;
         if (httpCode === 200) {
@@ -447,19 +416,18 @@ export default {
       })
     },
     //获取任务数据
-    getTask() {
-      httpGet('/v1/authorization/manage/mission/list', {teamId: this.teamId}).then(results => {
-        const {msg, data, httpCode} = results.data;
-        if (httpCode === 200) {
-          this.missionTitleList = data.missionTitleList;
-        } else {
-          errTips(msg);
-        }
-      });
-    },
+    // getTask() {
+    //   httpGet('/v1/authorization/manage/mission/list', {teamId: this.teamId}).then(results => {
+    //     const {msg, data, httpCode} = results.data;
+    //     if (httpCode === 200) {
+    //       this.missionTitleList = data.missionTitleList;
+    //     } else {
+    //       errTips(msg);
+    //     }
+    //   });
+    // },
 
-    deleteMission(id) {
-      console.log("459", id);
+    deleteMission(id) {//删除一个子任务，右上角框里的“删除任务”
       httpDelete(`/v1/authorization/mission/missionsubtitle/delete/${id}`).then(results => {
         const {httpCode, msg} = results.data;
         if (httpCode === 200) {
@@ -471,7 +439,7 @@ export default {
         this.getMissionTitleList();
       });
     },
-    getCastId(projectId) {
+    getCastId(projectId) {//获取当前的投标Id，调用一次就够了
       httpGet("/v1/authorization/manage/castId/get", {projectId: projectId}).then(results => {
         const {msg, data, httpCode} = results.data;
         if (httpCode == 200) {
@@ -481,7 +449,7 @@ export default {
         }
       })
     },
-    insertNewMissionType() {
+    insertNewMissionType() {//"添加新的任务类型"
       if (this.insertMissionType.missionName === '') {
         errTips('任务类型名称不能为空');
         this.visible1 = false;
@@ -495,21 +463,22 @@ export default {
         } else {
           errTips(msg);
         }
-        this.typeForm.missionName = '';
+        this.getMissionTypeList();
+        this.insertMissionType.missionName = '';
         this.visible1 = false;
       });
     },
-    //获取任务列表（标题列表）
-    getMissionList(val) {
-      httpGet('/v1/authorization/mission/missiontitle/list', {teamId: val}).then(results => {
-        const {msg, data, httpCode} = results.data;
-        if (httpCode === 200) {
-          this.missionList = data.missionTitle;
-        } else {
-          errTips(msg);
-        }
-      });
-    },
+    // //获取任务列表（标题列表）
+    // getMissionList(val) {
+    //   httpGet('/v1/authorization/mission/missiontitle/list', {teamId: val}).then(results => {
+    //     const {msg, data, httpCode} = results.data;
+    //     if (httpCode === 200) {
+    //       this.missionList = data.missionTitle;
+    //     } else {
+    //       errTips(msg);
+    //     }
+    //   });
+    // },
     //复制Git地址
     copyAddress: function (event) {
       var gitAddress = this.httpUrlToRepo;
@@ -530,7 +499,7 @@ export default {
         clipboard.destroy();
       });
     },
-    uploadFile(file) {
+    uploadFile(file) {//添加新的任务
       (file) && (this.addMission.sourceFile = file.fileName);
       let dataForm = this.addMission.sourceFile.split('/');
       this.addMission.resourceName = dataForm[dataForm.length - 1];
@@ -543,6 +512,7 @@ export default {
         const {msg, httpCode} = results.data;
         if (httpCode === 200) {
           successTips('添加任务成功！');
+          this.getMissionTitleList();
         } else {
           errTips(msg);
         }
@@ -552,30 +522,12 @@ export default {
         }
       });
     },
-    //添加任务
-    addNewMission() {
-      this.testUploadIndex = !this.testUploadIndex;
+    addNewMission() {//添加新的任务，点击”保存”后触发这个函数
+      this.testUploadIndex = !this.testUploadIndex;//这个变量改变后触发uploadFile函数，具体原因可看上边sourceUpload处代码
     },
-    getFile(val) {
-      this.getFileInput.missionId = val;
-      httpGet('/v1/authorization/manage/resource/list', this.getFileInput).then(results => {
-        const {msg, data, httpCode} = results.data;
-        if (httpCode === 200) {
-          this.taskForm.resourceList = data.list;
-          this.dialogTaskInfoView2 = true;
-        } else if(httpCode === 400){
-          this.taskForm.resourceList = [];
-          this.dialogTaskInfoView2 = true;
-          console.log("554", "httpCode = 400");
-        }
-        else {
-          errTips(msg);
-        }
-      });
-    },
-    returnSquare() {
-      this.$router.push({path: '/desk/taskManage'});
-    },
+    // returnSquare() {
+    //   this.$router.push({path: '/desk/taskManage'});
+    // },
     rowClass() {
       return 'background:#F4F6F9;';
     },
