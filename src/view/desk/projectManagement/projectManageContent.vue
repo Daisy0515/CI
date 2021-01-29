@@ -76,8 +76,12 @@
                         url: "notification",
                     },
                     {
-                        name: "缺陷管理",
-                        url: "defectManagement",
+                        name: "代码缺陷",
+                        url: "codeDefect",
+                    },
+                    {
+                        name: "文档意见",
+                        url: "documentComments",
                     },
 
 
@@ -108,8 +112,12 @@
                         url: "notification",
                     },
                     {
-                        name: "缺陷管理",
-                        url: "defectManagement",
+                        name: "代码缺陷",
+                        url: "codeDefect",
+                    },
+                    {
+                        name: "文档意见",
+                        url: "documentComments",
                     },
 
                 ],
