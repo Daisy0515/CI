@@ -1,7 +1,10 @@
 <template>
     <div>
         <h2 v-if="!showBindGitDialog">正在处理中，请稍等....</h2>
-        <el-dialog :visible.sync="showBindGitDialog" :show-close="false">
+        <el-dialog :visible.sync="showBindGitDialog" :show-close="false" :close-on-click-modal="false">
+            <el-row class="Tips">
+                <i class="el-icon-info"></i>如果出现仓库列表一直处于加载中，请刷新当前页面
+            </el-row>
             <el-row style="margin-bottom: 10px;">
                 <h2>已选择：{{gitName}}平台</h2>
             </el-row>
@@ -40,7 +43,7 @@
     export default {
         name: "giteeOauth",
         created(){
-            // this.getCallbackInfo();
+            this.getCallbackInfo();
         },
         data(){
             return{
@@ -69,7 +72,7 @@
                 if(code !== null){
                     let data = {
                         code:code,
-                        oauthType:1,//1 官方的gitlab 2 github 3 gitee
+                        oauthType:3,//1 官方的gitlab 2 github 3 gitee
                     };
                     httpPost('/v1/authorization/coreGitOauth/gitee/insert', data).then(results => {
                         const {msg, httpCode, data} = results.data;
@@ -150,5 +153,10 @@
 </script>
 
 <style scoped>
-
+    .Tips {
+        text-align: center;
+        margin-top: -30px;
+        margin-bottom: 10px;
+        color: #909399a8;
+    }
 </style>

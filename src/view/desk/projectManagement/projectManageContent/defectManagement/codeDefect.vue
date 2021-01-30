@@ -22,12 +22,12 @@
 
                 <el-button size="primary" @click="searchList()">搜索</el-button>
                 <el-button size="primary" @click="getIssueVisualization()">可视化</el-button>
-                <el-button size="primary" @click="gotoTest()">招聘测试人员</el-button>
+                <!-- <el-button size="primary" @click="gotoTest()">招聘测试人员</el-button> -->
                 <!-- </div> -->
             </div>
         <defect-add :dialogFormVisible="defectAddDialog" :userList="userList" 
                     :projectId="projectId" @closeDialog="closeDefectAddDialog"></defect-add>
-        <issue-visualization :dialogFormVisible="visualizationDialog" :projectList="projectList" 
+        <issue-visualization :dialogFormVisible="visualizationDialog" :projectId="projectId" 
                              @closeDialog="closeVisualizationDialog" ref="issueVisualization"></issue-visualization>
         <el-table
                     :data="tableData"
@@ -71,7 +71,8 @@
                 </el-table-column>
                 <el-table-column prop="operateTime" label="最后操作时间" align="center" width="200">
                     <template slot-scope="scope">
-                        <span class="tablehidden">{{scope.row.gmtModified}}</span>
+                        <span v-if="scope.row.gmtModified===''">暂未更新</span>
+                        <span v-else>{{scope.row.gmtModified}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column prop="level" label="等级" align="center">
@@ -96,8 +97,8 @@
                         <!-- 不理解 -->
                         <!-- <router-link @click.native="edit(scope.row.creatorId,scope.row.appointId,scope.row.id)" to> -->
                         <el-button plain type="primary" size="small" @click.native="edit(scope.row.creatorId,scope.row.appointId,scope.row.id)">
-                            <i class="el-icon-edit"></i>
-                            编辑
+                            <i class="el-icon-edit" v-if="scope.row.creatorId===userId">编辑</i><!-- 缺陷创造者显示编辑按钮，缺陷被指派的人显示处理按钮 -->
+                            <i class="el-icon-edit" v-else>处理</i>
                         </el-button>
                         <!-- </router-link> -->
                         <el-button plain type="primary" size="small" @click.native="viewDefectHistory(scope.row.id)">
@@ -258,7 +259,6 @@
             //搜索查询
             searchList() {
                 let {searchData} = this;
-                searchData.projectName = this.projectName;
                 this.getView(searchData);
             },
             //页码变化
@@ -268,7 +268,7 @@
             },
             //获取页面数据
             getView(val = this.pageData) {
-                this.pageData.projectName = this.projectName;
+                val.projectId = this.projectId;
                 this.loading = true;
                 httpGet("/v1/authorization/bug/search/get", val).then(results => {
                     const {httpCode, msg, data} = results.data;
@@ -309,24 +309,20 @@
                 })
                
             },
-            closeEditCreatorDialog() {
+            closeEditCreatorDialog(refresh=false) {
                 this.editCreatorDialog = false;
-                this.getView();
+                if(refresh){
+                    this.getView();
+                }
             },
-            closeEditAppointDialog() {
+            closeEditAppointDialog(refresh=false) {
                 this.editAppointDialog = false;
-                this.getView();
+                if(refresh) {
+                    this.getView();
+                }
             },
 
             getIssueVisualization() {
-                httpGet('/v1/authorization/bug/get/userproject').then(results => {
-                    const {msg, data, httpCode} = results.data;
-                    if (httpCode === 200) {
-                        this.projectList = data.projectList;
-                    } else if (httpCode !== 401) {
-                        errTips(msg);
-                    }
-                });
                 this.visualizationDialog = true;
                 this.$nextTick(()=>{
                     this.$refs.issueVisualization.drawInit();

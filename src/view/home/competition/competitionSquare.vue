@@ -109,6 +109,7 @@
                             </li>
                         </ul>
                     </div>
+<!--                  翻页-->
                     <div class="pagerHold">
                         <el-pagination
                                 @current-change="handleCurrentChange"
@@ -117,6 +118,7 @@
                                 layout="prev, pager, next, jumper"
                         ></el-pagination>
                     </div>
+
                 </div>
             </div>
         </div>
