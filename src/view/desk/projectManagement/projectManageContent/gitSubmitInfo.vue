@@ -53,7 +53,14 @@
         <div v-if="hasBind">
             <div>
                 <el-card style="margin: -10px auto 20px auto;">
-                    <h2>仓库名称：{{reposName}}</h2>
+                    <el-row>
+                        <el-col :span="18">
+                            <h2>仓库名称：{{reposName}}</h2>
+                        </el-col>
+                        <el-col :span="5">
+                            <router-link to="/git-2" style="margin-left:20px;color:#16b0ff">如何使用git</router-link>
+                        </el-col>
+                    </el-row>
                     <h2>仓库地址：{{reposHttpUrl}}</h2>
                 </el-card>
             </div>
