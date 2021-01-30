@@ -258,7 +258,6 @@
             //搜索查询
             searchList() {
                 let {searchData} = this;
-                searchData.projectName = this.projectName;
                 this.getView(searchData);
             },
             //页码变化
@@ -268,7 +267,7 @@
             },
             //获取页面数据
             getView(val = this.pageData) {
-                this.pageData.projectId = this.projectId;
+                val.projectId = this.projectId;
                 this.loading = true;
                 httpGet("/v1/authorization/bug/search/get", val).then(results => {
                     const {httpCode, msg, data} = results.data;
