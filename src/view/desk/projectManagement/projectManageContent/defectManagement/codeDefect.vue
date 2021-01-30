@@ -268,7 +268,7 @@
             },
             //获取页面数据
             getView(val = this.pageData) {
-                this.pageData.projectName = this.projectName;
+                this.pageData.projectId = this.projectId;
                 this.loading = true;
                 httpGet("/v1/authorization/bug/search/get", val).then(results => {
                     const {httpCode, msg, data} = results.data;
