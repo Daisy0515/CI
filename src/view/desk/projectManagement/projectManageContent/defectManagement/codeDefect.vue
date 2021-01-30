@@ -71,7 +71,8 @@
                 </el-table-column>
                 <el-table-column prop="operateTime" label="最后操作时间" align="center" width="200">
                     <template slot-scope="scope">
-                        <span class="tablehidden">{{scope.row.gmtModified}}</span>
+                        <span v-if="scope.row.gmtModified===''">暂未更新</span>
+                        <span v-else>{{scope.row.gmtModified}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column prop="level" label="等级" align="center">
