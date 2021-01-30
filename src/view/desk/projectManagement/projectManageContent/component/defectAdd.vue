@@ -344,6 +344,7 @@
                         // alert(this.ruleForm.resourceFile);
                         successTips('新增缺陷成功！');
                         this.changeVisible();
+                        this.ruleForm = {};
                     } else if (httpCode === 500) {
                         errTips('图片请使用上传资源！');
                     } else if (httpCode !== 401) {
@@ -361,9 +362,9 @@
                         return false;
                     }
                 });
-                this.$nextTick(()=>{
-                    this.ruleForm = {};
-                });
+                // this.$nextTick(()=>{
+                //     this.ruleForm = {};
+                // });
             }
         }
 
