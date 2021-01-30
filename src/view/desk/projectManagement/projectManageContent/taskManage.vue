@@ -97,7 +97,7 @@
                                 </el-form-item>
                                 <el-form-item label="上传附件" prop="sourceFile">
                                     <sourceUpload :fileIndex="2" :uploadIndex="testUploadIndex"
-                                                  v-on:setIdCard="uploadFile($event)"/>
+                                                  v-on:setIdCard="uploadFile"/>
                                 </el-form-item>
                                 <el-form-item class="cancel">
                                     <el-button type="primary" @click="watchIndex = !watchIndex" size="small"
@@ -200,6 +200,7 @@
     import sourceUpload from '@/common/upload/resourceUpload';
     import timeLimit from '@/mixins/regular/timeLimit.js';
     import DialogTaskInfo from "./component/dialogTaskInfo";
+    import foreignArea from "@/view/loginRegister/register/components/foreignArea";
 
     export default {
         mixins: [timeLimit],
@@ -332,20 +333,23 @@
                     }
                 });
             },
-            closeTaskInfoDialog() {//关闭“查看”窗口
-                this.getMissionTitleList();
-                let tmpId = 0;
-                for (let i = 0; i <= this.missionTitle.length; i++) {
-                    if (this.missionTitle[i].title === this.missionTitleList[this.selectedMission].title) {
-                        tmpId = this.missionTitle[i].id;
-                        break;
+            closeTaskInfoDialog(refresh = false) {//关闭“查看”窗口
+                if(refresh){
+                    this.getMissionTitleList();
+                    let tmpId = 0;
+                    for (let i = 0; i <= this.missionTitle.length; i++) {
+                        if (this.missionTitle[i].title === this.missionTitleList[this.selectedMission].title) {
+                            tmpId = this.missionTitle[i].id;
+                            break;
+                        }
                     }
+                    this.getSubtitleList(tmpId);
                 }
-                this.getSubtitleList(tmpId);
                 this.dialogTaskInfoView = false;
             },
             //打开任务信息对话框并获取任务信息
             showTaskInfoDialog(val) {//打开“查看”窗口
+                this.dialogTaskInfoView = true;
                 httpGet('/v1/authorization/manage/mission/get', {id: val}).then(results => {
                     const {msg, data, httpCode} = results.data;
                     if (httpCode === 200) {
@@ -356,7 +360,6 @@
                         form.startTime = specificDate(form.startTime);
                         form.participantList = form.participantList.toString();
                         this.taskForm = form;
-                        this.dialogTaskInfoView = true;
                     } else {
                         errTips(msg);
                     }
@@ -506,6 +509,7 @@
                 });
             },
             uploadFile(file) {//添加新的任务
+                console.log("512", file);
                 (file) && (this.addMission.sourceFile = file.fileName);
                 let dataForm = this.addMission.sourceFile.split('/');
                 this.addMission.resourceName = dataForm[dataForm.length - 1];
