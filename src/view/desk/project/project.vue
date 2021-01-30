@@ -58,7 +58,7 @@
             </el-card>
             <el-card class="box-card2" v-loading="loading">
                 <div slot="header" class="clearfix">
-                    <span>项目管理</span>
+                    <span>最近项目</span>
                 </div>
                 <div class="tem_main">
                     <el-table :data="projectData">
