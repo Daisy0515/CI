@@ -97,8 +97,8 @@
                         <!-- 不理解 -->
                         <!-- <router-link @click.native="edit(scope.row.creatorId,scope.row.appointId,scope.row.id)" to> -->
                         <el-button plain type="primary" size="small" @click.native="edit(scope.row.creatorId,scope.row.appointId,scope.row.id)">
-                            <i class="el-icon-edit"></i>
-                            编辑
+                            <i class="el-icon-edit" v-if="scope.row.creatorId===userId">编辑</i><!-- 缺陷创造者显示编辑按钮，缺陷被指派的人显示处理按钮 -->
+                            <i class="el-icon-edit" v-else>处理</i>
                         </el-button>
                         <!-- </router-link> -->
                         <el-button plain type="primary" size="small" @click.native="viewDefectHistory(scope.row.id)">
@@ -309,13 +309,17 @@
                 })
                
             },
-            closeEditCreatorDialog() {
+            closeEditCreatorDialog(refresh=false) {
                 this.editCreatorDialog = false;
-                this.getView();
+                if(refresh){
+                    this.getView();
+                }
             },
-            closeEditAppointDialog() {
+            closeEditAppointDialog(refresh=false) {
                 this.editAppointDialog = false;
-                this.getView();
+                if(refresh) {
+                    this.getView();
+                }
             },
 
             getIssueVisualization() {
