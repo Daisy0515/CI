@@ -271,7 +271,7 @@ export default {
         },
         setIdCard(file) {
             this.initInserResource(file);
-            httpPost("/v1/authorization/manage/resource/insert", this.insertResource).then(results => {
+            httpPost("/v1/authorization/notification/resource/insert", this.insertResource).then(results => {
                 const {httpCode, msg} = results.data;
                 if (httpCode === 200) {
                     this.getFiles(this.tmpId);
