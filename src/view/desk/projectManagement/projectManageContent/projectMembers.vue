@@ -105,7 +105,7 @@
                     <el-table-column prop="status" label="状态" align="center"></el-table-column>
                     <el-table-column label="操作" prop="province" align="center" width="250">=
                         <template slot-scope="scope">
-                            <router-link @click.native="viewApplyInfo(scope.row.id)" to>
+                            <router-link @click.native="viewApplyInfo(scope.row.proposerId)" to>
                                 <i class="el-icon-search"></i>
                                 查看
                             </router-link>
@@ -429,13 +429,11 @@
                     if (httpCode === 200) {
                         row.status = "成功";
                         successTips("已同意此用户加入团队！");
-                    } else if (httpCode === 400) {
-                        this.setCache("teamApplication");
-                    } else if (httpCode !== 401) {
+                    } else{
                         errTips(msg);
                     }
+                    this.getView();
                 });
-                this.getView();
             },
             nopass(row) {
                 httpPut("/v1/authorization/team/statuscome/update", {id: row.id}).then(

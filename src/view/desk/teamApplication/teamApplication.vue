@@ -57,22 +57,23 @@
                             <i class="el-icon-delete"></i>
                             删除
                         </router-link>
-                        <router-link
-                                @click.native="pass(scope.row)"
-                                to
-                                v-if="scope.row.status==='审核中'&&scope.row.show"
-                        >
-                            <i class="el-icon-circle-check"></i>
-                            通过
-                        </router-link>
-                        <router-link
-                                @click.native="nopass(scope.row)"
-                                to
-                                v-if="scope.row.status==='审核中'&&scope.row.show"
-                        >
-                            <i class="el-icon-error"></i>
-                            不通过
-                        </router-link>
+                        <span v-else>暂无</span>
+<!--                        <router-link-->
+<!--                                @click.native="pass(scope.row)"-->
+<!--                                to-->
+<!--                                v-if="scope.row.status==='审核中'&&scope.row.show"-->
+<!--                        >-->
+<!--                            <i class="el-icon-circle-check"></i>-->
+<!--                            通过-->
+<!--                        </router-link>-->
+<!--                        <router-link-->
+<!--                                @click.native="nopass(scope.row)"-->
+<!--                                to-->
+<!--                                v-if="scope.row.status==='审核中'&&scope.row.show"-->
+<!--                        >-->
+<!--                            <i class="el-icon-error"></i>-->
+<!--                            不通过-->
+<!--                        </router-link>-->
                     </template>
                 </el-table-column>
             </el-table>
@@ -115,7 +116,8 @@
                     pageNo: 1,
                     orderType: "DESC",
                     typeId: null,
-                    orderBy: "id"
+                    orderBy: "id",
+                    role:1,//获取作为申请人身份的团队申请数据，role=2是审核人身份
                 },
                 pageData: {
                     projectName: "",
@@ -126,7 +128,8 @@
                     pageNo: 1,
                     typeId: null,
                     pageSize: 10,
-                    orderBy: "id"
+                    orderBy: "id",
+                    role:1,//获取作为申请人身份的团队申请数据，role=2是审核人身份
                 },
                 teamFrom: []
             };
