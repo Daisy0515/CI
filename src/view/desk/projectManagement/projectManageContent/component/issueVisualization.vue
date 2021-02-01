@@ -242,7 +242,7 @@
                 this.myChart3 = echarts.init(document.getElementById('main3'));
                 this.myChart3.setOption({
                     title: {
-                        text: '缺陷解决情况',
+                        text: '不同状态缺陷数',
                         subtext: '缺陷数（个）',
                         x: 'center'
                     },
@@ -272,7 +272,7 @@
                         this.myChart3.hideLoading();
                         this.myChart3.setOption({
                             title: {
-                                text: '缺陷解决情况',
+                                text: '不同状态缺陷数',
                                 subtext: '缺陷数（个）',
                                 x: 'center'
                             },
