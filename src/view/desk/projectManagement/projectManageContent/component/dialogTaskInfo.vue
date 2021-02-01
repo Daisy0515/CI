@@ -16,6 +16,11 @@
                         <span>{{ localForm.missionTypeName }}</span>
                     </el-form-item>
                 </el-col>
+                <el-col :span="3">
+                    <el-form-item v-if="typeTemplate!==null">
+                        <a :href="typeTemplate" target="_blank" style="font-size:17px; font-weight:bold;">参考模板</a>
+                    </el-form-item>
+                </el-col>
             </el-row>
             <el-row>
                 <el-col :span="10">
@@ -72,7 +77,7 @@
                 </el-col>
             </el-row>
             <el-row>
-                <el-table :data="fileTable" border :header-cell-style="rowClass">
+                <el-table :data="fileTable" border :header-cell-style="rowClass"  v-loading="fileTableLoading">
                     <el-table-column prop="resourceName" label="附件名称" :show-overflow-tooltip="true"></el-table-column>
                     <el-table-column prop="gmtCreate" label="上传时间"></el-table-column>
                     <el-table-column prop="userRole" label="角色" align="center">
@@ -156,13 +161,15 @@ export default {
                 missionId: this.form.id,
                 resource: "",
                 resourceName: "",
-            }
+            },
+            typeTemplate:null,//当前任务类型的参考模板
         }
     },
     watch: {
         form: function (newForm) {
             this.localForm = newForm;
             this.getFileTable(this.localForm.id);
+            this.getTemplate(this.localForm.id);
         }
     },
     methods: {
@@ -180,6 +187,17 @@ export default {
                     errTips("修改失败！");
                 }
             })
+        },
+        /***根据任务id获取当前任务的参考模板**/
+        getTemplate(missionId) {
+            return httpGet("/v1/authorization/manage/typetemplate/get", {id: missionId}).then(results => {
+                const {httpCode, data} = results.data;
+                if (httpCode === 200) {
+                    this.typeTemplate = data.resource;
+                } else {
+                    errTips("获取参考模板失败:");
+                }
+            });
         },
 
         getFileTable(missionId) {
