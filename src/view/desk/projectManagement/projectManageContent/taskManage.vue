@@ -166,7 +166,7 @@
                                     :value="index"
                                     :key="index"
                             >
-                                <el-table :data="missionInfoList" stripe style="width: 100%">
+                                <el-table :data="missionInfoList" stripe style="width: 100%" v-loading="tableLoading">
                                     <el-table-column prop="title" label="子任务名称" width="180"></el-table-column>
                                     <el-table-column prop="missionType" label="子任务类型" width="180"></el-table-column>
                                     <el-table-column prop="status" label="状态" width="180"></el-table-column>
@@ -279,6 +279,7 @@
                         return time.getTime() < new Date().getTime() - 86400000;
                     },
                 },
+                tableLoading:false,
             };
         },
         created: function () {
@@ -369,6 +370,7 @@
                 this.missionInfoList = this.missionTitleList[val].missionInfoList;
             },
             getMissionTitleList() {//获得所有任务的信息，展示在下面分页
+                this.tableLoading = true;
                 httpGet('/v1/authorization/manage/mission/list', {teamId: this.teamId}).then(results => {
                     const {msg, data, httpCode} = results.data;
                     if (httpCode === 200) {
@@ -377,6 +379,7 @@
                     } else {
                         errTips(msg);
                     }
+                    this.tableLoading = false;
                 });
 
             },
