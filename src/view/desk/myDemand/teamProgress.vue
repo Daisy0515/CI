@@ -7,9 +7,13 @@
                     <router-link to="myDemand">我的需求</router-link>
                     >
                     <span class="active">团队进度</span>
+                    <el-button type="primary" size="small" @click="getDeliverySet" style="margin-left:20px;">交付汇总</el-button>
                 </h4>
             </div>
         </div>
+        <deliverySet :dialogVisible="dialogVisible"  :projectId="projectId"
+                     @closeDialog="closeDeliverSearchDialog">
+        </deliverySet>
         <div class="container deskHeader">
             <el-table
                     v-loading="loading"
@@ -25,28 +29,23 @@
                 <el-table-column prop="accomplishProgress" label="完成进度" align="center"></el-table-column>
                 <el-table-column label="操作" prop="province" align="center" width="380px">
                     <template slot-scope="scope">
-            <span class="progressBtn" @click="seeProgress(scope.row.id)">
-              <i class="el-icon-search"></i>
-              团队进度
-            </span>
-                        <router-link
-                                :to="{path:'resource', query:{id:scope.row.id}}"
-                                class="progressBtn"
-                        >
-                            <i class="el-icon-search"></i>
-                            资源明细
-                        </router-link>
-                        <router-link
-                                :to="{path:'demandendView', query:{projectId:projectId,teamId:scope.row.id,type:'progress'}}"
-                                class="progressBtn"
-                        >
+                        <span class="progressBtn" @click="seeProgress(scope.row.id)">
+                          <i class="el-icon-search"></i>
+                          进度明细
+                        </span>
+<!--                        <router-link-->
+<!--                                :to="{path:'resource', query:{id:scope.row.id}}"-->
+<!--                                class="progressBtn"-->
+<!--                        >-->
+<!--                            <i class="el-icon-search"></i>-->
+<!--                            资源明细-->
+<!--                        </router-link>-->
+                        <router-link :to="{path:'demandendView', query:{projectId:projectId,teamId:scope.row.id,type:'progress'}}"
+                                class="progressBtn" >
                             <i class="el-icon-search"></i>
                             团队明细
                         </router-link>
-                        <router-link
-                                :to="{path:'viewDelivery', query:{projectId:projectId,Id:scope.row.id}}"
-
-                        >
+                        <router-link :to="{path:'viewDelivery', query:{projectId:projectId,Id:scope.row.id}}" >
                             <i class="el-icon-search"></i>
                             查看交付
                         </router-link>
@@ -60,14 +59,15 @@
     import {httpGet} from "@/utils/http.js";
     import {hoursSeconds as getDate} from "@/utils/getDate.js";
     import {errTips} from "@/utils/tips.js";
-
+    import  deliverySet from "@/view/desk/myDemand/deliverySet";
     export default {
-        components: {},
+        components: {deliverySet},
         data() {
             return {
                 projectId: "",
                 loading: false,
-                progressForm: []
+                progressForm: [],
+                dialogVisible:false,  //交付汇总的对话框
             };
         },
         created: function () {
@@ -122,6 +122,14 @@
                         errTips(msg);
                     }
                 });
+            },
+
+            getDeliverySet(){
+                this.dialogVisible = true;
+            },
+
+            closeDeliverSearchDialog(){
+                this.dialogVisible = false;
             },
 
             rowClass() {
