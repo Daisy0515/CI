@@ -16,6 +16,11 @@
                         <span>{{ localForm.missionTypeName }}</span>
                     </el-form-item>
                 </el-col>
+                <el-col :span="3">
+                    <el-form-item v-if="typeTemplate!==null">
+                        <a :href="typeTemplate" target="_blank" style="font-size:17px; font-weight:bold;">参考模板</a>
+                    </el-form-item>
+                </el-col>
             </el-row>
             <el-row>
                 <el-col :span="10">
@@ -35,24 +40,26 @@
                 </el-form-item>
             </el-row>
             <el-row>
-                <el-col :span="13">
+                <el-col :span="16">
                     <el-form-item label="执行时间:" :label-width="formLabelWidth">
                         <el-date-picker
-                                v-model="localForm.startTime"
-                                type="date"
-                                placeholder="开始时间"
-                                value-format="yyyy-MM-dd"
+                            v-model="localForm.startTime"
+                            type="date"
+                            placeholder="开始时间"
+                            value-format="yyyy-MM-dd"
                         ></el-date-picker>
                         到
                         <el-date-picker
-                                v-model="localForm.endTime"
-                                type="date"
-                                placeholder="开始时间"
-                                value-format="yyyy-MM-dd"
+                            v-model="localForm.endTime"
+                            type="date"
+                            placeholder="开始时间"
+                            value-format="yyyy-MM-dd"
                         ></el-date-picker>
                     </el-form-item>
                 </el-col>
-                <el-col :span="7">
+            </el-row>
+            <el-row>
+                <el-col :span="9">
                     <el-form-item label="任务状态:" :label-width="formLabelWidth">
                         <el-select v-model="localForm.status">
                             <el-option :value="1" label="执行中"></el-option>
@@ -70,7 +77,7 @@
                 </el-col>
             </el-row>
             <el-row>
-                <el-table :data="fileTable" border :header-cell-style="rowClass">
+                <el-table :data="fileTable" border :header-cell-style="rowClass"  v-loading="fileTableLoading">
                     <el-table-column prop="resourceName" label="附件名称" :show-overflow-tooltip="true"></el-table-column>
                     <el-table-column prop="gmtCreate" label="上传时间"></el-table-column>
                     <el-table-column prop="userRole" label="角色" align="center">
@@ -82,17 +89,17 @@
                     <el-table-column prop="userName" label="上传者" align="center"></el-table-column>
                     <el-table-column label="操作">
                         <template slot-scope="scope">
-                            <a target="_Blank" :href="scope.row.resource"> 下载 </a>
+                            <a target="_Blank" :href="scope.row.resource" align="center"> 下载 </a>
                         </template>
                     </el-table-column>
                 </el-table>
                 <div class="bid_footer">
                     <el-pagination
-                            style="text-align: center;margin-top: 10px;"
-                            @current-change="nextFilePage"
-                            :current-page.sync="filePageData.pageNo"
-                            layout="prev, pager, next, jumper"
-                            :page-count="filePageData.totalPage"
+                        style="text-align: center;margin-top: 10px;"
+                        @current-change="nextFilePage"
+                        :current-page.sync="filePageData.pageNo"
+                        layout="prev, pager, next, jumper"
+                        :page-count="filePageData.totalPage"
                     ></el-pagination>
                 </div>
             </el-row>
@@ -109,140 +116,154 @@
 </template>
 
 <script>
-    import {httpGet, httpPut, httpPost} from '@/utils/http.js';
-    import {errTips, successTips} from '@/utils/tips.js';
-    import {specificDate} from "@/utils/getDate.js";
-    import sourceUpload from "@/common/upload/resourceUpload";
+import {httpGet, httpPut, httpPost} from '@/utils/http.js';
+import {errTips, successTips} from '@/utils/tips.js';
+import {specificDate} from "@/utils/getDate.js";
+import sourceUpload from "@/common/upload/resourceUpload";
 
-    export default {
-        components: {
-            sourceUpload
+export default {
+    components: {
+        sourceUpload
+    },
+    name: "editorViewDetail",
+    props: {
+        form: {
+            type: Object,
+            default: () => {
+            },
         },
-        name: "editorViewDetail",
-        props: {
-            form: {
-                type: Object,
-                default: () => {
-                },
-            },
-            dialogFormVisible: {
-                type: Boolean,
-                default: false,
-            },
-            loading: {
-                type: Boolean,
-                default: false,
-            }
+        dialogFormVisible: {
+            type: Boolean,
+            default: false,
         },
-        data() {
-            return {
-                localForm: {}, //父组件传递下来的参数被修改会出现警告，故采用了本地的副本
-                formLabelWidth: "100px",
-                isReadOnly: true,
-                fileTable: [], //当前任务的文件列表
-                fileTableLoading: false,
-                filePageData: {
-                    pageNo: 1,
-                    pageSize: 5,
-                    totalPage: 0,
-                    orderBy: "id",
-                    orderType: "DESC",
-                    missionId: null,
-                },
-                uploadIndex: false,
-                insertResource: {
-                    missionId: this.form.id,
-                    resource: "",
-                    resourceName: "",
-                }
-            }
+        loading: {
+            type: Boolean,
+            default: false,
+        }
+    },
+    data() {
+        return {
+            localForm: {}, //父组件传递下来的参数被修改会出现警告，故采用了本地的副本
+            formLabelWidth: "120px",
+            isReadOnly: true,
+            fileTable: [], //当前任务的文件列表
+            fileTableLoading: false,
+            filePageData: {
+                pageNo: 1,
+                pageSize: 5,
+                totalPage: 0,
+                orderBy: "id",
+                orderType: "DESC",
+                missionId: null,
+            },
+            uploadIndex: false,
+            insertResource: {
+                missionId: this.form.id,
+                resource: "",
+                resourceName: "",
+            },
+            typeTemplate:null,//当前任务类型的参考模板
+        }
+    },
+    watch: {
+        form: function (newForm) {
+            this.localForm = newForm;
+            this.getFileTable(this.localForm.id);
+            this.getTemplate(this.localForm.id);
+        }
+    },
+    methods: {
+        changeVisible() {
+            this.$emit('closeDialog');
         },
-        watch: {
-            form: function (newForm) {
-                this.localForm = newForm;
-                this.getFileTable(this.localForm.id);
-            }
-        },
-        methods: {
-            changeVisible() {
-                this.$emit('closeDialog');
-            },
-            update() {
-                let dataForm = this.form;
-                httpPut("/v1/authorization/manage/mission/update", dataForm).then(results => {
-                    const {httpCode} = results.data;
-                    if (httpCode === 200) {
-                        successTips("修改成功！");
-                    } else {
-                        errTips("修改失败！");
-                    }
-                })
-            },
-
-            getFileTable(missionId) {
-                this.fileTableLoading = true;
-                this.filePageData.missionId = missionId;
-                httpGet("/v1/authorization/manage/resource/list", this.filePageData).then(results => {
-                    const {httpCode, msg, data} = results.data;
-                    if (httpCode === 200) {
-                        this.fileTable = data.list;
-                        this.filePageData.totalPage = parseInt(data.totalPage);
-                        for (let i of this.fileTable) {
-                            i.gmtCreate = specificDate(i.gmtCreate);
-                            if (i.resourceName === null) {
-                                let resouArray = i.resource.split('/');
-                                i.resourceName = resouArray[resouArray.length - 1];
-                            }
-                        }
-                    } else if (msg === "该条件暂无数据") {
-                        this.fileTable = [];
-                    } else {
-                        errTips("获取文件信息失败:", msg);
-                    }
-                    this.fileTableLoading = false;
-                });
-            },
-
-            nextFilePage(val) {
-                this.filePageData.pageNo = val;
-                this.getFileTable(this.filePageData.missionId);
-            },
-            rowClass() {
-                return "background:#F4F6F9;";
-            },
-            uploadFile() {
-                this.uploadIndex = !this.uploadIndex;
-            },
-            setIdCard(file) {
-                if (!file) {
-                    errTips("请先选择文件！");
+        update() {
+            let dataForm = this.form;
+            httpPut("/v1/authorization/manage/mission/update", dataForm).then(results => {
+                const {httpCode} = results.data;
+                if (httpCode === 200) {
+                    successTips("修改成功！");
+                    this.$emit('closeDialog', true);
                 } else {
-                    (file) && (this.insertResource.resource = file);
-                    let dataForm = this.insertResource.resource.split('/');
-                    this.insertResource.resourceName = dataForm[dataForm.length - 1];
-                    this.insertResource.missionId = this.form.id;
-                    httpPost("/v1/authorization/manage/resource/insert", this.insertResource).then(results => {
-                        const {httpCode, msg} = results.data;
-                        if (httpCode === 200) {
-                            successTips('上传文件成功！');
-                            this.getFileTable(this.filePageData.missionId);
-                        } else if (httpCode !== 401) {
-                            errTips(msg);
-                        } else {
-                            alert(httpCode);
-                        }
-                    });
+                    errTips("修改失败！");
                 }
-            },
+            })
+        },
+        /***根据任务id获取当前任务的参考模板**/
+        getTemplate(missionId) {
+            return httpGet("/v1/authorization/manage/typetemplate/get", {id: missionId}).then(results => {
+                const {httpCode, data} = results.data;
+                if (httpCode === 200) {
+                    this.typeTemplate = data.resource;
+                } else {
+                    errTips("获取参考模板失败:");
+                }
+            });
         },
 
-    }
+        getFileTable(missionId) {
+            this.fileTableLoading = true;
+            this.filePageData.missionId = missionId;
+            httpGet("/v1/authorization/manage/resource/list", this.filePageData).then(results => {
+                const {httpCode, msg, data} = results.data;
+                if (httpCode === 200) {
+                    this.fileTable = data.list;
+                    this.filePageData.totalPage = parseInt(data.totalPage);
+                    for (let i of this.fileTable) {
+                        i.gmtCreate = specificDate(i.gmtCreate);
+                        if (i.resourceName === null) {
+                            let resouArray = i.resource.split('/');
+                            i.resourceName = resouArray[resouArray.length - 1];
+                        }
+                    }
+                } else if (msg === "该条件暂无数据") {
+                    this.fileTable = [];
+                } else {
+                    errTips("获取文件信息失败:", msg);
+                }
+                this.fileTableLoading = false;
+            });
+        },
+
+        nextFilePage(val) {
+            this.filePageData.pageNo = val;
+            this.getFileTable(this.filePageData.missionId);
+        },
+        rowClass() {
+            return "background:#F4F6F9;";
+        },
+        uploadFile() {
+            this.uploadIndex = !this.uploadIndex;
+        },
+        setIdCard(file) {
+            if (!file) {
+                errTips("请先选择文件！");
+            } else {
+                (file) && (this.insertResource.resource = file);
+                let dataForm = this.insertResource.resource.split('/');
+                this.insertResource.resourceName = dataForm[dataForm.length - 1];
+                this.insertResource.missionId = this.form.id;
+                httpPost("/v1/authorization/manage/resource/insert", this.insertResource).then(results => {
+                    const {httpCode, msg} = results.data;
+                    if (httpCode === 200) {
+                        successTips('上传文件成功！');
+                        this.getFileTable(this.filePageData.missionId);
+                    } else if (httpCode !== 401) {
+                        errTips(msg);
+                    } else {
+                        alert(httpCode);
+                    }
+                });
+            }
+        },
+    },
+
+}
 </script>
 
 <style scoped>
-    .myForm .el-form-item__label {
-        font-size: 17px;
-        color: black;
-        font-weight: bolder;
-    }
+.myForm .el-form-item__label {
+    font-size: 17px;
+    color: black;
+    font-weight: bolder;
+}
 </style>

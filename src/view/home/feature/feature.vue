@@ -49,6 +49,25 @@
                         </p>
                     </div>
                     <div class="contact">
+                        <p>项目贡献者</p>
+                        <el-row>
+                            <el-col :span="4" v-for="i in 5" :key="i">
+                                <el-avatar :size="100" :src="require(''+pics[i-1])">
+                                </el-avatar>
+                                <br>
+                                <span>姓名：{{ names[i - 1] }}</span>
+                                <br>
+                                <span>职业：{{ occus[i - 1] }}</span>
+                                <br>
+                                <span>主页: </span>
+                                <a :href="homes[i-1]">{{ homes[i - 1] }}</a>
+                                <br>
+                                <br>
+                                <br>
+                            </el-col>
+                        </el-row>
+                    </div>
+                    <div class="contact">
                         <p>联系方式</p>
                         <p>哈尔滨工业大学（深圳）</p>
                         <p>联系方式：cosineHIT@163.com</p>
@@ -60,10 +79,23 @@
 </template>
 
 <script>
-    export default {
-        methods: {}
-    };
+import {Avatar} from 'element-ui';
+
+export default {
+    methods: {},
+    data() {
+        return {
+            n: 5,
+            pics: ["./test.jpg", "./test.jpg", "./test.jpg", "./test.jpg", "./test.jpg"],
+            names: ["任庆吉", "任庆吉", "任庆吉", "任庆吉", "任庆吉",],
+            occus: ["硕士在读", "硕士在读", "硕士在读", "硕士在读", "硕士在读",],
+            homes: ["www.baidu.com", "www.baidu.com", "www.baidu.com", "www.baidu.com", "www.baidu.com",],
+        }
+    },
+};
+
+
 </script>
 <style lang='scss'>
-    @import "@/assets/scss/feature.scss";
+@import "@/assets/scss/feature.scss";
 </style>

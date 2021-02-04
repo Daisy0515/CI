@@ -132,8 +132,6 @@
                     return ;
                 }
                 let urlList = this.multipleSelection.map(item => item.resourceUrl);
-                // let urlList = ['https://pic3.zhimg.com/50/v2-d46d98e86c8badbf8e799eff33646c5a_hd.jpg'];
-                // console.log(urlList);
                 handleBatchDownload(urlList);
             },
             /**点击多选框触发*/
@@ -160,6 +158,15 @@
 </script>
 
 <style lang="scss" scoped>
+    .el-table /deep/.setDownloadName .cell .el-checkbox__inner{
+        margin-left: -30px;
+        position:relative;
+    }
+    .el-table /deep/.setDownloadName .cell:before{
+        content:"下载";
+        position:absolute;
+        right:11px;
+    }
     .dialog_header_top {
         .el-input, .el-select {
             display: inline-block;

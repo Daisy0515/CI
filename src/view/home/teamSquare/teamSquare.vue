@@ -69,7 +69,7 @@
                                     <div class="serviceHeader clearfix">
                     <span class="servTitle">
                       <h2>
-                        <a href="javascript:;">{{item.name}}</a>
+                        <a href="javascript:;">{{item.teamName}}/{{item.name}}</a>
                       </h2>
                     </span>
                                         <div class="servfeedback">
@@ -79,7 +79,12 @@
                                         <div :class="item.top===1?'up':''"></div><!--置顶特效-->
                                     </div>
                                     <div class="serviceMeta" style="padding-left: 6px;">
-                                        <p class="extras2">{{item.gmtCreate}} 共有{{item.participationCount}}个团队参与竞标</p>
+                                        <p class="extras2">
+                                            {{item.gmtCreate}}
+                                            <span v-if="item.status===1">投标中</span>
+                                            <span v-if="item.status===2">中标</span>
+                                            <span v-if="item.status===3">结束</span>
+                                        </p>
                                         <p class="desc">{{item.detail}}</p>
                                     </div>
                                 </div>
@@ -253,7 +258,6 @@
                         this.totalPage = parseInt(getData.data.totalPage + "0");
                         for (let i of this.plazaList) {
                             i.gmtCreate = specificDate(i.gmtCreate);
-                            i.top = 1;
                         }
                         this.loading = false;
                         this.tipData = false;
