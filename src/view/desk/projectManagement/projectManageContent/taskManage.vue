@@ -62,6 +62,7 @@
                                     <el-input class="input_title title" v-model="addMission.subtitle"></el-input>
                                 </el-form-item>
                                 <el-form-item label="指派人员" prop="participantList">
+                                  <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
                                     <el-checkbox-group v-model="addMission.participantList">
                                         <el-checkbox v-for="(item, index) in userList" :key="index" :label="item.id">{{
                                             item.userName
@@ -211,6 +212,8 @@
         },
         data: function () {
             return {
+                isIndeterminate:true,
+              checkAll:false,
                 testUploadIndex: false,//sourceUpload组件内部定义，当这个变量发生变化时，开启文件上传，上传后会返回一个URL，即文件地址
                 teamId: sessionStorage.getItem("teamId"),
                 userId: sessionStorage.getItem("userId"),
@@ -315,6 +318,14 @@
         },
         methods: {
             ...mapMutations(['settaskList', 'setResource', 'setCache']),
+          handleCheckAllChange(val) {
+              let tmp = [];
+              for(let i = 0; i<this.userList.length; i++){
+                tmp.push(this.userList[i].id);
+              }
+            this.addMission.participantList = val ? tmp : [];
+            this.isIndeterminate = false;
+          },
             insertNewMission() {//新建任务
                 if (this.insertMissionTitle.title === "") {
                     errTips('任务名称不能为空');
