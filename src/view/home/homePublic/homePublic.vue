@@ -9,7 +9,7 @@
 </template>
 <script>
     import FooterIndex from "@/common/footer/footer";
-    import homeHead from "@/common/header/homeHeader";
+    import homeHead from "@/common/header/newhomeHeader";
 
     export default {
         name: "homePublic",
