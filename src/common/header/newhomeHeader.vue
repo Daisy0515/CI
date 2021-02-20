@@ -8,35 +8,34 @@
                         </router-link>
                 </div>
                 <div class="cc-header__options" v-if="!getUser">
-                        <router-link to="login" class="lloginBtn"><a href >登入</a></router-link>
-                        <router-link to="selectRole" class="rregisterBtn">注册</router-link>
+                    <router-link to="login" class="lloginBtn"><a href >登入</a></router-link>
+                    <router-link to="selectRole" class="rregisterBtn">注册</router-link>
                 </div>
 
                 <ul class="cc-header__navigation">
-                        <li class="cc-header__navigation__item" v-for="item in items" :key="item.title">
-                            <router-link :to="item.url">
-                                <a v-bind:href="item.url" v-bind:title="title">{{item.title}}</a>
-                            </router-link>
-                        </li>
-                        <li class="cc-header__navigation__item">
-                            <a :href="landaryUrl" target="_blank">蓝凌云平台</a>
-                        </li>
+                    <li class="cc-header__navigation__item" v-for="item in items" :key="item.title">
+                        <router-link :to="item.url">
+                            <a v-bind:href="item.url" v-bind:title="title">{{item.title}}</a>
+                        </router-link>
+                    </li>
+                    <li class="cc-header__navigation__item">
+                        <a :href="landaryUrl" target="_blank">蓝凌云平台</a>
+                    </li>
                 </ul>
                 <HeadUser v-if="getUser"/>
-
             </div>
         </nav>
     </div>
 </template>
 <script>
     import {mapGetters} from "vuex";
-    import HeadUser from "@/common/headUser/headUser";
+    import HeadUser from "@/common/headUser/newheadUser";
 
     export default {
         components: {
             HeadUser
         },
-        name: "homeHead",
+        name: "newHomeHead",
         data: function () {
             return {
                 title: "群智化平台",
@@ -79,9 +78,11 @@
     .cc-header {
 		width: 100%;
 		z-index: 100;
-		position: absolute;
 		border: 1px solid #80CCD0;
         background: #fff;
+        position: absolute;
+        white-space:nowrap; 
+        height: 100px;
 	}
 
 	.cc-header__row {
@@ -121,9 +122,10 @@
 
     .cc-header__navigation{
         width: 550px;
-        margin-left: 750px;
+        margin-left: 16%;
         margin-right: 0px;
         text-align: center;
+        float: left;
     }
 
     .cc-header__navigation__item {

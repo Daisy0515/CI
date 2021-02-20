@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import index from '@/view/home/index/index'
+import index from '@/view/home/index/newindex'
 import homePublic from '@/view/home/homePublic/homePublic'
 import managerPublic from '@/view/review/reviewPublic/managerPublic'
 import publisherPublic from '@/view/review/reviewPublic/publisherPublic'
@@ -757,6 +757,14 @@ const vueRouter = new Router({
                     component: index,
                     meta: {
                         title: '首页',
+                    }
+                },
+                {
+                    path: '/indexfordemand',
+                    name: 'indexfordemand',
+                    component: () => import('@/view/home/index/indexfordemand'),
+                    meta: {
+                        title: '首页 需求方',
                     }
                 },
                 {
