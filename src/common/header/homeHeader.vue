@@ -53,7 +53,7 @@
                 logoUrl: require("@/assets/img/homepage/logo.png"),
                 indexUrl: "index",
                 messageList: [],
-                landaryUrl:"http://39.108.172.142:7676/portal/home/index.html?accessToken="+JSON.parse(sessionStorage.getItem("userToken"))+"#/myProj",
+                landaryUrl:"http://39.108.172.142:7676/portal/usr/login?accessToken="+JSON.parse(sessionStorage.getItem("userToken")),
                 items1: [
                     {
                         title: "招标投标",
