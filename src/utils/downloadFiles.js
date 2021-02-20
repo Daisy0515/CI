@@ -9,7 +9,6 @@ export const getFile = url => {
             url,
             responseType: 'arraybuffer'
         }).then(data => {
-            console.log("data",data);
             resolve(data.data)
         }).catch(error => {
             reject(error.toString())
@@ -18,7 +17,7 @@ export const getFile = url => {
 };
 
 
-export const handleBatchDownload = urlList=> {
+export const handleBatchDownload = (urlList,count)=> {
     // urlList 需要下载打包的路径, 可以是本地相对路径, 也可以是跨域的全路径
     const zip = new JSZip();
     const cache = {};
@@ -29,13 +28,15 @@ export const handleBatchDownload = urlList=> {
             const file_name = arr_name[arr_name.length - 1] ;// 获取文件名
             zip.file(file_name, data, { binary: true }) ;// 逐个添加文件
             cache[file_name] = data
+            count++;
         });
         promises.push(promise);
     });
 
     Promise.all(promises).then(() => {
         zip.generateAsync({type:"blob"}).then(content => { // 生成二进制流
-            FileSaver.saveAs(content, "打包下载.zip") // 利用file-saver保存文件
+            let date = new Date();
+            FileSaver.saveAs(content, date.valueOf()+".zip") // 利用file-saver保存文件
         })
     })
 };
