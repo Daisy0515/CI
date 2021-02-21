@@ -22,7 +22,7 @@
                         <button class="more_bu">more</button>
                     </div>
                     <div class="border"></div>
-                    <div style="margin: 20px; padding-top: 40px">
+                    <div style="margin: 20px; padding-top: 30px">
                         <Items></Items>
                     </div>
                 </div>
@@ -40,9 +40,6 @@
                 </div>
             </section>
             <section class="center-section">
-                <!--                <div class="process">PROCESS</div>-->
-                <!--                <div class="process1">竞标流程指南</div>-->
-                <!--                <div class="border_pro"></div>-->
                 <div class="center-text">
                     <p class="iimg-list__left-title noheight_title">PROCESS</p>
                     <p class="iimg-list__left-subtitle">竞标流程指南</p>
@@ -51,24 +48,37 @@
 
                 <div class="image">
                     <div style="display:inline-block">
-                        <img src="@/assets/img/index/index_developer_1.png" class="process_img">
-                        <p>加入团队</p>
+                        <img src="@/assets/img/index/index_manager_1.png" class="process_img">
+                        <p>竞标</p>
                     </div>
                     <div style="display:inline-block">
                         <img src="@/assets/img/index/arrow_right.png" class="arrow">
                     </div>
                     <div style="display:inline-block">
-                        <img src="@/assets/img/index/index_developer_2.png" class="process_img">
-                        <p>项目研发</p>
+                        <img src="@/assets/img/index/index_manager_2.png" class="process_img">
+                        <p>邀请开发者</p>
                     </div>
                     <div style="display:inline-block">
                         <img src="@/assets/img/index/arrow_right.png" class="arrow">
                     </div>
                     <div style="display:inline-block">
-                        <img src="@/assets/img/index/index_developer_3.png" class="process_img">
+                        <img src="@/assets/img/index/index_manager_3.png" class="process_img">
+                        <p>项目管理</p>
+                    </div>
+                    <div style="display:inline-block">
+                        <img src="@/assets/img/index/arrow_right.png" class="arrow">
+                    </div>
+                    <div style="display:inline-block">
+                        <img src="@/assets/img/index/index_manager_4.png" class="process_img">
                         <p>交付成果</p>
                     </div>
-
+                    <div style="display:inline-block">
+                        <img src="@/assets/img/index/arrow_right.png" class="arrow">
+                    </div>
+                    <div style="display:inline-block">
+                        <img src="@/assets/img/index/index_manager_5.png" class="process_img">
+                        <p>反馈评价</p>
+                    </div>
                 </div>
 
             </section>
@@ -79,9 +89,9 @@
                     <p class="iimg-list__left-subtitle">流程介绍</p>
                     <p class="iimg-list__left-title iimg-list__left-br">_</p>
 
-                    <p class="iimg-list__left-subtitle" v-if="currentIndex==0">角色赋能</p>
+                    <p class="iimg-list__left-subtitle" v-if="currentIndex==0">发布需求</p>
                     <p class="iimg-list__left-content" v-if="currentIndex==0">
-                        平台提供多种用户角色，<br>包括项目发布者、管理者、开发者等角色，<br>多角色无缝切换，多功能自然解耦。
+                        在发布需求阶段，<br>用户对自己的项目进行详细描述，<br>确定项目交付内容与评审流程。
                     </p>
                     <el-button @click="register" type="primary" size="small">立即注册</el-button>
                 </div>
@@ -312,8 +322,8 @@ export default {
 }
 
 .process_img {
-    width: 106px;
-    height: 106px;
+    width: 80px;
+    height: 80px;
     margin: 50px;
     border: dashed 1px #aaa;
 }

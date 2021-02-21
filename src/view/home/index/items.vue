@@ -2,27 +2,40 @@
     <div class="ttoolset">
         <div v-for="(item, index) in teams" :key="index">
             <div style=" vertical-align:middle; margin-top:8%">
-                <img src="./icon.png"
-                     style="width:50px; height:50px; border-radius:50%; margin-left: 5%; ">
+                <img src="./icon_manager.png"
+                     style="width:80px; height:80px;  margin-left: 7%;  ">
                 <div style="display: inline-block; margin-left:15px;">
-                    <div style="margin-bottom: 10px">
+                    <div style="margin-bottom: 10px; position: relative; margin-top: 10px;">
                         <a style="font-size: 18px;font-family: PingFang HK;font-weight: 500;color: #011A24;">{{
-                                item.name
+                                item.title
                             }}</a>
+                        <a style="width: 40px;height: 14px;font-size: 14px;font-family: Adobe Heiti Std;
+                            font-weight: normal;background-color: rgb(2 26 36);color: #cccccc;margin-left: 40px;"
+                           v-if="item.status === '开发中'">开发中</a>
+                        <a style="width: 41px;height: 14px;font-size: 14px;font-family: Adobe Heiti Std;
+                            font-weight: normal;color: #FFFFFF;background-color: rgb(187 198 209);margin-left: 40px;"
+                           v-if="item.status === '已结束'">已结束</a>
+                        <div style="float:right; position:absolute; right:-180px; top:-3px;width: 77px;height: 14px;
+                            font-size: 18px;font-family: PingFang HK;font-weight: 500;color: #788DA4;">
+                            No.{{ item.no }}
+                        </div>
                     </div>
                     <div style="margin-top: -5px">
                         <a style="width: 175px;
-                    font-size: 14px;
-                    font-family: PingFang HK;
-                    font-weight: 500;
-                    color: #788DA4;
-                    " v-if="item.member != null">成员{{ item.member }}人 </a>
+                            font-size: 14px;
+                            font-family: PingFang HK;
+                            font-weight: 500;
+                            color: #788DA4;"
+                        >类型：{{ item.type }}&emsp; &emsp; &emsp; &emsp; &emsp;周期：{{ item.period }}天</a>
+                    </div>
+                    <div style="margin-top: -5px">
                         <a style="width: 175px;
-                    font-size: 14px;
-                    font-family: PingFang HK;
-                    font-weight: 500;
-                    color: #788DA4;
-                    " v-if="item.project != null"> 已完成{{ item.project }}个项目</a>
+                            font-size: 14px;
+                            font-family: PingFang HK;
+                            font-weight: 500;
+                            color: #788DA4;"
+                    > {{ item.post_time }} 天前发布 &emsp; &emsp; &emsp; &emsp; &emsp;&nbsp;&nbsp;&nbsp;{{ item.enroll }}
+                            人报名</a>
                     </div>
                 </div>
             </div>
@@ -40,28 +53,31 @@ export default {
         return {
             teams: [
                 {
-                    name: "优枫科技",
-                    member: 6,
-                    project: 123,
+                    no: 23915,
+                    title: "校园跑腿小程序",
+                    type: "小程序",
+                    period: 20,
+                    post_time: 2,
+                    enroll: 2,
+                    status: "开发中",
                 },
                 {
-                    name: "花鲤在线",
-                    member: 30,
-                    project: 120,
+                    no: 23915,
+                    title: "校园跑腿APP",
+                    type: "小程序",
+                    period: 20,
+                    post_time: 2,
+                    enroll: 2,
+                    status: "开发中",
                 },
                 {
-                    name: "KEVINA工作室",
-                    member: 12,
-                    project: 102,
-                },
-                {
-                    name: "TONY工作室",
-                    member: null,
-                    project: 102,
-                }, {
-                    name: "TIM工作室",
-                    member: 12,
-                    project: null,
+                    no: 23915,
+                    title: "校园跑腿网站改版",
+                    type: "小程序",
+                    period: 20,
+                    post_time: 2,
+                    enroll: 2,
+                    status: "已结束",
                 },
             ]
         };
