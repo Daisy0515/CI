@@ -1,6 +1,6 @@
 <template>
     <div class="ttoolset">
-        <div v-for="(item, index) in teams" :key="index">
+        <div v-for="(item, index) in items" :key="index">
             <div style=" vertical-align:middle; margin-top:8%">
                 <img src="./icon_manager.png"
                      style="width:80px; height:80px;  margin-left: 7%;  ">
@@ -51,7 +51,8 @@ export default {
     name: "ToolSet",
     data() {
         return {
-            teams: [
+
+            items: [//biddingSquare.Vue
                 {
                     no: 23915,
                     title: "校园跑腿小程序",
