@@ -760,6 +760,24 @@ const vueRouter = new Router({
                     }
                 },
                 {
+                    path: '/developer',
+                    name: 'developer',
+                    component: () => import('@/view/home/index/developer'),
+                    meta: {
+                        title: "首页 开发者",
+                        requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+                    },
+                },
+                {
+                    path: '/manager',
+                    name: 'manager',
+                    component: () => import('@/view/home/index/manager'),
+                    meta: {
+                        title: "首页 项目经理",
+                        requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+                    },
+                },
+                {
                     path: '/indexfordemand',
                     name: 'indexfordemand',
                     component: () => import('@/view/home/index/indexfordemand'),
