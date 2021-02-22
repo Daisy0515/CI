@@ -234,7 +234,19 @@
                             information.role = role;
                             sessionStorage.setItem("userData", JSON.stringify(information));
                             this.setLogin();
-                            this.$router.push({path: this.getUrl()});
+                            console.log("237", this.projectRole);
+                            if(this.projectRole == 3){
+                                this.$router.push({path: "/developer"});
+                            }
+                            else if(this.projectRole == 2){
+                                this.$router.push({path: "/manager"});
+                            }
+                            else if(this.projectRole == 1){
+                                this.$router.push({path: "/indexfordemand"});
+                            }
+                            else{
+                                this.$router.push({path: this.getUrl()});
+                            }
                         } else if (httpCode !== 401) {
                             errTips(msg);
                         }
