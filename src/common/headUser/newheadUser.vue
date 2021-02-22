@@ -58,29 +58,31 @@
 </script>
 <style lang='scss'>
     .ccc-header__options {
-        margin-right: 20%;
-        float: right;
-        margin-top:17px;
+        //margin-right: 20%;
+        //float: right;
+        //margin-top:17px;
     }
 
     .uuserImg {
         margin: auto 0;
+        display: flex;
+        align-items: center;
 
         .icon-xiaoxi {
             cursor: pointer;
             font-size: 35px;
             float: left;
-            margin-bottom:33px;
-            color: #4C5E65;
+            //margin-bottom:33px;
+            color: #80CCD0;
             transition: all 0.4s;
 
             &:hover {
-                color: #80CCD0;
+                color: #d0b580;
             }
         }
 
         .badge {
-            margin-top: -20px;
+            //margin-top: -20px;
             margin-right: 20px;
         }
 

@@ -71,11 +71,12 @@
             font-size: 26px;
             float: left;
             margin-top: 3px;
-            color: #ffffff;
+            color: #a70a1c;
+
             transition: all 0.4s;
 
             &:hover {
-                color: #7ea3ce;
+                color: #d21919;
             }
         }
 

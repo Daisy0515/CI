@@ -1,7 +1,6 @@
 <template>
     <div class="homePublic clearfix">
-        <newHomeHead v-if="isNewHeader"/>
-        <homeHead v-else/>
+        <homeHead />
         <div style="clear:both"></div>
         <router-view style="min-height:90%"></router-view>
         <div style="clear:both"></div>
@@ -11,7 +10,7 @@
 <script>
     import FooterIndex from "@/common/footer/footer";
     import newHomeHead from "@/common/header/newhomeHeader";
-    import homeHead from "@/common/header/newhomeHeader";
+    import homeHead from "@/common/header/homeHeader";
 
     export default {
         name: "homePublic",
@@ -22,7 +21,7 @@
         },
         data: function () {
             return {
-                isNewHeader: true
+                isNewHeader: false
             };
         },
         created: function () {

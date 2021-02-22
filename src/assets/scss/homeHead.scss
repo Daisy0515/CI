@@ -8,11 +8,12 @@
 	z-index: 100
 }
 
-.c-header__row {
-	height: 70px;
-	padding-top: 20px;
-	box-sizing: border-box;
-}
+//.c-header__row {
+//	height: 70px;
+//	//padding-top: 20px;
+//	box-sizing: border-box;
+//	//width: 1200px;
+//}
 
 
 .c-header__menu {
@@ -34,7 +35,8 @@
 	width: 130px;
 	outline: 0;
 	margin-right: auto;
-	float: left;
+	//margin-top:35px;
+	//float: left;
 }
 
 .c-header__logo {
@@ -69,8 +71,9 @@
 	}
 	.c-header__navigation{
 		width: 650px;
-		float: left;
+		//float: left;
 		text-align: center;
+		//margin-top: 35px;
 	}
 	.c-header__navigation__item {
 		font-size: 14px;
@@ -117,8 +120,9 @@
         color: #444
     }
     
-    .c-header--breadcrumbs .c-header__row {
-
+    .c-header__row {
+		display: flex;
+		align-items: center;
     }
     
     .c-header--breadcrumbs .c-header__logowrap {
