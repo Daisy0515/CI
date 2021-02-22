@@ -141,6 +141,7 @@
             aboutUs() {
                 this.$router.push({path: "feature"});
             },
+
         }
     };
 </script>

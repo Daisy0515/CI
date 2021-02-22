@@ -26,7 +26,9 @@
             ></el-date-picker>
 
             <el-button type="primary" @click="searchList()" style="margin-left: 2px;">搜索</el-button>
-
+            <el-row style="text-align: right;margin-right: 21%;margin-top:20px;margin-bottom: -20px;">
+                <el-button  @click="download">批量下载</el-button>
+            </el-row>
         </div>
         <el-table :data="fileTable" style="width:1200px;margin:0 auto" v-loading="loading"
                   @selection-change="handleSelectionChange" :header-cell-style="rowClass" >
@@ -51,6 +53,9 @@
                 </template>
             </el-table-column> -->
         </el-table>
+        <el-row style="text-align: right;margin-top:20px;margin-bottom: -20px;">
+            <el-button  @click="download">批量下载</el-button>
+        </el-row>
         <div class="bid_footer">
             <el-pagination
                     @current-change="handleCurrentChange"
@@ -67,7 +72,7 @@
     import timeLimit from "@/mixins/regular/timeLimit.js";
     import {message, errTips} from "@/utils/tips.js";
     import {mapMutations} from "vuex";
-
+    import {handleBatchDownload} from '@/utils/downloadFiles.js';
     export default {
         name: "myBid",
         inject: ["reload"],
@@ -93,6 +98,8 @@
                 fileTable: [],
                 userList:[],
                 missionTitleList:[],
+                multipleSelection: [],  //选中的行
+                count:0,//当前下载的文件个数
             };
         },
         created: function () {
@@ -137,7 +144,16 @@
 
             searchList() {
                 this.getView();
-                
+
+            },
+            /**批量下载交付文件*/
+            download(){
+                if(this.multipleSelection.length === 0){
+                    message("请选择下载的文件！");
+                    return ;
+                }
+                let urlList = this.multipleSelection.map(item => item.resource);
+                handleBatchDownload(urlList);
             },
             handleCurrentChange(val) {
                 this.searchData.pageNo = val;

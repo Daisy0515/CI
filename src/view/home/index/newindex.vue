@@ -43,6 +43,7 @@
                                      <a v-show="currentIndex==index">_</a>{{'0'+(index+1)}}</li>
                     </div>
                 </div>
+
             </section>
             <section class="center-section">
                 <div class="about-img-text center-text">
