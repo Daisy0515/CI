@@ -256,7 +256,8 @@
                     httpPut("/v1/authorization/bug/appoint/save", this.ruleForm2).then(results => {
                         const {msg, httpCode} = results.data;
                         if (httpCode === 200) {
-                            successTips("编辑缺陷成功！");
+                            successTips("成功处理缺陷！");
+                            this.$emit('closeDialog',true);
                         } else if (httpCode !== 401) {
                             errTips(msg);
                         }

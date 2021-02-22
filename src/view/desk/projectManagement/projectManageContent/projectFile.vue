@@ -2,35 +2,47 @@
     <div class="myTable">
 
         <div class="header_top">
-            <el-select v-model="pageData.missionId" clearable placeholder="任务名称">
+            <el-select v-model="searchData.titleId" clearable placeholder="所属任务">
                 <el-option v-for="(item, index) in missionTitleList" :label="item.title" :value="item.id" :key="index"></el-option>
             </el-select>
-            <el-input v-model="pageData.subtitle" placeholder="子任务名称"></el-input>
-            <el-select v-model="pageData.userId" clearable placeholder="上传者">
+            <el-input v-model="searchData.subtitle" clearable placeholder="子任务标题"></el-input>
+            <el-select v-model="searchData.userId" clearable placeholder="上传者">
                 <el-option v-for="(item, index) in userList" :label="item.userName" :value="item.id" :key="index"></el-option>
             </el-select>
             <el-date-picker
-                    v-model="pageData.startTime"
+                    v-model="searchData.startTime"
+                    :picker-options="startDatePicker"
+                    type="date"
+                    placeholder="上传时间"
+                    value-format="yyyy-MM-dd"
+            ></el-date-picker>
+            <span style="margin-left: -10px;margin-right:5px;">到</span>
+            <el-date-picker
+                    v-model="searchData.endTime"
                     :picker-options="endDatePicker"
                     type="date"
                     placeholder="上传时间"
                     value-format="yyyy-MM-dd"
             ></el-date-picker>
 
-
-            <el-button type="primary" @click="searchList()">搜索</el-button>
-
+            <el-button type="primary" @click="searchList()" style="margin-left: 2px;">搜索</el-button>
+            <el-row style="text-align: right;margin-right: 21%;margin-top:20px;margin-bottom: -20px;">
+                <el-button  @click="download">批量下载</el-button>
+            </el-row>
         </div>
-        <el-table :data="fileTable" style="width:1200px;margin:0 auto"
-                  ref="multipleTable" @selection-change="handleSelectionChange"
-                  :header-cell-style="rowClass" v-loading="loading" >
-            <el-table-column fixed prop="resourceName" label="文件名称" align="center"></el-table-column>
+        <el-table :data="fileTable" style="width:1200px;margin:0 auto" v-loading="loading"
+                  @selection-change="handleSelectionChange" :header-cell-style="rowClass" >
+            <el-table-column fixed prop="resourceName" label="文件名称" align="center">
+                <template slot-scope="scope">
+                    <a :href="scope.row.resource" target="_blank">{{scope.row.resourceName}}</a>
+                </template>
+            </el-table-column>
             <el-table-column prop="titleName" label="所属任务" align="center"></el-table-column>
             <el-table-column prop="subtitle" label="子任务标题" align="center"></el-table-column>
             <el-table-column prop="missionTypeName" label="子任务类型" align="center"></el-table-column>
             <el-table-column prop="gmtCreate" label="上传时间" align="center"></el-table-column>
             <el-table-column prop="userName" label="上传者" align="center"></el-table-column>
-            <el-table-column type="selection" :disable="isdisable" width="70px" header-align="center"
+            <el-table-column type="selection" width="70px" header-align="center"
                              label-class-name="setDownloadName" align="center"></el-table-column>
             <!-- <el-table-column label="操作" align="center" >
                 <template slot-scope="scope">
@@ -41,10 +53,13 @@
                 </template>
             </el-table-column> -->
         </el-table>
+        <el-row style="text-align: right;margin-top:20px;margin-bottom: -20px;">
+            <el-button  @click="download">批量下载</el-button>
+        </el-row>
         <div class="bid_footer">
             <el-pagination
                     @current-change="handleCurrentChange"
-                    :current-page.sync="pageData.pageNo"
+                    :current-page.sync="searchData.pageNo"
                     :total="totalPage"
                     layout="prev, pager, next, jumper"
             ></el-pagination>
@@ -57,19 +72,17 @@
     import timeLimit from "@/mixins/regular/timeLimit.js";
     import {message, errTips} from "@/utils/tips.js";
     import {mapMutations} from "vuex";
-
+    import {handleBatchDownload} from '@/utils/downloadFiles.js';
     export default {
         name: "myBid",
         inject: ["reload"],
         mixins: [timeLimit],
         data() {
             return {
-                multipleSelection: [],
-                isdisable:false, //控制下载选择框
                 teamId:null,
                 loading: false,
                 totalPage: 0,
-                pageData: {
+                searchData: {
                     pageNo: 1,
                     pageSize: 10,
                     orderType: "DESC",
@@ -85,11 +98,13 @@
                 fileTable: [],
                 userList:[],
                 missionTitleList:[],
+                multipleSelection: [],  //选中的行
+                count:0,//当前下载的文件个数
             };
         },
         created: function () {
             this.teamId = sessionStorage.getItem('teamId');
-            this.pageData.teamId = this.teamId;
+            this.searchData.teamId = this.teamId;
             this.getView();
             this.getUserList();
             this.getMissionList();
@@ -129,16 +144,24 @@
 
             searchList() {
                 this.getView();
-                
+
+            },
+            /**批量下载交付文件*/
+            download(){
+                if(this.multipleSelection.length === 0){
+                    message("请选择下载的文件！");
+                    return ;
+                }
+                let urlList = this.multipleSelection.map(item => item.resource);
+                handleBatchDownload(urlList);
             },
             handleCurrentChange(val) {
-                this.pageData.pageNo = val;
+                this.searchData.pageNo = val;
                 this.getView();
             },
             //获取页面数据
-            getView(val = this.pageData) {
+            getView(val = this.searchData) {
                 this.loading = true;
-                ///v1/authorization/manage/memberresource/list
                 httpGet("/v1/authorization/manage/resource/list", val).then(results => {
                     const {httpCode, msg, data} = results.data;
                     if (httpCode === 200) {
@@ -148,8 +171,13 @@
 
                         for (let i of list) {
                             i.gmtCreate = specificDate(i.gmtCreate);
+                            if(i.resourceName === null){
+                                let resouArray = i.resource.split('/');
+                                i.resourceName = resouArray[resouArray.length-1];
+                            }
+
                         }
-                        Object.assign(this.pageData, val);
+                        Object.assign(this.searchData, val);
                         this.$set(this, "fileTable", list);
                     } else if (msg === "该条件暂无数据") {
                         this.fileTable = [];

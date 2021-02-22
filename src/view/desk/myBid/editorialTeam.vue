@@ -54,7 +54,7 @@
                         </router-link>
                         <div class="item_title">
                             <span>{{user.userName}}</span>
-                            <span @click="invite(user.userId)">
+                            <span @click="invite(user.userId)" v-if="user.status===0">
                 <i class="el-icon-circle-plus"></i>邀请
               </span>
 
@@ -162,7 +162,7 @@
                     type: "warning"
                 })
                     .then(() => {
-                        let {teamId, competeTeamList} = this.userList;
+                        let {teamId} = this.userList;
                         httpGet("/v1/authorization/bids/invite/teamuser", {
                             userId: id,
                             teamId: teamId
@@ -192,7 +192,7 @@
                     type: "warning"
                 })
                     .then(() => {
-                        let {teamId, competeTeamList} = this.userList;
+                        let {teamId} = this.userList;
                         httpGet("/v1/authorization/bids/cancel/user", {
                             userId: id,
                             teamId: teamId
@@ -223,7 +223,7 @@
                 this.search_flag = true;
                 //将领域用户列表清空
                 this.typeList = [];
-                let {teamId, competeTeamList} = this.userList;
+                let {teamId} = this.userList;
                 httpGet("/v1/authorization/bids/select/user", {
                     userNamePhoneEmail: this.userNamePhoneEmail,
                     teamId: teamId
@@ -251,7 +251,7 @@
                 this.search_flag = false;
                 //将单个搜索用户清空
                 this.addList = "";
-                let {teamId, competeTeamList} = this.userList;
+                let {teamId} = this.userList;
                 httpGet("/v1/authorization/bids/select/type", {
                     id: this.typeId,
                     teamId: teamId

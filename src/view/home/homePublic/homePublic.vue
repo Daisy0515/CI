@@ -1,6 +1,7 @@
 <template>
     <div class="homePublic clearfix">
-        <homeHead/>
+        <newHomeHead v-if="isNewHeader"/>
+        <homeHead v-else/>
         <div style="clear:both"></div>
         <router-view style="min-height:90%"></router-view>
         <div style="clear:both"></div>
@@ -9,24 +10,39 @@
 </template>
 <script>
     import FooterIndex from "@/common/footer/footer";
-    import homeHead from "@/common/header/homeHeader";
+    import newHomeHead from "@/common/header/newhomeHeader";
+    import homeHead from "@/common/header/newhomeHeader";
 
     export default {
         name: "homePublic",
         components: {
             FooterIndex,
-            homeHead
+            homeHead,
+            newHomeHead
         },
         data: function () {
-            return {};
+            return {
+                isNewHeader: true
+            };
         },
         created: function () {
-
         },
-        computed: {},
+        computed: {
+        },
         mounted: function () {
         },
-        methods: {}
+        methods: {
+        },
+        watch: {
+            $route(to){
+                if(to.name == "index"){
+                    this.isNewHeader = true;
+                } else {
+                    this.isNewHeader = false;
+                }
+            }
+        }
+
     };
 </script>
 <style lang='scss'>
