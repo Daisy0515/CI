@@ -1,5 +1,5 @@
 <template>
-    <div class="clearfix">
+    <div class="clearfix" style="margin-bottom: 50px;">
         <nav class="cc-header">
             <div class="cc-header__row">
                 <div class="cc-header__logowrap">
@@ -154,5 +154,8 @@
         margin-top: 10px;
 }
 
-
+    .hasBg {
+        background: url("../../assets/img/homepage/space.jpg");
+        //padding: 59px 0 15px 0;
+    }
 </style>
