@@ -8,7 +8,7 @@
                     <p class="cc-hero__title">__</p>
                     <div class="cc-hero__CTA">
                         <div class="ee-inputButton">
-                            <el-button @click="publishTask" type="primary">我的项目</el-button>
+                            <el-button @click="myProject" type="primary">我的项目</el-button>
                             <el-button @click="joinTeam" type="primary">加入团队</el-button>
                         </div>
                     </div>
@@ -19,7 +19,7 @@
                     <div class="title">NEW TEAM</div>
                     <div class="title_zh">最新团队</div>
                     <div class="more">
-                        <button class="more_bu">more</button>
+                        <button class="more_bu" @click="joinTeam">more</button>
                     </div>
                     <div class="border"></div>
                     <div style="margin: 20px; padding-top: 40px">
@@ -30,7 +30,7 @@
                     <div class="title">NEW TOOL</div>
                     <div class="title_zh">最新工具</div>
                     <div class="more">
-                        <button class="more_bu">more</button>
+                        <button class="more_bu" @click="moreTool">more</button>
                     </div>
                     <div class="border"></div>
                     <div style="margin: 20px; padding-top: 40px">
@@ -154,14 +154,8 @@ export default {
         changeImg(index) {
             this.currentIndex = index;
         },
-        myDemand() {
-            this.$router.push({path: "desk/myDemand"});
-        },
-        publishTask() {
-            this.$router.push({path: "publishTask"});
-        },
-        aboutUs() {
-            this.$router.push({path: "feature"});
+        myProject() {
+            this.$router.push({path: "desk/projectManageList"});
         },
     }
 };

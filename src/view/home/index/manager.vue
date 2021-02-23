@@ -8,7 +8,7 @@
                     <p class="cc-hero__title">__</p>
                     <div class="cc-hero__CTA">
                         <div class="ee-inputButton">
-                            <el-button @click="publishTask" type="primary">我的项目</el-button>
+                            <el-button @click="myProject" type="primary">我的项目</el-button>
                             <el-button @click="joinTeam" type="primary">参与竞标</el-button>
                         </div>
                     </div>
@@ -19,7 +19,7 @@
                     <div class="title">NEW ITEM</div>
                     <div class="title_zh">最新需求</div>
                     <div class="more">
-                        <button class="more_bu">more</button>
+                        <button class="more_bu" @click="moreDemands">more</button>
                     </div>
                     <div class="border"></div>
                     <div style="margin: 20px; padding-top: 30px">
@@ -30,11 +30,11 @@
                     <div class="title">PROJECT</div>
                     <div class="title_zh">最新开源</div>
                     <div class="more">
-                        <button class="more_bu">more</button>
+                        <button class="more_bu" @click="moreOpenSource">more</button>
                     </div>
                     <div class="border"></div>
                     <div style="margin: 20px; padding-top: 40px">
-                        <Teams></Teams>
+                        <Projects></Projects>
                     </div>
 
                 </div>
@@ -118,12 +118,12 @@
 
 <script>
 import Items from './items.vue';
-import Teams from './teams.vue';
+import Projects from './projects.vue';
 
 export default {
     components: {
         Items,
-        Teams,
+        Projects,
     },
     data() {
         return {
@@ -139,6 +139,7 @@ export default {
                 require('@/assets/img/index/index_developer_3.png'),
                 require('@/assets/img/index/arrow_right.png')],
             currentIndex: 0,   //默认显示图片
+
         }
     },
     methods: {
@@ -151,7 +152,7 @@ export default {
         },
 
         joinTeam() {
-            this.$router.push({path: "teamSquare"});
+            this.$router.push({path: "biddingSquare"});
         },
 
         register() {
@@ -164,15 +165,15 @@ export default {
         changeImg(index) {
             this.currentIndex = index;
         },
-        myDemand() {
-            this.$router.push({path: "desk/myDemand"});
+        myProject() {
+            this.$router.push({path: "desk/projectManageList"});
         },
-        publishTask() {
-            this.$router.push({path: "publishTask"});
+        moreOpenSource() {
+            this.$router.push({path: "classicCase"});
         },
-        aboutUs() {
-            this.$router.push({path: "feature"});
-        },
+        moreDemands(){
+            this.$router.push({path: "biddingSquare"});
+        }
     }
 };
 </script>
