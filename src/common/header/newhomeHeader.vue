@@ -10,7 +10,7 @@
                     </div>
                     <div id="menu">
                         <ul style="margin-left: 200px;">
-                            <li class="cc-header__navigation__item" v-for="item in items" :key="item.title">
+                            <li class="cc-header__navigation__item" v-for="item in headItems" :key="item.title">
                                 <router-link :to="item.url">
                                     <a v-bind:href="item.url" v-bind:title="title">{{ item.title }}</a>
                                 </router-link>
@@ -47,8 +47,8 @@ export default {
             logoUrl: require("@/assets/img/index/cosine_logo_black.png"),
             indexUrl: "index",
             messageList: [],
-            landaryUrl: "http://39.108.172.142:7676/portal/home/index.html?accessToken=" + JSON.parse(sessionStorage.getItem("userToken")) + "#/myProj",
-            items: [
+            landaryUrl: "http://39.108.172.142:7676/portal/home/index.html",
+            headItems: [
                 {
                     title: "竞赛专区",
                     url: "competitionSquare"
@@ -66,10 +66,12 @@ export default {
                     url: "feature"
                 }
             ]
-
         };
     },
     created: function () {
+        if(sessionStorage.getItem("userToken") !== ""){
+            this.landaryUrl = this.landaryUrl + "?accessToken=" + JSON.parse(sessionStorage.getItem("userToken")) + "#/myProj"
+        }
     },
     computed: {
         ...mapGetters(["getUser"])

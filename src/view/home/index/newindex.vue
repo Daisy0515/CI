@@ -4,7 +4,6 @@
         <Developer v-if="userToken != '' && projectRole == 3"/>
         <Manager v-if="userToken != '' && projectRole == 2"/>
         <IndexForDemand v-if="userToken != '' && projectRole == 1"/>
-
     </div>
 </template>
 
@@ -30,8 +29,6 @@ export default {
     created() {
         this.userToken = sessionStorage.getItem("userToken");
         this.projectRole = sessionStorage.getItem("projectRole");
-        console.log("33", this.userToken);
-        console.log("34", this.projectRole);
     }
 }
 </script>

@@ -43,32 +43,6 @@ export default {
                 orderType: "DESC"
             },
             plazaList:[],
-            teams: [
-                {
-                    name: "优枫科技",
-                    member: 6,
-                    project: 123,
-                },
-                {
-                    name: "花鲤在线",
-                    member: 30,
-                    project: 120,
-                },
-                {
-                    name: "KEVINA工作室",
-                    member: 12,
-                    project: 102,
-                },
-                {
-                    name: "TONY工作室",
-                    member: null,
-                    project: 102,
-                }, {
-                    name: "TIM工作室",
-                    member: 12,
-                    project: null,
-                },
-            ]
         };
     },
     created: function () {
@@ -89,7 +63,6 @@ export default {
                 let getData = results.data;
                 if (getData.httpCode === 200) {
                     this.plazaList = [...getData.data.teamGroupInfoList].slice(0, 5);
-                    console.log("98", this.plazaList);
                     this.pageData.pageNo = getData.data.pageNo;
                     this.totalPage = parseInt(getData.data.totalPage + "0");
                     for (let i of this.plazaList) {
@@ -99,6 +72,14 @@ export default {
                     this.tipData = false;
                     Object.assign(this.pageData, val);
                     // this.seleValue = value;
+                    for(let i=0; i<5; i++){
+                        if(this.plazaList[i].teamName!==null && this.plazaList[i].teamName.length > 15){
+                            this.plazaList[i].teamName = this.plazaList[i].teamName.slice(0, 15) + "……";
+                        }
+                        if(this.plazaList[i].requirement.length > 20){
+                            this.plazaList[i].requirement = this.plazaList[i].requirement.slice(0, 15) + "……";
+                        }
+                    }
                 } else if (getData.msg === "该条件暂无数据") {
                     this.loading = false;
                     this.plazaList = [];

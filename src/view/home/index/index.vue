@@ -97,6 +97,7 @@ export default {
                 require('@/assets/img/index/index_service_5.jpg'),
                 require('@/assets/img/index/index_service_6.jpg')],
             currentIndex: 0,   //默认显示图片
+            // test: "群智服务特色",
         }
     },
     methods: {

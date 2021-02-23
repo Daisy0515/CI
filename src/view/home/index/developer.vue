@@ -40,9 +40,6 @@
                 </div>
             </section>
             <section class="center-section">
-                <!--                <div class="process">PROCESS</div>-->
-                <!--                <div class="process1">竞标流程指南</div>-->
-                <!--                <div class="border_pro"></div>-->
                 <div class="center-text">
                     <p class="iimg-list__left-title noheight_title">PROCESS</p>
                     <p class="iimg-list__left-subtitle">竞标流程指南</p>
