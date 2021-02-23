@@ -25,7 +25,7 @@
                         </el-menu-item>
 
                         <el-menu-item index="/editorComplete">
-                            <i class="el-icon-circle-check-outline"></i>
+                            <i class="el-icon-circle-check"></i>
                             <span slot="title">评审完成</span>
                         </el-menu-item>
 
