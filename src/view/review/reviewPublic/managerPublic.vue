@@ -46,7 +46,7 @@
                             <span slot="title">评审中</span>
                         </el-menu-item>
                         <el-menu-item index="/managerComplete">
-                            <i class="el-icon-circle-check-outline"></i>
+                            <i class="el-icon-circle-check"></i>
                             <span slot="title">已完成</span>
                         </el-menu-item>
                         <el-menu-item index="/managerDraft">

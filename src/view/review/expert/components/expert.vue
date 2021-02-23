@@ -274,7 +274,7 @@
                         const {msg, httpCode} = results.data;
                         if (httpCode === 200) {
                             successTips("已接受评审！");
-                            this.getView();
+                            this.$router.push("/expertReview");
                         } else {
                             errTips(msg);
                         }

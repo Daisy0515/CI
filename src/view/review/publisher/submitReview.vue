@@ -243,15 +243,16 @@
             /**地址最后由get改成了getall，表示返回用户所发布的所有执行中与完成的项目(过滤没有设置参与评审) changed by xwj*/
             getProjectList() {
                 httpGet('/v1/authorization/mission/promulgator/getall').then(results => {
-                    const {msg, data, httpCode} = results.data;
+                    const {data, httpCode} = results.data;
                     if (httpCode === 200) {
                         this.projectList = data.projectList;
-                    } else {
-                        errTips(msg);
-                    }
+                    }//用户没有项目时，弹出提示消息
                 });
             },
             changeProject: function (value) {
+                if(value === ""){ //用户在清除项目名称时，不用获取评审类型数据
+                    return ;
+                }
                 httpGet('/v1/authorization/review/process/list', {id: value}).then(results => {
                     const {msg, data, httpCode} = results.data;
                     if (httpCode === 200) {

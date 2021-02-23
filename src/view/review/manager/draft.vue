@@ -130,7 +130,7 @@
                 this.loading = true;
                 httpGet("/v1/authorization/review/draft/search", val).then(results => {
                     const {httpCode, msg, data} = results.data;
-                    if (httpCode == 200) {
+                    if (httpCode === 200) {
                         this.pageNo = data.pageNo;
                         this.totalPage = parseInt(data.totalPage + "0");
                         for (let i of data.reviewDraftList) {
@@ -138,9 +138,8 @@
                             i.deadline = specificDate(i.deadline);
                         }
                         this.tableData = data.reviewDraftList;
-                        console.log("tableData:", this.tableData);
                         Object.assign(this.pageData, val);
-                    } else if (msg == "该条件暂无数据") {
+                    } else if (msg === "该条件暂无数据") {
                         this.tableData = [];
                         message("该条件暂无数据");
                     } else if (httpCode !== 401) {
@@ -154,13 +153,11 @@
                 this.pageData.pageNo = val;
                 this.getView();
             },
-            getUserProjectList() { //获取当前用户参与的项目
-                httpGet("/v1/authorization/mission/projectid/get").then(results => {
-                    const {httpCode, msg, data} = results.data;
-                    if (httpCode == 200) {
+            getUserProjectList() { //获取当前用户中标处于执行中的项目
+                httpGet("/v1/authorization/review/projectid/get").then(results => {
+                    const {httpCode, data} = results.data;
+                    if (httpCode === 200) {
                         this.projectList = data.projectList;
-                    } else if (httpCode !== 400) { //400 "该用户暂无参与执行中项目"
-                        errTips(msg);
                     }
                 });
             },
@@ -168,9 +165,8 @@
                 /***获取用户当前项目的所有评审流程***/
                 httpGet("/v1/authorization/review/process/list", {id: projectId}).then(results => {
                     const {httpCode, msg, data} = results.data;
-                    // console.log(data);
-                    if (httpCode == 200) {
-                        if (data.processList.length == 0) { //没有评审流程
+                    if (httpCode === 200) {
+                        if (data.processList.length === 0) { //没有评审流程
                             this.reviewProcessList = [{id: '-1', processName: "当前项目没有评审流程"}]
                         } else {
                             this.reviewProcessList = data.processList;
@@ -182,15 +178,12 @@
                 });
             },
             handleClick(row) {
-                // get /v1/authorization/review/draft/get
                 this.dialogSubmitVisible = true;
                 this.dialogLoading = true;
-                console.log("handleClick输出的row:", row);
                 this.getReviewProcessList(row.projectId);
                 httpGet("/v1/authorization/review/draft/get", {id: row.id}).then(results => {
                     const {httpCode, msg, data} = results.data;
-                    if (httpCode == 200) {
-                        console.log("data:", data);
+                    if (httpCode === 200) {
                         data.deadline = specificDate(data.deadline);
                         data.gmtCreate = specificDate(data.gmtCreate);
                         for (let i of data.resourceList) {
@@ -220,7 +213,7 @@
                         } else if (httpCode === 400) {
                             errTips("页面丟失");
                             this.setCache("draft");
-                        } else if (httpCode != 500 && httpCode != 401) {
+                        } else if (httpCode !== 500 && httpCode !== 401) {
                             errTips(msg);
                         }
                         this.dialogLoading = false;

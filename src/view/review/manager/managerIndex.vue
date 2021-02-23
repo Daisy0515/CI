@@ -97,25 +97,23 @@
             getView() {
                 httpGet("/v1/authorization/review/summarizing/get", {role: this.role}).then(results => {
                     const {httpCode, msg, data} = results.data;
-                    if (httpCode == 200) {
+                    if (httpCode === 200) {
                         this.acceptCount = data.acceptCount;
                         this.reviewCount = data.reviewCount;
                         this.aboutTimeoutCount = data.aboutTimeoutCount;
                         this.alreadyTimeoutCount = data.alreadyTimeoutCount;
-                    } else if (msg == "该条件暂无数据") {
+                    } else if (msg === "该条件暂无数据") {
                         message("该条件暂无数据");
                     } else if (httpCode !== 401) {
                         errTips(msg);
                     }
                 });
             },
-            getUserProjectList() { //获取当前用户参与的项目
-                httpGet("/v1/authorization/mission/projectid/get").then(results => {
-                    const {httpCode, msg, data} = results.data;
-                    if (httpCode == 200) {
+            getUserProjectList() { //获取当前用户中标处于执行中的项目
+                httpGet("/v1/authorization/review/projectid/get").then(results => {
+                    const {httpCode, data} = results.data;
+                    if (httpCode === 200) {
                         this.projectList = data.projectList;
-                    } else if (httpCode !== 400) { //400 "该用户暂无参与执行中项目"
-                        errTips(msg);
                     }
                 });
             },
