@@ -79,7 +79,7 @@
 </template>
 
 <script>
-    import {httpGet, httpPost, httpPut} from '@/utils/http.js';
+    import {httpPost} from '@/utils/http.js';
     import {successTips, errTips} from '@/utils/tips.js';
 
     export default {
@@ -104,7 +104,7 @@
         props: {
             form: {
                 type: Object,
-                default: {}
+                default: ()=>{}
             },
             dialogOpinionVisible: {
                 type: Boolean,
@@ -124,9 +124,8 @@
             },
             submitOpinion() {
                 this.ruleForm.reviewInfoId = this.form.id;
-                //post /v1/authorization/review/opinion/insert
                 httpPost('/v1/authorization/review/opinion/insert', this.ruleForm).then(results => {
-                    const {data, msg, httpCode} = results.data;
+                    const {msg, httpCode} = results.data;
                     if (httpCode === 200) {
                         successTips("新增意见成功！");
                         this.ruleForm = "";
