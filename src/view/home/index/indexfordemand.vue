@@ -19,7 +19,7 @@
                     <p class="iimg-list__left-title noheight_title">ABOUT</p>
                     <p class="iimg-list__left-subtitle">关于我们</p>
                     <p class="iimg-list__left-title iimg-list__left-br">_</p>
-                    <p class="about-img-text-content" v-if="currentIndex==0">
+                    <p class="about-img-text-content">
                         我们致力于打造真正的涵盖软件生命周期的众包平台<br>
                         构建群智化、生态化、服务化三化融合的软件生态系统<br>
                         吸引众多需求者和开发人员共同参与软件开发使命
@@ -62,11 +62,9 @@
                     <p class="iimg-list__left-subtitle">流程介绍</p>
                     <p class="iimg-list__left-title iimg-list__left-br">_</p>
 
-                    <p class="iimg-list__left-subtitle" v-if="currentIndex==0">发布需求</p>
-                    <p class="iimg-list__left-content" v-if="currentIndex==0">
-                        在发布需求阶段，<br>用户对自己的项目进行详细描述，<br>确定项目交付内容与评审流程。
-                    </p>
-                    <el-button type="primary" size="small">立即注册</el-button>
+                    <p class="iimg-list__left-subtitle">{{textList[currentIndex]['title']}}</p>
+                    <p class="iimg-list__left-content">{{textList[currentIndex]['content']}}</p>
+
                 </div>
                 <div class="iimg-list__right">
                     <div class="iimg-list__img">  
@@ -110,6 +108,24 @@
                           require('@/assets/img/index/icon_accomplish.png'),
                           require('@/assets/img/index/arrow_right.png')],
                 currentIndex: 0,   //默认显示图片
+                textList:[
+                    {
+                        title: '发布需求',
+                        content: '在发布需求阶段，\n用户对自己的项目进行详细描述，\n确定项目交付内容与评审流程。'
+                    },
+                    {
+                        title: '选择团队',
+                        content: '在确定竞标方后，\n需求方结束竞标过程，\n指定单独或多个竞标方完成需求。'
+                    },
+                    {
+                        title: '评审交付',
+                        content: '在中标方交付项目后，\n需求方通过评审系统评审交付内容，\n若评审不通过，竞标方需重新交付内容。'
+                    },
+                    {
+                        title: '交付&开源',
+                        content: '在交付内容通过验收后，\n需求结束，\n用户可选择开源该项目，供平台用户学习',
+                    }
+                ]
             }
         },
         methods: {
