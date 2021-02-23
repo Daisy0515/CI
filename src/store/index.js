@@ -243,6 +243,7 @@ const store = new Vuex.Store({
                 const {msg, httpCode} = results.data;
                 if (httpCode === 200) {
                     router.push({name: data});
+                    router.go(0);
                     context.commit("setLogout")
                 } else if (httpCode !== 401) {
                     errTips(msg);

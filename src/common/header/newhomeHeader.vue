@@ -8,22 +8,25 @@
                             <img :src="logoUrl">
                         </router-link>
                     </div>
-                    <div v-if="!getUser" style="margin: 0 auto;">
+                    <div id="menu">
+                        <ul style="margin-left: 200px;">
+                            <li class="cc-header__navigation__item" v-for="item in items" :key="item.title">
+                                <router-link :to="item.url">
+                                    <a v-bind:href="item.url" v-bind:title="title">{{ item.title }}</a>
+                                </router-link>
+                            </li>
+                            <li class="cc-header__navigation__item">
+                                <a :href="landaryUrl" target="_blank">蓝凌云平台</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div v-if="!getUser" style="margin-left: 50px;">
                         <router-link to="login" class="lloginBtn"><a href>登入</a></router-link>
                         <router-link to="selectRole" class="rregisterBtn">注册</router-link>
                     </div>
-
-                    <ul style="margin-left: 200px;">
-                        <li class="cc-header__navigation__item" v-for="item in items" :key="item.title">
-                            <router-link :to="item.url">
-                                <a v-bind:href="item.url" v-bind:title="title">{{ item.title }}</a>
-                            </router-link>
-                        </li>
-                        <li class="cc-header__navigation__item">
-                            <a :href="landaryUrl" target="_blank">蓝凌云平台</a>
-                        </li>
-                    </ul>
-                    <HeadUser v-if="getUser" style="margin-left: 100px"/>
+                    <div v-if="getUser">
+                        <HeadUser v-if="getUser" style="margin-left: 100px"/>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -92,7 +95,6 @@ export default {
 }
 
 
-
 .lloginBtn {
     border: 1px solid #80CCD0;
 
@@ -118,7 +120,6 @@ export default {
 
     margin: 0px 390px 0px 29px;
 }
-
 
 
 .cc-header__navigation__item {

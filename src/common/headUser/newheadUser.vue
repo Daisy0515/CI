@@ -27,7 +27,7 @@
                     <router-link :to="{name:'managerIndex'}">
                         <li class="UserremindItem">评审系统</li>
                     </router-link>
-                    <li @click="SETLOGOUT('index')" class="UserremindItem">退出</li>
+                    <li @click="SETLOGOUT('index');" class="UserremindItem">退出</li>
                 </ul>
                 <img class="redCircle" :src="getuserData.headurl?getuserData.headurl:getnoImg" slot="reference"/>
             </el-popover>
@@ -55,6 +55,7 @@
             ...mapActions(["GETMESSAGE", "CHANGEMESSAGESTATE", "SETLOGOUT"]),
         }
     };
+
 </script>
 <style lang='scss'>
     .ccc-header__options {
