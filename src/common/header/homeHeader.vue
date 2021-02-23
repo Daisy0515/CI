@@ -8,10 +8,10 @@
                             <img :src="logoUrl">
                         </router-link>
                     </div>
-<!--                    <div class="cc-header__options" v-if="!getUser">-->
-<!--                        <router-link to="login" class="lloginBtn"><a href>登入</a></router-link>-->
-<!--                        <router-link to="selectRole" class="rregisterBtn">注册</router-link>-->
-<!--                    </div>-->
+                    <div class="cc-header__options" v-if="!getUser">
+                        <router-link to="login" class="lloginBtn"><a href>登入</a></router-link>
+                        <router-link to="selectRole" class="rregisterBtn">注册</router-link>
+                    </div>
                     <div>
                         <ul class="c-header__navigation">
                             <li class="c-header__navigation__item" v-for="item in items" :key="item.title">
@@ -81,4 +81,5 @@ export default {
 </script>
 <style lang='scss'>
 @import "@/assets/scss/homeHead.scss";
+
 </style>

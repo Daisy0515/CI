@@ -1,6 +1,7 @@
 <template>
     <div class="homePublic clearfix">
-        <homeHead />
+        <newHomeHead v-if="this.$route.path == '/index'"/>
+        <homeHead v-else/>
         <div style="clear:both"></div>
         <router-view style="min-height:90%"></router-view>
         <div style="clear:both"></div>
