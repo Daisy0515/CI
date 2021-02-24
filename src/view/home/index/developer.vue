@@ -14,7 +14,7 @@
                     </div>
                 </div>
             </section>
-            <section style="padding: 68px 20% 68px 20%;">
+            <section style="padding: 68px 20% 68px 20%; width:1000px;">
                 <div class="team">
                     <div class="title">NEW TEAM</div>
                     <div class="title_zh">最新团队</div>
