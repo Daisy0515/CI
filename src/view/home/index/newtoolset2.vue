@@ -1,8 +1,8 @@
 <template>
     <div class="ttoolset">
         <router-link
-                :to="{name:'toolsetView',query:{id:item.id}}"
-                v-for="(item,index) in toolsetList"
+                :to="{name:'toolsetView',query:{id:toolsetList[index-1].id}}"
+                v-for="index in 5"
                 :key="index"
         >
             <div style=" vertical-align:middle; margin-top:8%">
@@ -11,7 +11,7 @@
                 <div style="display: inline-block; margin-left:15px;">
                     <div style="margin-bottom: 10px">
                         <a style="font-size: 18px;font-family: PingFang HK;font-weight: 500;color: #011A24;">{{
-                                item.title
+                                toolsetList[index-1].title
                             }}</a>
                     </div>
                     <div style="margin-top: -5px">
@@ -20,17 +20,10 @@
                     font-family: PingFang HK;
                     font-weight: 500;
                     color: #788DA4;
-                    " >{{ item.title }} </a>
+                    ">{{ description[index-1] }} </a>
                     </div>
                 </div>
             </div>
-<!--            <div style=" align-items: center;">-->
-<!--                <img src="./icon.png"-->
-<!--                     style="width:50px; height:50px; border-radius:50%; margin: 20px; ">-->
-<!--                <a style="font-size: 18px;font-family: PingFang HK;font-weight: 500;color: #011A24;vertical-align:200%">{{-->
-<!--                        item.title-->
-<!--                    }}</a>-->
-<!--            </div>-->
         </router-link>
     </div>
 </template>
@@ -43,20 +36,72 @@ export default {
     name: "ToolSet",
     data() {
         return {
-            toolsetList: []
+            toolsetList: [],
+            tag: false,
+            description: [],
         };
     },
     created: function () {
-        httpGet("/v1/public/share/get/top").then(results => {
-            const {httpCode, data, msg} = results.data;
-            if (httpCode === 200) {
-                this.toolsetList = data;
-            } else if (httpCode !== 401) {
-                errTips(msg);
-            }
-        });
+        this.getTools();
     },
-    methods: {}
+    watch: {
+        tag: {
+            handler() {
+                this.getDescription();
+            }
+        },
+    },
+    methods: {
+        getTools() {
+            httpGet("/v1/public/share/get/top").then(results => {
+                const {httpCode, data, msg} = results.data;
+                if (httpCode === 200) {
+                    this.toolsetList = data;
+                    this.tag = !this.tag;
+                } else if (httpCode !== 401) {
+                    errTips(msg);
+                }
+            });
+        },
+        // getDescription(){
+        //     for (let i = 0; i < 5; i++) {
+        //         httpGet("/v1/public/share/get/select", {id: this.toolsetList[i].id}).then(
+        //                 results => {
+        //                     const {httpCode, data, msg} = results.data;
+        //                     if (httpCode === 200) {
+        //                         let se = data.description;
+        //                         if (se === null) {
+        //                             se = this.toolsetList[i].title;
+        //                         }
+        //                         if (se.length < 20) {
+        //                             this.toolsetList[i]["description"] = se;
+        //                         } else {
+        //                             this.toolsetList[i]["description"] = se.slice(0, 20) + "……";
+        //                         }
+        //                         console.log(81, this.toolsetList[i]);
+        //                     } else if (httpCode !== 401) {
+        //                         errTips(msg);
+        //                     }
+        //                 }
+        //         );
+        //     }
+        // },
+        getDescription() {
+            for (let i = 0; i < 5; i++) {
+                httpGet("/v1/public/share/get/select", {id: this.toolsetList[i].id}).then(
+                        results => {
+                            const {httpCode, data, msg} = results.data;
+                            if (httpCode === 200) {
+                                let se = data.description;
+                                this.description.push(se);
+                            } else if (httpCode !== 401) {
+                                errTips(msg);
+                            }
+                        }
+                );
+            }
+        }
+    }
 };
 </script>
 <style lang='scss'>

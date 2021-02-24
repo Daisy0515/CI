@@ -10,8 +10,8 @@
                                 item.teamName
                             }}</a>
                     </div>
-                    <div style="margin-top: -5px">
-                        <a style="width: 175px;
+                    <div style="margin-top: -5px; ">
+                        <a style="
                     font-size: 14px;
                     font-family: PingFang HK;
                     font-weight: 500;
@@ -71,7 +71,6 @@ export default {
                     this.loading = false;
                     this.tipData = false;
                     Object.assign(this.pageData, val);
-                    // this.seleValue = value;
                     for(let i=0; i<5; i++){
                         if(this.plazaList[i].teamName!==null && this.plazaList[i].teamName.length > 15){
                             this.plazaList[i].teamName = this.plazaList[i].teamName.slice(0, 15) + "……";

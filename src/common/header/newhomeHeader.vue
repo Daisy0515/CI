@@ -47,7 +47,7 @@ export default {
             logoUrl: require("@/assets/img/index/cosine_logo_black.png"),
             indexUrl: "index",
             messageList: [],
-            landaryUrl: "http://39.108.172.142:7676/portal/home/index.html",
+            landaryUrl: "http://39.108.172.142:7676/portal/usr/login",
             headItems: [
                 {
                     title: "竞赛专区",
@@ -70,7 +70,7 @@ export default {
     },
     created: function () {
         if(sessionStorage.getItem("userToken") !== ""){
-            this.landaryUrl = this.landaryUrl + "?accessToken=" + JSON.parse(sessionStorage.getItem("userToken")) + "#/myProj"
+            this.landaryUrl = this.landaryUrl + "?accessToken="+JSON.parse(sessionStorage.getItem("userToken"));
         }
     },
     computed: {
