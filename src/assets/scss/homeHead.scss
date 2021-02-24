@@ -52,9 +52,13 @@
 }
 
 .c-header--solid {
-	position: static;
-	background-color: #F5F5F5;
-	border-bottom: 1px solid #DDD
+	position: absolute;
+	background: rgba(255,255,255,0.0);
+	border-bottom: 1px;
+	color: white;
+	a{
+		color: white;
+	}
 }
 
 .c-header--fixed {
@@ -71,9 +75,7 @@
 	}
 	.c-header__navigation{
 		width: 650px;
-		//float: left;
 		text-align: center;
-		//margin-top: 35px;
 	}
 	.c-header__navigation__item {
 		font-size: 14px;
@@ -81,6 +83,7 @@
     vertical-align: middle;
 		padding: 0 0 0 2rem;
 		font-weight: 600;
+
 	}
     .c-header--transparent:not(.c-header--fixed) {
         position: absolute
@@ -240,19 +243,6 @@
 		background: #4c83c3;
 		margin-left: 10px;
 	}
-.c-header--solid{
-    position: absolute;
-    background: rgba(255,255,255,0.0);
-    border-bottom: 1px;
-    color: white;
-    a{
-        color: white;
-    }
-    // .e-button--primary{
-    //     background:white;
-    //     color: black;
-    // }
-}
 
 .c-header--fixed, .c-header--solid{
     border-top: 0;

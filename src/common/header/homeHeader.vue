@@ -1,6 +1,6 @@
 <template>
-    <div class="homeHead clearfix" >
-        <nav class="c-header c-header--solid">
+    <div class="homeHead clearfix">
+        <nav class="c-header c-header--solid" style="color: white;">
             <div class="o-container">
                 <div class="c-header__row">
                     <div class="c-header__logowrap">
@@ -16,11 +16,19 @@
                         <ul class="c-header__navigation">
                             <li class="c-header__navigation__item" v-for="item in items" :key="item.title">
                                 <router-link :to="item.url">
-                                    <a v-bind:href="item.url" v-bind:title="title">{{ item.title }}</a>
+                                    <a v-bind:href="item.url" v-bind:title="title" style="
+font-size: 14px;
+font-family: PingFang HK;
+font-weight: 300;
+color: white;">{{ item.title }}</a>
                                 </router-link>
                             </li>
                             <li class="c-header__navigation__item">
-                                <a :href="landaryUrl" target="_blank">蓝凌云平台</a>
+                                <a :href="landaryUrl" target="_blank" style="
+font-size: 14px;
+font-family: PingFang HK;
+font-weight: 300;
+color: white;">蓝凌云平台</a>
                             </li>
                         </ul>
                     </div>
