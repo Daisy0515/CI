@@ -225,7 +225,7 @@ export default {
 .team1 {
     background-color: white;
     height: 755px;
-    width: 655px;
+    width: 555px;
     display: inline-block;
     box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.1);
     position: relative;

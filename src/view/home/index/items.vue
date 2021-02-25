@@ -16,7 +16,7 @@
 <!--                        <a style="width: 41px;height: 14px;font-size: 14px;font-family: Adobe Heiti Std;-->
 <!--                            font-weight: normal;color: #FFFFFF;background-color: rgb(187 198 209);margin-left: 40px;"-->
 <!--                           v-if="item.status === '已结束'">已结束</a>-->
-                        <div style="float:right; position:absolute; right:-180px; top:-3px;width: 77px;height: 14px;
+                        <div style="float:right; position:absolute; right:-80px; top:-3px;width: 77px;height: 14px;
                             font-size: 18px;font-family: PingFang HK;font-weight: 500;color: #788DA4;">
                             No.{{ item.id }}
                         </div>
