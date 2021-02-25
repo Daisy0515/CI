@@ -90,23 +90,31 @@
                     <p class="iimg-list__left-subtitle">流程介绍</p>
                     <p class="iimg-list__left-title iimg-list__left-br">_</p>
 
-                    <p class="iimg-list__left-subtitle" v-if="currentIndex==0">发布需求</p>
-                    <p class="iimg-list__left-content" v-if="currentIndex==0">在发布需求阶段，<br>用户对自己的项目进行详细描述，<br>确定项目交付内容与评审流程。
-                    </p>
-                    <el-button @click="register" type="primary" size="small">立即注册</el-button>
+                    <p class="iimg-list__left-subtitle" v-if="currentIndex==0">竞标</p>
+                    <p class="iimg-list__left-content" v-if="currentIndex==0">需求方发布需求后，<br>平台用户可报名参与竞标。<br><br></p>
+                    <p class="iimg-list__left-subtitle" v-if="currentIndex==1">邀请开发者</p>
+                    <p class="iimg-list__left-content" v-if="currentIndex==1">竞标用户可以在平台邀请其他开发者参与项目，<br>平台还可根据竞标用户需求来推荐合适的开发者。<br><br></p>
+                    <p class="iimg-list__left-subtitle" v-if="currentIndex==2">项目管理</p>
+                    <p class="iimg-list__left-content" v-if="currentIndex==2">平台为研发团队提供完善的项目管理功能，<br>研发成员可以高效地完成项目任务，<br>实时地追踪项目研发中的缺陷，及时更新。</p>
+                    <p class="iimg-list__left-subtitle" v-if="currentIndex==3">交付成果</p>
+                    <p class="iimg-list__left-content" v-if="currentIndex==3">在完成交付任务后，<br>中标用户上传交付任务，<br>需求方可验收交付内容。</p>
+                    <p class="iimg-list__left-subtitle" v-if="currentIndex==4">反馈评价</p>
+                    <p class="iimg-list__left-content" v-if="currentIndex==4">在验收通过后，需求方给予中标方反馈与评价。<br><br><br></p>
+
+<!--                    <el-button @click="register" type="primary" size="small">立即注册</el-button>-->
                 </div>
                 <div class="iimg-list__right">
                     <div class="iimg-list__img">
                         <div class='iimg-list__bottom'>
                             <img :src="imgList[currentIndex]">
                         </div>
-                        <img class='iimg-list__top' :src="imgList[(currentIndex+1)%6]">
+                        <img class='iimg-list__top' :src="imgList[(currentIndex+1)%5]">
                     </div>
 
                     <div class="iimg-list__text">
                         <li v-for="(item,index) in imgList" :key="index" @click="changeImg(index)"
                             :class="[currentIndex == index ? 'iimg-list__active': 'iimg-list__noactive',
-                                     currentIndex == index && index == 5 ? 'iimg-list__lastactive': '']">
+                                     currentIndex == index && index == 4 ? 'iimg-list__lastactive': '']">
                             <a v-show="currentIndex==index">_</a>{{ '0' + (index + 1) }}
                         </li>
                     </div>
@@ -132,8 +140,7 @@ export default {
                 require('@/assets/img/index/index_service_2.jpg'),
                 require('@/assets/img/index/index_service_3.jpg'),
                 require('@/assets/img/index/index_service_4.jpg'),
-                require('@/assets/img/index/index_service_5.jpg'),
-                require('@/assets/img/index/index_service_6.jpg')],
+                require('@/assets/img/index/index_service_5.jpg'),],
             iconList: [require('@/assets/img/index/index_developer_1.png'),
                 require('@/assets/img/index/index_developer_2.png'),
                 require('@/assets/img/index/index_developer_3.png'),
