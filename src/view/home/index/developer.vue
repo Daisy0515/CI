@@ -14,7 +14,7 @@
                     </div>
                 </div>
             </section>
-            <section style="padding: 68px 20% 68px 20%; width:1000px;">
+            <section class="center-section"  style="margin: 158px auto 0 auto;">
                 <div class="team">
                     <div class="title">NEW TEAM</div>
                     <div class="title_zh">最新团队</div>
@@ -39,7 +39,7 @@
 
                 </div>
             </section>
-            <section class="center-section">
+            <section class="center-section"  style="margin: 0 auto 158px auto;">
                 <div class="center-text">
                     <p class="iimg-list__left-title noheight_title">PROCESS</p>
                     <p class="iimg-list__left-subtitle">竞标流程指南</p>
@@ -209,7 +209,7 @@ export default {
     display: inline-block;
     box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.1);
     position: relative;
-    top: -150px;
+    top: -250px;
 }
 
 .title {

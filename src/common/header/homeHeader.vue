@@ -1,5 +1,5 @@
 <template>
-    <div class="homeHead clearfix">
+    <div class="clearfix">
         <nav class="c-header c-header--solid" style="color: white;">
             <div class="o-container">
                 <div class="c-header__row">
