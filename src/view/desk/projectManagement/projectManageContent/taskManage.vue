@@ -150,7 +150,7 @@
 
             <div class="ganttIndex" style="width:100%;height: 100%;">
                 <div class="ganttIndexMain" style="margin-bottom: 30px;">
-                    <div class="gitAddress">
+                    <!-- <div class="gitAddress">
                         git仓库地址:
                         <input id="httpUrlToRepo" class="address" autocomplete="off" style="width:300px;"
                                v-model="httpUrlToRepo" disabled="disabled"/>
@@ -159,7 +159,7 @@
                         </el-button>
                         <router-link to="/git-2" style="margin-left:20px;color:blue">如何使用git</router-link>
                     </div>
-                    <div style="margin-top: 30px">
+                    <div style="margin-top: 30px"> -->
                         <el-tabs v-model="selectedMission" @tab-click="showSubTask(selectedMission)">
                             <el-tab-pane
                                     v-for="(item,index) in missionTitleList"
@@ -212,8 +212,8 @@
         },
         data: function () {
             return {
-                isIndeterminate:true,
-              checkAll:false,
+                isIndeterminate:false,
+                checkAll:false,
                 testUploadIndex: false,//sourceUpload组件内部定义，当这个变量发生变化时，开启文件上传，上传后会返回一个URL，即文件地址
                 teamId: sessionStorage.getItem("teamId"),
                 userId: sessionStorage.getItem("userId"),

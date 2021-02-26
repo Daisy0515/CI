@@ -27,6 +27,11 @@
 
             <el-button type="primary" @click="searchList()" style="margin-left: 2px;">搜索</el-button>
             <el-row style="text-align: right;margin-right: 21%;margin-top:20px;margin-bottom: -20px;">
+                <div style="width: 80%; float: left; " v-show="processVisitable">
+                    <el-progress :text-inside="true" style="width: 93%; float: left;"  :stroke-width="28" :percentage="count" :format="format" :color="customColorMethod">
+                    </el-progress>
+                    <el-button size="mini" type="danger" style="float: left;"  @click="colseProcess()"  icon="el-icon-circle-close" circle></el-button>
+                </div>
                 <el-button  @click="download">批量下载</el-button>
             </el-row>
         </div>
@@ -100,6 +105,9 @@
                 missionTitleList:[],
                 multipleSelection: [],  //选中的行
                 count:0,//当前下载的文件个数
+                urlList:[1],
+                processVisitable:false,
+                testCount:0,
             };
         },
         created: function () {
@@ -110,12 +118,28 @@
             this.getMissionList();
         },
         computed: {
+           
         },
         methods: {
             ...mapMutations(["setCache"]),
             handleSelectionChange(val) {
             //val 为选中数据的集合
                 this.multipleSelection = val;
+            },
+            customColorMethod(percentage) {
+                if (percentage < 90) {
+                    return '#e6a23c';
+                }else {
+                    return '#67c23a';
+                }
+            },
+            format(percentage) {
+                 if(percentage<100){
+                     return parseInt(percentage)+"%";
+                 }
+                 if(percentage===100){
+                     return "下载完成了！";
+                 }
             },
             getMissionList(){
                 httpGet("/v1/authorization/manage/missiontitle/list", {
@@ -146,14 +170,23 @@
                 this.getView();
 
             },
+
+            colseProcess(){
+                this.processVisitable=false;
+            },
             /**批量下载交付文件*/
             download(){
                 if(this.multipleSelection.length === 0){
                     message("请选择下载的文件！");
                     return ;
                 }
-                let urlList = this.multipleSelection.map(item => item.resource);
-                handleBatchDownload(urlList);
+                this.processVisitable=true;
+                this.urlList = this.multipleSelection.map(item => item.resource);
+                this.count=0;
+                handleBatchDownload(this.urlList,this.testCount,(count)=>this.count=count);
+                // if(this.count[0]/this.urlList.length==1){
+                //     this.processVisitable=false;
+                // }
             },
             handleCurrentChange(val) {
                 this.searchData.pageNo = val;
