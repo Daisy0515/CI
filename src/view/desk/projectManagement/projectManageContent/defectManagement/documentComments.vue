@@ -5,23 +5,22 @@
                     <el-option v-for="item in demandList" :key="item.id" :label="item.content"
                                :value="item.id"></el-option>
                 </el-select>
-                <el-select v-model="searchData.documentsType" clearable placeholder="请选择文档类型">
+                <el-select style="margin-left:30px;" v-model="searchData.documentsType" clearable placeholder="请选择文档类型">
                     <el-option label="需求设计文档" value="1"></el-option>
                     <el-option label="概要设计文档" value="2"></el-option>
                     <el-option label="详细设计文档" value="3"></el-option>
-
                 </el-select>
-                <el-select v-model="searchData.status" clearable placeholder="请选择状态">
+                <el-select style="margin-left:30px;" v-model="searchData.status" clearable placeholder="请选择状态">
                     <el-option label="待解决" value="1"></el-option>
                     <el-option label="已解决" value="2"></el-option>
-
                 </el-select>
 <!--                <input type="radio" v-on:click="changeRadio" :checked="checked"/>是否指派给我-->
-                <!-- <div class="buttons"> -->
-                <el-button type="primary" @click.native="addComments()">新增</el-button>
-                <el-button size="primary" @click="searchList()">搜索</el-button>
-                <!-- </div> -->
-                <el-button type="primary" @click="sumComments()" size="large" style="width:150px">意见汇总</el-button>
+                 <div class="buttons">
+                     <el-button type="primary" @click.native="addComments()">新增</el-button>
+                     <el-button size="primary" @click="searchList()">搜索</el-button>
+                     <el-button type="primary" @click="sumComments()" size="large" style="width:150px">意见汇总</el-button>
+                 </div>
+
                 <br>
             </div>
         <comments-Add :dialogFormVisible="commentsAddDialog" :projectId="projectId" 

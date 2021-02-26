@@ -1,29 +1,26 @@
 <template>
     <div class="teamApplication">
-        <div class="header_top">
-                <el-select v-model="searchData.level" clearable placeholder="请选择缺陷等级">
-                    <el-option label="█马上解决" value="1" style="color:red"></el-option>
-                    <el-option label="█急需解决" value="2" style="color:orange"></el-option>
-                    <el-option label="█高度重视" value="3" style="color:#FFE153"></el-option>
-                    <el-option label="█正常处理" value="4" style="color:green"></el-option>
-                    <el-option label="█低优先级" value="5" style="color:blue"></el-option>
-                </el-select>
-                <el-select v-model="searchData.status" clearable placeholder="请选择状态">
-                    <el-option label="待解决" value="1"></el-option>
-                    <el-option label="解决中" value="2"></el-option>
-                    <el-option label="已解决" value="3"></el-option>
-                    <el-option label="已结束" value="4"></el-option>
-                </el-select>
-                <input type="radio" v-on:click="changeRadio" :checked="checked"/>是否指派给我
-                <!-- <div class="buttons"> -->
-
-                <el-button type="primary" size="middle" @click="defectAddDialog=true">新增
-                </el-button>
-
-                <el-button size="primary" @click="searchList()">搜索</el-button>
-                <el-button size="primary" @click="getIssueVisualization()">可视化</el-button>
-                <!-- <el-button size="primary" @click="gotoTest()">招聘测试人员</el-button> -->
-                <!-- </div> -->
+        <div class="header_top_codeDefect">
+            <el-select  v-model="searchData.level" clearable placeholder="请选择缺陷等级">
+                <el-option label="█马上解决" value="1" style="color:red"></el-option>
+                <el-option label="█急需解决" value="2" style="color:orange"></el-option>
+                <el-option label="█高度重视" value="3" style="color:#FFE153"></el-option>
+                <el-option label="█正常处理" value="4" style="color:green"></el-option>
+                <el-option label="█低优先级" value="5" style="color:blue"></el-option>
+            </el-select>
+            <el-select style="margin-left:50px;"  v-model="searchData.status" clearable placeholder="请选择状态">
+                <el-option label="待解决" value="1"></el-option>
+                <el-option label="解决中" value="2"></el-option>
+                <el-option label="已解决" value="3"></el-option>
+                <el-option label="已结束" value="4"></el-option>
+            </el-select>
+             <div class="buttons">
+                 <input type="radio" v-on:click="changeRadio" :checked="checked"/>是否指派给我
+                 <el-button type="primary" size="middle" @click="defectAddDialog=true">新增</el-button>
+                 <el-button size="primary" @click="searchList()">搜索</el-button>
+                 <el-button size="primary" @click="getIssueVisualization()">可视化</el-button>
+            <!-- <el-button size="primary" @click="gotoTest()">招聘测试人员</el-button> -->
+             </div>
             </div>
         <defect-add :dialogFormVisible="defectAddDialog" :userList="userList" 
                     :projectId="projectId" @closeDialog="closeDefectAddDialog"></defect-add>
@@ -378,7 +375,7 @@
             float: right;
         }
 
-        .header_top {
+        .header_top_codeDefect {
 
             margin: 15px auto;
             padding-bottom: 20px;
@@ -394,24 +391,25 @@
             & button:nth-child(3) {
                 color: white;
             }
-        }
-        .el-select {
-            display: inline-block;
-            width: 150px;
-            margin-right: 25px;
-        }
-        .el-input {
-            display: inline-block;
-            width: 150px;
-            margin-right: 25px;
+            .el-select {
+                display: inline-block;
+                width: 150px;
+                margin-right: 25px;
+            }
+            .el-input {
+                display: inline-block;
+                width: 150px;
+                margin-right: 25px;
+            }
+
+            .el-input__inner {
+                border: 1px solid #c0c0c0;
+                width: 150px;
+                height: 35px;
+                line-height: 35px;
+            }
         }
 
-        .el-input__inner {
-            border: 1px solid #c0c0c0;
-            width: 150px;
-            height: 35px;
-            line-height: 35px;
-        }
 
         .el-table td,
         .el-table th.is-leaf {
