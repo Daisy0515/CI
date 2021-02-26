@@ -2,18 +2,7 @@
     <div class="header_two">
         <nav class="c-header c-header--solid">
             <div class="o-container deskHeader clearfix">
-                <div class="c-header__row">
-                    <div style="display: inline-block;margin-left: 50%; margin-top: -1px">
-                        <span style="color: white">角色切换：</span>
-                        <el-select v-model="value" placeholder="请选择" @change="roleChange">
-                            <el-option
-                                    v-for="item in permissionList"
-                                    :key="item.id"
-                                    :label="item.name"
-                                    :value="item.id"
-                            />
-                        </el-select>
-                    </div>
+                <div class="c-header__row__review ">
                     <div class="c-header__logowrap">
                         <router-link :to="indexUrl">
                             <div id="topnav-gurulogo" v-bind:href="indexUrl" style="display:block">
@@ -23,6 +12,17 @@
                         </router-link>
                     </div>
                     <HeadUser/>
+                    <div style="display: inline-block;float:right; margin-right:20px;">
+                        <span style="color: white">评审角色：</span>
+                        <el-select style="width:130px;" v-model="value" placeholder="请选择" @change="roleChange">
+                            <el-option
+                                    v-for="item in permissionList"
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.id"
+                            />
+                        </el-select>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -139,7 +139,7 @@
 
     };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
     .useCard_two {
         .Userremind {
             margin: -12px;
@@ -233,7 +233,7 @@
             background: #4478b4;
         }
 
-        .c-header__row {
+        .c-header__row__review {
             height: 70px;
             padding-top: 20px;
             box-sizing: border-box;
