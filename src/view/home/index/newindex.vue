@@ -3,7 +3,7 @@
         <NewIndex v-if="userToken === null || userToken === ''"/>
         <Developer v-if="userToken !== null && userToken !== '' && projectRole == 3"/>
         <Manager v-if="userToken !== null && userToken !== '' && projectRole == 2"/>
-        <IndexForDemand v-if="userToken !== 'null' && userToken !== '' && projectRole == 1"/>
+        <IndexForDemand v-if="userToken !== null && userToken !== '' && projectRole == 1"/>
     </div>
 </template>
 
