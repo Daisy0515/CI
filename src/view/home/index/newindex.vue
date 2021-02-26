@@ -1,7 +1,7 @@
 <template>
     <div id="index">
         <main id="main">
-            <section class="cc-hero" id="heroImage">
+            <section class="cc-hero" :style="imgStyle" id="heroImage">
                     <div class="cc-hero__lead">
                         <p class="cc-hero__title">面向服务的群智化生态化</p>
                         <p class="cc-hero__title">软件开发平台</p>
@@ -15,6 +15,8 @@
                                 <el-button @click="publishTask" type="primary">发布需求</el-button>
                                 <el-button @click="joinTeam" type="primary">加入团队</el-button>
                             </div>
+                            <el-button class="cc-hero__arrow_left" @click="prevImg" size="medium" :circle="true" icon="el-icon-arrow-left"></el-button>
+                            <el-button class="cc-hero__arrow_right" @click="nextImg" size="medium" :circle="true" icon="el-icon-arrow-right"></el-button>
                         </div>
                     </div>
             </section>
@@ -96,8 +98,16 @@
                         require('@/assets/img/index/index_service_5.jpg'),
                         require('@/assets/img/index/index_service_6.jpg')],
                 currentIndex: 0,   //默认显示图片
+                imgStyle:{
+						backgroundImage: 'url(../../assets/img/index/index_service_6.jpg)',
+					},
+                    mark:0,
+
             }
         },
+        created() {
+				    this.play()
+				},
         methods: {
             //搜索关键字
             search() {
@@ -106,6 +116,37 @@
                     query: {search: this.searchData}
                 });
             },
+            autoPlay() {
+						if(this.mark<this.imgList.length-1){
+							this.mark++;
+						}else{
+							this.mark = 0;
+						}
+						this.imgStyle.backgroundImage = 'url('+this.imgList[this.mark]+')';
+                        //console.log(this.imgList);
+					},
+            nextImg() {
+						if(this.mark<this.imgList.length-1){
+							this.mark++;
+						}else{
+							this.mark = 0;
+						}
+						this.imgStyle.backgroundImage = 'url('+this.imgList[this.mark]+')';
+                        console.log(this.mark);
+					},
+            prevImg() {
+						if(this.mark>0){
+							this.mark--;
+						}else{
+							this.mark = this.imgList.length-1;
+						}
+						this.imgStyle.backgroundImage = 'url('+this.imgList[this.mark]+')';
+                        //console.log(this.imgList);
+                        console.log(this.mark);
+					},
+			play() {
+					    setInterval(this.autoPlay, 5000)
+                    },
             publishTask() {
                 this.$router.push({path: "publishTask"});
             },
