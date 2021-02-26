@@ -88,13 +88,7 @@
 </template>
 
 <script>
-    import ToolSet from './newtoolset.vue';
-    import News from './news.vue';
     export default {
-        components: {
-           ToolSet,
-           News,
-        },
         data() {
             return {
                 searchData: "",
@@ -173,30 +167,6 @@
         margin: 136px 20% 136px 20%;
     }
     .iimg-list__white {
-        color: #fff;
-    }
-    .el-button--primary {
-        color: #fff;
-        background-color: #80CCD0;
-        border-color: #80CCD0;
-        border-radius:  0;
-    }
-    .el-button--primary:focus,
-    .el-button--primary:hover {
-        background: #ABC8CC;
-        border-color: #ABC8CC;
-        color: #fff;
-    }
-    .el-button--info {
-        color: #fff;
-        background-color: #011A24;
-        border-color: #011A24;
-        border-radius:  0;
-    }
-    .el-button--info:focus,
-    .el-button--info:hover {
-        background: #2b333e;
-        border-color: #2b333e;
         color: #fff;
     }
 </style>

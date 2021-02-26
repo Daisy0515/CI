@@ -71,7 +71,7 @@
                     <p class="iimg-list__left-title noheight_title">NEW TOOL</p>
                     <p class="iimg-list__left-subtitle">最新工具</p>
                     <p class="iimg-list__left-title iimg-list__left-br">_</p>
-                    <ToolSet/>
+                    <IndexToolSet/>
                     <el-button @click="moreTool" type="info">更多工具</el-button>
                 </div>
             </section>
@@ -80,11 +80,11 @@
 </template>
 
 <script>
-import ToolSet from './newtoolset.vue';
+import IndexToolSet from './indextoolset.vue';
 import News from './news.vue';
 export default {
     components: {
-        ToolSet,
+        IndexToolSet,
         News,
     },
     data() {
@@ -134,34 +134,10 @@ export default {
 <style scoped>
 .el-input-group__append .el-button--primary {
     color: #fff;
-    background-color: #80CCD0;
+    background-color: #90C0C1;
 }
 .ee-inputButton >>> .el-input-group__append{
     border:none;
-}
-.el-button--primary {
-    color: #fff;
-    background-color: #80CCD0;
-    border-color: #80CCD0;
-    border-radius:  0;
-}
-.el-button--primary:focus,
-.el-button--primary:hover {
-    background: #ABC8CC;
-    border-color: #ABC8CC;
-    color: #fff;
-}
-.el-button--info {
-    color: #fff;
-    background-color: #011A24;
-    border-color: #011A24;
-    border-radius:  0;
-}
-.el-button--info:focus,
-.el-button--info:hover {
-    background: #2b333e;
-    border-color: #2b333e;
-    color: #fff;
 }
 .noheight_title {
     line-height: 50px;
