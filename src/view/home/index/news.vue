@@ -1,64 +1,37 @@
 <template>
 <div>
-    <div class="news-item">
-        <el-button @click="moreNews" type="info">more</el-button>
-        <div class='news-left'>
-            <p class='news-left-date'>{{messageList[0]['date']}}</p>
-            <p class='news-left-month'>{{messageList[0]['month']}}</p>
-        </div>
-        
-        <div class='news-right'>
-            <p class='news-right-title'>{{messageList[0]['title']}}</p>
-            <p class='news-right-content'>
-                <a>{{messageList[0]['content']}}>>>详情</a>
-            </p>
-        </div>
-        
-    </div>
-    <hr class="news-hr">
-    <div class="news-item">
-        <div class='news-left margin-top-31'>
-            <p class='news-left-date'>{{messageList[1]['date']}}</p>
-            <p class='news-left-month'>{{messageList[1]['month']}}</p>
-        </div>
+    <div v-for="(item, index) in messageList" :key=index>
+        <div class="news-item">
+            <el-button @click="moreNews" type="info" v-if="index==0">more</el-button>
+            <div :class="[index==messageList.length-1 ? 'margin-top-31' : '' , 'news-left']">
+                <p>0{{index + 1}}</p>
+            </div>
+            
+            <div :class="[index==messageList.length-1 ? 'margin-top-31' : '' , 'news-right']">
+                <p class='news-right-title'>{{item['title']}}</p>
+                <router-link :to="item['url']">
+                    <p class='news-right-content'>{{item['digest']}}>>>详情</p>
+                </router-link>
+            </div>
 
-        <div class='news-right margin-top-31'>
-            <p class='news-right-title'>{{messageList[1]['title']}}</p>
-            <p class='news-right-content'>
-                <a>{{messageList[1]['content']}}>>>详情</a>
-            </p>
+            <div class='icon-right' v-if="index==messageList.length - 1">
+                <img class='disable-cursor' :src="iconUrl[0]" v-show="isFirstPage">
+                <img  @click="prevPage" :src="iconUrl[2]" v-show="!isFirstPage">
+            </div>
+            <div class='icon-right'  v-if="index==messageList.length - 1">
+                <img class='disable-cursor' :src="iconUrl[1]" v-show="isEndPage">
+                <img  @click="nextPage" :src="iconUrl[3]" v-show="!isEndPage">
+            </div>
         </div>
-    </div>
-    <hr class="news-hr" style="margin-bottom: 0">
-    <div class="news-item" >
-        <div class='news-left margin-top-31'>
-            <p class='news-left-date'>{{messageList[2]['date']}}</p>
-            <p class='news-left-month'>{{messageList[2]['month']}}</p>
-        </div>
-
-        <div class='news-right margin-top-31'>
-            <p class='news-right-title'>{{messageList[2]['title']}}</p>
-            <p class='news-right-content'>
-                <a>{{messageList[2]['content']}}>>>详情</a>
-            </p>
-        </div>
-        <div class='icon-right'>
-            <img :src="iconUrl[2]">
-            <img :src="iconUrl[0]" class="icon-right__left">
-        </div>
-        <div class='icon-right'>
-            <img :src="iconUrl[1]">
-            <img :src="iconUrl[3]" class="icon-right__left">
-        </div>
-        <!-- <img :src="iconUrl[2]" style="float:right"> -->
-        <!-- <img :src="iconUrl[3]" style="float:right"> -->
+        <hr class="news-hr" v-if="index==0 && index!=messageList.length-1">
+        <hr class="news-hr" v-if="index==1" style="margin-bottom: 0">
     </div>
 </div>
 </template>
 
 <script>
-    // import {httpGet} from "@/utils/http.js";
-    // import {errTips} from "@/utils/tips.js";
+    import {httpGet} from "@/utils/http.js";
+    import {errTips} from "@/utils/tips.js";
 
     export default {
         name: "News",
@@ -68,33 +41,82 @@
                           require('@/assets/img/index/news_down_0.png'),
                           require('@/assets/img/index/news_up_1.png'),
                           require('@/assets/img/index/news_down_1.png')],
+                pageData: {
+                    pageSize: 3,
+                    pageNo: 1,
+                    orderBy: "id",
+                    orderType: "DESC",
+                },
+                pageNo: 1,
+                totalPage: 0,
                 messageList: [
                     {
                         month: 'December',
                         date: '00',
                         title: 'COSINE平台全1.2.0新版本正式上线',
-                        content: '平台提供多种用户角色，包括项目发布者、管理者、开发者等角色，多角色无缝切换， 多功能自然解耦。'
+                        digest: '平台提供多种用户角色，包括项目发布者、管理者、开发者等角色，多角色无缝切换， 多功能自然解耦。',
+                        url: ''
                     },
                     {
                         month: 'December',
                         date: '11',
                         title: 'COSINE平台全1.2.0新版本正式上线',
-                        content: '平台提供多种用户角色，包括项目发布者、管理者、开发者等角色，多角色无缝切换， 多功能自然解耦。'
+                        digest: '平台提供多种用户角色，包括项目发布者、管理者、开发者等角色，多角色无缝切换， 多功能自然解耦。',
+                        url: ''
                     },
                     {
                         month: 'December',
                         date: '22',
                         title: 'COSINE平台全1.2.0新版本正式上线',
-                        content: '平台提供多种用户角色，包括项目发布者、管理者、开发者等角色，多角色无缝切换， 多功能自然解耦。'
+                        digest: '平台提供多种用户角色，包括项目发布者、管理者、开发者等角色，多角色无缝切换， 多功能自然解耦。',
+                        url: ''
                     },
                 ]
             };
         },
         created: function () {
+            this.getViewData();
+        },
+        computed: {
+            isEndPage(){
+                if (this.pageNo == this.totalPage) return true
+                return false
+            },
+            // 判断是否是第一页
+            isFirstPage(){
+                if (this.pageNo == 1) return true
+                return false
+            }
         },
         methods: {
             moreNews() {
-                
+                this.$router.push({path: "knowledgePlaza"});
+            },
+            getViewData() {
+                httpGet("/v1/public/share/get/list", this.pageData).then(results => {
+                    const {httpCode, data, msg} = results.data;
+                    if (httpCode === 200) {
+                        this.messageList = data.infoList;
+                        this.pageNo = data.pageNo;
+                        this.totalPage = Math.floor(data.totalCount / 3);
+                        for (let i of data.infoList) {
+                            if (i.digest.length > 70) {
+                                i.digest = i.digest.substr(0,70);
+                            }
+                            i.url = "knowledgeView?id=" + i.id;
+                        }
+                    } else if (httpCode !== 401) {
+                        errTips(msg);
+                    }
+                });
+            },
+            prevPage() {
+                this.pageData.pageNo = this.pageData.pageNo - 1;
+                this.getViewData();
+            },
+            nextPage() {
+                this.pageData.pageNo = this.pageData.pageNo + 1;
+                this.getViewData();
             }
         }
     };
@@ -128,17 +150,10 @@
             font-weight: bold;
             color: #CCCCCC;
             text-align: center;
+            font-size: 72px;
+            line-height: 97px;
         }
         float: left;
-    }
-    .news-left-date {
-        font-size: 72px;
-        line-height: 75px;
-    }
-    .news-left-month {
-        line-height: 10px;
-        font-size: 16px;
-        opacity: 0.5;
     }
     .news-right {
         margin-left: 66px;
@@ -155,9 +170,7 @@
     .news-right-content {
         font-size: 16px;
         font-weight: 400;
-        a {
-            color: #011A24;
-        }
+        color: #011A24;
         opacity: 0.7;
         margin-top: 31px;
         width: 600px;
@@ -168,7 +181,7 @@
         background: #788DA4;
         opacity: 0.47;
         width: 738px;
-        margin: 31px 0px 0px 0px;
+        margin: 31px 0px 31px 0px;
     }
     .margin-top-31 {
         margin-top: 31px;
@@ -177,9 +190,11 @@
         overflow: hidden;
         img {
             float: right;
+            margin-right: 100px;
         }
+        
     }
-    .icon-right__left {
-        margin-right: 30px;
+    .disable-cursor {
+        cursor: not-allowed;
     }
 </style>

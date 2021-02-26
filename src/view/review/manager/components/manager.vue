@@ -272,25 +272,19 @@
             /**搜索栏处会用获取当前用户参与的项目，这些项目处于执行中或完成的状态，并且这些项目是设置了评审流程的*/
             getUserProjectListForSearch() {
                 httpGet("/v1/authorization/mission/projectid/getall").then(results => {
-                    const {httpCode, msg, data} = results.data;
-                    console.log("manager data.projectList", data);
+                    const {httpCode,data} = results.data;
                     if (httpCode === 200) {
                         this.projectListForSearch = data.projectList;
-                    } else if (httpCode !== 400) { //400 "该用户暂无参与执行中项目"
-                        errTips(msg);
-                    }
+                    }//用户没有项目时，不弹出提示消息
                 });
             },
             /**获取当前用户参与的项目，这些项目处于执行中的状态，并且这些项目是设置了评审流程的*/
             getUserProjectList() {
                 httpGet("/v1/authorization/mission/projectid/getto").then(results => {
-                    const {httpCode, msg, data} = results.data;
-                    console.log("manager data.projectList", data.projectList);
+                    const {httpCode, data} = results.data;
                     if (httpCode === 200) {
                         this.projectList = data.projectList;
-                    } else if (httpCode !== 400) { //400 "该用户暂无参与执行中项目"
-                        errTips(msg);
-                    }
+                    }//用户没有项目时，不弹出提示消息
                 });
             },
             /***各个页面通用：获取用户当前项目的所有评审流程***/

@@ -8,11 +8,12 @@
 	z-index: 100
 }
 
-.c-header__row {
-	height: 70px;
-	padding-top: 20px;
-	box-sizing: border-box;
-}
+//.c-header__row {
+//	height: 70px;
+//	//padding-top: 20px;
+//	box-sizing: border-box;
+//	//width: 1200px;
+//}
 
 
 .c-header__menu {
@@ -34,7 +35,8 @@
 	width: 130px;
 	outline: 0;
 	margin-right: auto;
-	float: left;
+	//margin-top:35px;
+	//float: left;
 }
 
 .c-header__logo {
@@ -50,9 +52,13 @@
 }
 
 .c-header--solid {
-	position: static;
-	background-color: #F5F5F5;
-	border-bottom: 1px solid #DDD
+	position: absolute;
+	background: rgba(255,255,255,0.0);
+	border-bottom: 1px;
+	color: white;
+	a{
+		color: white;
+	}
 }
 
 .c-header--fixed {
@@ -69,7 +75,6 @@
 	}
 	.c-header__navigation{
 		width: 650px;
-		float: left;
 		text-align: center;
 	}
 	.c-header__navigation__item {
@@ -78,6 +83,7 @@
     vertical-align: middle;
 		padding: 0 0 0 2rem;
 		font-weight: 600;
+
 	}
     .c-header--transparent:not(.c-header--fixed) {
         position: absolute
@@ -117,8 +123,9 @@
         color: #444
     }
     
-    .c-header--breadcrumbs .c-header__row {
-
+    .c-header__row {
+		display: flex;
+		align-items: center;
     }
     
     .c-header--breadcrumbs .c-header__logowrap {
@@ -236,19 +243,6 @@
 		background: #4c83c3;
 		margin-left: 10px;
 	}
-.c-header--solid{
-    position: absolute;
-    background: rgba(255,255,255,0.0);
-    border-bottom: 1px;
-    color: white;
-    a{
-        color: white;
-    }
-    // .e-button--primary{
-    //     background:white;
-    //     color: black;
-    // }
-}
 
 .c-header--fixed, .c-header--solid{
     border-top: 0;

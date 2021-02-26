@@ -2,7 +2,8 @@
     <div class="teamApplication">
         <div class="header">
             <div class="container deskHeader">
-                <h4>团队申请</h4>
+                <h4 v-if="role===2">队员申请</h4> <!--项目经理角色，审核队员-->
+                <h4 v-if="role===3">团队申请</h4><!--项目开发者角色，查看审核情况-->
             </div>
         </div>
         <div class="container deskHeader">
@@ -53,30 +54,45 @@
                 <el-table-column prop="type" label="项目类型" width="150" align="center"></el-table-column>
                 <el-table-column label="操作" prop="province" align="center" width="250">
                     <template slot-scope="scope">
-                        <router-link @click.native="dele(scope)" to v-if="scope.row.status==='失败'">
-                            <i class="el-icon-delete"></i>
-                            删除
-                        </router-link>
-                        <span v-else>暂无</span>
-<!--                        <router-link-->
-<!--                                @click.native="pass(scope.row)"-->
-<!--                                to-->
-<!--                                v-if="scope.row.status==='审核中'&&scope.row.show"-->
-<!--                        >-->
-<!--                            <i class="el-icon-circle-check"></i>-->
-<!--                            通过-->
-<!--                        </router-link>-->
-<!--                        <router-link-->
-<!--                                @click.native="nopass(scope.row)"-->
-<!--                                to-->
-<!--                                v-if="scope.row.status==='审核中'&&scope.row.show"-->
-<!--                        >-->
-<!--                            <i class="el-icon-error"></i>-->
-<!--                            不通过-->
-<!--                        </router-link>-->
+                        <template v-if="role===3"> <!--(开发者)申请者角色-->
+                            <router-link @click.native="dele(scope)" to v-if="scope.row.status==='失败'">
+                                <i class="el-icon-delete"></i>
+                                删除
+                            </router-link>
+                            <span v-else>暂无</span>
+                        </template>
+                        <template v-if="role===2"><!--(项目经理)审核者角色-->
+                            <router-link @click.native="viewApplyInfo(scope.row.proposerId)" to>
+                                <i class="el-icon-search"></i>
+                                查看
+                            </router-link>
+                            <router-link @click.native="dele(scope)" to v-if="scope.row.status==='失败'">
+                                <i class="el-icon-delete"></i>
+                                删除
+                            </router-link>
+                            <router-link
+                                    @click.native="pass(scope.row)"
+                                    to
+                                    v-if="scope.row.status==='审核中'"
+                            >
+                                <i class="el-icon-circle-check"></i>
+                                通过
+                            </router-link>
+                            <router-link
+                                    @click.native="nopass(scope.row)"
+                                    to
+                                    v-if="scope.row.status==='审核中'"
+                            >
+                                <i class="el-icon-error"></i>
+                                不通过
+                            </router-link>
+                        </template>
                     </template>
                 </el-table-column>
             </el-table>
+            <team-application-user-info :dialogFormVisible="userInfoDialog" :userData="userData"
+                                        @closeDialog="closeUserInfoDialog">
+            </team-application-user-info>
             <div class="bid_footer">
                 <el-pagination
                         @current-change="handleCurrentChange"
@@ -95,9 +111,11 @@
     import {message, errTips, successTips} from "@/utils/tips.js";
     import {mapGetters, mapMutations} from "vuex";
     import {MessageBox} from "element-ui";
-
+    import teamApplicationUserInfo from "@/view/desk/projectManagement/projectManageContent/component/teamApplicationUserInfo";
     export default {
-        components: {},
+        components: {
+            teamApplicationUserInfo
+        },
         name: "teamApplication",
         data() {
             return {
@@ -131,7 +149,10 @@
                     orderBy: "id",
                     role:1,//获取作为申请人身份的团队申请数据，role=2是审核人身份
                 },
-                teamFrom: []
+                teamFrom: [],
+                role:JSON.parse(sessionStorage.getItem("projectRole")),
+                userInfoDialog: false,
+                userData:{},
             };
         },
         created: function () {
@@ -175,6 +196,12 @@
             getView(val = this.pageData) {
                 this.loading = true;
                 let {userName} = this.getuserData;
+                let role = JSON.parse(sessionStorage.getItem("projectRole"));
+                if(role===2){
+                    val.role = 2; //项目经理,审核人
+                }else if(role===3){
+                    val.role = 1; //开发者，申请人
+                }
                 httpGet("/v1/authorization/team/teamapplyfor/get", val).then(results => {
                     const {httpCode, msg, data} = results.data;
                     if (httpCode === 200) {
@@ -243,6 +270,23 @@
                         }
                     });
                 });
+            },
+
+            viewApplyInfo(val) {
+                httpGet("/v1/authorization/bids/getuserinfo/user", {
+                    id: val
+                }).then(results => {
+                    const {httpCode, msg, data} = results.data;
+                    if (httpCode === 200) {
+                        this.userData = data;
+                        this.userInfoDialog = true;
+                    } else if (httpCode !== 401) {
+                        errTips(msg);
+                    }
+                });
+            },
+            closeUserInfoDialog() {
+                this.userInfoDialog = false;
             }
         }
     };

@@ -138,9 +138,9 @@ const store = new Vuex.Store({
             }
         },
         setLogout(state) {
-            state.userToken = sessionStorage.setItem('userToken', "")
-            state.userData = sessionStorage.setItem('userData', "")
-            state.mobileToken = sessionStorage.setItem('mobileToken', "")
+            state.userToken = sessionStorage.setItem('userToken', null)
+            state.userData = sessionStorage.setItem('userData', null)
+            state.mobileToken = sessionStorage.setItem('mobileToken', null)
             state.headImg = '';
         },
         settaskList(state, status) {
@@ -243,6 +243,7 @@ const store = new Vuex.Store({
                 const {msg, httpCode} = results.data;
                 if (httpCode === 200) {
                     router.push({name: data});
+                    router.go(0);
                     context.commit("setLogout")
                 } else if (httpCode !== 401) {
                     errTips(msg);

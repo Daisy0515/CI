@@ -27,7 +27,7 @@
                     <router-link :to="{name:'managerIndex'}">
                         <li class="UserremindItem">评审系统</li>
                     </router-link>
-                    <li @click="SETLOGOUT('index')" class="UserremindItem">退出</li>
+                    <li @click="SETLOGOUT('index');" class="UserremindItem">退出</li>
                 </ul>
                 <img class="redCircle" :src="getuserData.headurl?getuserData.headurl:getnoImg" slot="reference"/>
             </el-popover>
@@ -55,32 +55,35 @@
             ...mapActions(["GETMESSAGE", "CHANGEMESSAGESTATE", "SETLOGOUT"]),
         }
     };
+
 </script>
 <style lang='scss'>
     .ccc-header__options {
-        margin-right: 20%;
-        float: right;
-        margin-top:17px;
+        //margin-right: 20%;
+        //float: right;
+        //margin-top:17px;
     }
 
     .uuserImg {
         margin: auto 0;
+        display: flex;
+        align-items: center;
 
         .icon-xiaoxi {
             cursor: pointer;
             font-size: 35px;
             float: left;
-            margin-bottom:33px;
-            color: #4C5E65;
+            //margin-bottom:33px;
+            color: #80CCD0;
             transition: all 0.4s;
 
             &:hover {
-                color: #80CCD0;
+                color: #d0b580;
             }
         }
 
         .badge {
-            margin-top: -20px;
+            //margin-top: -20px;
             margin-right: 20px;
         }
 

@@ -28,24 +28,39 @@
                     <router-link :to="{name:'managerIndex'}">
                         <li class="UserremindItem">评审系统</li>
                     </router-link>
+                    <li class="UserremindItem" @click="showCollectionDialog">我的收藏</li>
+                    <li class="UserremindItem" @click="showMessageDialog">我的消息</li>
                     <li @click="SETLOGOUT('index')" class="UserremindItem">退出</li>
                 </ul>
                 <img class="redCircle" :src="getuserData.headurl?getuserData.headurl:getnoImg" slot="reference"/>
             </el-popover>
         </div>
+        <el-dialog width="80%" :visible.sync="showCollect">
+            <my-collection></my-collection>
+        </el-dialog>
+        <el-dialog width="80%" :visible.sync="showMessage">
+            <my-message></my-message>
+        </el-dialog>
     </div>
 </template>
 <script>
     import {mapGetters, mapMutations, mapActions} from "vuex";
-
+    import myCollection from "@/view/desk/myCollection/myCollection"
+    import myMessage from "@/view/desk/myMessage/myMessage"
     export default {
         name: "homeHead",
+        components: {
+            myMessage,
+            myCollection,
+        },
         data: function () {
             return {
                 title: "群智化平台",
                 logoUrl: require("@/assets/img/homepage/logo.png"),
                 indexUrl: "index",
-                messageList: []
+                messageList: [],
+                showCollect:false, //控制显示我的收藏页面
+                showMessage:false, //控制显示消息管理页面
             };
         },
         computed: {
@@ -54,6 +69,16 @@
         methods: {
             ...mapMutations(["setLogin", "setLogout", "setImgurl"]),
             ...mapActions(["GETMESSAGE", "CHANGEMESSAGESTATE", "SETLOGOUT"]),
+
+            /*显示我的收藏*/
+            showCollectionDialog(){
+                this.showCollect = true;
+            },
+            /*显示我的收藏*/
+            showMessageDialog(){
+                this.showMessage = true;
+            },
+
         }
     };
 </script>
@@ -71,11 +96,12 @@
             font-size: 26px;
             float: left;
             margin-top: 3px;
-            color: #ffffff;
+            color: white;
+
             transition: all 0.4s;
 
             &:hover {
-                color: #7ea3ce;
+                color:rgba(0, 0, 0, 0.74);
             }
         }
 

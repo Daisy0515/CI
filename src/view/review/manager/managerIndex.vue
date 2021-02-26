@@ -49,7 +49,9 @@
                     </el-row>
                     <el-row style="margin-bottom: 15px;">
                         <el-card>
-                            <el-button type="text" class="button" @click="getTips">评审模板</el-button>
+                            <router-link to="/adminRegister">
+                                <el-button type="text" class="button" >注册评审管理员</el-button>
+                            </router-link>
                         </el-card>
                     </el-row>
                 </el-card>
@@ -97,30 +99,28 @@
             getView() {
                 httpGet("/v1/authorization/review/summarizing/get", {role: this.role}).then(results => {
                     const {httpCode, msg, data} = results.data;
-                    if (httpCode == 200) {
+                    if (httpCode === 200) {
                         this.acceptCount = data.acceptCount;
                         this.reviewCount = data.reviewCount;
                         this.aboutTimeoutCount = data.aboutTimeoutCount;
                         this.alreadyTimeoutCount = data.alreadyTimeoutCount;
-                    } else if (msg == "该条件暂无数据") {
+                    } else if (msg === "该条件暂无数据") {
                         message("该条件暂无数据");
                     } else if (httpCode !== 401) {
                         errTips(msg);
                     }
                 });
             },
-            getUserProjectList() { //获取当前用户参与的项目
-                httpGet("/v1/authorization/mission/projectid/get").then(results => {
-                    const {httpCode, msg, data} = results.data;
-                    if (httpCode == 200) {
+            getUserProjectList() { //获取当前用户中标处于执行中的项目
+                httpGet("/v1/authorization/review/projectid/get").then(results => {
+                    const {httpCode, data} = results.data;
+                    if (httpCode === 200) {
                         this.projectList = data.projectList;
-                    } else if (httpCode !== 400) { //400 "该用户暂无参与执行中项目"
-                        errTips(msg);
                     }
                 });
             },
-            getTips() {
-                message("暂未开放，敬请期待！");
+            registerAdmin() {
+                this.$router.push("/adminRegister");
             },
             getInitForm() {
                 return {

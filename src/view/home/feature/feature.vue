@@ -51,7 +51,7 @@
                     <div class="contact">
                         <p>项目贡献者</p>
                         <el-row>
-                            <el-col :span="4" v-for="i in 5" :key="i">
+                            <el-col :span="8" v-for="i in 6" :key="i">
                                 <el-avatar :size="100" :src="require(''+pics[i-1])">
                                 </el-avatar>
                                 <br>
@@ -59,8 +59,8 @@
                                 <br>
                                 <span>职业：{{ occus[i - 1] }}</span>
                                 <br>
-                                <span>主页: </span>
-                                <a :href="homes[i-1]">{{ homes[i - 1] }}</a>
+                                <span>主页：</span>
+                                <a :href="homes[i-1]">个人主页</a>
                                 <br>
                                 <br>
                                 <br>
@@ -86,9 +86,9 @@ export default {
     data() {
         return {
             n: 5,
-            pics: ["./test.jpg", "./test.jpg", "./test.jpg", "./test.jpg", "./test.jpg"],
-            names: ["任庆吉", "任庆吉", "任庆吉", "任庆吉", "任庆吉",],
-            occus: ["硕士在读", "硕士在读", "硕士在读", "硕士在读", "硕士在读",],
+            pics: ["./施鉴洋.png", "./许文健.png", "./袁琦.png", "./邵卢娇.png", "./郑俊进.png", "./任庆吉.png"],
+            names: ["施鉴洋", "许文健", "袁琦", "邵卢娇", "郑俊进", "任庆吉"],
+            occus: ["博士在读", "硕士在读", "硕士在读", "硕士在读", "硕士在读", "硕士在读"],
             homes: ["www.baidu.com", "www.baidu.com", "www.baidu.com", "www.baidu.com", "www.baidu.com",],
         }
     },

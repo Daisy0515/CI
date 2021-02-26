@@ -27,7 +27,7 @@
                                   style="width:50%;margin-top: 2%;margin-right: 20px;"
                                   auto-complete="off"></el-input>
                         <el-button type="primary" @click="searchUser()">搜索</el-button>
-                        <div v-show="searchForm == true">
+                        <div v-show="haveUser == true">
                             <el-table :data="searchData " :header-cell-style="rowClass" style="margin-top:10px;">
                                 <el-table-column prop="userName" label="用户名"></el-table-column>
                                 <el-table-column prop="phone" label="手机"></el-table-column>
@@ -113,7 +113,7 @@
                 searchForm: false,
                 searchData: [],
                 keywordsVisible: false,
-                haveUser: true,
+                haveUser: null,
                 imageUrl: '',
                 ruleForm: {
                     checkPass: null,
@@ -206,6 +206,7 @@
                             role: data.role,
                             userName: data.userName
                         });
+                        this.haveUser = true;
                     } else {
                         this.searchData = [];
                         this.haveUser = false;

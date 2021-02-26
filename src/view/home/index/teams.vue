@@ -1,32 +1,26 @@
 <template>
     <div class="ttoolset">
-        <div v-for="(item, index) in teams" :key="index">
+        <router-link :to="{path:'applicationAccession', query:{id:item.id}}" v-for="(item, index) in plazaList" :key="index">
             <div style=" vertical-align:middle; margin-top:8%">
-                <img src="./icon.png"
+                <img :src="item.headurl"
                      style="width:50px; height:50px; border-radius:50%; margin-left: 5%; ">
                 <div style="display: inline-block; margin-left:15px;">
                     <div style="margin-bottom: 10px">
                         <a style="font-size: 18px;font-family: PingFang HK;font-weight: 500;color: #011A24;">{{
-                                item.name
+                                item.teamName
                             }}</a>
                     </div>
-                    <div style="margin-top: -5px">
-                        <a style="width: 175px;
+                    <div style="margin-top: -5px; ">
+                        <a style="
                     font-size: 14px;
                     font-family: PingFang HK;
                     font-weight: 500;
-                    color: #788DA4;
-                    " v-if="item.member != null">成员{{ item.member }}人 </a>
-                        <a style="width: 175px;
-                    font-size: 14px;
-                    font-family: PingFang HK;
-                    font-weight: 500;
-                    color: #788DA4;
-                    " v-if="item.project != null"> 已完成{{ item.project }}个项目</a>
+                    color: #788DA4;"
+                    >{{ item.requirement }} </a>
                     </div>
                 </div>
             </div>
-        </div>
+        </router-link>
     </div>
 </template>
 
@@ -49,53 +43,31 @@ export default {
                 orderType: "DESC"
             },
             plazaList:[],
-            teams: [
-                {
-                    name: "优枫科技",
-                    member: 6,
-                    project: 123,
-                },
-                {
-                    name: "花鲤在线",
-                    member: 30,
-                    project: 120,
-                },
-                {
-                    name: "KEVINA工作室",
-                    member: 12,
-                    project: 102,
-                },
-                {
-                    name: "TONY工作室",
-                    member: null,
-                    project: 102,
-                }, {
-                    name: "TIM工作室",
-                    member: 12,
-                    project: null,
-                },
-            ]
         };
     },
     created: function () {
-        httpGet("/v1/public/share/get/top").then(results => {
-            const {httpCode, data, msg} = results.data;
-            if (httpCode === 200) {
-                this.toolsetList = data;
-            } else if (httpCode !== 401) {
-                errTips(msg);
-            }
-        });
         this.getTeams();
     },
     methods: {
+        checkImgExists(imgUrl) {
+            return new Promise(function(resolve, reject) {
+                var ImgObj = new Image();
+                ImgObj.src = imgUrl;
+                ImgObj.onload = function(res) {
+                    resolve(res);
+                }
+                ImgObj.onerror = function(err) {
+                    reject(err)
+                }
+            })
+        },
         getTeams(val = this.pageData) {
             this.loading = true;
             httpGet("/v1/public/bid/search/getteaminfo", val).then(results => {
                 let getData = results.data;
                 if (getData.httpCode === 200) {
                     this.plazaList = [...getData.data.teamGroupInfoList].slice(0, 5);
-                    console.log("98", this.plazaList);
+                    console.log(58, this.plazaList);
                     this.pageData.pageNo = getData.data.pageNo;
                     this.totalPage = parseInt(getData.data.totalPage + "0");
                     for (let i of this.plazaList) {
@@ -104,7 +76,19 @@ export default {
                     this.loading = false;
                     this.tipData = false;
                     Object.assign(this.pageData, val);
-                    // this.seleValue = value;
+                    for(let i=0; i<5; i++){
+                        this.checkImgExists(this.plazaList[i].headurl).then(()=>{
+
+                        }).catch(()=>{
+                            this.plazaList[i].headurl = require("./icon.png");
+                        })
+                        if(this.plazaList[i].teamName!==null && this.plazaList[i].teamName.length > 15){
+                            this.plazaList[i].teamName = this.plazaList[i].teamName.slice(0, 15) + "……";
+                        }
+                        if(this.plazaList[i].requirement.length > 20){
+                            this.plazaList[i].requirement = this.plazaList[i].requirement.slice(0, 15) + "……";
+                        }
+                    }
                 } else if (getData.msg === "该条件暂无数据") {
                     this.loading = false;
                     this.plazaList = [];

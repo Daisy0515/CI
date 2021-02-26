@@ -105,24 +105,24 @@
                                                       groupBg="groupGray" @selectCountry="selectCountry"></foreign-area>
                                     </el-form-item>
                                 </el-col>
-                                <el-col :span="10">
-                                    <el-form-item label="省市/自治区" :label-width="formLabelWidth">
-                                        <el-cascader
-                                                size="large"
-                                                placeholder="请选择省市"
-                                                :options="options"
-                                                v-model="selectedOptions"
-                                                style="width: 100%;"
-                                        ></el-cascader>
-                                    </el-form-item>
-                                </el-col>
+<!--                                <el-col :span="10">-->
+<!--                                    <el-form-item label="省市/自治区" :label-width="formLabelWidth">-->
+<!--                                        <el-cascader-->
+<!--                                                size="large"-->
+<!--                                                placeholder="请选择省市"-->
+<!--                                                :options="options"-->
+<!--                                                v-model="selectedOptions"-->
+<!--                                                style="width: 100%;"-->
+<!--                                        ></el-cascader>-->
+<!--                                    </el-form-item>-->
+<!--                                </el-col>-->
 
 
                             </el-row>
                             <el-row :gutter="20">
-                                <el-col :span="10">
+                                <el-col :span="20">
                                     <el-form-item label="通讯地址" :label-width="formLabelWidth">
-                                        <el-input v-model="ruleForm.contactAddress"></el-input>
+                                        <el-input v-model="ruleForm.contactAddress" style="width: 440px;" ></el-input>
                                     </el-form-item>
                                 </el-col>
 
@@ -141,15 +141,15 @@
 
 
                                 <el-dialog title="请选择个人研究方向" :visible.sync="keywordsVisible" style="text-align: left;"
-                                           width="50%">
-                                    <div style="width: 80%">
-                                        <div style="margin: 0 auto;">
-                                            <el-transfer
+                                           width="900px">
+                                    <div style="width: 80%;text-align: center">
 
+                                            <el-transfer
+                                                    style="text-align: left; display: inline-block"
                                                     v-model="value"
                                                     :data="data">
                                             </el-transfer>
-                                        </div>
+
                                     </div>
                                     <div slot="footer" class="dialog-footer">
                                         <el-button @click="keywordsVisible = false">取 消</el-button>
@@ -203,7 +203,7 @@
         },
         data() {
             return {
-                selectedOptions: [],
+                // selectedOptions: [],
                 researchName: null,
                 data: [],
                 value: [],
@@ -265,7 +265,7 @@
                 console.log(this.educationName, Number.isInteger(this.educationName));
                 if (Number.isInteger(this.educationName) === true)
                     this.ruleForm.education = this.educationName;
-                this.ruleForm.city = this.newcity[this.selectedOptions[1]];
+                //this.ruleForm.city = this.newcity[this.selectedOptions[1]];
                 this.ruleForm.researchDirectionList = this.value;
                 if (this.ruleForm.sex === '男') {
                     this.ruleForm.sex = 1;

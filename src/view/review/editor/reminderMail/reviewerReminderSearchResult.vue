@@ -96,10 +96,8 @@
 
                 let searchData = JSON.parse(this.searchData);
                 searchData = Object.assign(this.pageData, searchData);//searchData和pageData会合并在一起，两者都发生改变
-                console.log("search_data", JSON.stringify(searchData));
                 httpGet("v1/authorization/review/byadminmission/search", searchData).then(results => {
                     const {httpCode, msg, data} = results.data;
-                    console.log("searchResultData:", JSON.stringify(data));
                     if (httpCode === 200) {
                         for (let item of data.expertList) {
                             item.deadline = specificDate(item.deadline);
@@ -108,6 +106,8 @@
                             item.receiveTime = specificDate(item.receiveTime);
                         }
                         this.expertList = data.expertList;
+                    }else if(msg === "该条件暂无数据"){
+                        message(msg);
                     } else if (httpCode !== 401) {
                         errTips(msg);
                     }
@@ -131,7 +131,6 @@
                     errTips("请先选择专家！");
                     return;
                 }
-                console.log("this.idList", this.idList);
                 httpPost("/v1/authorization/review/experteid/list", {idList: this.idList}).then(results => {
                     const {httpCode, msg, data} = results.data;
                     if (httpCode === 200) {

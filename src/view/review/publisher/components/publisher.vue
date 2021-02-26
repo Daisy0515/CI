@@ -220,7 +220,7 @@
                 </el-row>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button @click="" style="margin-right: 30px;">取 消</el-button>
+                <el-button @click="closeEvaluateDialog" style="margin-right: 30px;">取 消</el-button>
                 <el-button type="primary" @click="submitEvaluate('evaluateForm')" v-prevent-click>提交</el-button>
             </div>
         </el-dialog>
@@ -237,7 +237,7 @@
 </template>
 
 <script>
-    import {httpGet, httpDelete, httpPut, httpPost} from "@/utils/http.js";
+    import {httpGet, httpPut, httpPost} from "@/utils/http.js";
     import {specificDate} from '@/utils/getDate.js';
     import {message, successTips, errTips,} from "@/utils/tips.js";
     import {MessageBox} from 'element-ui';
@@ -354,27 +354,22 @@
             /**搜索栏：获取当前用户参与的项目,这些项目处于执行中或完成的状态,并且这些项目是设置了评审流程的*/
             getUserProjectList() {
                 httpGet("/v1/authorization/mission/promulgator/getall").then(results => {
-                    const {httpCode, msg, data} = results.data;
-                    console.log("data.projectList", data.projectList);
-                    if (httpCode == 200) {
+                    const {httpCode, data} = results.data;
+                    if (httpCode === 200) {
                         this.projectList = data.projectList;
-                    } else if (httpCode !== 401) {
-                        errTips(msg);
-                    }
+                    }//用户没有项目时，不弹出提示消息
                 });
             },
             /**搜索栏：获取用户当前项目的所有评审流程*/
             getReviewProcessList(projectId) {
                 this.processLoading = true;
-                console.log("projectId:", projectId);
                 if (projectId === "") {
                     message("请先选择项目");
                     return;
                 }
                 httpGet("/v1/authorization/review/process/list", {id: projectId}).then(results => {
                     const {httpCode, msg, data} = results.data;
-                    console.log("data:", data);
-                    if (httpCode == 200) {
+                    if (httpCode === 200) {
                         if (data.processList.length === 0) { //没有评审流程
                             this.reviewProcessList = [{id: null, processName: "当前项目没有评审流程"}]
                         } else {
@@ -393,7 +388,7 @@
             getAllReviewProcessList() {
                 httpGet("/v1/public/bid/process/list").then(results => {
                     const {httpCode, msg, data} = results.data;
-                    if (httpCode == 200) {
+                    if (httpCode === 200) {
                         for (let i of data.reviewProcessList) {
                             this.allReviewProcessList[i.id] = i.processName;
                         }
@@ -407,7 +402,7 @@
                 this.loading = true;
                 httpGet("/v1/authorization/review/review/search", val).then(results => {
                     const {httpCode, msg, data} = results.data;
-                    if (httpCode == 200) {
+                    if (httpCode === 200) {
                         this.pageNo = data.pageNo;
                         this.totalPage = parseInt(data.totalPage + '0');
 
@@ -420,7 +415,7 @@
                         }
                         Object.assign(this.pageData, val);
                         this.$set(this, 'tableData', list);
-                    } else if (msg == "该条件暂无数据") {
+                    } else if (msg === "该条件暂无数据") {
                         this.tableData = [];
                         message("该条件暂无数据");
                     } else if (httpCode !== 401) {
@@ -447,7 +442,7 @@
                             item.gmtCreate = specificDate(item.gmtCreate);
                         }
                         this.formReviewDetail = data;
-                    } else if (msg == "该条件暂无数据") {
+                    } else if (msg === "该条件暂无数据") {
                         this.formReviewDetail = {};
                         message("该条件暂无数据");
                     } else if (httpCode !== 401) {
@@ -464,14 +459,14 @@
             },
             /**未接受：提交打回内容*/
             submitRollback() {//提交打回信息
-                httpPost('/v1/authorization/review/opinion/insert', this.form).then(results => {
+                httpPost('/v1/authorization/review/publisher/rollback', this.form).then(results => {
                     const {msg, httpCode} = results.data;
                     if (httpCode === 200) {
                         successTips("已打回评审！");
                         this.form.details = "";
                         this.form.reviewInfoId = "";
                         this.form.deadline = "";
-                        this.getView();
+                        this.$router.push('/publisherRollback');
                         this.dialogRollbackVisible = false;
                     } else {
                         errTips(msg);
@@ -489,7 +484,7 @@
                         const {msg, httpCode} = results.data;
                         if (httpCode === 200) {
                             successTips("已接受评审！");
-                            this.getView();
+                            this.$router.push('/publisherReview');
                         } else {
                             errTips(msg);
                         }
@@ -505,18 +500,16 @@
 
                 httpGet("/v1/authorization/review/opinion/list", {id: val}).then(results => {
                     const {httpCode, msg, data} = results.data;
-                    if (httpCode == 200) {
+                    if (httpCode === 200) {
                         this.formOpinion = data;
                         this.formOpinion.gmtCreate = specificDate(this.formOpinion.gmtCreate);
                         let list = data.reviewOpinionList;
-                        console.log(list);
                         for (let i of list) {
                             i.submitTime = specificDate(i.submitTime);
                             i.deadline = specificDate(i.deadline);
                         }
                         this.formOpinion.reviewOpinionList = list;
-                        console.log(123);
-                    } else if (msg == "该条件暂无数据") {
+                    } else if (msg === "该条件暂无数据") {
                         this.formOpinion = {};
                         message("该条件暂无数据");
                     } else if (httpCode !== 401) {
@@ -576,7 +569,7 @@
                 this.evaluateDetailLoading = true;
                 httpGet("/v1/authorization/review/evaluate/get", {id: val}).then(results => {
                     const {httpCode, msg, data} = results.data;
-                    if (httpCode == 200) {
+                    if (httpCode === 200) {
                         data.gmtCreate = specificDate(data.gmtCreate);
                         this.formEvaluationDetail = data;
                         this.formEvaluationDetail.fileTable = [{

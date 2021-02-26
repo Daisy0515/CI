@@ -20,17 +20,10 @@
                     font-family: PingFang HK;
                     font-weight: 500;
                     color: #788DA4;
-                    " >{{ item.title }} </a>
+                    ">{{ item.description }} </a>
                     </div>
                 </div>
             </div>
-<!--            <div style=" align-items: center;">-->
-<!--                <img src="./icon.png"-->
-<!--                     style="width:50px; height:50px; border-radius:50%; margin: 20px; ">-->
-<!--                <a style="font-size: 18px;font-family: PingFang HK;font-weight: 500;color: #011A24;vertical-align:200%">{{-->
-<!--                        item.title-->
-<!--                    }}</a>-->
-<!--            </div>-->
         </router-link>
     </div>
 </template>
@@ -43,20 +36,41 @@ export default {
     name: "ToolSet",
     data() {
         return {
-            toolsetList: []
+            toolsetList: [],
+            iconList: [require('./1.png'),
+                require('./2.png'),
+                require('./3.png'),
+                require('./4.png'),
+                require('./5.png'),
+                require('./6.png'),
+                require('./7.png'),
+                require('./8.png'),
+                require('./9.png'),
+                require('./10.png'),
+                require('./11.png'),
+                require('./12.png'),
+                require('./13.png'),
+                require('./14.png'),
+            ],
         };
     },
     created: function () {
-        httpGet("/v1/public/share/get/top").then(results => {
-            const {httpCode, data, msg} = results.data;
-            if (httpCode === 200) {
-                this.toolsetList = data;
-            } else if (httpCode !== 401) {
-                errTips(msg);
-            }
-        });
+        this.getTools();
     },
-    methods: {}
+    watch: {
+    },
+    methods: {
+        getTools() {
+            httpGet("/v1/public/share/get/top").then(results => {
+                const {httpCode, data, msg} = results.data;
+                if (httpCode === 200) {
+                    this.toolsetList = data.slice(0, 5);
+                } else if (httpCode !== 401) {
+                    errTips(msg);
+                }
+            });
+        },
+    }
 };
 </script>
 <style lang='scss'>

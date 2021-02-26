@@ -27,8 +27,8 @@
         opacity:1;
     }
     .cc-hero__lead {
-        margin: 250px 0 0 20%;
-
+        margin: 250px auto;
+        width:1100px;
         p {
             font-family: PingFang HK;
             color: #FFFFFF;
@@ -140,16 +140,16 @@
     }
 
     .center-section {
-        padding: 68px 20% 68px 20%;
-        overflow: hidden;
+        margin: 158px auto 158px auto;
+        width:1100px;
     }
 
     .iimg-list__right {
-        float: right;
+
     }
 
     .iimg-list__left {
-        float: left;
+        white-space: pre-wrap;
     }
 
     .iimg-list__left-title {
@@ -190,6 +190,7 @@
         background-repeat: no-repeat;
         background-image: url('../../../assets/img/index/about_background.png');
         height: 497px;
+        background-position-x: center;
     }
 
     .about-img-text-content {
@@ -207,4 +208,5 @@
         height: 683px; 
         padding-left: 25%;
         margin-top: 68px;
+        background-position-x: center;
     }
