@@ -2,7 +2,7 @@
     <div class="teamApplication">
         <div class="header">
             <div class="container deskHeader">
-                <h4>团队申请</h4>
+                <h4>我的评分</h4>
             </div>
         </div>
         <div class="container deskHeader">
@@ -16,14 +16,14 @@
             </el-dialog>
             <div class="header_top">
                 <el-input v-model="searchData.name" placeholder="请输入项目名称"></el-input>
-                <el-select v-model="searchData.role" placeholder="请选择角色" clearable>
-                    <el-option
-                            v-for="item in roleOptions"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value"
-                    ></el-option>
-                </el-select>
+<!--                <el-select v-model="searchData.role" placeholder="请选择角色" clearable>-->
+<!--                    <el-option-->
+<!--                            v-for="item in roleOptions"-->
+<!--                            :key="item.value"-->
+<!--                            :label="item.label"-->
+<!--                            :value="item.value"-->
+<!--                    ></el-option>-->
+<!--                </el-select>-->
                 <div class="get_btn">
                     <el-button size="primary" @click="searchList">搜索</el-button>
                 </div>
@@ -266,6 +266,12 @@
             },
             //获取页面数据
             getView(val = this.pageData) {
+                let role = JSON.parse(sessionStorage.getItem("projectRole"));
+                if(role===2){
+                    val.role = 1; //项目经理
+                }else if(role===3){
+                    val.role = 2; //开发者
+                }
                 this.loading = true;
                 httpGet("/v1/authorization/comment/search/get", val).then(results => {
                     const {httpCode, msg, data} = results.data;

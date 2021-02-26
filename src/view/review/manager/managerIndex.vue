@@ -49,7 +49,9 @@
                     </el-row>
                     <el-row style="margin-bottom: 15px;">
                         <el-card>
-                            <el-button type="text" class="button" @click="getTips">评审模板</el-button>
+                            <router-link to="/adminRegister">
+                                <el-button type="text" class="button" >注册评审管理员</el-button>
+                            </router-link>
                         </el-card>
                     </el-row>
                 </el-card>
@@ -117,8 +119,8 @@
                     }
                 });
             },
-            getTips() {
-                message("暂未开放，敬请期待！");
+            registerAdmin() {
+                this.$router.push("/adminRegister");
             },
             getInitForm() {
                 return {

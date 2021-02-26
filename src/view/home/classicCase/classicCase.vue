@@ -5,7 +5,7 @@
                 <div class="container">
                     <div class="module_headerCrumb">
                         <div class="refinery">
-                            <div class="h1 searchTitle">
+                            <div class="searchTitle">
                                 <h1>经典案例</h1>
                                 <h2>
                   <span>

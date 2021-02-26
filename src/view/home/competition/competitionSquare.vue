@@ -6,9 +6,12 @@
                     <div class="module_headerCrumb">
                         <div class="refinery">
                             <div class="searchTitle">
-                                <p class="searchTitle">
-                                    <router-link to="competitionSquare">竞赛广场</router-link>
-                                </p>
+                                <h1>竞赛广场</h1>
+                                <h2>
+                  <span>
+                    面向学校和社会开放的竞赛平台，参与感兴趣的项目，丰富经历，赢取奖金！
+                  </span>
+                                </h2>
                             </div>
                         </div>
                         <span class="resultCount"></span>

@@ -1,6 +1,6 @@
 <template>
     <div class="register">
-        <Index-Header></Index-Header>
+        <reviewHead/>
         <div class="container">
             <el-card class="box-card">
                 <div slot="header" class="clearfix" style="text-align:center">
@@ -44,7 +44,7 @@
                         </el-row>
                         <el-row :gutter="20">
                             <el-col :span="12">
-                                <el-form-item label="学历" :label-width="formLabelWidth">
+                                <el-form-item label="学历" :label-width="formLabelWidth" prop="education">
                                     <el-select v-model="ruleForm.education" placeholder="请选择学历" style="width: 100%;">
                                         <el-option label="高中" value="1"></el-option>
                                         <el-option label="大专" value="2"></el-option>
@@ -79,7 +79,7 @@
                         <el-row :gutter="20">
 
                             <el-col :span="12">
-                                <el-form-item label="工作单位" :label-width="formLabelWidth">
+                                <el-form-item label="工作单位" :label-width="formLabelWidth" prop="workUnit">
                                     <el-input v-model="ruleForm.workUnit"></el-input>
                                 </el-form-item>
                             </el-col>
@@ -91,29 +91,17 @@
                         </el-row>
                         <el-row :gutter="20">
                             <el-col :span="12">
-                                <el-form-item label="国家" :label-width="formLabelWidth">
+                                <el-form-item label="国家" :label-width="formLabelWidth" prop="nation">
                                     <foreign-area popularCity="" selectBg="selectGray" groupBg="groupGray"
                                                   @selectCountry="selectCountry"></foreign-area>
                                 </el-form-item>
                             </el-col>
-                            <el-col :span="12">
-                                <el-form-item label="省市/自治区" :label-width="formLabelWidth">
-                                    <el-cascader
-                                            size="large"
-                                            placeholder="请选择省市"
-                                            :options="options"
-                                            v-model="selectedOptions"
-                                            style="width: 100%;"
-                                    ></el-cascader>
-                                </el-form-item>
-                            </el-col>
-
 
                         </el-row>
                         <el-row :gutter="20">
                             <el-col :span="12">
                                 <el-form-item label="通讯地址" :label-width="formLabelWidth">
-                                    <el-input v-model="ruleForm.contactAddress"></el-input>
+                                    <el-input v-model="ruleForm.contactAddress" style="width: 440px;"></el-input>
                                 </el-form-item>
                             </el-col>
                             <hr style="width: 100%; color: #303133;">
@@ -133,13 +121,15 @@
                                 </div>
 
                                 <el-dialog title="请选择个人研究方向" :visible.sync="keywordsVisible" style="text-align: left;"
-                                           width="50%">
-                                    <div style="margin-left: 60px;">
-                                        <el-transfer
+                                           width="900px">
+                                    <div style="width: 80%;text-align: center">
 
+                                        <el-transfer
+                                                style="text-align: left; display: inline-block"
                                                 v-model="value"
                                                 :data="data">
                                         </el-transfer>
+
                                     </div>
                                     <div slot="footer" class="dialog-footer">
                                         <el-button @click="keywordsVisible = false">取 消</el-button>
@@ -170,7 +160,7 @@
 </template>
 <script>
     import {provinceAndCityData, CodeToText} from "element-china-area-data";
-    import IndexHeader from "@/common/header/userHeader";
+    //import IndexHeader from "@/common/header/userHeader";
     import Footer from "@/common/footer/footer";
     import {httpGet, httpPut} from "@/utils/http.js";
     import regular from "@/mixins/regular/companyRegister.js";
@@ -178,12 +168,13 @@
     import Avatar from "@/common/upload/Avatar";
     import {errTips, successTips} from '@/utils/tips.js';
     import addKeyWords from "@/view/review/expert/components/addKeyWords";
+    import reviewHead from "@/common/header/reviewLayout";
 
     export default {
         name: "adminRegister",
         components: {
             foreignArea,
-            IndexHeader,
+            reviewHead,
             Footer,
             Avatar,
             addKeyWords
@@ -195,6 +186,9 @@
                 rules: {
                     name: [{required: true, message: '请输入姓名', trigger: 'blur'}],
                     researchDirection: [{required: true, message: '请选择研究方向', trigger: 'blur'}],
+                    workUnit: [{required: true, message: '工作单位不能为空', trigger: 'blur'}],
+                    nation: [{required: true, message: '国家不能为空', trigger: 'blur'}],
+                    education: [{required: true, message: '学历不能为空', trigger: 'blur'}],
 
                 },
                 data: null,

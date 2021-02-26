@@ -2,17 +2,17 @@
     <div id="index">
         <main id="main">
             <section class="cc-hero" id="heroImage">
-                    <div class="cc-hero__lead">
-                        <p class="cc-hero__title">发布您的需求</p>
-                        <p class="cc-hero__subtitle">提供覆盖生命周期的软件开发服务</p>
-                        <p class="cc-hero__title">__</p>
-                        <div class="cc-hero__CTA">
-                            <div class="ee-inputButton">
-                                <el-button @click="myDemand" type="primary">我的需求</el-button>
-                                <el-button @click="publishTask" type="primary">发布需求</el-button>
-                            </div>
+                <div class="cc-hero__lead">
+                    <p class="cc-hero__title">发布您的需求</p>
+                    <p class="cc-hero__subtitle">提供覆盖生命周期的软件开发服务</p>
+                    <p class="cc-hero__title">__</p>
+                    <div class="cc-hero__CTA">
+                        <div class="ee-inputButton">
+                            <el-button @click="myDemand" type="primary">我的需求</el-button>
+                            <el-button @click="publishTask" type="primary">发布需求</el-button>
                         </div>
                     </div>
+                </div>
             </section>
             <section class="center-section">
                 <div class="about-img-text center-text">
@@ -53,33 +53,36 @@
                         <img :src="iconList[3]" class="dash-border">
                         <p class='process-text'>交付&开源</p>
                     </div>
-                    
+
                 </div>
             </section>
             <section class="center-section">
-                <div class="iimg-list__left">
-                    <p class="iimg-list__left-title">PROCESS ON</p>
-                    <p class="iimg-list__left-subtitle">流程介绍</p>
-                    <p class="iimg-list__left-title iimg-list__left-br">_</p>
+                <div style="display: flex; justify-content: space-between;">
+                    <div class="iimg-list__left">
+                        <p class="iimg-list__left-title">PROCESS ON</p>
+                        <p class="iimg-list__left-subtitle">流程介绍</p>
+                        <p class="iimg-list__left-title iimg-list__left-br">_</p>
 
-                    <p class="iimg-list__left-subtitle">{{textList[currentIndex]['title']}}</p>
-                    <p class="iimg-list__left-content">{{textList[currentIndex]['content']}}</p>
+                        <p class="iimg-list__left-subtitle">{{ textList[currentIndex]['title'] }}</p>
+                        <p class="iimg-list__left-content">{{ textList[currentIndex]['content'] }}</p>
 
-                </div>
-                <div class="iimg-list__right">
-                    <div class="iimg-list__img">  
-                        <div class='iimg-list__bottom'> 
-                            <img :src="imgList[currentIndex]">  
-                        </div>  
-                        <img class='iimg-list__top' :src="imgList[(currentIndex+1)%4]">  
                     </div>
-                    
-                    <div class="iimg-list__text">
-                        <li v-for="(item,index) in imgList" :key="index" @click="changeImg(index)" 
-                            :class="[currentIndex == index ? 'iimg-list__active': 'iimg-list__noactive']">
-                                     <a v-show="currentIndex==index">_</a>{{'0'+(index+1)}}</li>
-                        <li class="iimg-list__noactive iimg-list__white" >05</li>
-                        <li class="iimg-list__noactive iimg-list__white">06</li>
+                    <div class="iimg-list__right">
+                        <div class="iimg-list__img">
+                            <div class='iimg-list__bottom'>
+                                <img :src="imgList[currentIndex]">
+                            </div>
+                            <img class='iimg-list__top' :src="imgList[(currentIndex+1)%4]">
+                        </div>
+
+                        <div class="iimg-list__text">
+                            <li v-for="(item,index) in imgList" :key="index" @click="changeImg(index)"
+                                :class="[currentIndex == index ? 'iimg-list__active': 'iimg-list__noactive']">
+                                <a v-show="currentIndex==index">_</a>{{ '0' + (index + 1) }}
+                            </li>
+                            <li class="iimg-list__noactive iimg-list__white">05</li>
+                            <li class="iimg-list__noactive iimg-list__white">06</li>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -122,44 +125,49 @@
                 ]
             }
         },
-        methods: {
-            changeImg(index) {
-                this.currentIndex = index;
-            },
-            myDemand() {
-                this.$router.push({path: "desk/myDemand"});
-            },
-            publishTask() {
-                this.$router.push({path: "publishTask"});
-            },
-            aboutUs() {
-                this.$router.push({path: "feature"});
-            },
 
-        }
-    };
+        methods: {
+        changeImg(index) {
+            this.currentIndex = index;
+        },
+        myDemand() {
+            this.$router.push({path: "desk/myDemand"});
+        },
+        publishTask() {
+            this.$router.push({path: "publishTask"});
+        },
+        aboutUs() {
+            this.$router.push({path: "feature"});
+        },
+
+    }
+};
 </script>
 <style lang='scss'>
-    @import "@/assets/scss/newindex.scss";
-    .process-line {
-        display: inline-block;
-        img {
-            margin: 0 25px 0 25px;
-            vertical-align: middle;
-        }
-        .dash-border {
-            border: dashed 1px #aaa;
-        }
+@import "@/assets/scss/newindex.scss";
+
+.process-line {
+    display: inline-block;
+
+    img {
+        margin: 0 25px 0 25px;
+        vertical-align: middle;
     }
-    .process-text {
-        width: 108px;
-        padding: 0 25px 0 25px;
-        display: table-cell;
-        font-size: 18px;
-        font-family: PingFang HK;
-        font-weight: 400;
-        color: #011A24;
+
+    .dash-border {
+        border: dashed 1px #aaa;
     }
+}
+
+.process-text {
+    width: 108px;
+    padding: 0 25px 0 25px;
+    display: table-cell;
+    font-size: 18px;
+    font-family: PingFang HK;
+    font-weight: 400;
+    color: #011A24;
+}
 </style>
 <style scoped>
     .center-section {

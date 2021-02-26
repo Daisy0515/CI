@@ -2,6 +2,7 @@
     <div class="homePublic clearfix">
         <newHomeHead v-if="this.$route.path == '/index'"/>
         <homeHead v-else/>
+<!--        <homeHead/>-->
         <div style="clear:both"></div>
         <router-view style="min-height:90%"></router-view>
         <div style="clear:both"></div>
