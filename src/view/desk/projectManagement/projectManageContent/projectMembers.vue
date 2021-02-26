@@ -92,14 +92,12 @@
             </div>
         </div>
         <team-member-info :dialogFormVisible="teamMemberInfoDialog" :ruleForm="userRuleForm"
-                          @closeDialog="closeTeamMemberInfoDialog" ref="teamMemberInfo"></team-member-info>
+                          @closeDialog="closeTeamMemberInfoDialog" ref="teamMemberInfo">
+        </team-member-info>
 <!--        队员申请模块-->
         <div class="teamApplication" v-if="manager_role && selected === 2">
             <div class="container deskHeader" >
-                <el-table
-                        :data="teamFrom"
-                        style="width: 100%"
-                >
+                <el-table :data="teamFrom" style="width: 100%" >
                     <el-table-column prop="proposer" label="申请人" align="center"></el-table-column>
                     <el-table-column prop="gmtCreate" label="申请时间" align="center"></el-table-column>
                     <el-table-column prop="status" label="状态" align="center"></el-table-column>
@@ -143,9 +141,10 @@
                 </div>   
             </div>
         </div>
-        <team-application-user-info :dialogFormVisible="userInfoDialog" :userData="userData" 
-                                        @closeDialog="closeUserInfoDialog"></team-application-user-info> 
-    </div>
+            <team-application-user-info :dialogFormVisible="userInfoDialog" :userData="userData"
+                                            @closeDialog="closeUserInfoDialog">
+            </team-application-user-info>
+        </div>
 </template>
 
 <script>
@@ -154,8 +153,8 @@
     import {successTips, errTips, message} from "@/utils/tips.js";
     import {MessageBox} from "element-ui";
     import {specificDate} from "@/utils/getDate.js";
-    import teamApplicationUserInfo from "./component/teamApplicationUserInfo.vue";
-    import teamMemberInfo from "./component/teamMemberInfo.vue"
+    import teamApplicationUserInfo from "@/view/desk/projectManagement/projectManageContent/component/teamApplicationUserInfo";
+    import teamMemberInfo from "@/view/desk/projectManagement/projectManageContent/component/teamMemberInfo"
 
     export default {
         components: {
