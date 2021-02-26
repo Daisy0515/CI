@@ -13,23 +13,22 @@
     import NewIndex from '@/view/home/index/index.vue';
     import IndexForDemand from '@/view/home/index/indexfordemand.vue';
 
-    export default {
-        components: {
-            Developer,
-            Manager,
-            NewIndex,
-            IndexForDemand,
-        },
-        data() {
-            return {
-                projectRole: 0,
-                userToken: "",
-            }
-        },
-        created() {
-            this.userToken = sessionStorage.getItem("userToken");
-            this.projectRole = sessionStorage.getItem("projectRole");
-            console.log(32, this.userToken);
+export default {
+    components: {
+        Developer,
+        Manager,
+        NewIndex,
+        IndexForDemand,
+    },
+    data() {
+        return {
+            projectRole: 0,
+            userToken: "",
         }
+    },
+    created() {
+        this.userToken = sessionStorage.getItem("userToken");
+        this.projectRole = sessionStorage.getItem("projectRole");
     }
+}
 </script>

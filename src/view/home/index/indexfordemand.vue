@@ -170,12 +170,16 @@
 }
 </style>
 <style scoped>
-    .center-section {
-        padding: 0;
-        margin: 136px 20% 136px 20%;
-    }
-    .iimg-list__white {
-        color: #fff;
-    }
+.center-section {
+    margin: 158px auto 158px auto;
+    width: 1100px;
+}
+/*.center-section {*/
+/*    padding: 0;*/
+/*    margin: 136px 20% 136px 20%;*/
+/*}*/
+.iimg-list__white {
+    color: #fff;
+}
 </style>
 

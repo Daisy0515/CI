@@ -70,35 +70,66 @@
 
             </section>
 
+<!--            <section class="center-section">-->
+<!--                <div style="display: flex; justify-content: space-between;">-->
+<!--                    <div class="iimg-list__left">-->
+<!--                        <p class="iimg-list__left-title">PROCESS ON</p>-->
+<!--                        <p class="iimg-list__left-subtitle">流程介绍</p>-->
+<!--                        <p class="iimg-list__left-title iimg-list__left-br">_</p>-->
+<!--                        <p class="iimg-list__left-subtitle" v-if="currentIndex==0">加入团队</p>-->
+<!--                        <p class="iimg-list__left-content" v-if="currentIndex==0">开发者用户可主动申请加入项目研发团队，<br>也可以被竞标用户邀请加入团队。<br>-->
+<!--                        </p>-->
+<!--                        <p class="iimg-list__left-subtitle" v-if="currentIndex==1">项目研发</p>-->
+<!--                        <p class="iimg-list__left-content" v-if="currentIndex==1">借助于平台的各类工具，开发者用户在接到研发任务后，<br>可以充分发挥群体协作的力量，高效地完成任务。<br>-->
+<!--                        </p>-->
+<!--                        <p class="iimg-list__left-subtitle" v-if="currentIndex==2">交付成果</p>-->
+<!--                        <p class="iimg-list__left-content" v-if="currentIndex==2">开发者用户在完成任务后，在平台交付。<br><br></p>-->
+<!--                    </div>-->
+<!--                    <div class="iimg-list__right">-->
+<!--                        <div class="iimg-list__img">-->
+<!--                            <div class='iimg-list__bottom'>-->
+<!--                                <img :src="imgList[currentIndex]">-->
+<!--                            </div>-->
+<!--                            <img class='iimg-list__top' :src="imgList[(currentIndex+1)%4]">-->
+<!--                        </div>-->
+
+<!--                        <div class="iimg-list__text">-->
+<!--                            <li v-for="(item,index) in imgList" :key="index" @click="changeImg(index)"-->
+<!--                                :class="[currentIndex == index ? 'iimg-list__active': 'iimg-list__noactive']">-->
+<!--                                <a v-show="currentIndex==index">_</a>{{ '0' + (index + 1) }}-->
+<!--                            </li>-->
+<!--                            <li class="iimg-list__noactive iimg-list__white">05</li>-->
+<!--                            <li class="iimg-list__noactive iimg-list__white">06</li>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </section>-->
             <section class="center-section">
                 <div style="display: flex; justify-content: space-between;">
                     <div class="iimg-list__left">
                         <p class="iimg-list__left-title">PROCESS ON</p>
                         <p class="iimg-list__left-subtitle">流程介绍</p>
                         <p class="iimg-list__left-title iimg-list__left-br">_</p>
-                        <p class="iimg-list__left-subtitle" v-if="currentIndex==0">加入团队</p>
-                        <p class="iimg-list__left-content" v-if="currentIndex==0">开发者用户可主动申请加入项目研发团队，<br>也可以被竞标用户邀请加入团队。<br>
-                        </p>
-                        <p class="iimg-list__left-subtitle" v-if="currentIndex==1">项目研发</p>
-                        <p class="iimg-list__left-content" v-if="currentIndex==1">借助于平台的各类工具，开发者用户在接到研发任务后，<br>可以充分发挥群体协作的力量，高效地完成任务。<br>
-                        </p>
-                        <p class="iimg-list__left-subtitle" v-if="currentIndex==2">交付成果</p>
-                        <p class="iimg-list__left-content" v-if="currentIndex==2">开发者用户在完成任务后，在平台交付。<br><br></p>
+
+                        <p class="iimg-list__left-subtitle">{{ textList[currentIndex]['title'] }}</p>
+                        <p class="iimg-list__left-content">{{ textList[currentIndex]['content'] }}</p>
+
                     </div>
                     <div class="iimg-list__right">
                         <div class="iimg-list__img">
                             <div class='iimg-list__bottom'>
                                 <img :src="imgList[currentIndex]">
                             </div>
-                            <img class='iimg-list__top' :src="imgList[(currentIndex+1)%3]">
+                            <img class='iimg-list__top' :src="imgList[(currentIndex+1)%2]">
                         </div>
 
                         <div class="iimg-list__text">
                             <li v-for="(item,index) in imgList" :key="index" @click="changeImg(index)"
-                                :class="[currentIndex == index ? 'iimg-list__active': 'iimg-list__noactive',
-                                     currentIndex == index && index == 2 ? 'iimg-list__lastactive': '']">
+                                :class="[currentIndex == index ? 'iimg-list__active': 'iimg-list__noactive']">
                                 <a v-show="currentIndex==index">_</a>{{ '0' + (index + 1) }}
                             </li>
+                            <li class="iimg-list__noactive iimg-list__white">05</li>
+                            <li class="iimg-list__noactive iimg-list__white">06</li>
                         </div>
                     </div>
                 </div>
@@ -127,6 +158,20 @@ export default {
                 require('@/assets/img/index/index_developer_3.png'),
                 require('@/assets/img/index/arrow_right.png')],
             currentIndex: 0,   //默认显示图片
+            textList: [
+                {
+                    title: '加入团队',
+                    content: '开发者用户可主动申请加入项目研发团队，\n也可以被竞标用户邀请加入团队。'
+                },
+                {
+                    title: '项目研发',
+                    content: '借助于平台的各类工具，开发者用户在接到研发任务后，\n可以充分发挥群体协作的力量，高效地完成任务。'
+                },
+                {
+                    title: '交付成果',
+                    content: '开发者用户在完成任务后，在平台交付。'
+                },
+            ]
         }
     },
     methods: {
@@ -160,6 +205,34 @@ export default {
 </script>
 <style lang='scss'>
 @import "@/assets/scss/newindex.scss";
+.process-line {
+    display: inline-block;
+
+    img {
+        margin: 0 25px 0 25px;
+        vertical-align: middle;
+    }
+
+    .dash-border {
+        border: dashed 1px #aaa;
+    }
+}
+
+.process-text {
+    width: 108px;
+    padding: 0 25px 0 25px;
+    display: table-cell;
+    font-size: 18px;
+    font-family: PingFang HK;
+    font-weight: 400;
+    color: #011A24;
+}
+ .center-section {
+     margin: 158px auto 158px auto;
+     width: 1100px;
+ }
+
+
 </style>
 <style scoped>
 .el-input-group__append .el-button--primary {
@@ -170,7 +243,9 @@ export default {
 .ee-inputButton >>> .el-input-group__append {
     border: none;
 }
-
+.iimg-list__white {
+    color: #fff;
+}
 .el-button--primary {
     color: #fff;
     background-color: #80CCD0;
@@ -307,25 +382,5 @@ export default {
     background: #011A24;
 }
 
-/*.process_img1 {*/
-/*    background-color: red;*/
-/*    margin-top: 6%;*/
-/*    margin-left: 9%;*/
-/*    position: relative;*/
-/*}*/
-
-/*.process_img2 {*/
-/*    background-color: black;*/
-/*    margin-top: 6%;*/
-/*    position: relative;*/
-/*    right: -10%;*/
-/*}*/
-
-/*.process_img3 {*/
-/*    background-color: #1e7e34;*/
-/*    margin-top: 6%;*/
-/*    position: relative;*/
-/*    right: -20%;*/
-/*}*/
 </style>
 

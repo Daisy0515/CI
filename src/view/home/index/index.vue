@@ -25,25 +25,25 @@
                         <p class="iimg-list__left-subtitle">群智服务特色</p>
                         <p class="iimg-list__left-title iimg-list__left-br">_</p>
 
-                        <p class="iimg-list__left-subtitle" v-if="currentIndex==0">角色赋能</p>
-                        <p class="iimg-list__left-content" v-if="currentIndex==0">平台提供多种用户角色，<br>包括项目发布者、管理者、开发者等角色，<br>多角色无缝切换，多功能自然解耦。
-                        </p>
-                        <el-button @click="register" type="primary" size="small">立即注册</el-button>
+                        <p class="iimg-list__left-subtitle">{{ textList[currentIndex]['title'] }}</p>
+                        <p class="iimg-list__left-content">{{ textList[currentIndex]['content'] }}</p>
+
                     </div>
                     <div class="iimg-list__right">
                         <div class="iimg-list__img">
                             <div class='iimg-list__bottom'>
                                 <img :src="imgList[currentIndex]">
                             </div>
-                            <img class='iimg-list__top' :src="imgList[(currentIndex+1)%6]">
+                            <img class='iimg-list__top' :src="imgList[(currentIndex+1)%5]">
                         </div>
 
                         <div class="iimg-list__text">
                             <li v-for="(item,index) in imgList" :key="index" @click="changeImg(index)"
-                                :class="[currentIndex == index ? 'iimg-list__active': 'iimg-list__noactive',
-                                     currentIndex == index && index == 5 ? 'iimg-list__lastactive': '']">
+                                :class="[currentIndex == index ? 'iimg-list__active': 'iimg-list__noactive']">
                                 <a v-show="currentIndex==index">_</a>{{ '0' + (index + 1) }}
                             </li>
+                            <li class="iimg-list__noactive iimg-list__white">05</li>
+                            <li class="iimg-list__noactive iimg-list__white">06</li>
                         </div>
                     </div>
                 </div>
@@ -53,7 +53,7 @@
                     <p class="iimg-list__left-title noheight_title">ABOUT</p>
                     <p class="iimg-list__left-subtitle">关于我们</p>
                     <p class="iimg-list__left-title iimg-list__left-br">_</p>
-                    <p class="about-img-text-content">
+                    <p class="about-img-text-content" v-if="currentIndex==0">
                         我们致力于打造真正的涵盖软件生命周期的众包平台<br>
                         构建群智化、生态化、服务化三化融合的软件生态系统<br>
                         吸引众多需求者和开发人员共同参与软件开发使命
@@ -67,13 +67,15 @@
                 <p class="iimg-list__left-title iimg-list__left-br">_</p>
                 <News/>
             </section>
-           <div class="center-text">
+            <section class="center-section">
+                <div class="center-text">
                     <p class="iimg-list__left-title noheight_title">NEW TOOL</p>
                     <p class="iimg-list__left-subtitle">最新工具</p>
                     <p class="iimg-list__left-title iimg-list__left-br">_</p>
-                    <IndexToolSet/>
+                    <ToolSet/>
                     <el-button @click="moreTool" type="info">更多工具</el-button>
                 </div>
+            </section>
         </main>
     </div>
 </template>
@@ -98,6 +100,32 @@ export default {
                 require('@/assets/img/index/index_service_6.jpg')],
             currentIndex: 0,   //默认显示图片
             // test: "群智服务特色",
+            textList: [
+                {
+                    title: '角色赋能',
+                    content: '平台提供多种用户角色，\n包括项目发布者、管理者、开发者等角色，\n多角色无缝切换，多功能自然解耦。'
+                },
+                {
+                    title: '需求理解',
+                    content: '在线获取群体协同的面向服务的用户需求，\n构建面向专业领域的用户需求诱导机制，\n捕获和挖掘多变的用户需求。'
+                },
+                {
+                    title: '涉众共融',
+                    content: '服务涉众共融的新型软件生态系统，\n借助服务化手段，将个体用户、开发者、服务提供者\n及平台管理者等服务涉众统一纳入软件生态系统环境。'
+                },
+                {
+                    title: '服务推荐',
+                    content: '基于个性化信息融合和服务推荐技术，\n设计群智化服务组合的方法，提供群智化\n生态化软件测试与运行质量保障技术方案。',
+                },
+                {
+                    title: '预测调控',
+                    content: '基于海量全球流行的软件生态系统及平台衍生的\n项目开发数据，应用人工智能与机器学习技术，\n驱动软件生态系统的度量与挖掘， 引导\n软件生态系统演化的预测与调控。',
+                },
+                {
+                    title: '协同学习',
+                    content: '基于大规模群体软件开发知识库，\n实现跨异构社区的知识迁移，\n形成“人-机-服务”协同学习的自适应机制，\n催生复杂多变环境下服务的协同演化。',
+                },
+            ]
         }
     },
     methods: {
@@ -131,17 +159,37 @@ export default {
 </script>
 <style lang='scss'>
 @import "@/assets/scss/newindex.scss";
+
+.process-line {
+    display: inline-block;
+
+    img {
+        margin: 0 25px 0 25px;
+        vertical-align: middle;
+    }
+
+    .dash-border {
+        border: dashed 1px #aaa;
+    }
+}
+
+.process-text {
+    width: 108px;
+    padding: 0 25px 0 25px;
+    display: table-cell;
+    font-size: 18px;
+    font-family: PingFang HK;
+    font-weight: 400;
+    color: #011A24;
+}
 </style>
 <style scoped>
-.el-input-group__append .el-button--primary {
+.center-section {
+    margin: 158px auto 158px auto;
+    width: 1100px;
+}
+
+.iimg-list__white {
     color: #fff;
-    background-color: #90C0C1;
-}
-.ee-inputButton >>> .el-input-group__append {
-    border: none;
-}
-.noheight_title {
-    line-height: 100px;
 }
 </style>
-
