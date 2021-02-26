@@ -1,8 +1,8 @@
 <template>
     <div class="ttoolset">
         <router-link
-                :to="{name:'toolsetView',query:{id:toolsetList[index-1].id}}"
-                v-for="index in 5"
+                :to="{name:'toolsetView',query:{id:item.id}}"
+                v-for="(item,index) in toolsetList"
                 :key="index"
         >
             <div style=" vertical-align:middle; margin-top:8%">
@@ -11,7 +11,7 @@
                 <div style="display: inline-block; margin-left:15px;">
                     <div style="margin-bottom: 10px">
                         <a style="font-size: 18px;font-family: PingFang HK;font-weight: 500;color: #011A24;">{{
-                                toolsetList[index-1].title
+                                item.title
                             }}</a>
                     </div>
                     <div style="margin-top: -5px">
@@ -20,7 +20,7 @@
                     font-family: PingFang HK;
                     font-weight: 500;
                     color: #788DA4;
-                    ">{{ description[index-1] }} </a>
+                    ">{{ item.description }} </a>
                     </div>
                 </div>
             </div>
@@ -37,70 +37,39 @@ export default {
     data() {
         return {
             toolsetList: [],
-            tag: false,
-            description: [],
+            iconList: [require('./1.png'),
+                require('./2.png'),
+                require('./3.png'),
+                require('./4.png'),
+                require('./5.png'),
+                require('./6.png'),
+                require('./7.png'),
+                require('./8.png'),
+                require('./9.png'),
+                require('./10.png'),
+                require('./11.png'),
+                require('./12.png'),
+                require('./13.png'),
+                require('./14.png'),
+            ],
         };
     },
     created: function () {
         this.getTools();
     },
     watch: {
-        tag: {
-            handler() {
-                this.getDescription();
-            }
-        },
     },
     methods: {
         getTools() {
             httpGet("/v1/public/share/get/top").then(results => {
                 const {httpCode, data, msg} = results.data;
                 if (httpCode === 200) {
-                    this.toolsetList = data;
-                    this.tag = !this.tag;
+                    this.toolsetList = data.slice(0, 5);
                 } else if (httpCode !== 401) {
                     errTips(msg);
                 }
             });
         },
-        // getDescription(){
-        //     for (let i = 0; i < 5; i++) {
-        //         httpGet("/v1/public/share/get/select", {id: this.toolsetList[i].id}).then(
-        //                 results => {
-        //                     const {httpCode, data, msg} = results.data;
-        //                     if (httpCode === 200) {
-        //                         let se = data.description;
-        //                         if (se === null) {
-        //                             se = this.toolsetList[i].title;
-        //                         }
-        //                         if (se.length < 20) {
-        //                             this.toolsetList[i]["description"] = se;
-        //                         } else {
-        //                             this.toolsetList[i]["description"] = se.slice(0, 20) + "……";
-        //                         }
-        //                         console.log(81, this.toolsetList[i]);
-        //                     } else if (httpCode !== 401) {
-        //                         errTips(msg);
-        //                     }
-        //                 }
-        //         );
-        //     }
-        // },
-        getDescription() {
-            for (let i = 0; i < 5; i++) {
-                httpGet("/v1/public/share/get/select", {id: this.toolsetList[i].id}).then(
-                        results => {
-                            const {httpCode, data, msg} = results.data;
-                            if (httpCode === 200) {
-                                let se = data.description;
-                                this.description.push(se);
-                            } else if (httpCode !== 401) {
-                                errTips(msg);
-                            }
-                        }
-                );
-            }
-        }
     }
 };
 </script>

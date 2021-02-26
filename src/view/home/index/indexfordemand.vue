@@ -57,30 +57,32 @@
                 </div>
             </section>
             <section class="center-section">
-                <div class="iimg-list__left">
-                    <p class="iimg-list__left-title">PROCESS ON</p>
-                    <p class="iimg-list__left-subtitle">流程介绍</p>
-                    <p class="iimg-list__left-title iimg-list__left-br">_</p>
+                <div style="display: flex; justify-content: space-between;">
+                    <div class="iimg-list__left">
+                        <p class="iimg-list__left-title">PROCESS ON</p>
+                        <p class="iimg-list__left-subtitle">流程介绍</p>
+                        <p class="iimg-list__left-title iimg-list__left-br">_</p>
 
-                    <p class="iimg-list__left-subtitle">{{ textList[currentIndex]['title'] }}</p>
-                    <p class="iimg-list__left-content">{{ textList[currentIndex]['content'] }}</p>
+                        <p class="iimg-list__left-subtitle">{{ textList[currentIndex]['title'] }}</p>
+                        <p class="iimg-list__left-content">{{ textList[currentIndex]['content'] }}</p>
 
-                </div>
-                <div class="iimg-list__right">
-                    <div class="iimg-list__img">
-                        <div class='iimg-list__bottom'>
-                            <img :src="imgList[currentIndex]">
-                        </div>
-                        <img class='iimg-list__top' :src="imgList[(currentIndex+1)%4]">
                     </div>
+                    <div class="iimg-list__right">
+                        <div class="iimg-list__img">
+                            <div class='iimg-list__bottom'>
+                                <img :src="imgList[currentIndex]">
+                            </div>
+                            <img class='iimg-list__top' :src="imgList[(currentIndex+1)%4]">
+                        </div>
 
-                    <div class="iimg-list__text">
-                        <li v-for="(item,index) in imgList" :key="index" @click="changeImg(index)"
-                            :class="[currentIndex == index ? 'iimg-list__active': 'iimg-list__noactive']">
-                            <a v-show="currentIndex==index">_</a>{{ '0' + (index + 1) }}
-                        </li>
-                        <li class="iimg-list__noactive iimg-list__white">05</li>
-                        <li class="iimg-list__noactive iimg-list__white">06</li>
+                        <div class="iimg-list__text">
+                            <li v-for="(item,index) in imgList" :key="index" @click="changeImg(index)"
+                                :class="[currentIndex == index ? 'iimg-list__active': 'iimg-list__noactive']">
+                                <a v-show="currentIndex==index">_</a>{{ '0' + (index + 1) }}
+                            </li>
+                            <li class="iimg-list__noactive iimg-list__white">05</li>
+                            <li class="iimg-list__noactive iimg-list__white">06</li>
+                        </div>
                     </div>
                 </div>
             </section>

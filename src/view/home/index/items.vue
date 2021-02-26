@@ -3,7 +3,7 @@
         <router-link :to="{path:'applicationView', query:{id:item.id}}" v-for="(item, index) in plazaList" :key="index">
 <!--        <div v-for="(item, index) in items" :key="index">-->
             <div style=" vertical-align:middle; margin-top:8%">
-                <img src="./icon_manager.png"
+                <img :src="iconList[item.typeId]"
                      style="width:80px; height:80px;  margin-left: 7%;  ">
                 <div style="display: inline-block; margin-left:15px;">
                     <div style="margin-bottom: 10px; position: relative; margin-top: 10px;">
@@ -71,58 +71,31 @@ export default {
                 orderBy: "id",
                 orderType: "DESC"
             },
-            items: [//biddingSquare.Vue
-                {
-                    no: 23915,
-                    title: "校园跑腿小程序",
-                    type: "小程序",
-                    period: 20,
-                    post_time: 2,
-                    enroll: 2,
-                    status: "开发中",
-                    requirement: "lalalalalalalalala",
-                },
-                {
-                    no: 23915,
-                    title: "校园跑腿APP",
-                    type: "小程序",
-                    period: 20,
-                    post_time: 2,
-                    enroll: 2,
-                    status: "开发中",
-                    requirement: "lalalalalalalalala",
-                },
-                {
-                    no: 23915,
-                    title: "校园跑腿网站改版",
-                    type: "小程序",
-                    period: 20,
-                    post_time: 2,
-                    enroll: 2,
-                    status: "已结束",
-                    requirement: "lalalalalalalalala",
-                },
-            ]
+            iconList: [require('./1.png'),
+                require('./2.png'),
+                require('./3.png'),
+                require('./4.png'),
+                require('./5.png'),
+                require('./6.png'),
+                require('./7.png'),
+                require('./8.png'),
+                require('./9.png'),
+                require('./10.png'),
+                require('./11.png'),
+                require('./12.png'),
+                require('./13.png'),
+                require('./14.png'),
+            ],
         };
     },
     created: function () {
-        httpGet("/v1/public/share/get/top").then(results => {
-            const {httpCode, data, msg} = results.data;
-            if (httpCode === 200) {
-                this.toolsetList = data;
-            } else if (httpCode !== 401) {
-                errTips(msg);
-            }
-        });
         this.getView();
     },
     methods: {
         getView(val = this.pageData) {
-            this.loading = true;
-            // !value && (value = "所有");
             httpGet("/v1/public/bid/search/getplaza", val).then(results => {
                 let getData = results.data;
-                console.log("getData:", getData);
+                console.log("97getData:", getData);
                 if (getData.httpCode === 200) {
                     this.plazaList = [...getData.data.plazaList].slice(0, 3);
                     this.pageNo = getData.data.pageNo;

@@ -14,7 +14,7 @@
                     </div>
                 </div>
             </section>
-            <section class="center-section"  style="margin: 158px auto 0 auto;">
+            <section class="center-section" style="margin: 158px auto 0 auto;">
                 <div class="team">
                     <div class="title">NEW TEAM</div>
                     <div class="title_zh">最新团队</div>
@@ -39,7 +39,7 @@
 
                 </div>
             </section>
-            <section class="center-section"  style="margin: 0 auto 158px auto;">
+            <section class="center-section" style="margin: 0 auto 158px auto;">
                 <div class="center-text">
                     <p class="iimg-list__left-title noheight_title">PROCESS</p>
                     <p class="iimg-list__left-subtitle">竞标流程指南</p>
@@ -71,31 +71,35 @@
             </section>
 
             <section class="center-section">
-                <div class="iimg-list__left">
-                    <p class="iimg-list__left-title">PROCESS ON</p>
-                    <p class="iimg-list__left-subtitle">流程介绍</p>
-                    <p class="iimg-list__left-title iimg-list__left-br">_</p>
-                    <p class="iimg-list__left-subtitle" v-if="currentIndex==0">加入团队</p>
-                    <p class="iimg-list__left-content" v-if="currentIndex==0">开发者用户可主动申请加入项目研发团队，<br>也可以被竞标用户邀请加入团队。<br></p>
-                    <p class="iimg-list__left-subtitle" v-if="currentIndex==1">项目研发</p>
-                    <p class="iimg-list__left-content" v-if="currentIndex==1">借助于平台的各类工具，开发者用户在接到研发任务后，<br>可以充分发挥群体协作的力量，高效地完成任务。<br></p>
-                    <p class="iimg-list__left-subtitle" v-if="currentIndex==2">交付成果</p>
-                    <p class="iimg-list__left-content" v-if="currentIndex==2">开发者用户在完成任务后，在平台交付。<br><br></p>
-                </div>
-                <div class="iimg-list__right">
-                    <div class="iimg-list__img">
-                        <div class='iimg-list__bottom'>
-                            <img :src="imgList[currentIndex]">
-                        </div>
-                        <img class='iimg-list__top' :src="imgList[(currentIndex+1)%3]">
+                <div style="display: flex; justify-content: space-between;">
+                    <div class="iimg-list__left">
+                        <p class="iimg-list__left-title">PROCESS ON</p>
+                        <p class="iimg-list__left-subtitle">流程介绍</p>
+                        <p class="iimg-list__left-title iimg-list__left-br">_</p>
+                        <p class="iimg-list__left-subtitle" v-if="currentIndex==0">加入团队</p>
+                        <p class="iimg-list__left-content" v-if="currentIndex==0">开发者用户可主动申请加入项目研发团队，<br>也可以被竞标用户邀请加入团队。<br>
+                        </p>
+                        <p class="iimg-list__left-subtitle" v-if="currentIndex==1">项目研发</p>
+                        <p class="iimg-list__left-content" v-if="currentIndex==1">借助于平台的各类工具，开发者用户在接到研发任务后，<br>可以充分发挥群体协作的力量，高效地完成任务。<br>
+                        </p>
+                        <p class="iimg-list__left-subtitle" v-if="currentIndex==2">交付成果</p>
+                        <p class="iimg-list__left-content" v-if="currentIndex==2">开发者用户在完成任务后，在平台交付。<br><br></p>
                     </div>
+                    <div class="iimg-list__right">
+                        <div class="iimg-list__img">
+                            <div class='iimg-list__bottom'>
+                                <img :src="imgList[currentIndex]">
+                            </div>
+                            <img class='iimg-list__top' :src="imgList[(currentIndex+1)%3]">
+                        </div>
 
-                    <div class="iimg-list__text">
-                        <li v-for="(item,index) in imgList" :key="index" @click="changeImg(index)"
-                            :class="[currentIndex == index ? 'iimg-list__active': 'iimg-list__noactive',
+                        <div class="iimg-list__text">
+                            <li v-for="(item,index) in imgList" :key="index" @click="changeImg(index)"
+                                :class="[currentIndex == index ? 'iimg-list__active': 'iimg-list__noactive',
                                      currentIndex == index && index == 2 ? 'iimg-list__lastactive': '']">
-                            <a v-show="currentIndex==index">_</a>{{ '0' + (index + 1) }}
-                        </li>
+                                <a v-show="currentIndex==index">_</a>{{ '0' + (index + 1) }}
+                            </li>
+                        </div>
                     </div>
                 </div>
             </section>
