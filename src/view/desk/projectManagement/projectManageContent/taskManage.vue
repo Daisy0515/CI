@@ -53,7 +53,7 @@
 
                                         <span class="add" style="margin-left: 20px;" slot="reference">
 										<i class="el-icon-plus"></i>
-										添加新的任务类型
+										新的任务类型
 									</span>
                                     </el-popover>
                                 </el-form-item>
@@ -97,7 +97,7 @@
                                               :rows="5" style="width:80%;float:left"></el-input>
                                 </el-form-item>
                                 <el-form-item label="上传附件" prop="sourceFile">
-                                    <sourceUpload :fileIndex="2" :uploadIndex="testUploadIndex"
+                                    <sourceUpload  :uploadIndex="testUploadIndex"
                                                   v-on:setIdCard="uploadFile"/>
                                 </el-form-item>
                                 <el-form-item class="cancel">
@@ -270,7 +270,6 @@
                     endTime: "",
                     missionTypeId: "",
                     participantList: [],
-                    resourceName: "",
                     sourceFile: "",
                     startTime: "",
                     subtitle: "",
@@ -438,17 +437,6 @@
                     }
                 })
             },
-            //获取任务数据
-            // getTask() {
-            //   httpGet('/v1/authorization/manage/mission/list', {teamId: this.teamId}).then(results => {
-            //     const {msg, data, httpCode} = results.data;
-            //     if (httpCode === 200) {
-            //       this.missionTitleList = data.missionTitleList;
-            //     } else {
-            //       errTips(msg);
-            //     }
-            //   });
-            // },
 
             deleteMission(id) {//删除一个子任务，右上角框里的“删除任务”
                 httpDelete(`/v1/authorization/mission/missionsubtitle/delete/${id}`).then(results => {
@@ -491,17 +479,6 @@
                     this.visible1 = false;
                 });
             },
-            // //获取任务列表（标题列表）
-            // getMissionList(val) {
-            //   httpGet('/v1/authorization/mission/missiontitle/list', {teamId: val}).then(results => {
-            //     const {msg, data, httpCode} = results.data;
-            //     if (httpCode === 200) {
-            //       this.missionList = data.missionTitle;
-            //     } else {
-            //       errTips(msg);
-            //     }
-            //   });
-            // },
             //复制Git地址
             copyAddress: function (event) {
                 var gitAddress = this.httpUrlToRepo;
@@ -523,13 +500,10 @@
                 });
             },
             uploadFile(file) {//添加新的任务
-                console.log("512", file);
-                (file) && (this.addMission.sourceFile = file.fileName);
-                let dataForm = this.addMission.sourceFile.split('/');
-                this.addMission.resourceName = dataForm[dataForm.length - 1];
-                if (new Date(this.addMission.startTime.replace(/\-/g, '/')) > new Date(this.addMission.endTime.replace(/\-/g, '/'))) {
-                    errTips('开始时间不能大于结束时间');
-                    return false;
+                if(file===""){ //用户没有上传文件
+                    this.addMission.sourceFile = null;
+                }else{
+                    this.addMission.sourceFile = file;
                 }
                 this.addMission.castId = this.castId;
                 httpPost('/v1/authorization/bids/missioninfo/add', this.addMission).then(results => {
@@ -544,14 +518,18 @@
                     for (let key in this.addMission) {
                         this.addMission[key] = "";
                     }
+                    this.addMission.participantList=[];
+                    this.checkAll = false;
                 });
             },
             addNewMission() {//添加新的任务，点击”保存”后触发这个函数
+                if (new Date(this.addMission.startTime.replace(/\-/g, '/')) > new Date(this.addMission.endTime.replace(/\-/g, '/'))) {
+                    errTips('开始时间不能大于结束时间');
+                    return false;
+                }
                 this.testUploadIndex = !this.testUploadIndex;//这个变量改变后触发uploadFile函数，具体原因可看上边sourceUpload处代码
             },
-            // returnSquare() {
-            //   this.$router.push({path: '/desk/taskManage'});
-            // },
+
             rowClass() {
                 return 'background:#F4F6F9;';
             },
