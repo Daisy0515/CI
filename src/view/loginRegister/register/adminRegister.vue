@@ -1,8 +1,16 @@
 <template>
     <div class="register">
         <reviewHead/>
+<!--        <div v-if="registerIsShow==false" style="height: 100%;">-->
+<!--            <el-card class="box-card" style="text-align: center;font-weight: bolder;font-size: large;">-->
+<!--                {{displayMsg}}-->
+<!--            </el-card>-->
+<!--        </div>-->
         <div class="container">
-            <el-card class="box-card">
+            <el-card class="messageBox" v-if="registerIsShow==false" >
+                {{displayMsg}}
+            </el-card>
+            <el-card class="box-card" v-if="registerIsShow==true">
                 <div slot="header" class="clearfix" style="text-align:center">
                     <span>评审管理员注册</span>
                 </div>
@@ -15,7 +23,7 @@
                                 <el-form-item label="姓名" :label-width="formLabelWidth" prop="name">
                                     <el-input v-model="ruleForm.name"></el-input>
                                 </el-form-item>
-                                <el-form-item label="性别" :label-width="formLabelWidth">
+                                <el-form-item label="性别" :label-width="formLabelWidth" prop="sex">
                                     <el-select v-model="ruleForm.sex" placeholder="请选择性别" style="width: 100%;">
                                         <el-option label="男" value="1"></el-option>
                                         <el-option label="女" value="2"></el-option>
@@ -166,7 +174,7 @@
     import regular from "@/mixins/regular/companyRegister.js";
     import foreignArea from "@/view/loginRegister/register/components/foreignArea";
     import Avatar from "@/common/upload/Avatar";
-    import {errTips, successTips} from '@/utils/tips.js';
+    import {errTips, successTips, message } from '@/utils/tips.js';
     import addKeyWords from "@/view/review/expert/components/addKeyWords";
     import reviewHead from "@/common/header/reviewLayout";
 
@@ -183,12 +191,15 @@
         mixins: [regular],
         data() {
             return {
+                registerIsShow:false,
+                displayMsg:"",
                 rules: {
                     name: [{required: true, message: '请输入姓名', trigger: 'blur'}],
                     researchDirection: [{required: true, message: '请选择研究方向', trigger: 'blur'}],
                     workUnit: [{required: true, message: '工作单位不能为空', trigger: 'blur'}],
                     nation: [{required: true, message: '国家不能为空', trigger: 'blur'}],
                     education: [{required: true, message: '学历不能为空', trigger: 'blur'}],
+                    sex: [{required: true, message: '性别不能为空', trigger: 'blur'}]
 
                 },
                 data: null,
@@ -244,10 +255,27 @@
             };
         },
         created: function () {
+            //this.getApplayInfo();
             this.getResearchList();
             this.getPersonalInfo();
         },
         methods: {
+            //查询申请记录
+            getApplayInfo:function() {
+                //type = 2 申请管理员的记录
+                httpGet("/v1/authorization/coreuser/ApplyInfo/get?type=2").then(results => {
+                    const {httpCode, msg} = results.data;
+                    if (httpCode === 200) {
+                        if (msg == "已提交过申请") {
+                            this.displayMsg = "您已提交申请,请勿重复注册";
+                        } else {
+                            this.registerIsShow = true;
+                        }
+                    } else {
+                        errTips(msg);
+                    }
+                })
+            },
             addKeyWords(val) {
                 this.ruleForm.cruxList = val;
             },
@@ -267,8 +295,13 @@
                         this.ruleForm.phone = data.phone;
                         this.ruleForm.email = data.email;
                         this.ruleForm.id = data.id;
+                        this.getApplayInfo();
                     } else {
-                        errTips(msg);
+                        if (msg == "该用户已拥有评审管理员角色，请勿重复注册") {
+                            this.displayMsg = msg;
+                        } else {
+                            errTips(msg);
+                        }
                     }
                 })
             },
@@ -310,7 +343,7 @@
                 httpPut("/v1/authorization/coreuser/review/user", this.ruleForm).then(results => {
                     const {httpCode, msg} = results.data;
                     if (httpCode === 200) {
-                        successTips('注册管理员成功');
+                        successTips('申请已提交，等待系统管理员审核');
                     } else {
                         errTips(msg);
                     }
@@ -335,7 +368,13 @@
     }
 </script>
 <style lang='scss'>
+    .register {
+        width: 100%;
+        height: 100%;
+    }
     .container {
+        width: 100%;
+        height: 100%;
         .box-card {
             width: 80%;
             margin: 5% auto;
@@ -355,6 +394,14 @@
             &:hover {
                 color: #3e76b8;
             }
+        }
+
+        .messageBox {
+            margin-top: 20%;
+            padding: 50px;
+            text-align: center;
+            font-weight: bolder;
+            font-size: large;
         }
     }
 </style>

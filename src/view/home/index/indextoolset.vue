@@ -1,15 +1,12 @@
 <template>
-    <div class="ttoolset">
+    <div>
         <router-link
                 :to="{name:'toolsetView',query:{id:item.id}}"
                 v-for="(item,index) in toolsetList"
                 :key="index"
-                class="ttoolset_item"
+                class="index_toolset_item"
         >
-           <tool-box :title="item.title"></tool-box>
-        </router-link>
-        <router-link to="moreToolset" class="ttoolset_item">
-           <tool-box title="更多"></tool-box>
+        <tool-box :title="item.title"></tool-box>
         </router-link>
     </div>
 </template>
@@ -17,7 +14,7 @@
 <script>
     import {httpGet} from "@/utils/http.js";
     import {errTips} from "@/utils/tips.js";
- import ToolBox from "@/view/home/service/toolBox.vue";
+    import ToolBox from "@/view/home/service/toolBox.vue";
 
     export default {
         name: "IndexToolSet",
@@ -43,10 +40,10 @@
     };
 </script>
 <style lang='scss'>
-    .ttoolset_item {
+    .index_toolset_item {
         display: inline-block;
-        margin: 34px 22px 34px 22px;
-        width: 250px;
+        margin: 0px 15px 68px 15px;
+        width: 165px;
         height: 165px;
     }
 </style>

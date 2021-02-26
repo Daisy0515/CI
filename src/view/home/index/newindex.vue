@@ -8,10 +8,10 @@
 </template>
 
 <script>
-import Developer from '@/view/home/index/developer.vue';
-import Manager from '@/view/home/index/manager.vue';
-import NewIndex from '@/view/home/index/index.vue';
-import IndexForDemand from '@/view/home/index/indexfordemand.vue';
+    import Developer from '@/view/home/index/developer.vue';
+    import Manager from '@/view/home/index/manager.vue';
+    import NewIndex from '@/view/home/index/index.vue';
+    import IndexForDemand from '@/view/home/index/indexfordemand.vue';
 
 export default {
     components: {
@@ -29,7 +29,6 @@ export default {
     created() {
         this.userToken = sessionStorage.getItem("userToken");
         this.projectRole = sessionStorage.getItem("projectRole");
-        console.log(32, this.userToken);
     }
 }
 </script>

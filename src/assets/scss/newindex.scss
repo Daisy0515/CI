@@ -13,13 +13,19 @@
         transform: translateZ(0)
     }
 
-    .cc-hero {
-        background-image: url('../../../assets/img/index/index_background.png')
-    }
+    // .cc-hero {
+    //     background-image: url('../../../assets/img/index/index_background.png')
+    // }
     .cc-hero {
         overflow: hidden
     }
     
+    .cc-hero:hover .cc-hero__arrow_left {
+        opacity:1;
+    }
+    .cc-hero:hover .cc-hero__arrow_right {
+        opacity:1;
+    }
     .cc-hero__lead {
         margin: 250px auto;
         width:1100px;
@@ -36,6 +42,24 @@
         
     }
 
+    .cc-hero__arrow_left {
+        position:absolute;
+        left:5%;
+        top:50%;
+        background-color:transparent;
+        opacity:0;
+        
+    }
+    
+    .cc-hero__arrow_right {
+        position:absolute;
+        right:5%;
+        top:50%;
+        background-color:transparent;
+        opacity:0;
+        
+    }
+
     .cc-hero__subtitle {
         font-size: 24px;
         font-weight: 500;
@@ -47,6 +71,7 @@
         margin-top: 68px;
     }
 
+    
     .ee-inputButton .el-input {
         width: 300px;
         margin-right: 30px;

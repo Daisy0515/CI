@@ -14,16 +14,14 @@
                 </div>
             </div>
         </div>
-        <div class="container">
+        <div  class="container">
             <router-link
-                    class="toolset_item"
+                    class="ttoolset_item"
                     :to="{name:'toolsetView',query:{id:item.id,type:'more'}}"
                     v-for="(item,index) in moreData"
                     :key="index"
             >
-                <el-card>
-                    <p>{{item.title}}</p>
-                </el-card>
+                <tool-box :title="item.title"></tool-box>
             </router-link>
         </div>
     </div>
@@ -32,8 +30,13 @@
 <script>
     import {httpGet} from "@/utils/http.js";
     import {errTips} from "@/utils/tips.js";
+   import ToolBox from "@/view/home/service/toolBox.vue";
 
     export default {
+        name: "IndexToolSet",
+        components: {
+            ToolBox
+        },
         data() {
             return {
                 moreData: []
@@ -52,29 +55,10 @@
     };
 </script>
 <style lang='scss'>
-    .toolset_item {
-        cursor: pointer;
-        float: left;
-        width: 255px;
-        text-align: center;
-        margin: 4% 4% 5% 4%;
-        height: 180px;
-
-        & :hover {
-            background: #f0f0f0;
-        }
-
-        .el-card {
-            height: 100%;
-        }
-
-        .el-card__body {
-            height: 100%;
-            padding: 0;
-        }
-
-        p {
-            line-height: 170px;
-        }
+    .ttoolset_item {
+        display: inline-block;
+        margin: 34px 22px 34px 22px;
+        width: 250px;
+        height: 165px;
     }
 </style>

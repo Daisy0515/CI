@@ -91,48 +91,42 @@
 </template>
 
 <script>
-import ToolSet from './newtoolset.vue';
-import News from './news.vue';
+    export default {
+        data() {
+            return {
+                searchData: "",
+                imgList:[require('@/assets/img/index/index_demand_service_1.jpg'),
+                         require('@/assets/img/index/index_demand_service_2.jpg'),
+                         require('@/assets/img/index/index_demand_service_3.jpg'),
+                         require('@/assets/img/index/index_demand_service_4.jpg')],
+                iconList:[require('@/assets/img/index/icon_publish.png'),
+                          require('@/assets/img/index/icon_team.png'),
+                          require('@/assets/img/index/icon_review.png'),
+                          require('@/assets/img/index/icon_accomplish.png'),
+                          require('@/assets/img/index/arrow_right.png')],
+                currentIndex: 0,   //默认显示图片
+                textList:[
+                    {
+                        title: '发布需求',
+                        content: '在发布需求阶段，\n用户对自己的项目进行详细描述，\n确定项目交付内容与评审流程。'
+                    },
+                    {
+                        title: '选择团队',
+                        content: '在确定竞标方后，\n需求方结束竞标过程，\n指定单独或多个竞标方完成需求。'
+                    },
+                    {
+                        title: '评审交付',
+                        content: '在中标方交付项目后，\n需求方通过评审系统评审交付内容，\n若评审不通过，竞标方需重新交付内容。'
+                    },
+                    {
+                        title: '交付&开源',
+                        content: '在交付内容通过验收后，\n需求结束，\n用户可选择开源该项目，供平台用户学习',
+                    }
+                ]
+            }
+        },
 
-export default {
-    components: {
-        ToolSet,
-        News,
-    },
-    data() {
-        return {
-            searchData: "",
-            imgList: [require('@/assets/img/index/index_demand_service_1.jpg'),
-                require('@/assets/img/index/index_demand_service_2.jpg'),
-                require('@/assets/img/index/index_demand_service_3.jpg'),
-                require('@/assets/img/index/index_demand_service_4.jpg')],
-            iconList: [require('@/assets/img/index/icon_publish.png'),
-                require('@/assets/img/index/icon_team.png'),
-                require('@/assets/img/index/icon_review.png'),
-                require('@/assets/img/index/icon_accomplish.png'),
-                require('@/assets/img/index/arrow_right.png')],
-            currentIndex: 0,   //默认显示图片
-            textList: [
-                {
-                    title: '发布需求',
-                    content: '在发布需求阶段，\n用户对自己的项目进行详细描述，\n确定项目交付内容与评审流程。'
-                },
-                {
-                    title: '选择团队',
-                    content: '在确定竞标方后，\n需求方结束竞标过程，\n指定单独或多个竞标方完成需求。'
-                },
-                {
-                    title: '评审交付',
-                    content: '在中标方交付项目后，\n需求方通过评审系统评审交付内容，\n若评审不通过，竞标方需重新交付内容。'
-                },
-                {
-                    title: '交付&开源',
-                    content: '在交付内容通过验收后，\n需求结束，\n用户可选择开源该项目，供平台用户学习',
-                }
-            ]
-        }
-    },
-    methods: {
+        methods: {
         changeImg(index) {
             this.currentIndex = index;
         },
@@ -180,7 +174,10 @@ export default {
     margin: 158px auto 158px auto;
     width: 1100px;
 }
-
+/*.center-section {*/
+/*    padding: 0;*/
+/*    margin: 136px 20% 136px 20%;*/
+/*}*/
 .iimg-list__white {
     color: #fff;
 }

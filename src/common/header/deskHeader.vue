@@ -2,7 +2,7 @@
     <div class="header_two">
         <nav class="c-header c-header--solid">
             <div class="o-container deskHeader clearfix">
-                <div class="c-header__row">
+                <div class="c-header__row_desk">
                     <div class="c-header__logowrap">
                         <router-link :to="indexUrl">
                             <div id="topnav-gurulogo" v-bind:href="indexUrl" style="display:block">
@@ -11,29 +11,29 @@
                             </div>
                         </router-link>
                     </div>
-                        <ul class="c-header__navigation clearfix">
-                            <li class="c-header__navigation__item" v-for="item in showNavItem" :key="item.title">
-                                <router-link
-                                        ondragstart="return false"
-                                        @click.native="setHeader(item.url)"
-                                        :class="getHeader===item.url?'header_active':''"
-                                        :to="item.url"
-                                >{{item.title}}
-                                </router-link>
-                            </li>
-                        </ul>
-                        <HeadUser/>
-                        <div style="display: inline-block; float:right; margin-top: -5px; margin-right:20px;" >
-                            <span style="color: white">项目角色切换：</span>
-                            <el-select v-model="projectRole" placeholder="请选择" @change="projectRoleChange">
-                                <el-option
-                                        v-for="item in projectRoleList"
-                                        :key="item.id"
-                                        :label="item.name"
-                                        :value="item.id"
-                                />
-                            </el-select>
-                        </div>
+                    <ul class="c-header__navigation clearfix">
+                        <li class="c-header__navigation__item" v-for="item in showNavItem" :key="item.title">
+                            <router-link
+                                    ondragstart="return false"
+                                    @click.native="setHeader(item.url)"
+                                    :class="getHeader===item.url?'header_active':''"
+                                    :to="item.url"
+                            >{{item.title}}
+                            </router-link>
+                        </li>
+                    </ul>
+                    <HeadUser/>
+                    <div style="display: inline-block; margin-top: -5px; float: right; margin-right:20px;" >
+                        <span style="color: white">项目角色：</span>
+                        <el-select style="width:130px;" v-model="projectRole" placeholder="请选择" @change="projectRoleChange">
+                            <el-option
+                                    v-for="item in projectRoleList"
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.id"
+                            />
+                        </el-select>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -65,7 +65,7 @@
                     {
                         title: "工作台",
                         url: "project",
-                        projectRoles:[1,2,3], //从导航栏中去除
+                        projectRoles:[1,2,3],
                     },
                     {
                         title: "我的需求",
@@ -80,7 +80,7 @@
                     // {
                     //     title: "我的任务",
                     //     url: "myTask",
-                    //     projectRoles:[3], //项目开发者角色
+                    //     projectRoles:[3], //划分到项目管理页面下了
                     // },
                     {
                         title: "项目管理",
@@ -93,37 +93,55 @@
                         projectRoles:[3], //项目开发者角色
                     },
                     {
+                        title: "队员申请",
+                        url: "teamApplication",
+                        projectRoles:[2], //项目经理
+                    },
+                    {
                         title: "团队申请",
                         url: "teamApplication",
-                        projectRoles:[3], //项目开发者角色
+                        projectRoles:[3], //开发者角色
                     },
+
                     // {
-                    //     title: "个人信息",
-                    //     url: "information",
-                    // },
-                    {
-                        title: "消息管理",
-                        url: "myMessage",
-                        projectRoles:[1, 2, 3], //所有角色都在
-                    },
-                    {
-                        title: "我的评分",
-                        url: "myComments",
-                        projectRoles:[2], //项目经理角色
-                    },
-                    // {
-                    //     title: "我的收藏",
-                    //     url: "myCollection"
+                    //     title: "消息管理",
+                    //     url: "myMessage",
+                    //     projectRoles:[1, 2, 3], //所有角色都在, 位置放在头像的下拉框里面
                     // },
                     // {
                     //     title: "缺陷管理",
                     //     url: "issueManage",
+                    // },  //缺陷管理划分到项目管理里面了
+                    // {
+                    //     title: "内测管理",
+                    //     url: "myTest",
+                    //     projectRoles:[1, 3], //拆分成下面的内测发布和内测任务
                     // },
                     {
-                        title: "内测管理",
+                        title: "内测发布",
                         url: "myTest",
-                        projectRoles:[2, 3], //项目经理,开发者角色
-                    }
+                        projectRoles:[1], //项目发布者
+                    },
+                    {
+                        title: "内测任务",
+                        url: "myTestTask",
+                        projectRoles:[3], //开发者角色
+                    },
+                    {
+                        title: "我的评分",
+                        url: "myComments",
+                        projectRoles:[2, 3], //项目经理角色
+                    },
+                    {
+                        title: "个人信息",
+                        url: "information",
+                        projectRoles:[1,2,3], //项目开发者角色
+                    },
+                    // {
+                    //     title: "我的收藏",
+                    //     url: "myCollection",
+                    //     projectRoles:[1, 2, 3], //所有角色都在,位置放在头像的下拉框里面
+                    // },
 
                 ],
                 loginUrl: "login",
@@ -176,7 +194,7 @@
         }
     };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
     .useCard_two {
         .Userremind {
             margin: -12px;
@@ -270,7 +288,7 @@
             background: #4478b4;
         }
 
-        .c-header__row {
+        .c-header__row_desk {
             height: 70px;
             padding-top: 20px;
             box-sizing: border-box;

@@ -18,11 +18,11 @@
                     </div>
                 </div>
             </section>
-            <section class="center-section">
+            <section class="center-section" id="service">
                 <div style="display: flex; justify-content: space-between;">
                     <div class="iimg-list__left">
-                        <p class="iimg-list__left-title">PROCESS ON</p>
-                        <p class="iimg-list__left-subtitle">流程介绍</p>
+                        <p class="iimg-list__left-title">SERVICE</p>
+                        <p class="iimg-list__left-subtitle">群智服务特色</p>
                         <p class="iimg-list__left-title iimg-list__left-br">_</p>
 
                         <p class="iimg-list__left-subtitle">{{ textList[currentIndex]['title'] }}</p>
@@ -81,12 +81,12 @@
 </template>
 
 <script>
-import ToolSet from './newtoolset.vue';
+import IndexToolSet from './indextoolset.vue';
 import News from './news.vue';
 
 export default {
     components: {
-        ToolSet,
+        IndexToolSet,
         News,
     },
     data() {
