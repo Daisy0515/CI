@@ -1,9 +1,9 @@
 <template>
     <div>
-        <NewIndex v-if="userToken == ''"/>
-        <Developer v-if="userToken != '' && projectRole == 3"/>
-        <Manager v-if="userToken != '' && projectRole == 2"/>
-        <IndexForDemand v-if="userToken != '' && projectRole == 1"/>
+        <NewIndex v-if="userToken === null"/>
+        <Developer v-if="userToken !== null && projectRole == 3"/>
+        <Manager v-if="userToken !== null && projectRole == 2"/>
+        <IndexForDemand v-if="userToken != null && projectRole == 1"/>
     </div>
 </template>
 

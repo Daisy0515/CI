@@ -5,7 +5,14 @@
                 <div class="c-header__row">
                     <div class="c-header__logowrap">
                         <router-link :to="indexUrl">
-                            <img :src="logoUrl">
+<!--                            <img :src="logoUrl">-->
+                            <a style="width: 68px;
+height: 27px;
+font-size: 38px;
+font-family: DIN Condensed;
+font-weight: bold;
+color: #011A24;
+">COSINE</a>
                         </router-link>
                     </div>
                     <div>

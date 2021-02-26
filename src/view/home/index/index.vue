@@ -18,63 +18,64 @@
                     </div>
                 </div>
             </section>
-            <section class="center-section">
-                <div class="iimg-list__left">
-                    <p class="iimg-list__left-title">SERVICE</p>
-                    <p class="iimg-list__left-subtitle">群智服务特色</p>
-                    <p class="iimg-list__left-title iimg-list__left-br">_</p>
+            <section class="center-section" id="service">
+                <div style="display: flex; justify-content: space-between;">
+                    <div class="iimg-list__left">
+                        <p class="iimg-list__left-title">SERVICE</p>
+                        <p class="iimg-list__left-subtitle">群智服务特色</p>
+                        <p class="iimg-list__left-title iimg-list__left-br">_</p>
 
-                    <p class="iimg-list__left-subtitle" v-if="currentIndex==0">角色赋能</p>
-                    <p class="iimg-list__left-content" v-if="currentIndex==0">
-                        平台提供多种用户角色，<br>包括项目发布者、管理者、开发者等角色，<br>多角色无缝切换，多功能自然解耦。
-                    </p>
-                    <el-button @click="register" type="primary" size="small">立即注册</el-button>
-                </div>
-                <div class="iimg-list__right">
-                    <div class="iimg-list__img">
-                        <div class='iimg-list__bottom'>
-                            <img :src="imgList[currentIndex]">
+                        <p class="iimg-list__left-subtitle" v-if="currentIndex==0">角色赋能</p>
+                        <p class="iimg-list__left-content" v-if="currentIndex==0">平台提供多种用户角色，<br>包括项目发布者、管理者、开发者等角色，<br>多角色无缝切换，多功能自然解耦。
+                        </p>
+                        <el-button @click="register" type="primary" size="small">立即注册</el-button>
+                    </div>
+                    <div class="iimg-list__right">
+                        <div class="iimg-list__img">
+                            <div class='iimg-list__bottom'>
+                                <img :src="imgList[currentIndex]">
+                            </div>
+                            <img class='iimg-list__top' :src="imgList[(currentIndex+1)%6]">
                         </div>
-                        <img class='iimg-list__top' :src="imgList[(currentIndex+1)%6]">
-                    </div>
 
-                    <div class="iimg-list__text">
-                        <li v-for="(item,index) in imgList" :key="index" @click="changeImg(index)"
-                            :class="[currentIndex == index ? 'iimg-list__active': 'iimg-list__noactive',
+                        <div class="iimg-list__text">
+                            <li v-for="(item,index) in imgList" :key="index" @click="changeImg(index)"
+                                :class="[currentIndex == index ? 'iimg-list__active': 'iimg-list__noactive',
                                      currentIndex == index && index == 5 ? 'iimg-list__lastactive': '']">
-                            <a v-show="currentIndex==index">_</a>{{'0'+(index+1)}}</li>
+                                <a v-show="currentIndex==index">_</a>{{ '0' + (index + 1) }}
+                            </li>
+                        </div>
                     </div>
                 </div>
-
             </section>
-            <section class="center-section">
-                <div class="about-img-text center-text">
-                    <p class="iimg-list__left-title noheight_title">ABOUT</p>
-                    <p class="iimg-list__left-subtitle">关于我们</p>
-                    <p class="iimg-list__left-title iimg-list__left-br">_</p>
-                    <p class="about-img-text-content" v-if="currentIndex==0">
-                        我们致力于打造真正的涵盖软件生命周期的众包平台<br>
-                        构建群智化、生态化、服务化三化融合的软件生态系统<br>
-                        吸引众多需求者和开发人员共同参与软件开发使命
-                    </p>
-                    <el-button @click="aboutUs" type="info">more</el-button>
-                </div>
-            </section>
-            <section class="center-section news-img-text">
-                <p class="iimg-list__left-title noheight_title">THE NEWS</p>
-                <p class="iimg-list__left-subtitle">最新动态</p>
-                <p class="iimg-list__left-title iimg-list__left-br">_</p>
-                <News/>
-            </section>
-            <section class="center-section">
-                <div class="center-text">
-                    <p class="iimg-list__left-title noheight_title">NEW TOOL</p>
-                    <p class="iimg-list__left-subtitle">最新工具</p>
-                    <p class="iimg-list__left-title iimg-list__left-br">_</p>
-                    <ToolSet/>
-                    <el-button @click="moreTool" type="info">更多工具</el-button>
-                </div>
-            </section>
+                        <section class="center-section" id="about">
+                            <div class="about-img-text center-text">
+                                <p class="iimg-list__left-title noheight_title">ABOUT</p>
+                                <p class="iimg-list__left-subtitle">关于我们</p>
+                                <p class="iimg-list__left-title iimg-list__left-br">_</p>
+                                <p class="about-img-text-content" v-if="currentIndex==0">
+                                    我们致力于打造真正的涵盖软件生命周期的众包平台<br>
+                                    构建群智化、生态化、服务化三化融合的软件生态系统<br>
+                                    吸引众多需求者和开发人员共同参与软件开发使命
+                                </p>
+                                <el-button @click="aboutUs" type="info">more</el-button>
+                            </div>
+                        </section>
+                        <section class="center-section news-img-text">
+                            <p class="iimg-list__left-title noheight_title">THE NEWS</p>
+                            <p class="iimg-list__left-subtitle">最新动态</p>
+                            <p class="iimg-list__left-title iimg-list__left-br">_</p>
+                            <News/>
+                        </section>
+                        <section class="center-section">
+                            <div class="center-text">
+                                <p class="iimg-list__left-title noheight_title">NEW TOOL</p>
+                                <p class="iimg-list__left-subtitle">最新工具</p>
+                                <p class="iimg-list__left-title iimg-list__left-br">_</p>
+                                <ToolSet/>
+                                <el-button @click="moreTool" type="info">更多工具</el-button>
+                            </div>
+                        </section>
         </main>
     </div>
 </template>
@@ -82,6 +83,7 @@
 <script>
 import ToolSet from './newtoolset.vue';
 import News from './news.vue';
+
 export default {
     components: {
         ToolSet,
@@ -90,7 +92,7 @@ export default {
     data() {
         return {
             searchData: "",
-            imgList:[require('@/assets/img/index/index_service_1.jpg'),
+            imgList: [require('@/assets/img/index/index_service_1.jpg'),
                 require('@/assets/img/index/index_service_2.jpg'),
                 require('@/assets/img/index/index_service_3.jpg'),
                 require('@/assets/img/index/index_service_4.jpg'),
@@ -137,35 +139,41 @@ export default {
     color: #fff;
     background-color: #80CCD0;
 }
-.ee-inputButton >>> .el-input-group__append{
-    border:none;
+
+.ee-inputButton >>> .el-input-group__append {
+    border: none;
 }
+
 .el-button--primary {
     color: #fff;
     background-color: #80CCD0;
     border-color: #80CCD0;
-    border-radius:  0;
+    border-radius: 0;
 }
+
 .el-button--primary:focus,
 .el-button--primary:hover {
     background: #ABC8CC;
     border-color: #ABC8CC;
     color: #fff;
 }
+
 .el-button--info {
     color: #fff;
     background-color: #011A24;
     border-color: #011A24;
-    border-radius:  0;
+    border-radius: 0;
 }
+
 .el-button--info:focus,
 .el-button--info:hover {
     background: #2b333e;
     border-color: #2b333e;
     color: #fff;
 }
+
 .noheight_title {
-    line-height: 50px;
+    line-height: 100px;
 }
 </style>
 
