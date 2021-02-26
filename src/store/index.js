@@ -27,7 +27,7 @@ const store = new Vuex.Store({
         cache: [],
         allType: [],
         normalType: [],
-        messageList: []
+        messageList: [],
     },
     getters: {
         //获取正常状态下的项目类型
