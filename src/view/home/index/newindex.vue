@@ -1,9 +1,9 @@
 <template>
     <div>
-        <NewIndex v-if="userToken === null"/>
-        <Developer v-if="userToken !== null && projectRole == 3"/>
-        <Manager v-if="userToken !== null && projectRole == 2"/>
-        <IndexForDemand v-if="userToken != null && projectRole == 1"/>
+        <NewIndex v-if="userToken === null || userToken === ''"/>
+        <Developer v-if="userToken !== null && userToken !== '' && projectRole == 3"/>
+        <Manager v-if="userToken !== null && userToken !== '' && projectRole == 2"/>
+        <IndexForDemand v-if="userToken !== 'null' && userToken !== '' && projectRole == 1"/>
     </div>
 </template>
 
@@ -29,6 +29,7 @@ export default {
     created() {
         this.userToken = sessionStorage.getItem("userToken");
         this.projectRole = sessionStorage.getItem("projectRole");
+        console.log(32, this.userToken);
     }
 }
 </script>

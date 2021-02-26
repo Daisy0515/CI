@@ -138,9 +138,9 @@ const store = new Vuex.Store({
             }
         },
         setLogout(state) {
-            state.userToken = sessionStorage.setItem('userToken', null)
-            state.userData = sessionStorage.setItem('userData', null)
-            state.mobileToken = sessionStorage.setItem('mobileToken', null)
+            state.userToken = sessionStorage.setItem('userToken', '')
+            state.userData = sessionStorage.setItem('userData', '')
+            state.mobileToken = sessionStorage.setItem('mobileToken', '')
             state.headImg = '';
         },
         settaskList(state, status) {

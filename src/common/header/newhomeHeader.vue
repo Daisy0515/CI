@@ -136,7 +136,7 @@ export default {
     color: #011A24;
     line-height: 100px;
 
-    margin: 0px 0px 50px 40px;
+    margin: 0px 0px 50px 20px;
 }
 
 
