@@ -21,7 +21,7 @@ html {
 .globalHeader {
 	background-color: #F5F5F5;
 	border-bottom: 1px solid #DDD;
-	border-top: 4px solid #4C83C3;
+	border-top: 4px solid #4c83c3;
 	z-index: 100;
 	width: 100%;
 	height: auto;
@@ -75,7 +75,7 @@ html {
 .globalHeader .ui-autocomplete li a.ui-state-hover,
 .globalHeader .ui-autocomplete li a:active,
 .globalHeader .ui-autocomplete li a:hover {
-	background: #4C83C3;
+	background: #4c83c3;
 	color: #FFF
 }
 
@@ -218,7 +218,7 @@ html {
 
 .globalFooter a.BlueLinks:hover,
 .globalFooter a:hover {
-	color: #4C83C3
+	color: #4c83c3
 }
 
 .globalFooter-topRow {

@@ -1,19 +1,15 @@
 <template>
-    <div class="toolset">
+    <div class="ttoolset">
         <router-link
                 :to="{name:'toolsetView',query:{id:item.id}}"
                 v-for="(item,index) in toolsetList"
                 :key="index"
-                class="toolset_item"
+                class="ttoolset_item"
         >
-            <el-card>
-                <p>{{item.title}}</p>
-            </el-card>
+           <tool-box :title="item.title"></tool-box>
         </router-link>
-        <router-link to="moreToolset" class="toolset_item">
-            <el-card>
-                <p>更多</p>
-            </el-card>
+        <router-link to="moreToolset" class="ttoolset_item">
+           <tool-box title="更多"></tool-box>
         </router-link>
     </div>
 </template>
@@ -21,8 +17,13 @@
 <script>
     import {httpGet} from "@/utils/http.js";
     import {errTips} from "@/utils/tips.js";
+ import ToolBox from "@/view/home/service/toolBox.vue";
 
     export default {
+        name: "IndexToolSet",
+        components: {
+            ToolBox
+        },
         data() {
             return {
                 toolsetList: []
@@ -42,34 +43,10 @@
     };
 </script>
 <style lang='scss'>
-    .toolset {
-        width: 100%;
-        margin: 0 auto;
-
-        .toolset_item {
-            cursor: pointer;
-            float: left;
-            width: 220px;
-            text-align: center;
-            margin: 0 4% 8% 4%;
-            height: 180px;
-
-            & :hover {
-                background: #f0f0f0;
-            }
-
-            .el-card {
-                height: 100%;
-            }
-
-            .el-card__body {
-                height: 100%;
-                padding: 0;
-            }
-
-            p {
-                line-height: 170px;
-            }
-        }
+    .ttoolset_item {
+        display: inline-block;
+        margin: 34px 22px 34px 22px;
+        width: 250px;
+        height: 165px;
     }
 </style>

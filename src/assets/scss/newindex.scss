@@ -13,16 +13,22 @@
         transform: translateZ(0)
     }
 
-    .cc-hero {
-        background-image: url('../../../assets/img/index/index_background.png')
-    }
+    // .cc-hero {
+    //     background-image: url('../../../assets/img/index/index_background.png')
+    // }
     .cc-hero {
         overflow: hidden
     }
     
+    .cc-hero:hover .cc-hero__arrow_left {
+        opacity:1;
+    }
+    .cc-hero:hover .cc-hero__arrow_right {
+        opacity:1;
+    }
     .cc-hero__lead {
-        margin: 250px 0 0 20%;
-
+        margin: 250px auto;
+        width:1100px;
         p {
             font-family: PingFang HK;
             color: #FFFFFF;
@@ -33,6 +39,24 @@
     .cc-hero__title {
         font-size: 48px;
         font-weight: 600;
+        
+    }
+
+    .cc-hero__arrow_left {
+        position:absolute;
+        left:5%;
+        top:50%;
+        background-color:transparent;
+        opacity:0;
+        
+    }
+    
+    .cc-hero__arrow_right {
+        position:absolute;
+        right:5%;
+        top:50%;
+        background-color:transparent;
+        opacity:0;
         
     }
 
@@ -47,6 +71,7 @@
         margin-top: 68px;
     }
 
+    
     .ee-inputButton .el-input {
         width: 300px;
         margin-right: 30px;
@@ -115,16 +140,15 @@
     }
 
     .center-section {
-        padding: 68px 20% 68px 20%;
-        overflow: hidden;
+        margin: 158px auto 158px auto;
+        width:1100px;
     }
 
     .iimg-list__right {
-        float: right;
+
     }
 
     .iimg-list__left {
-        float: left;
         white-space: pre-wrap;
     }
 

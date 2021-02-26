@@ -27,7 +27,7 @@ const store = new Vuex.Store({
         cache: [],
         allType: [],
         normalType: [],
-        messageList: []
+        messageList: [],
     },
     getters: {
         //获取正常状态下的项目类型
@@ -138,9 +138,9 @@ const store = new Vuex.Store({
             }
         },
         setLogout(state) {
-            state.userToken = sessionStorage.setItem('userToken', "")
-            state.userData = sessionStorage.setItem('userData', "")
-            state.mobileToken = sessionStorage.setItem('mobileToken', "")
+            state.userToken = sessionStorage.setItem('userToken', null)
+            state.userData = sessionStorage.setItem('userData', null)
+            state.mobileToken = sessionStorage.setItem('mobileToken', null)
             state.headImg = '';
         },
         settaskList(state, status) {

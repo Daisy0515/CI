@@ -1655,7 +1655,7 @@ const vueRouter = new Router({
                     component: () => import('@/view/desk/testEmploy/myTestTask'),
                     meta: {
                         title: "内测管理",
-                        routerIndex: "myTest",
+                        routerIndex: "myTestTask",
                         keepAlive: true,
                         deepth: 2,
                         requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
