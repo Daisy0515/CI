@@ -5,7 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "test": "vue-cli-service build --mode test"
   },
   "dependencies": {
     "@form-create/element-ui": "^1.0.17",
@@ -38,6 +39,7 @@
     "@vue/cli-service": "^3.8.3",
     "babel-eslint": "^10.0.1",
     "babel-plugin-component": "^1.1.1",
+    "babel-plugin-transform-remove-console": "^6.9.4",
     "es6-promise": "^4.2.6",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0",
@@ -63,10 +65,10 @@
     ],
     "rules": {
       "generator-star-spacing": "off",
-      "no-tabs":"off",
-      "no-unused-vars":"off",
-      "no-console":"off",
-      "no-irregular-whitespace":"off",
+      "no-tabs": "off",
+      "no-unused-vars": "off",
+      "no-console": "off",
+      "no-irregular-whitespace": "off",
       "no-debugger": "off"
     },
     "parserOptions": {
