@@ -106,12 +106,16 @@
                    if (httpCode === 200) {
                        this.totalPage = data.totalPage;
                        this.totalCount = data.totalCount;
+                       let resourceList = [];
                        for(let item of data.list){
-                           item.gmtModified = specificDate(item.gmtModified);
-                           let urlList = item.resourceUrl.split('/');
-                           item.fileName = urlList[urlList.length-1];
+                           if(item.resourceUrl !==null){ //过滤用户没有交付的任务
+                               item.gmtModified = specificDate(item.gmtModified);
+                               let urlList = item.resourceUrl.split('/');
+                               item.fileName = urlList[urlList.length-1];
+                               resourceList.push(item);
+                           }
                        }
-                       this.tableData = data.list;
+                       this.tableData = resourceList;
                    }else if (msg === "该条件暂无数据") {
                        this.tableData = [];
                        message("该条件暂无数据");
