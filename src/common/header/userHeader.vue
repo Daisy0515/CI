@@ -2,7 +2,7 @@
     <div class="header_three">
         <nav class="c-header c-header--solid">
             <div class="o-container">
-                <div class="c-header__row">
+                <div class="c-header__row__user">
                     <div class="c-header__logowrap">
                         <router-link :to="indexUrl">
                             <a id="topnav-gurulogo" v-bind:href="indexUrl" style="display:block">
@@ -107,7 +107,7 @@
             z-index: 100;
         }
 
-        .c-header__row {
+        .c-header__row__user {
             height: 70px;
             padding-top: 20px;
             box-sizing: border-box;
