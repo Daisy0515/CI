@@ -60,7 +60,7 @@
                                 <span>职业：{{ occus[i - 1] }}</span>
                                 <br>
                                 <span>主页：</span>
-                                <a :href="homes[i-1]">个人主页</a>
+                                <a :href="homes[i-1]" target="_blank">个人主页</a>
                                 <br>
                                 <br>
                                 <br>
@@ -89,7 +89,8 @@ export default {
             pics: ["./施鉴洋.png", "./许文健.png", "./袁琦.png", "./邵卢娇.png", "./郑俊进.png", "./任庆吉.png"],
             names: ["施鉴洋", "许文健", "袁琦", "邵卢娇", "郑俊进", "任庆吉"],
             occus: ["博士在读", "硕士在读", "硕士在读", "硕士在读", "硕士在读", "硕士在读"],
-            homes: ["www.baidu.com", "www.baidu.com", "www.baidu.com", "www.baidu.com", "www.baidu.com",],
+            homes: ["https://github.com/CNFightingSjy", "https://github.com/xwj1427698750", "https://github.com/Daisy0515",
+                "https://github.com/sljslj","https://github.com/waitwind001", "https://github.com/RenQJ",],
         }
     },
 };
