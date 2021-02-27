@@ -28,7 +28,7 @@
                 <el-table-column prop="leaderName" label="团队组长" align="center"></el-table-column>
                 <el-table-column prop="count" label="人员个数" align="center"></el-table-column>
                 <el-table-column prop="taskModified" label="最后更新时间" align="center"></el-table-column>
-                <el-table-column prop="accomplishProgress" label="完成进度" align="center"></el-table-column>
+<!--                <el-table-column prop="accomplishProgress" label="完成进度" align="center"></el-table-column>-->
                 <el-table-column prop="uploadResource" label="结果下载" align="center">
                     <template slot-scope="scope">
                         <a
