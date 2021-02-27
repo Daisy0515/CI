@@ -72,7 +72,7 @@
                     <p class="iimg-list__left-title noheight_title">NEW TOOL</p>
                     <p class="iimg-list__left-subtitle">最新工具</p>
                     <p class="iimg-list__left-title iimg-list__left-br">_</p>
-                    <ToolSet/>
+                    <IndexToolSet/>
                     <el-button @click="moreTool" type="info">更多工具</el-button>
                 </div>
             </section>
