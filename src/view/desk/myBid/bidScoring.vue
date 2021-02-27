@@ -18,10 +18,10 @@
                         <span class="textLabel">组员名称：</span>
                         {{item.userName}}
                     </p>
-                    <p>
-                        <span class="textLabel">完成度：</span>
-                        {{item.accomplishProgress}}
-                    </p>
+<!--                    <p>-->
+<!--                        <span class="textLabel">完成度：</span>-->
+<!--                        {{item.accomplishProgress}}-->
+<!--                    </p>-->
                     <div>
                         <p class="taskName">
                             <span class="textLabel">任务明细：</span>

@@ -99,13 +99,13 @@
                         <i class="el-icon-delete"></i>
                         删除
                     </router-link>
-                    <router-link
-                            :to="{ path: 'taskIndex', query: { projectId: scope.row.id } }"
-                            v-if="scope.row.status===2"
-                    >
-                        <i class="el-icon-edit"></i>
-                        编辑任务
-                    </router-link>
+<!--                    <router-link-->
+<!--                            :to="{ path: 'taskIndex', query: { projectId: scope.row.id } }"-->
+<!--                            v-if="scope.row.status===2"-->
+<!--                    >-->
+<!--                        <i class="el-icon-edit"></i>-->
+<!--                        编辑任务-->
+<!--                    </router-link>-->
                     <router-link :to="{path:'projectDeliver',query:{Id:scope.row.id,projectId:scope.row.projectId}}"
                                  v-if="scope.row.status===2">
                         <i class="el-icon-success"></i>

@@ -63,7 +63,7 @@
                 <div class="tem_main">
                     <el-table :data="projectData">
                         <el-table-column fixed prop="projectName" label="项目名称" align="center"></el-table-column>
-                        <el-table-column prop="accomplishProgress" label="项目进度" align="center"></el-table-column>
+<!--                        <el-table-column prop="accomplishProgress" label="项目进度" align="center"></el-table-column>-->
                         <el-table-column prop="roleName" label="角色" align="center"></el-table-column>
                         <el-table-column prop="type" label="项目类型" align="center"></el-table-column>
                         <el-table-column prop="userName" label="负责人" align="center"></el-table-column>
