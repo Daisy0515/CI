@@ -1,4 +1,6 @@
-const homePageUrl = "http://localhost:8080";
+import {oauthHomePageUrl} from "@/setUrl.js"
+
+const homePageUrl = oauthHomePageUrl;
 
 export const githubInfo = {//官方github授权相关的信息
     logo: require("@/assets/img/git/github.jpg"),
