@@ -8,8 +8,8 @@
             </div>
             
             <div :class="[index==messageList.length-1 ? 'margin-top-31' : '' , 'news-right']">
-                <p class='news-right-title'>{{item['title']}}</p>
                 <router-link :to="item['url']">
+                    <p class='news-right-title'>{{item['title']}}</p>
                     <p class='news-right-content'>{{item['digest']}}>>>详情</p>
                 </router-link>
             </div>
