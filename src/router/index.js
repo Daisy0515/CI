@@ -8,6 +8,7 @@ import expertPublic from '@/view/review/reviewPublic/expertPublic'
 import editorPublic from '@/view/review/reviewPublic/editorPublic'
 import store from '@/store/index.js'
 import {errTips} from "@/utils/tips.js";
+import {publicPath} from "@/setUrl.js"
 
 const originalPush = Router.prototype.push
 Router.prototype.push = function push(location) {
@@ -17,6 +18,7 @@ Router.prototype.push = function push(location) {
 Vue.use(Router)
 const vueRouter = new Router({
     mode:'history',
+    base:publicPath,
     routes: [
         {
             path: '/oauth/gitee/redirect',
