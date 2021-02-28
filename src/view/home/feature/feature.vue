@@ -52,7 +52,7 @@
                         <p>项目贡献者</p>
                         <el-row>
                             <el-col :span="8" v-for="i in pics.length" :key="i">
-                                <el-avatar :size="100" :src="require(''+pics[i-1])">
+                                <el-avatar :size="100" :src="pics[i-1]">
                                 </el-avatar>
                                 <br>
                                 <span>姓名：{{ names[i - 1] }}</span>
@@ -86,7 +86,9 @@ export default {
     methods: {},
     data() {
         return {
-            pics:  ["./伍映吉.jpg","./于琼.jpg","./董丽.jpg","./施鉴洋.png", "./许文健.png", "./袁琦.png", "./邵卢娇.png", "./郑俊进.png", "./任庆吉.png"],
+            pics:  [require("@/assets/img/contributor/伍映吉.jpg"),require("@/assets/img/contributor/于琼.jpg"),require("@/assets/img/contributor/董丽.jpg"),
+                    require("@/assets/img/contributor/施鉴洋.png"), require("@/assets/img/contributor/许文健.png"), require("@/assets/img/contributor/袁琦.png"),
+                    require("@/assets/img/contributor/邵卢娇.png"), require( "@/assets/img/contributor/郑俊进.png"), require( "@/assets/img/contributor/任庆吉.png")],
             names: ["伍映吉", "于琼", "董丽", "施鉴洋", "许文健", "袁琦", "邵卢娇", "郑俊进", "任庆吉"],
             occus: ["硕士", "硕士","博士在读", "博士在读", "硕士在读", "硕士在读", "硕士在读", "硕士在读", "硕士在读"],
             homes: ["","https://github.com/yq0000","https://github.com/Amelie01","https://github.com/CNFightingSjy", "https://github.com/xwj1427698750", "https://github.com/Daisy0515",
