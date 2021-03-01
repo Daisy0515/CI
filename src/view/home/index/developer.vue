@@ -19,10 +19,11 @@
                     <div class="title">NEW TEAM</div>
                     <div class="title_zh">最新团队</div>
                     <div class="more">
-                        <button class="more_bu" @click="joinTeam">more</button>
+<!--                        <button class="more_bu" @click="joinTeam">more</button>-->
+                        <el-button @click="joinTeam" type="info" style="margin-top: 30px;">more</el-button>
                     </div>
                     <div class="border"></div>
-                    <div style="margin: 20px; padding-top: 40px">
+                    <div style="margin: 20px; padding-top: 15px">
                         <Teams></Teams>
                     </div>
                 </div>
@@ -30,10 +31,11 @@
                     <div class="title">NEW TOOL</div>
                     <div class="title_zh">最新工具</div>
                     <div class="more">
-                        <button class="more_bu" @click="moreTool">more</button>
+<!--                        <button class="more_bu" @click="moreTool">more</button>-->
+                        <el-button @click="moreTool" type="info" style="margin-top: 30px;">more</el-button>
                     </div>
                     <div class="border"></div>
-                    <div style="margin: 20px; padding-top: 40px">
+                    <div style="margin: 20px; padding-top: 15px">
                         <ToolSet></ToolSet>
                     </div>
 
@@ -69,41 +71,6 @@
                 </div>
 
             </section>
-
-<!--            <section class="center-section">-->
-<!--                <div style="display: flex; justify-content: space-between;">-->
-<!--                    <div class="iimg-list__left">-->
-<!--                        <p class="iimg-list__left-title">PROCESS ON</p>-->
-<!--                        <p class="iimg-list__left-subtitle">流程介绍</p>-->
-<!--                        <p class="iimg-list__left-title iimg-list__left-br">_</p>-->
-<!--                        <p class="iimg-list__left-subtitle" v-if="currentIndex==0">加入团队</p>-->
-<!--                        <p class="iimg-list__left-content" v-if="currentIndex==0">开发者用户可主动申请加入项目研发团队，<br>也可以被竞标用户邀请加入团队。<br>-->
-<!--                        </p>-->
-<!--                        <p class="iimg-list__left-subtitle" v-if="currentIndex==1">项目研发</p>-->
-<!--                        <p class="iimg-list__left-content" v-if="currentIndex==1">借助于平台的各类工具，开发者用户在接到研发任务后，<br>可以充分发挥群体协作的力量，高效地完成任务。<br>-->
-<!--                        </p>-->
-<!--                        <p class="iimg-list__left-subtitle" v-if="currentIndex==2">交付成果</p>-->
-<!--                        <p class="iimg-list__left-content" v-if="currentIndex==2">开发者用户在完成任务后，在平台交付。<br><br></p>-->
-<!--                    </div>-->
-<!--                    <div class="iimg-list__right">-->
-<!--                        <div class="iimg-list__img">-->
-<!--                            <div class='iimg-list__bottom'>-->
-<!--                                <img :src="imgList[currentIndex]">-->
-<!--                            </div>-->
-<!--                            <img class='iimg-list__top' :src="imgList[(currentIndex+1)%4]">-->
-<!--                        </div>-->
-
-<!--                        <div class="iimg-list__text">-->
-<!--                            <li v-for="(item,index) in imgList" :key="index" @click="changeImg(index)"-->
-<!--                                :class="[currentIndex == index ? 'iimg-list__active': 'iimg-list__noactive']">-->
-<!--                                <a v-show="currentIndex==index">_</a>{{ '0' + (index + 1) }}-->
-<!--                            </li>-->
-<!--                            <li class="iimg-list__noactive iimg-list__white">05</li>-->
-<!--                            <li class="iimg-list__noactive iimg-list__white">06</li>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </section>-->
             <section class="center-section">
                 <div style="display: flex; justify-content: space-between;">
                     <div class="iimg-list__left">
@@ -317,7 +284,7 @@ export default {
     height: 6px;
     background: #011A24;
     margin-left: 10%;
-    margin-top: 15%
+    margin-top: 20%
 }
 
 .more {

@@ -9,9 +9,8 @@
                     <p class="cc-hero__title">__</p>
                     <div class="cc-hero__CTA">
                         <div class="ee-inputButton">
-                            <el-input placeholder="请输入内容" v-model="searchData">
-                                <el-button @click="search" slot="append" type="primary">查找项目</el-button>
-                            </el-input>
+                            <el-input placeholder="请输入内容" v-model="searchData"></el-input>
+                            <el-button @click="search" slot="append" type="primary">查找项目</el-button>
                             <el-button @click="publishTask" type="primary">发布需求</el-button>
                             <el-button @click="joinTeam" type="primary">加入团队</el-button>
                         </div>
