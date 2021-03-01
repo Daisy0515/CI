@@ -6,7 +6,7 @@
                 :key="index"
         >
             <div style=" vertical-align:middle; margin-top:8%">
-                <img src="./icon.png"
+                <img :src="iconList[item.typeId]"
                      style="width:50px; height:50px; border-radius:50%; margin-left: 5%; ">
                 <div style="display: inline-block; margin-left:15px;">
                     <div style="margin-bottom: 10px">
@@ -47,20 +47,20 @@ export default {
                 orderType: "DESC"
             },
             plazaList: [],
-            iconList: [require('./1.png'),
-                require('./2.png'),
-                require('./3.png'),
-                require('./4.png'),
-                require('./5.png'),
-                require('./6.png'),
-                require('./7.png'),
-                require('./8.png'),
-                require('./9.png'),
-                require('./10.png'),
-                require('./11.png'),
-                require('./12.png'),
-                require('./13.png'),
-                require('./14.png'),
+            iconList: [require('./project_icon_1.png'),
+                require('./project_icon_2.png'),
+                require('./project_icon_3.png'),
+                require('./project_icon_4.png'),
+                require('./project_icon_5.png'),
+                require('./project_icon_6.png'),
+                require('./project_icon_7.png'),
+                require('./project_icon_8.png'),
+                require('./project_icon_9.png'),
+                require('./project_icon_10.png'),
+                require('./project_icon_11.png'),
+                require('./project_icon_12.png'),
+                require('./project_icon_13.png'),
+                require('./project_icon_14.png'),
             ],
         };
     },
