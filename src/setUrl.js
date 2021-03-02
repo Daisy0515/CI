@@ -6,7 +6,7 @@ switch(process.env.NODE_ENV){
     case 'development':  //使用npm run serve 在本地运行项目
         api = "http://120.79.19.115:8083/cosine-core-web-api/";
         // api = "http://localhost:8086/cosine-core-web-api/" //本地测试环境
-        oauthHomePageUrl = "http://localhost:8080";
+        oauthHomePageUrl = "http://localhost:8080/";
         weiboOauthUrl = "http://127.0.0.1:8080/"; //weibo的地址设置有点特殊，不允许使用locahost
         publicPath = "/";
         break;
