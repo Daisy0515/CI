@@ -3,24 +3,18 @@
         <ul class="knowledge_list">
             <li>
                 <router-link
-                        :to="{path:'knowledgeView',query:{id:item.id}}"
-                        v-for="(item,index) in infoList"
+                        :to="{path:'homepageView',query:{id:item.id}}"
+                        v-for="(item,index) in singlePageInfo"
                         :key="index"
                 >
                     <el-card class="knowledge_card">
                         <el-tooltip class="item" effect="dark" :content="item.title" placement="top-start">
                             <h2>{{item.title}}</h2>
                         </el-tooltip>
-                        <div class="rightData">
-                            <span>来源：{{item.source}}</span>
-                            <span>作者：{{item.author}}</span>
-                        </div>
+                
                         
-                        <p>{{item.digest}}</p>
-                        <span class="seeNum">
-              <i class="icon iconfont icon-chakan"></i>
-              {{item.selectCount}}
-            </span>
+                        <p>{{item.description}}</p>
+                        
                     </el-card>
                 </router-link>
             </li>
@@ -29,7 +23,8 @@
             <el-pagination
                     @current-change="handleCurrentChange"
                     :current-page.sync="pageNo"
-                    :total="totalPage"
+                    :total="total"
+                    :page-size="pageSize"
                     layout="prev, pager, next, jumper"
             ></el-pagination>
         </div>
@@ -44,14 +39,12 @@
         data() {
             return {
                 infoList: [],
-                totalPage: 1,
+                total: 1,
                 pageNo: 1,
-                pageData: {
-                    pageSize: 1,
-                    pageNo: 1,
-                    orderBy: "id",
-                    orderType: "DESC"
-                }
+                pageSize: 5,
+                singlePageInfoList:[],
+                singlePageInfo:[],
+                count:0,
             };
         },
         created: function () {
@@ -59,20 +52,40 @@
         },
         methods: {
             getViewData() {
-                httpGet("/v1/public/share/get/list", this.pageData).then(results => {
+                httpGet("/v1/public/homepage/get/list").then(results => {
                     const {httpCode, data, msg} = results.data;
                     if (httpCode === 200) {
                         this.infoList = data.infoList;
-                        this.totalPage = parseInt(data.totalPage + "0");
-                        this.pageNo = data.pageNo;
+                        this.total = this.infoList.length;
+                        //console.log(this.total);
+                        //this.pageNo = data.pageNo;
+                        let count=parseInt(this.total/this.pageSize)+1;
+                        //console.log(count);
+                        let arr=[];
+                        for(let i=0;i<count-1;i++){
+                            arr=[];
+                            for(let j=i*this.pageSize;j<(i+1)*this.pageSize;j++){
+                                arr.push(this.infoList[j]);
+                            }
+                            this.singlePageInfoList.push(arr);
+                        }
+                        arr=[];
+                        for(let i=(count-1)*this.pageSize;i<this.total;i++){
+                            arr.push(this.infoList[i]);
+                        }
+                        this.singlePageInfoList.push(arr);
+                        //console.log(this.singlePageInfoList);
+                        this.singlePageInfo = this.singlePageInfoList[this.pageNo-1];
                     } else if (httpCode !== 401) {
                         errTips(msg);
                     }
                 });
             },
             handleCurrentChange(val) {
-                this.pageData.pageNo = val;
-                this.getViewData();
+                this.pageNo = val;
+                this.singlePageInfo = this.singlePageInfoList[this.pageNo-1];
+                
+                
             }
         }
     };

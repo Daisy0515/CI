@@ -708,6 +708,15 @@ const vueRouter = new Router({
                     },
                 },
                 {
+                    path: '/homepageView',
+                    name: 'homepageView',
+                    component: () => import('@/view/home/service/homepageView'),
+                    meta: {
+                        title: "首页动态明细",
+                        routerIndex: "homepageView"
+                    },
+                },
+                {
                     path: '/moreToolset',
                     name: 'moreToolset',
                     component: () => import('@/view/home/service/moreToolset'),
@@ -742,7 +751,16 @@ const vueRouter = new Router({
                                 title: "知识广场",
                                 routerIndex: "knowledgePlaza"
                             },
-                        }
+                        },
+                        {
+                            path: '/homepageNews',
+                            name: 'homepageNews',
+                            component: () => import('@/view/home/service/homepageNews'),
+                            meta: {
+                                title: "首页动态",
+                                routerIndex: "homepageNews"
+                            },
+                        },
                     ]
                 },
                 {

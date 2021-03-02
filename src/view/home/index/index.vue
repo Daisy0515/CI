@@ -1,8 +1,9 @@
 <template>
     <div id="index">
         <main id="main">
-            <section class="cc-hero" id="heroImage">
-                <div class="cc-hero__lead">
+            
+            <section class="cc-hero" :style="imgStyle"  id="heroImage" @click="homepageView">
+                <div class="cc-hero__lead" v-show="isIndexImage" >
                     <p class="cc-hero__title">面向服务的群智化生态化</p>
                     <p class="cc-hero__title">软件开发平台</p>
                     <p class="cc-hero__subtitle">提供覆盖生命周期的软件开发服务</p>
@@ -10,13 +11,15 @@
                     <div class="cc-hero__CTA">
                         <div class="ee-inputButton">
                             <el-input placeholder="请输入内容" v-model="searchData">
-                                <el-button @click="search" slot="append" type="primary">查找项目</el-button>
+                                <el-button @click.stop="search" slot="append" type="primary">查找项目</el-button>
                             </el-input>
-                            <el-button @click="publishTask" type="primary">发布需求</el-button>
-                            <el-button @click="joinTeam" type="primary">加入团队</el-button>
+                            <el-button @click.stop="publishTask" type="primary">发布需求</el-button>
+                            <el-button @click.stop="joinTeam" type="primary">加入团队</el-button>
                         </div>
                     </div>
                 </div>
+                <el-button class="cc-hero__arrow_left" @click.stop="prevImg" size="medium" :circle="true" icon="el-icon-arrow-left"></el-button>
+                <el-button class="cc-hero__arrow_right" @click.stop="nextImg" size="medium" :circle="true" icon="el-icon-arrow-right"></el-button>
             </section>
             <section class="center-section" id="service">
                 <div style="display: flex; justify-content: space-between;">
@@ -83,6 +86,8 @@
 <script>
 import IndexToolSet from './indextoolset.vue';
 import News from './news.vue';
+import {httpGet} from "@/utils/http.js";
+import {errTips} from "@/utils/tips.js";
 
 export default {
     components: {
@@ -92,13 +97,20 @@ export default {
     data() {
         return {
             searchData: "",
+            itemId:21,
             imgList: [require('@/assets/img/index/index_service_1.jpg'),
                 require('@/assets/img/index/index_service_2.jpg'),
                 require('@/assets/img/index/index_service_3.jpg'),
                 require('@/assets/img/index/index_service_4.jpg'),
                 require('@/assets/img/index/index_service_5.jpg'),
                 require('@/assets/img/index/index_service_6.jpg')],
-            currentIndex: 0,   //默认显示图片
+            currentIndex: 0,
+            backgroundImageList:[],   //默认显示图片
+            imgStyle:{
+						backgroundImage: 'url'+require('@/assets/img/index/index_background.png'),
+					},
+            mark:0,
+            isIndexImage:true,
             // test: "群智服务特色",
             textList: [
                 {
@@ -128,6 +140,10 @@ export default {
             ]
         }
     },
+    created: function () {
+            this.getImageList();
+            this.play();
+        },
     methods: {
         //搜索关键字
         search() {
@@ -136,6 +152,70 @@ export default {
                 query: {search: this.searchData}
             });
         },
+        homepageView(){
+            this.$router.push({path:'homepageView',query:{id:this.itemId}});
+            console.log(this.itemId);
+        },
+        getImageList(){
+                httpGet("v1/public/homepage/get/list").then(results => {
+                    const {httpCode, msg, data} = results.data;
+                    if (httpCode === 200) {
+                        this.backgroundImageList = data.infoList;
+                        //console.log(this.backgroundImageList);
+                        //console.log(this.imgStyle);
+                        //this.imgStyle.backgroundImage=data.infoList[0].imgsrc;
+                    } else {
+                        errTips(msg);
+                    }
+                });
+            },
+        autoPlay() {
+						if(this.mark<this.backgroundImageList.length-1){
+							this.mark++;
+						}else{
+							this.mark = 0;
+						}
+						this.imgStyle.backgroundImage = 'url('+this.backgroundImageList[this.mark].imgsrc+')';
+                        this.itemId=this.backgroundImageList[this.mark].id;
+                        if(this.backgroundImageList[this.mark].title!="首页"){
+                            this.isIndexImage=false;
+                        }else{
+                            this.isIndexImage=true;
+                        }
+					},
+        nextImg() {
+                    if(this.mark<this.backgroundImageList.length-1){
+                        this.mark++;
+                    }else{
+                        this.mark = 0;
+                    }
+                    this.imgStyle.backgroundImage = 'url('+this.backgroundImageList[this.mark].imgsrc+')';
+                    this.itemId=this.backgroundImageList[this.mark].id;
+                    if(this.backgroundImageList[this.mark].title!="首页"){
+                            this.isIndexImage=false;
+                    }else{
+                        this.isIndexImage=true;
+                    }
+                },
+        prevImg() {
+                    if(this.mark>0){
+                        this.mark--;
+                    }else{
+                        this.mark = this.backgroundImageList.length-1;
+                    }
+                    this.imgStyle.backgroundImage = 'url('+this.backgroundImageList[this.mark].imgsrc+')';
+                    this.itemId=this.backgroundImageList[this.mark].id;
+                    if(this.backgroundImageList[this.mark].title!="首页"){
+                            this.isIndexImage=false;
+                    }else{
+                        this.isIndexImage=true;
+                    }
+                    //console.log(this.imgStyle.backgroundImage );
+                    //console.log(this.mark);
+                },
+        play() {
+                    setInterval(this.autoPlay, 5000)
+                },
         publishTask() {
             this.$router.push({path: "publishTask"});
         },

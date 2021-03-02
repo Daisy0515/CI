@@ -4,7 +4,7 @@
 <!--        <div v-for="(item, index) in items" :key="index">-->
             <div style=" vertical-align:middle; margin-top:8%">
                 <img :src="iconList[item.typeId]"
-                     style="width:80px; height:80px;  margin-left: 7%;  ">
+                     style="width:120px; height:80px; margin-left: 7%;  ">
                 <div style="display: inline-block; margin-left:15px;">
                     <div style="margin-bottom: 10px; position: relative; margin-top: 10px;">
                         <a style="font-size: 18px;font-family: PingFang HK;font-weight: 500;color: #011A24;">{{
@@ -16,7 +16,7 @@
 <!--                        <a style="width: 41px;height: 14px;font-size: 14px;font-family: Adobe Heiti Std;-->
 <!--                            font-weight: normal;color: #FFFFFF;background-color: rgb(187 198 209);margin-left: 40px;"-->
 <!--                           v-if="item.status === '已结束'">已结束</a>-->
-                        <div style="float:right; position:absolute; right:-80px; top:-3px;width: 77px;height: 14px;
+                        <div style="float:right; position:absolute; right:-70px; top:-3px;width: 77px;height: 14px;
                             font-size: 18px;font-family: PingFang HK;font-weight: 500;color: #788DA4;">
                             No.{{ item.id }}
                         </div>

@@ -19,10 +19,11 @@
                     <div class="title">NEW ITEM</div>
                     <div class="title_zh">最新需求</div>
                     <div class="more">
-                        <button class="more_bu" @click="moreDemands">more</button>
+<!--                        <button class="more_bu" @click="moreDemands">more</button>-->
+                        <el-button @click="joinTeam" type="info" style="margin-top: 30px;">more</el-button>
                     </div>
                     <div class="border"></div>
-                    <div style="margin: 20px; padding-top: 30px">
+                    <div style="margin: 20px; padding-top: 0px">
                         <Items></Items>
                     </div>
                 </div>
@@ -30,10 +31,11 @@
                     <div class="title">PROJECT</div>
                     <div class="title_zh">最新开源</div>
                     <div class="more">
-                        <button class="more_bu" @click="moreOpenSource">more</button>
+<!--                        <button class="more_bu" @click="moreOpenSource">more</button>-->
+                        <el-button @click="joinTeam" type="info" style="margin-top: 30px;">more</el-button>
                     </div>
                     <div class="border"></div>
-                    <div style="margin: 20px; padding-top: 40px">
+                    <div style="margin: 20px; padding-top: 20px">
                         <Projects></Projects>
                     </div>
 
@@ -233,7 +235,7 @@ export default {
 .team1 {
     background-color: white;
     height: 755px;
-    width: 555px;
+    width: 655px;
     display: inline-block;
     box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.1);
     position: relative;

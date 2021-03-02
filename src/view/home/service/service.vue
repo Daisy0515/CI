@@ -56,8 +56,14 @@
                         formindex: true
                     },
                     {
-                        name: "知识广场",
+                        name: "开发动态",
                         url: "knowledgePlaza",
+                        open: false,
+                        formindex: false
+                    },
+                    {
+                        name: "首页动态",
+                        url: "homepageNews",
                         open: false,
                         formindex: false
                     }
