@@ -61,6 +61,12 @@
                         url: "introduction",
                         open: false,
                         formindex: false
+                    },
+                    {
+                        name: "第三方账号",
+                        url: "thirdpartyManage",
+                        open: false,
+                        formindex: false
                     }
                 ],
                 leftdataTwo: [

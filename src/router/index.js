@@ -63,6 +63,22 @@ const vueRouter = new Router({
             }
         },
         {
+            path: '/thirdpartyLogin',
+            name: 'thirdpartyLogin',
+            component: () => import('@/view/loginRegister/login/thirdpartyLogin'),
+            meta: {
+                title: '第三方登录'
+            }
+        },
+        {
+            path: '/logining',
+            name: 'logining',
+            component: () => import('@/view/loginRegister/login/logining'),
+            meta: {
+                title: '正在登录'
+            }
+        },
+        {
             path: '/rules',
             name: 'rules',
             component: () => import('@/view/loginRegister/register/rules'),
@@ -1426,6 +1442,16 @@ const vueRouter = new Router({
                             },
                         },
                         {
+                            path: '/desk/thirdpartyManage',
+                            name: 'thirdpartyManage',
+                            component: () => import('@/view/desk/information/thirdpartyManage'),
+                            meta: {
+                                title: "用户信息",
+                                routerIndex: "thirdpartyManage",
+                                requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+                            },
+                        },
+                        {
                             path: '/desk/changeCompany',
                             name: 'changeCompany',
                             component: () => import('@/view/desk/information/changeCompany'),
@@ -2050,6 +2076,7 @@ const filterInvalidRequestForReview = function (to, from, next) {
         next();
     }
 }
+
 vueRouter.beforeEach((to, from, next) => {
     // shareSessionStorage(to);
     document.title = to.meta.title;
