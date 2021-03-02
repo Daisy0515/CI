@@ -86,30 +86,13 @@ export default {
 };
 </script>
 <style lang='scss'>
+@import "@/assets/scss/square.scss";
 html,
 body,
 #app,
 .desk,
 .service {
     height: 100%;
-}
-.module_headerCrumb {
-    margin: 70px 0 0;
-    .searchTitle {
-        a:hover {
-            color: #ddd;
-        }
-        h1 {
-            display: inline;
-            color: #fff;
-            font-size: 25px;
-        }
-        span {
-            color: #ccc;
-            font-weight: 400;
-            font-size: 16px;
-        }
-    }
 }
 .service {
     .left-scroll {
