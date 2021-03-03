@@ -64,7 +64,7 @@
                             }
                         }
 
-                    } else {
+                    } else if(msg !== "暂无绑定第三方平台账号") {
                         errTips(msg);
                     }
                 })

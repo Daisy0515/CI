@@ -109,11 +109,8 @@
                 });
             },
             getCode() {
-                let url = window.location.href;
-                console.log("当前地址：", url);
-                if (url.indexOf("oauth/redirect") != -1) {
-                    let dz_url = url.split('#')[0];
-                    let code = dz_url.split('?')[1].split('=')[1];
+                let code = this.$route.query.code;
+                if(code !== null){
                     console.log(code);
                     httpGet(`/v1/public/thirdparty/weiboBindInfo/get?code=${code}`).then(results => {
                         const {data, httpCode} = results.data;
