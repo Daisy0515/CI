@@ -746,7 +746,7 @@ const vueRouter = new Router({
                             name: 'knowledgePlaza',
                             component: () => import('@/view/home/service/knowledgePlaza'),
                             meta: {
-                                title: "知识广场",
+                                title: "开发动态",
                                 routerIndex: "knowledgePlaza"
                             },
                         },
