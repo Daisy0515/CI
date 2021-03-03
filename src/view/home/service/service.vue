@@ -28,7 +28,7 @@
                                 :class="getleftIndex===item.url ? 'leftbq':''"
                                 v-for="item in leftdataOne"
                                 :key="item.index"
-                        >{{item.name}}
+                        >{{ item.name }}
                         </li>
                     </ul>
                 </div>
@@ -42,90 +42,80 @@
     </div>
 </template>
 <script>
-    import {mapGetters, mapMutations} from "vuex";
+import {mapGetters, mapMutations} from "vuex";
 
-    export default {
-        data() {
-            return {
-                select: "个人信息",
-                leftdataOne: [
-                    {
-                        name: "工具集",
-                        url: "toolset",
-                        open: true,
-                        formindex: true
-                    },
-                    {
-                        name: "开发动态",
-                        url: "knowledgePlaza",
-                        open: false,
-                        formindex: false
-                    },
-                    {
-                        name: "首页动态",
-                        url: "homepageNews",
-                        open: false,
-                        formindex: false
-                    }
-                ]
-            };
-        },
-        created: function () {
-            this.setLeft(this.$router.currentRoute.name);
-        },
-        computed: {
-            ...mapGetters(["getleftIndex"])
-        },
-        methods: {
-            ...mapMutations(["setLogin", "setLeft"]),
-            changeleft(item) {
-                this.setLeft(item.url);
-                this.$router.push(item.url);
-            }
+export default {
+    data() {
+        return {
+            select: "个人信息",
+            leftdataOne: [
+                {
+                    name: "工具集",
+                    url: "toolset",
+                    open: true,
+                    formindex: true
+                },
+                {
+                    name: "开发动态",
+                    url: "knowledgePlaza",
+                    open: false,
+                    formindex: false
+                },
+                {
+                    name: "首页动态",
+                    url: "homepageNews",
+                    open: false,
+                    formindex: false
+                }
+            ]
+        };
+    },
+    created: function () {
+        this.setLeft(this.$router.currentRoute.name);
+    },
+    computed: {
+        ...mapGetters(["getleftIndex"])
+    },
+    methods: {
+        ...mapMutations(["setLogin", "setLeft"]),
+        changeleft(item) {
+            this.setLeft(item.url);
+            this.$router.push(item.url);
         }
-    };
+    }
+};
 </script>
 <style lang='scss'>
-    html,
-    body,
-    #app,
-    .desk,
-    .service {
+@import "@/assets/scss/square.scss";
+html,
+body,
+#app,
+.desk,
+.service {
+    height: 100%;
+}
+.service {
+    .left-scroll {
+        text-align: center;
+        width: 22%;
+        float: left;
         height: 100%;
-    }
 
-    .service {
-        .left-scroll {
-            text-align: center;
-            width: 22%;
-            float: left;
-            height: 100%;
+        ul {
+            margin-top: 50px;
+        }
 
-            ul {
-                margin-top: 50px;
-            }
+        border-right: 1px solid #d8d8d8;
 
-            border-right: 1px solid #d8d8d8;
+        li {
+            border-top: 1px solid #d8d8d8;
+            margin-top: 15px;
+            padding-top: 15px;
+            color: #666;
+            position: relative;
+            cursor: pointer;
 
-            li {
-                border-top: 1px solid #d8d8d8;
-                margin-top: 15px;
-                padding-top: 15px;
-                color: #666;
-                position: relative;
-                cursor: pointer;
-
-                &:hover::before {
-                    content: "";
-                    height: 51px;
-                    top: 0;
-                    left: 0;
-                    position: absolute;
-                    border-left: 5px solid #4c83c3;
-                }
-            }
-
-            .leftbq::before {
+            &:hover::before {
                 content: "";
                 height: 51px;
                 top: 0;
@@ -135,21 +125,31 @@
             }
         }
 
-        .service_main {
-            box-sizing: border-box;
-            float: right;
-            width: 75%;
-            margin: 40px auto;
-
-            &::before {
-                content: "";
-                display: table;
-                clear: both;
-            }
-
-            h3 {
-                margin-bottom: 40px;
-            }
+        .leftbq::before {
+            content: "";
+            height: 51px;
+            top: 0;
+            left: 0;
+            position: absolute;
+            border-left: 5px solid #4c83c3;
         }
     }
+
+    .service_main {
+        box-sizing: border-box;
+        float: right;
+        width: 75%;
+        margin: 40px auto;
+
+        &::before {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        h3 {
+            margin-bottom: 40px;
+        }
+    }
+}
 </style>

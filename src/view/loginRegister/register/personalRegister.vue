@@ -96,6 +96,10 @@
         mixins: [regular],
         data() {
             return {
+                loginForm:{
+                    microblogId:null,
+                    type:null
+                },
                 personalForm: {
                     password: "",
                     checkPass: "",
@@ -109,6 +113,10 @@
             };
         },
         created: function () {
+            this.loginForm.microblogId = this.$route.query.microblogId;
+            this.loginForm.type = this.$route.query.type;
+
+            // console.log(this.loginForm.microblogId!=null);
             if (sessionStorage.getItem("userToken")) {
                 this.$router.push("/");
                 return false;

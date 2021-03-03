@@ -8,6 +8,7 @@ import expertPublic from '@/view/review/reviewPublic/expertPublic'
 import editorPublic from '@/view/review/reviewPublic/editorPublic'
 import store from '@/store/index.js'
 import {errTips} from "@/utils/tips.js";
+import {publicPath} from "@/setUrl.js"
 
 const originalPush = Router.prototype.push
 Router.prototype.push = function push(location) {
@@ -17,6 +18,7 @@ Router.prototype.push = function push(location) {
 Vue.use(Router)
 const vueRouter = new Router({
     mode:'history',
+    base:publicPath,
     routes: [
         {
             path: '/oauth/gitee/redirect',
@@ -58,6 +60,22 @@ const vueRouter = new Router({
             component: () => import('@/view/loginRegister/login/login'),
             meta: {
                 title: '登录'
+            }
+        },
+        {
+            path: '/thirdpartyLogin',
+            name: 'thirdpartyLogin',
+            component: () => import('@/view/loginRegister/login/thirdpartyLogin'),
+            meta: {
+                title: '第三方登录'
+            }
+        },
+        {
+            path: '/logining',
+            name: 'logining',
+            component: () => import('@/view/loginRegister/login/logining'),
+            meta: {
+                title: '正在登录'
             }
         },
         {
@@ -1424,6 +1442,16 @@ const vueRouter = new Router({
                             },
                         },
                         {
+                            path: '/desk/thirdpartyManage',
+                            name: 'thirdpartyManage',
+                            component: () => import('@/view/desk/information/thirdpartyManage'),
+                            meta: {
+                                title: "用户信息",
+                                routerIndex: "thirdpartyManage",
+                                requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+                            },
+                        },
+                        {
                             path: '/desk/changeCompany',
                             name: 'changeCompany',
                             component: () => import('@/view/desk/information/changeCompany'),
@@ -2048,6 +2076,7 @@ const filterInvalidRequestForReview = function (to, from, next) {
         next();
     }
 }
+
 vueRouter.beforeEach((to, from, next) => {
     // shareSessionStorage(to);
     document.title = to.meta.title;
