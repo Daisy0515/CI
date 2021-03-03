@@ -26,6 +26,12 @@
             <el-button type="primary" @click="searchList">搜索</el-button>
             <el-button type="primary" @click="download">批量下载</el-button>
         </div>
+        <div style="width: 100%; float: left; " v-show="processVisitable">
+            <el-progress :text-inside="true" style="width: 93%; float: left;"  :stroke-width="28" :percentage="count" :format="format" :color="customColorMethod">
+            </el-progress>
+            <el-button size="mini" type="danger" style="position: relative;
+            left: 20px;"  @click="colseProcess()"  icon="el-icon-circle-close" circle></el-button>
+        </div>
         <el-table :data="tableData" :header-cell-style="rowClass" style="margin-top: 20px;" v-loading="loading"
                   @selection-change="handleSelectionChange">
             <el-table-column prop="teamName" label="团队名称" align="center"></el-table-column>
@@ -86,6 +92,8 @@
                 totalPage: null,
                 totalCount:null,
                 tableData: [],
+                count:0,//当前下载文件数量
+                processVisitable:false,
             }
         },
         watch: {
@@ -129,14 +137,34 @@
             searchList() {
                 this.getView();
             },
+            colseProcess(){
+                this.processVisitable=false;
+            },
+            customColorMethod(percentage) {
+                if (percentage < 90) {
+                    return '#e6a23c';
+                }else {
+                    return '#67c23a';
+                }
+            },
+            format(percentage) {
+                 if(percentage<100){
+                     return parseInt(percentage)+"%";
+                 }
+                 if(percentage===100){
+                     return "下载完成了！";
+                 }
+            },
             /**批量下载交付文件*/
             download(){
                 if(this.multipleSelection.length === 0){
                     message("请选择下载的文件！");
                     return ;
                 }
+                this.processVisitable=true;
                 let urlList = this.multipleSelection.map(item => item.resourceUrl);
-                handleBatchDownload(urlList);
+                this.count=0;
+                handleBatchDownload(urlList,this.testcount,(count)=>this.count=count);
             },
             /**点击多选框触发*/
             handleSelectionChange(selection){

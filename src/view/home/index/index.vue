@@ -11,8 +11,8 @@
                     <div class="cc-hero__CTA">
                         <div class="ee-inputButton">
                             <el-input placeholder="请输入内容" v-model="searchData">
-                                <el-button @click.stop="search" slot="append" type="primary">查找项目</el-button>
                             </el-input>
+                            <el-button @click.stop="search" slot="append" type="primary">查找项目</el-button>
                             <el-button @click.stop="publishTask" type="primary">发布需求</el-button>
                             <el-button @click.stop="joinTeam" type="primary">加入团队</el-button>
                         </div>

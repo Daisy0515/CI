@@ -4,7 +4,7 @@
             <div class="module_secondaryHead guruSearch hasBg">
                 <div class="container">
                     <div class="module_headerCrumb">
-                        <div class="refinery">
+                        <div>
                             <div class="searchTitle">
                                 <h1>竞赛广场</h1>
                                 <h2>
