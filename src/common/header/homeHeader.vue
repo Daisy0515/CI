@@ -21,7 +21,7 @@ color: #FFFFFF;
                                 <router-link :to="item.url">
                                     <a v-bind:href="item.url" v-bind:title="title" style="
 font-size: 14px;
-font-family: PingFang HK;
+//font-family: PingFang HK;
 font-weight: 300;
 color: white;">{{ item.title }}</a>
                                 </router-link>
@@ -29,7 +29,7 @@ color: white;">{{ item.title }}</a>
                             <li class="c-header__navigation__item">
                                 <a :href="landaryUrl" target="_blank" style="
 font-size: 14px;
-font-family: PingFang HK;
+//font-family: PingFang HK;
 font-weight: 300;
 color: white;">蓝凌云平台</a>
                             </li>

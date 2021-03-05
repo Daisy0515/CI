@@ -21,7 +21,7 @@ color: #011A24;
                                 <router-link :to="item.url">
                                     <a v-bind:href="item.url" v-bind:title="title" style="
 font-size: 14px;
-font-family: PingFang HK;
+//font-family: PingFang HK;
 font-weight: 300;
 color: #011A24;">{{ item.title }}</a>
                                 </router-link>
@@ -29,7 +29,7 @@ color: #011A24;">{{ item.title }}</a>
                             <li class="c-header__navigation__item">
                                 <a :href="landaryUrl" target="_blank" style="
 font-size: 14px;
-font-family: PingFang HK;
+//font-family: PingFang HK;
 font-weight: 300;
 color: #011A24;">蓝凌云平台</a>
                             </li>
@@ -119,7 +119,7 @@ export default {
     padding: 5px 15px 5px 15px;
 
     font-size: 12px;
-    font-family: PingFang HK;
+    //font-family: PingFang HK;
     font-weight: 300;
     color: #80CCD0;
     line-height: 100px;
@@ -131,7 +131,7 @@ export default {
     opacity: 0.5;
 
     font-size: 12px;
-    font-family: PingFang HK;
+    //font-family: PingFang HK;
     font-weight: 300;
     color: #011A24;
     line-height: 100px;
@@ -146,7 +146,7 @@ export default {
     padding: 0px 0px 0px 43px;
 
     font-size: 14px;
-    font-family: PingFang HK;
+    //font-family: PingFang HK;
     font-weight: 300;
     a {
         color: #011A24;

@@ -42,7 +42,7 @@
 
     .footer_bottom p {
         font-size: 16px;
-        font-family: PingFang HK;
+        //font-family: PingFang HK;
         font-weight: 400;
 
         padding-top: 41px;
@@ -51,7 +51,7 @@
 
     .footer_top p {
         font-size: 16px;
-        font-family: PingFang HK;
+        //font-family: PingFang HK;
         font-weight: 400;
 
         display: inline-block;
