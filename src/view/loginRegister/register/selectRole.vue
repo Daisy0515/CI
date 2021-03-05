@@ -110,17 +110,17 @@
 
         .icon-yonghu {
             font-size: 90px;
-            color: #4c83c3;
+            color: #7cabb1;
         }
 
         .icon-gongsi00 {
             font-size: 90px;
-            color: #4c83c3;
+            color: #7cabb1;
         }
 
         .el-icon-setting {
             font-size: 90px;
-            color: #4c83c3;
+            color: #7cabb1;
         }
     }
 </style>

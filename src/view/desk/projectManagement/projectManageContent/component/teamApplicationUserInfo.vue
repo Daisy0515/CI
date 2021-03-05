@@ -4,7 +4,7 @@
         <div class="container deskHeader">
             <el-card class="box-card0">
                 <div slot="header" class="clearfix">
-                    <h2 style="color:#4c83c3">申请人信息</h2>
+                    <h2 style="color:#7cabb1">申请人信息</h2>
                 </div>
                 <!-- <div class="content">
                     <div class="content_top">

@@ -63,7 +63,7 @@
 
                     .el-icon-success {
                         font-size: 35px;
-                        color: #4c83c3;
+                        color: #7cabb1;
                         margin-right: 15px;
                     }
 

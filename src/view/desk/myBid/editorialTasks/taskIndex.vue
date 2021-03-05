@@ -147,7 +147,7 @@
                     </div>
                     <div class="leftTable" v-show="ruleForm.titleId != 0">
                         <el-card :body-style="{ width: '90%' }">
-                            <div slot="header" style="color: #4c83c3;font-weight: 600;">
+                            <div slot="header" style="color: #7cabb1;font-weight: 600;">
                                 <span style="margin-left: 15px;">{{ selected }}</span>
                             </div>
                             <el-table :data="subtitleList" style="width:100%;" :header-cell-style="rowClass"
@@ -622,7 +622,7 @@
                 margin-top: 3px;
 
                 &:hover {
-                    color: #3e76b8;
+                    color: #649696;
                 }
             }
         }
@@ -656,7 +656,7 @@
     }
 
     .is-active {
-        color: #3e76b8;
+        color: #649696;
     }
 
     .el-icon-circle-plus {
@@ -695,7 +695,7 @@
             color: #8c8c8c;
 
             &:hover {
-                color: #3e76b8;
+                color: #649696;
             }
         }
     }

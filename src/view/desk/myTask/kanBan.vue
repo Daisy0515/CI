@@ -416,7 +416,7 @@
                 top: 0;
                 left: 0;
                 position: absolute;
-                border-left: 5px solid #4c83c3;
+                border-left: 5px solid #7cabb1;
             }
         }
 
@@ -426,7 +426,7 @@
             top: 0;
             left: 0;
             position: absolute;
-            border-left: 5px solid #4c83c3;
+            border-left: 5px solid #7cabb1;
         }
 
         p {
@@ -434,7 +434,7 @@
         }
 
         & p:nth-child(3) {
-            color: #3e76b8;
+            color: #649696;
         }
     }
 

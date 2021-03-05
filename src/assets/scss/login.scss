@@ -11,7 +11,7 @@
         transform: translateX(-50%);
       }
       .yzTextSuccess {
-        color: #4c83c3;
+        color: #7cabb1;
         position: absolute;
         text-align: center;
         left: 50%;
@@ -19,7 +19,7 @@
       }
       .Forget {
         float: right;
-        color: #3e76b8;
+        color: #649696;
         cursor: pointer;
         margin-left: 20px;
       }
@@ -38,7 +38,7 @@
         width: 45%;
         .el-button--primary {
           width: 100%;
-          background: #4c83c3;
+          background: #7cabb1;
         }
       }
       .register_get {
@@ -84,7 +84,7 @@
         border-bottom: 0;
       }
       .el-button--primary {
-        background: #3e76b8;
+        background: #649696;
       }
       .el-card__body {
         padding: 20px 35px 25px 35px;
@@ -97,7 +97,7 @@
       }
       .clearfix {
         & span:nth-child(2) {
-          color: #3e76b8;
+          color: #649696;
           float: right;
           font-size: 13px;
         }

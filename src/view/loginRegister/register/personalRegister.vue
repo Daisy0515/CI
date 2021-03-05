@@ -169,7 +169,7 @@
 
             .Forget {
                 float: right;
-                color: #3e76b8;
+                color: #649696;
                 cursor: pointer;
             }
 
@@ -193,7 +193,7 @@
                 .el-button--primary {
                     text-align: center;
                     width: 100%;
-                    background: #4c83c3;
+                    background: #7cabb1;
                     border: 1px solid #d0d0d0;
                 }
             }
@@ -231,7 +231,7 @@
             }
 
             .el-button--primary {
-                background: #3e76b8;
+                background: #649696;
             }
 
             .el-card__body {
@@ -248,7 +248,7 @@
 
             .clearfix {
                 & span:nth-child(2) {
-                    color: #3e76b8;
+                    color: #649696;
                     float: right;
                     font-size: 13px;
                 }

@@ -124,7 +124,7 @@
 
         .c-header--fixed,
         .c-header--solid {
-            background: #4c83c3;
+            background: #7cabb1;
         }
 
         .c-header__logo {
@@ -173,8 +173,8 @@
         }
 
         .c-header--transparent:not(.c-header--fixed) .c-header__options__join:hover {
-            background-color: #4c83c3;
-            border-color: #4c83c3;
+            background-color: #7cabb1;
+            border-color: #7cabb1;
             color: #fff;
         }
 

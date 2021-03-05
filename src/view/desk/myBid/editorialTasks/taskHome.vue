@@ -19,7 +19,7 @@
                         @click="changeTaskName({ content: item.changeTitle, id: item.upData.id, userId: item.upData.userId }, item)"
                         v-show="item.changeTask"
                         size="small"
-                        style="color:white;background:#4c83c3;margin-left:10px;"
+                        style="color:white;background:#7cabb1;margin-left:10px;"
                 >
                     确定
                 </el-button>
@@ -346,7 +346,7 @@
 
             &:hover {
                 cursor: pointer;
-                color: #3e76b8;
+                color: #649696;
             }
         }
 
@@ -386,7 +386,7 @@
         }
 
         .taskName:hover {
-            color: #3e76b8;
+            color: #649696;
         }
 
         .el-dialog__body {
@@ -401,7 +401,7 @@
 
     .dialog-footer {
         & span button:nth-child(1) {
-            background: #3e76b8;
+            background: #649696;
             color: white;
         }
     }

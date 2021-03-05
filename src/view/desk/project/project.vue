@@ -299,7 +299,7 @@
 
                 & h6:nth-child(1) {
                     font-size: 15px;
-                    color: #4c83c3;
+                    color: #7cabb1;
                     font-weight: 600;
                 }
 
@@ -378,7 +378,7 @@
             font-size: 14px;
             padding: 10px;
             height: 30px;
-            color: #4c83c3;
+            color: #7cabb1;
         }
 
         .box-card2 {
