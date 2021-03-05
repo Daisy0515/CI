@@ -109,7 +109,7 @@ export default {
             currentIndex: 0,
             backgroundImageList: [],   //默认显示图片
             imgStyle: {
-                backgroundImage: 'url' + require('@/assets/img/index/index_background.png'),
+                backgroundImage: 'url' + require('@/assets/img/index/index_background.jpg'),
             },
             mark: 0,
             isIndexImage: true,
