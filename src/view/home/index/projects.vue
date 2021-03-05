@@ -10,14 +10,14 @@
                      style="width:50px; height:50px; border-radius:50%; margin-left: 5%; ">
                 <div style="display: inline-block; margin-left:15px;">
                     <div style="margin-bottom: 10px">
-                        <a style="font-size: 18px;font-family: PingFang HK;font-weight: 500;color: #011A24;">{{
+                        <a style="font-size: 18px;//font-family: PingFang HK;font-weight: 500;color: #011A24;">{{
                                 item.projectName
                             }}</a>
                     </div>
                     <div style="margin-top: -5px">
                         <a style="width: 175px;
                     font-size: 14px;
-                    font-family: PingFang HK;
+                    //font-family: PingFang HK;
                     font-weight: 500;
                     color: #788DA4;
                     ">{{ item.detail }} </a>
@@ -131,7 +131,7 @@ export default {
 
         p {
             font-size: 24px;
-            font-family: PingFang HK;
+            //font-family: PingFang HK;
             font-weight: 500;
             color: #011A24;
             line-height: 30px;

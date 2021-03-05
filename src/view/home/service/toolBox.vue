@@ -31,7 +31,7 @@
             height: 165px;
 
             & :hover {
-                background: #80CCD0;
+                background: #7cabb1;
                 opacity:  0.8;
                 color: #FFFFFF;
                 box-shadow:25px 0 25px -25px #ABC8CC, -25px 0 25px -25px #ABC8CC;
@@ -52,7 +52,7 @@
 
             p {
                 font-size: 24px;
-                font-family: PingFang HK;
+                //font-family: PingFang HK;
                 font-weight: 500;
                 color: #011A24;
                 padding: 0 10px 0 10px;

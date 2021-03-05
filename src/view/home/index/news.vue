@@ -158,7 +158,7 @@
     .news-right {
         margin-left: 66px;
         p {    
-            font-family: PingFang HK;
+            //font-family: PingFang HK;
         }
         float: left;
     }
