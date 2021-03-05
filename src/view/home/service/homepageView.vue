@@ -3,9 +3,11 @@
         <div class="hasBg">
             <div class="container">
                 <div class="module_headerCrumb">
-                    <div class="searchTitle">
+                    <div class="searchTitle" style="    height: 40px;
+                    top: 25px;
+                    position: relative;">
                         <p class="searchTitle">
-                            <router-link to="homepageNews">知识广场</router-link>
+                            <router-link to="homepageNews">首页动态</router-link>
                             >
                             查看
                         </p>

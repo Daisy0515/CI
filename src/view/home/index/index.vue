@@ -153,8 +153,10 @@ export default {
             });
         },
         homepageView(){
-            this.$router.push({path:'homepageView',query:{id:this.itemId}});
-            console.log(this.itemId);
+            if(this.itemId!=21){
+                this.$router.push({path:'homepageView',query:{id:this.itemId}});
+            }
+            //console.log(this.itemId);
         },
         getImageList(){
                 httpGet("v1/public/homepage/get/list").then(results => {

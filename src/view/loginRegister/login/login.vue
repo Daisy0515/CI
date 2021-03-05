@@ -49,10 +49,9 @@
                     </el-form-item>
 
                     <el-form-item class="ThirdPartyLogin">
-                        <!--            <span class="ThirdPart">其他登录方式</span>-->
-                        <a :href="'https://api.weibo.com/oauth2/authorize?client_id=' + clientId + '&response_type=code&redirect_uri=' + redirect_uri">
-                            <img :src="weibologo" class="logoCSS">
-                        </a>
+<!--                        <a :href="'https://api.weibo.com/oauth2/authorize?client_id=' + clientId + '&response_type=code&redirect_uri=' + redirect_uri">-->
+                            <img :src="weibologo" class="logoCSS" @click="weibologin">
+<!--                        </a>-->
                         <img :src="weixinlogo" class="logoCSS">
                         <img :src="QQlogo" class="logoCSS">
                     </el-form-item>
@@ -149,6 +148,9 @@
             SliderBar("slideBar", options);
         },
         methods: {
+            weibologin(){
+                window.location.href = 'https://api.weibo.com/oauth2/authorize?client_id=' + this.clientId + '&response_type=code&redirect_uri=' + this.redirect_uri;
+            },
             goRegister() {
                 this.$router.push("/selectRole");
             },

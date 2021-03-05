@@ -1,9 +1,7 @@
 # /node_modules
 # /dist
-# vue.config.js
 **/node_modules/*
 !**/node_modules/dhtmlx-gantt/
 /dist
-vue.config.js
 /.idea/
 /.vscode/
