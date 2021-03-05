@@ -3,7 +3,9 @@
         <div class="hasBg">
             <div class="container">
                 <div class="module_headerCrumb">
-                    <div class="searchTitle">
+                    <div class="searchTitle" style="    height: 40px;
+                    top: 25px;
+                    position: relative;">
                         <p class="searchTitle">
                             <router-link to="service">工具集</router-link>
                             <span v-if="viewType">></span>
