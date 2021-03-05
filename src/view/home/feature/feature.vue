@@ -86,13 +86,13 @@ export default {
     methods: {},
     data() {
         return {
-            pics:  [require("@/assets/img/contributor/zhj.jpeg"),require("@/assets/img/contributor/qyj.jpg"),require("@/assets/img/contributor/yq.jpg"),require("@/assets/img/contributor/dl.jpg"),
-                    require("@/assets/img/contributor/sjy.png"), require("@/assets/img/contributor/xwj.png"), require("@/assets/img/contributor/yuanqi.png"),
-                    require("@/assets/img/contributor/slj.png"), require( "@/assets/img/contributor/zjj.png"), require( "@/assets/img/contributor/rqj.png")],
+            pics: [require("@/assets/img/contributor/zhj.jpg"), require("@/assets/img/contributor/wyj.jpg"), require("@/assets/img/contributor/yq.jpg"), require("@/assets/img/contributor/dl.jpg"),
+                require("@/assets/img/contributor/sjy.jpg"), require("@/assets/img/contributor/xwj.jpg"), require("@/assets/img/contributor/yuanqi.jpg"),
+                require("@/assets/img/contributor/slj.jpg"), require("@/assets/img/contributor/zjj.jpg"), require("@/assets/img/contributor/rqj.jpg")],
             names: ["张海军", "伍映吉", "于琼", "董丽", "施鉴洋", "许文健", "袁琦", "邵卢娇", "郑俊进", "任庆吉"],
-            occus: ["博士（教授）", "硕士", "硕士","博士在读", "博士在读", "硕士在读", "硕士在读", "硕士在读", "硕士在读", "硕士在读"],
-            homes: ["https://www.dl2link.com/", "","https://github.com/yq0000","https://github.com/Amelie01","https://github.com/CNFightingSjy", "https://github.com/xwj1427698750", "https://github.com/Daisy0515",
-                "https://github.com/sljslj","https://github.com/waitwind001", "https://github.com/RenQJ",],
+            occus: ["博士（教授）", "硕士", "硕士", "博士在读", "博士在读", "硕士在读", "硕士在读", "硕士在读", "硕士在读", "硕士在读"],
+            homes: ["https://www.dl2link.com/", "", "https://github.com/yq0000", "https://github.com/Amelie01", "https://github.com/CNFightingSjy", "https://github.com/xwj1427698750", "https://github.com/Daisy0515",
+                "https://github.com/sljslj", "https://github.com/waitwind001", "https://github.com/RenQJ",],
         }
     },
 };

@@ -142,7 +142,7 @@ export default {
     },
     created: function () {
             this.getImageList();
-            this.play();
+            //this.play();
         },
     methods: {
         //搜索关键字
