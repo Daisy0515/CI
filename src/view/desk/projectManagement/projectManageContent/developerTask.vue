@@ -27,7 +27,7 @@
             <el-table-column fixed prop="subtitle" label="子任务名称" align="center">
                 <template slot-scope="scope">
                     <el-tooltip class="item" effect="dark" :content="scope.row.projectName" placement="top-start">
-                        <div style="color: #4c83c3" @click="taskView(scope.row.id)">{{scope.row.subtitle}}</div>
+                        <div style="color: #7cabb1" @click="taskView(scope.row.id)">{{scope.row.subtitle}}</div>
                     </el-tooltip>
                 </template>
             </el-table-column>
@@ -426,7 +426,7 @@
             font-size: 16px;
 
             &:hover {
-                border-bottom: 1.9px solid #4c83c3;
+                border-bottom: 1.9px solid #7cabb1;
                 padding-bottom: 10px;
             }
         }
@@ -448,7 +448,7 @@
         }
 
         .header_active {
-            border-bottom: 1.9px solid #4c83c3;
+            border-bottom: 1.9px solid #7cabb1;
             padding-bottom: 10px;
             // background: #0760c5;
         }

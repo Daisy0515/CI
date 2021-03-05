@@ -5,7 +5,7 @@
             <el-card>
                 <div class="card_main">
                     <img :src="ruleForm.headurl?ruleForm.headurl:getnoImg"/>
-                    <h2 style="color:#4c83c3">{{ruleForm.userName}}</h2>
+                    <h2 style="color:#7cabb1">{{ruleForm.userName}}</h2>
                 </div>
             </el-card>
             <el-card>
@@ -85,7 +85,7 @@
 </script>
 <style lang='scss' scoped>
     .myh3 {
-        color: #4c83c3;
+        color: #7cabb1;
         margin-bottom: 10px !important;
     }
 

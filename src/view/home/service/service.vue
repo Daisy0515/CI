@@ -121,7 +121,7 @@ body,
                 top: 0;
                 left: 0;
                 position: absolute;
-                border-left: 5px solid #4c83c3;
+                border-left: 5px solid #7cabb1;
             }
         }
 
@@ -131,7 +131,7 @@ body,
             top: 0;
             left: 0;
             position: absolute;
-            border-left: 5px solid #4c83c3;
+            border-left: 5px solid #7cabb1;
         }
     }
 

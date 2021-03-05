@@ -31,7 +31,7 @@
 }
 
 .apExtMenu .active {
-	border-bottom: 1px solid #4c83c3
+	border-bottom: 1px solid #7cabb1
 }
 
 .apExtMenu .active.late {
@@ -61,7 +61,7 @@
 	clear: none;
 	font-weight: 400;
 	line-height: 18px;
-	color: #4c83c3;
+	color: #7cabb1;
 	display: inline
 }
 
@@ -95,7 +95,7 @@
 
 .apExtMenu .actions a {
 	padding: 0;
-	color: #4c83c3;
+	color: #7cabb1;
 	display: inline
 }
 
@@ -317,7 +317,7 @@
 }
 
 .premium {
-	color: #4c83c3
+	color: #7cabb1
 }
 
 em.negative {

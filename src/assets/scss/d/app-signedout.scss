@@ -246,7 +246,7 @@ strong {
 }
 
 a {
-	color: #4c83c3;
+	color: #7cabb1;
 	text-decoration: none
 }
 
@@ -262,7 +262,7 @@ a.greyLink:visited {
 }
 
 a.greyLink:hover {
-	color: #4c83c3;
+	color: #7cabb1;
 	text-decoration: underline
 }
 
@@ -321,7 +321,7 @@ a.greyLink:hover {
 }
 
 .e-button--primary {
-	background-color: #4c83c3;
+	background-color: #7cabb1;
 	color: #FFF;
 	font-weight: 600;
 	border-color: #376aa5
@@ -330,14 +330,14 @@ a.greyLink:hover {
 .e-button--primary:active,
 .e-button--primary:focus,
 .e-button--primary:visited {
-	background-color: #4c83c3;
+	background-color: #7cabb1;
 	color: #FFF;
 	text-decoration: none
 }
 
 .e-button--primary:hover {
 	background-color: #376aa5;
-	background-image: -webkit-linear-gradient(top, #4c83c3, #376aa5);
+	background-image: -webkit-linear-gradient(top, #7cabb1, #376aa5);
 	color: #FFF
 }
 
@@ -482,7 +482,7 @@ a.greyLink:hover {
 
 .c-header--fixed,
 .c-header--solid {
-	border-top: 4px solid #4c83c3;
+	border-top: 4px solid #7cabb1;
 	background: #F5F5F5
 }
 
@@ -490,7 +490,7 @@ a.greyLink:hover {
 	width: 130px;
 	height: 30px;
 	fill: #333;
-	color: #4c83c3
+	color: #7cabb1
 }
 
 .c-header__options {
@@ -564,8 +564,8 @@ a.greyLink:hover {
 }
 
 .c-header--transparent:not(.c-header--fixed) .c-header__options__join:hover {
-	background-color: #4c83c3;
-	border-color: #4c83c3;
+	background-color: #7cabb1;
+	border-color: #7cabb1;
 	color: #FFF
 }
 
@@ -616,7 +616,7 @@ a.greyLink:hover {
 }
 
 .c-footer {
-	border-top: 6px solid #4c83c3;
+	border-top: 6px solid #7cabb1;
 	background: #333;
 	padding: 6rem 0;
 	margin: 0
@@ -731,7 +731,7 @@ a.greyLink:hover {
 	background: #f5f5f5;
 	width: 80%;
 	max-width: 400px;
-	border-right: 3px solid #4c83c3;
+	border-right: 3px solid #7cabb1;
 	height: 100%;
 	-webkit-box-shadow: 2px 0 12px rgba(0, 0, 0, .6);
 	box-shadow: 2px 0 12px rgba(0, 0, 0, .6);
@@ -1024,7 +1024,7 @@ body.registerAccount .loginRight p {
 
 .registerRadio div:hover {
 	background: #FFF;
-	border: 1px solid #4c83c3
+	border: 1px solid #7cabb1
 }
 
 .registerRadio div:nth-child(2n) {
@@ -1043,13 +1043,13 @@ body.registerAccount .loginRight p {
 }
 
 .registerRadio .selected {
-	background: #4c83c3;
+	background: #7cabb1;
 	cursor: default;
 	color: #fff
 }
 
 .registerRadio .selected:hover {
-	background: #4c83c3
+	background: #7cabb1
 }
 
 .registerRadio .notSelected {

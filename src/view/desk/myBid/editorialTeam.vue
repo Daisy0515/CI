@@ -347,7 +347,7 @@
                 position: absolute;
                 right: -95px;
                 bottom: 3px;
-                color: #4c83c3;
+                color: #7cabb1;
                 cursor: pointer;
 
                 span {

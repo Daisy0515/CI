@@ -353,7 +353,7 @@
             font-size: 16px;
 
             &:hover {
-                border-bottom: 1.9px solid #4c83c3;
+                border-bottom: 1.9px solid #7cabb1;
                 padding-bottom: 10px;
             }
         }
@@ -448,7 +448,7 @@
         }
 
         .header_active {
-            border-bottom: 1.9px solid #4c83c3;
+            border-bottom: 1.9px solid #7cabb1;
             padding-bottom: 10px;
             // background: #0760c5;
         }
@@ -470,8 +470,8 @@
         }
 
         .c-header--transparent:not(.c-header--fixed) .c-header__options__join:hover {
-            background-color: #4c83c3;
-            border-color: #4c83c3;
+            background-color: #7cabb1;
+            border-color: #7cabb1;
             color: #fff;
         }
 

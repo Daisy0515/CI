@@ -352,7 +352,7 @@
 
         a {
             margin-right: 5px;
-            color: #4c83c3;
+            color: #7cabb1;
         }
 
         .el-table {
@@ -401,7 +401,7 @@
             }
 
             .el-pagination.is-background .el-pager li:not(.disabled).active {
-                background: #3e76b8;
+                background: #649696;
             }
         }
 

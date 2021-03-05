@@ -282,8 +282,8 @@
         padding-right: 10px;
         line-height: 0;
         color: white;
-        border: 15px solid #4c83c3;
-        background-color: #4c83c3;
+        border: 15px solid #7cabb1;
+        background-color: #7cabb1;
         border-right-color: white;
         content: "置顶";
         box-shadow: 0 5px 5px -5px #000;

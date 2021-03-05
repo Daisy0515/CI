@@ -123,11 +123,11 @@
 
     .message {
         .el-step__head.is-process {
-            color: #4c83c3;
+            color: #7cabb1;
         }
 
         .el-step__title.is-process {
-            color: #4c83c3;
+            color: #7cabb1;
         }
 
         .el-input__inner {
@@ -163,11 +163,11 @@
                 }
 
                 & p:nth-child(3) {
-                    color: #3e76b8;
+                    color: #649696;
                 }
 
                 .changeHead {
-                    color: #4c83c3;
+                    color: #7cabb1;
                     font-size: 13px;
                     cursor: pointer;
                     margin-top: 5px;
@@ -192,7 +192,7 @@
                     top: 0;
                     left: 0;
                     position: absolute;
-                    border-left: 5px solid #4c83c3;
+                    border-left: 5px solid #7cabb1;
                 }
             }
 
@@ -202,7 +202,7 @@
                 top: 0;
                 left: 0;
                 position: absolute;
-                border-left: 5px solid #4c83c3;
+                border-left: 5px solid #7cabb1;
             }
         }
 

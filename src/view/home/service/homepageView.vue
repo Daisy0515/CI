@@ -128,7 +128,7 @@
 
                 span {
                     &:hover {
-                        color: #4c83c3;
+                        color: #7cabb1;
                         cursor: pointer;
                     }
                 }

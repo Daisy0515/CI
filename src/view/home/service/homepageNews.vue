@@ -112,7 +112,7 @@
 
             &:hover {
                 text-decoration: underline;
-                color: #4c83c3;
+                color: #7cabb1;
             }
         }
 
@@ -147,7 +147,7 @@
             font-weight: bold;
             line-height: 0;
             color: white;
-            border: 15px solid #4c83c3;
+            border: 15px solid #7cabb1;
             border-right-color: transparent;
             content: "论文";
             box-shadow: 0 5px 5px -5px #000;
