@@ -37,16 +37,16 @@
                         </a>
                     </div>
                 </el-col>
-                <el-col :span="6" :offset="4">
-                    <el-card style="width: 150px;height: 150px; margin: 10px auto;">
-                        <img :src="gitlabInfo.logo" class="logoCSS">
-                    </el-card>
-                    <div style="text-align: center;">
-                        <a :href="gitlabInfo.authUrl">
-                            <el-button type="primary" > 连接gitlab</el-button>
-                        </a>
-                    </div>
-                </el-col>
+<!--                <el-col :span="6" :offset="4">-->
+<!--                    <el-card style="width: 150px;height: 150px; margin: 10px auto;">-->
+<!--                        <img :src="gitlabInfo.logo" class="logoCSS">-->
+<!--                    </el-card>-->
+<!--                    <div style="text-align: center;">-->
+<!--                        <a :href="gitlabInfo.authUrl">-->
+<!--                            <el-button type="primary" > 连接gitlab</el-button>-->
+<!--                        </a>-->
+<!--                    </div>-->
+<!--                </el-col>-->
             </el-row>
         </div >
         <!--展示代码托管平台信息的阶段-->
