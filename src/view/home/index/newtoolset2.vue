@@ -17,7 +17,7 @@
                     <div style="margin-top: -5px">
                         <a style="width: 175px;
                     font-size: 14px;
-                    //font-family: PingFang HK;
+                    font-family: PingFang HK;
                     font-weight: 500;
                     color: #788DA4;
                     ">{{ item.description }} </a>
@@ -107,7 +107,7 @@ export default {
 
         p {
             font-size: 24px;
-            //font-family: PingFang HK;
+            font-family: PingFang HK;
             font-weight: 500;
             color: #011A24;
             line-height: 30px;

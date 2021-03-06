@@ -52,7 +52,7 @@
 
             p {
                 font-size: 24px;
-                //font-family: PingFang HK;
+                font-family: PingFang HK;
                 font-weight: 500;
                 color: #011A24;
                 padding: 0 10px 0 10px;
