@@ -66,7 +66,7 @@
                         this.totalPage = parseInt(data.totalPage + "0");
                         this.pageNo = data.pageNo;
                     } else if (httpCode !== 401) {
-                        errTips(msg);
+                        //errTips(msg);
                     }
                 });
             },
