@@ -110,7 +110,7 @@ export default {
                     this.loading = false;
                     this.plazaList = [];
                     this.tipData = true;
-                    message("暂无数据");
+                    //message("暂无数据");
                 }
             });
         }

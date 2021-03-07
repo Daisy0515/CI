@@ -66,7 +66,7 @@ export default {
                 if (httpCode === 200) {
                     this.toolsetList = data.slice(0, 5);
                 } else if (httpCode !== 401) {
-                    errTips(msg);
+                    //errTips(msg);
                 }
             });
         },
