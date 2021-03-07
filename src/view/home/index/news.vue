@@ -49,7 +49,8 @@
                 },
                 pageNo: 1,
                 totalPage: 0,
-                messageList: [
+                messageList: [],
+                messageList1: [
                     {
                         month: 'December',
                         date: '00',
@@ -106,7 +107,7 @@
                             i.url = "knowledgeView?id=" + i.id;
                         }
                     } else if (httpCode !== 401) {
-                        errTips(msg);
+                        //errTips(msg);
                     }
                 });
             },
