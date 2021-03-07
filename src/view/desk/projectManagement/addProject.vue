@@ -142,9 +142,9 @@
                         this.tableData = data.list.filter( item=>{ //过滤掉已经添加到项目管理列表中的数据
                             return item.is === false;
                         });
-                    }else if (msg === "该条件暂无数据") {
+                    }else if (msg === "该用户暂无团队信息") {
                         this.tableData = [];
-                        message("该条件暂无数据");
+                        message("该用户暂无团队信息");
                     } else if (httpCode !== 401) {
                         errTips(msg);
                     }
