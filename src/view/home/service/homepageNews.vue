@@ -33,7 +33,7 @@
 
 <script>
     import {httpGet} from "@/utils/http.js";
-    import {errTips} from "@/utils/tips.js";
+    import {errTips, message} from "@/utils/tips.js";
 
     export default {
         data() {
@@ -76,6 +76,9 @@
                         this.singlePageInfoList.push(arr);
                         //console.log(this.singlePageInfoList);
                         this.singlePageInfo = this.singlePageInfoList[this.pageNo-1];
+                        if(this.infoList.length === 0){
+                            message("该条件暂无数据");
+                        }
                     } else if (httpCode !== 401) {
                         errTips(msg);
                     }
