@@ -271,7 +271,7 @@ export default {
     width: 81px;
     height: 17px;
     font-size: 18px;
-    //font-family: PingFang HK;
+    /*font-family: PingFang HK;*/
     font-weight: 500;
     color: #011A24;
     line-height: 114px;
@@ -324,7 +324,7 @@ export default {
     width: 117px;
     height: 17px;
     font-size: 18px;
-    //font-family: PingFang HK;
+   /*font-family: PingFang HK;*/
     font-weight: 500;
     color: #011A24;
     line-height: 115px;
