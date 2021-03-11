@@ -147,7 +147,7 @@
 
         .progressBtn {
             cursor: pointer;
-            color: #3e76b8;
+            color: #7cabb1;
         }
 
         .header_top {

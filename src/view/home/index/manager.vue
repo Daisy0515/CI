@@ -253,7 +253,7 @@ export default {
 }
 
 .title {
-    width: 302px;
+    width: auto;
     height: 43px;
     font-size: 60px;
     font-family: DIN Condensed;

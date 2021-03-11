@@ -11,7 +11,7 @@
         will-change: filter;
         -webkit-transform: translateZ(0);
         transform: translateZ(0);
-        background-image: url('../../../assets/img/index/index_background.png');
+        background-image: url('../../../assets/img/index/index_background.jpg');
     }
 
     .cc-hero {
@@ -28,7 +28,7 @@
         margin: 250px auto;
         width:1100px;
         p {
-            //font-family: PingFang HK;
+            font-family: PingFang HK;
             color: #FFFFFF;
             text-shadow: 0px 0px 10px #000000;
         }
@@ -159,7 +159,7 @@
 
     .iimg-list__left-subtitle {
         font-size: 18px;
-        //font-family: PingFang HK;
+        font-family: PingFang HK;
         font-weight: 500;
         color: #011A24;
         margin-top: 25px;
@@ -172,7 +172,7 @@
 
     .iimg-list__left-content {
         font-size: 16px;
-        //font-family: PingFang HK;
+        font-family: PingFang HK;
         font-weight: 300;
         color: #788DA4;
         margin-top: 25px;
@@ -186,14 +186,14 @@
 
     .about-img-text {
         background-repeat: no-repeat;
-        background-image: url('../../../assets/img/index/about_background.png');
+        background-image: url('../../../assets/img/index/about_background.jpg');
         height: 497px;
         background-position-x: center;
     }
 
     .about-img-text-content {
         font-size: 18px;
-        //font-family: PingFang HK;
+        font-family: PingFang HK;
         font-weight: 300;
         color: #011A24;
         line-height: 36px;
@@ -202,7 +202,7 @@
 
     .news-img-text {
         background-repeat: no-repeat;
-        background-image: url('../../../assets/img/index/news_background.png');
+        background-image: url('../../../assets/img/index/news_background.jpg');
         height: 683px; 
         padding-left: 25%;
         margin-top: 68px;

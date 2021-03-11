@@ -24,7 +24,7 @@
                     <div style="margin-top: -5px">
                         <a style="width: 175px;
                             font-size: 14px;
-                            //font-family: PingFang HK;
+                            font-family: PingFang HK;
                             font-weight: 500;
                             color: #788DA4;"
                         >需求：{{ item.requirement }}</a>
@@ -32,7 +32,7 @@
                     <div style="margin-top: -5px">
                         <a style="width: 175px;
                             font-size: 14px;
-                            //font-family: PingFang HK;
+                            font-family: PingFang HK;
                             font-weight: 500;
                             color: #788DA4;"
                         >发布者：{{ item.names }}&emsp; &emsp; &emsp; &emsp; &emsp;发布时间：{{ item.gmtCreate }}</a>
@@ -40,7 +40,7 @@
                     <div style="margin-top: -5px">
                         <a style="width: 175px;
                             font-size: 14px;
-                            //font-family: PingFang HK;
+                            font-family: PingFang HK;
                             font-weight: 500;
                             color: #788DA4;"
                     > 已有{{ item.examineCount }}人查看&emsp; &emsp; &emsp; &emsp; &emsp;已有{{ item.participationCount }} 人报名</a>
@@ -110,7 +110,7 @@ export default {
                     this.loading = false;
                     this.plazaList = [];
                     this.tipData = true;
-                    message("暂无数据");
+                    //message("暂无数据");
                 }
             });
         }
@@ -151,7 +151,7 @@ export default {
 
         p {
             font-size: 24px;
-            //font-family: PingFang HK;
+            font-family: PingFang HK;
             font-weight: 500;
             color: #011A24;
             line-height: 30px;

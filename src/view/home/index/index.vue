@@ -19,9 +19,9 @@
                     </div>
                 </div>
                 <el-button class="cc-hero__arrow_left" @click.stop="prevImg" size="medium" :circle="true"
-                           icon="el-icon-arrow-left"></el-button>
+                           icon="el-icon-arrow-left" v-if="backgroundImageList.length != 0"></el-button>
                 <el-button class="cc-hero__arrow_right" @click.stop="nextImg" size="medium" :circle="true"
-                           icon="el-icon-arrow-right"></el-button>
+                           icon="el-icon-arrow-right" v-if="backgroundImageList.length != 0"></el-button>
             </section>
             <section class="center-section" id="service">
                 <div style="display: flex; justify-content: space-between;">
@@ -109,7 +109,7 @@ export default {
             currentIndex: 0,
             backgroundImageList: [],   //默认显示图片
             imgStyle: {
-                backgroundImage: 'url' + require('@/assets/img/index/index_background.png'),
+                backgroundImage: 'url' + require('@/assets/img/index/index_background.jpg'),
             },
             mark: 0,
             isIndexImage: true,
@@ -165,6 +165,7 @@ export default {
                 const {httpCode, msg, data} = results.data;
                 if (httpCode === 200) {
                     this.backgroundImageList = data.infoList;
+                    console.log(168, this.backgroundImageList);
                     //console.log(this.backgroundImageList);
                     //console.log(this.imgStyle);
                     //this.imgStyle.backgroundImage=data.infoList[0].imgsrc;
@@ -262,7 +263,7 @@ export default {
     padding: 0 25px 0 25px;
     display: table-cell;
     font-size: 18px;
-    //font-family: PingFang HK;
+    font-family: PingFang HK;
     font-weight: 400;
     color: #011A24;
 }

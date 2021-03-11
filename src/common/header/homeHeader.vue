@@ -5,13 +5,8 @@
                 <div class="c-header__row">
                     <div class="c-header__logowrap">
                         <router-link :to="indexUrl">
-                            <a style="width: 68px;
-height: 27px;
-font-size: 38px;
-font-family: DIN Condensed;
-font-weight: bold;
-color: #FFFFFF;
-">COSINE</a>
+                            <a style="width: 68px;height: 27px;font-size: 38px;font-family: DIN Condensed;
+                            font-weight: bold;color: #FFFFFF;position: relative;bottom: 5px;">COSINE</a>
 <!--                            <img :src="logoUrl">-->
                         </router-link>
                     </div>
@@ -19,17 +14,14 @@ color: #FFFFFF;
                         <ul class="c-header__navigation">
                             <li class="c-header__navigation__item" v-for="item in items" :key="item.title">
                                 <router-link :to="item.url">
-                                    <a v-bind:href="item.url" v-bind:title="title" style="
-font-size: 14px;
-//font-family: PingFang HK;
-font-weight: 300;
-color: white;">{{ item.title }}</a>
+                                    <a v-bind:href="item.url" v-bind:title="title" style="font-size: 14px;
+                                    font-family: PingFang HK;font-weight: 300;color: white;">{{ item.title }}</a>
                                 </router-link>
                             </li>
                             <li class="c-header__navigation__item">
                                 <a :href="landaryUrl" target="_blank" style="
 font-size: 14px;
-//font-family: PingFang HK;
+font-family: PingFang HK;
 font-weight: 300;
 color: white;">蓝凌云平台</a>
                             </li>

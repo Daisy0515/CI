@@ -38,7 +38,7 @@
 
 <script>
     import {httpGet} from "@/utils/http.js";
-    import {errTips} from "@/utils/tips.js";
+    import {errTips, message} from "@/utils/tips.js";
 
     export default {
         data() {
@@ -66,7 +66,8 @@
                         this.totalPage = parseInt(data.totalPage + "0");
                         this.pageNo = data.pageNo;
                     } else if (httpCode !== 401) {
-                        errTips(msg);
+                        //errTips(msg);
+                        message(msg);
                     }
                 });
             },
