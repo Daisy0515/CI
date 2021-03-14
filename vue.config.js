@@ -4,13 +4,7 @@ const CompressionPlugin = require("compression-webpack-plugin")
 let publicPath = "/";          //本地版
 // let publicPath = "/cosine/dist";//测试环境版
 // let publicPath = "./";          //正式环境
-// if(process.env.NODE_ENV==="production"){
-//     if(process.env.VUE_APP_CURRENTMODE === "test"){
-//         publicPath = "/cosine/dist";
-//     }else if(process.env.VUE_APP_CURRENTMODE === "production"){
-//         publicPath = "./"
-//     }
-// }
+
 module.exports = {
     publicPath:  publicPath,
     productionSourceMap: false,
