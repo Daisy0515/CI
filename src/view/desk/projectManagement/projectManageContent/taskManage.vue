@@ -98,6 +98,7 @@
                                 </el-form-item>
                                 <el-form-item label="上传附件" prop="sourceFile">
                                     <sourceUpload  :uploadIndex="testUploadIndex"
+                                                  :fileIndex="1"
                                                   v-on:setIdCard="uploadFile"/>
                                 </el-form-item>
                                 <el-form-item class="cancel">

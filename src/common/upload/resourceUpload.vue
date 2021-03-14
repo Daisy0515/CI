@@ -62,13 +62,13 @@
 .upload {
     .el-icon-document {
         margin-right: 0px;
-        color: #3e76b8;
+        color: #90C0C1;
     }
 
     .el-icon-delete {
         margin-left: 3px;
         cursor: pointer;
-        color: #3e76b8;
+        color: #90C0C1;
     }
 
     .el-icon-success {
@@ -139,8 +139,11 @@ export default {
             this.$refs.upload.remove(file);
         },
         inputFilter(newFile, oldFile, prevent) {
+            console.log("1")
             if (newFile && !oldFile) {
+            console.log("6")
                 if (this.goUpload) {
+                    console.log("7")
                     this.loading = true;
                     this.centerDialogVisible = true;
                     this.$refs.upload.active = true;
@@ -160,19 +163,27 @@ export default {
                     //   return prevent();
                 // }
                 else {
+                    console.log("8")
                     const {yyyyMMdd, mm} = getFileName();
-                    this.qiniuData.key = `/cosine/resourceUpload/${yyyyMMdd}/${mm}/` + newFile.name;
-                    newFile.data.key = `/cosine/resourceUpload/${yyyyMMdd}/${mm}/` + newFile.name;
+                    this.$nextTick(()=>{
+                        this.qiniuData.key = `/cosine/resourceUpload/${yyyyMMdd}/${mm}/` + newFile.name;
+                        newFile.data.key = `/cosine/resourceUpload/${yyyyMMdd}/${mm}/` + newFile.name;
+                        console.log(this.qiniuData)
+                    })
                 }
             }
         },
         inputFile(newFile, oldFile) {
+            console.log("2", newFile, oldFile)
             if (newFile && oldFile) {
+                console.log("4")
                 if (newFile.error != oldFile.error) {
+                    console.log("5")
                     this.loading = false;
                     this.centerDialogVisible = false;
                     errTips('上传失败,请刷新页面再试');
                 } else if (newFile.success !== oldFile.success) {
+                    console.log("3")
                     setTimeout(() => {
                         this.loading = false;
                         this.centerDialogVisible = false;

@@ -104,7 +104,7 @@
                 </div>
             </el-row>
             <div style="text-align:center">
-                <sourceUpload :uploadIndex="uploadIndex" v-on:setIdCard="setIdCard($event)"/>
+                <sourceUpload :uploadIndex="uploadIndex" v-on:setIdCard="setIdCard($event)" :fileIndex="2"/>
                 <el-button type="primary" size="mini" @click="uploadFile">确定上传</el-button>
             </div>
             <div style="text-align: center;margin-top: 50px">
