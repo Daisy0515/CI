@@ -235,10 +235,11 @@ export default {
             this.uploadIndex = !this.uploadIndex;
         },
         setIdCard(file) {
+            console.log(1);
             if (!file) {
                 errTips("请先选择文件！");
             } else {
-                (file) && (this.insertResource.resource = file);
+                (file) && (this.insertResource.resource = file["fileName"]);
                 let dataForm = this.insertResource.resource.split('/');
                 this.insertResource.resourceName = dataForm[dataForm.length - 1];
                 this.insertResource.missionId = this.form.id;
