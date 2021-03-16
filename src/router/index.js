@@ -2078,7 +2078,7 @@ const filterInvalidRequestForReview = function (to, from, next) {
 }
 
 vueRouter.beforeEach((to, from, next) => {
-    shareSessionStorage(to);
+    // shareSessionStorage(to);
     document.title = to.meta.title;
     if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
         if (sessionStorage.getItem('userToken')) { // 通过vuex state获取当前的token是否存在
