@@ -2,8 +2,8 @@ const CompressionPlugin = require("compression-webpack-plugin")
 
 //publicPath会影响打包后的静态文件的路径，可在打包后的dist/index.html中查看
 // let publicPath = "/";          //本地版
-let publicPath = "/cosine/dist";//测试环境版
-// let publicPath = "./";          //正式环境
+// let publicPath = "/cosine/dist";//测试环境版
+let publicPath = "./";          //正式环境
 
 module.exports = {
     publicPath:  publicPath,
