@@ -15,7 +15,7 @@ let publicPath = "/cosine/dist/";    //针对vue router使用的history模式进
 // let api = "http://8.129.186.75:8083/cosine-core-web-api/"; // 访问后台接口的根地址
 // let oauthHomePageUrl = "http://www.cosinehub.cn/"; //第三方授权跳转地址的根地址,需要与第三方平台同步,例如:github中设置的是"http://localhost:8080",那么项目里也要设置成"http://localhost:8080"
 // let weiboOauthUrl = oauthHomePageUrl; //weibo地址的本地连接不允许使用localhost，所以有点特殊，单独设置
-// let publicPath = "./";    //针对vue router使用的history模式进行的设置，与vue.config.js里的publicPath中的路径一致
+// let publicPath = "/";    //针对vue router使用的history模式进行的设置，与vue.config.js里的publicPath中的路径一致
 
 
 export {api, oauthHomePageUrl, weiboOauthUrl, publicPath};
