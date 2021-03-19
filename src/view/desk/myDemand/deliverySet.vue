@@ -171,7 +171,8 @@
                 this.multipleSelection = selection;
             },
             /**更改每页显示的内容*/
-            handleSizeChange(){
+            handleSizeChange(val){
+                this.searchData.pageSize = val;
                 this.getView()
             },
             /**下一页*/
