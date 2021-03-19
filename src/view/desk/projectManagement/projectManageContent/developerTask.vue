@@ -388,6 +388,7 @@
                         resource: this.sourceFile,
                         resourceName: this.sourceFile.split('/')[this.sourceFile.split('/').length - 1]
                     };
+                    // console.log(param);
                     httpPost("/v1/authorization/manage/resource/insert", param).then(results => {
                         const {msg, httpCode} = results.data;
                         if (httpCode === 200) {
@@ -399,6 +400,7 @@
                             alert(httpCode);
                         }
                     });
+                    this.sourceFile = null;
                 }
 
             },

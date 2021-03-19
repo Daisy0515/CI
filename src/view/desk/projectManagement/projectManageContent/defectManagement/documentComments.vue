@@ -125,15 +125,20 @@
                             编辑
                         </router-link> -->
 
-
+                        <el-button plain type="primary" size="small" @click.native="editComments(scope.row.id, scope.row.principal)">
+                            <i class="el-icon-search"></i>
+                            处理
+                        </el-button>
                         <el-button plain type="primary" size="small" @click.native="viewComments(scope.row.id)">
                             <i class="el-icon-search"></i>
                             查看意见
                         </el-button>
+                        
                     </template>
                 </el-table-column>
             </el-table>
         <comments-view :dialogFormVisible="commentsViewDialog" :id="id" v-if="this.id" @closeDialog="closeCommentsViewDialog" ref="commentsView"></comments-view>
+        <comments-edit :dialogFormVisible="commentsEditDialog" :id="id"  :userId="userId" v-if="this.id" @closeDialog="closeCommentsEditDialog" ref="commentsEdit"></comments-edit>
         
         <div class="bid_footer">
                 <el-pagination
@@ -153,6 +158,7 @@
     import {hoursSeconds} from "@/utils/getDate.js";
     import commentsAdd from "../component/commentsAdd.vue";
     import commentsView from "../component/commentsView.vue";
+     import commentsEdit from "../component/commentsEdit.vue";
     import commentsSum from "../component/commentsSum.vue"
 
     export default {
@@ -160,12 +166,14 @@
         components: {
             commentsAdd,
             commentsView,
+            commentsEdit,
             commentsSum,
         },
         data() {
             return {
                 commentsAddDialog:false,//控制查看意见对话框
                 commentsViewDialog:false,//控制查看意见对话框
+                commentsEditDialog:false,//控制编辑意见对话框
                 commentsSumDialog:false,//控制意见汇总对话框
                 id: null,
                 missionTitle: [],
@@ -257,6 +265,7 @@
                         let getData = data;
                         this.pageNo = getData.pageNo;
                         this.userId = getData.userId;
+                        console.log(this.userId);
                         this.totalPage = parseInt(getData.totalPage + "0");
                         let {list} = getData;
                         for (let i of list) {
@@ -312,6 +321,33 @@
 
             closeCommentsViewDialog() {
                 this.commentsViewDialog = false;
+            },
+
+            editComments(val, principal) {
+                this.id = val;
+                this.$nextTick(()=>{
+                    var json_principal = JSON.parse(principal);
+                    var flag = 0;
+                    for(var i=0;i<json_principal.length;i++) {
+                        var principal_id = parseInt(json_principal[i]);
+                        console.log(principal_id, this.userId);
+                        if (principal_id == this.userId) {
+                            flag = 1;
+                        }
+                    }
+                    if (flag) {
+                        this.$refs.commentsEdit.getView();
+                    this.commentsEditDialog = true;
+                    } else {
+                        message("没有权限编辑！");
+                    }
+                    
+                })
+            },
+
+             closeCommentsEditDialog() {
+                this.commentsEditDialog = false;
+                this.getView();
             },
 
             sumComments() {

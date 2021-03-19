@@ -125,8 +125,7 @@
                 </el-table-column>
                 <el-table-column prop="principalList" label="负责人" align="center">
                     <template slot-scope="scope">
-
-                        <span class="tablehidden" v-for="item in scope.row.principalList">{{item}}&nbsp;</span>
+                        <span class="tablehidden" v-for="item in scope.row.principalList" :key="item.id">{{item}}&nbsp;</span>
                     </template>
                 </el-table-column>
                 <el-table-column prop="opinionTitle" label="标题" align="center">

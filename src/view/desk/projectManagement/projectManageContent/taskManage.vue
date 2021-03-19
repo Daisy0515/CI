@@ -98,6 +98,7 @@
                                 </el-form-item>
                                 <el-form-item label="上传附件" prop="sourceFile">
                                     <sourceUpload  :uploadIndex="testUploadIndex"
+                                                  :fileIndex="1"
                                                   v-on:setIdCard="uploadFile"/>
                                 </el-form-item>
                                 <el-form-item class="cancel">
@@ -187,7 +188,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    <!-- </div> -->
 
 </template>
 
@@ -200,13 +201,13 @@
     import {errTips, successTips} from '@/utils/tips.js';
     import sourceUpload from '@/common/upload/resourceUpload';
     import timeLimit from '@/mixins/regular/timeLimit.js';
-    import DialogTaskInfo from "./component/dialogTaskInfo";
+    // import DialogTaskInfo from "./component/dialogTaskInfo";
     import foreignArea from "@/view/loginRegister/register/components/foreignArea";
 
     export default {
         mixins: [timeLimit],
         components: {
-            DialogTaskInfo,
+            // DialogTaskInfo,
             sourceUpload,
             dialogTaskInfo
         },
@@ -503,7 +504,7 @@
                 if(file===""){ //用户没有上传文件
                     this.addMission.sourceFile = null;
                 }else{
-                    this.addMission.sourceFile = file;
+                    this.addMission.sourceFile = file["fileName"];
                 }
                 this.addMission.castId = this.castId;
                 httpPost('/v1/authorization/bids/missioninfo/add', this.addMission).then(results => {

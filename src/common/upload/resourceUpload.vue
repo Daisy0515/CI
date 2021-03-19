@@ -62,13 +62,13 @@
 .upload {
     .el-icon-document {
         margin-right: 0px;
-        color: #3e76b8;
+        color: #90C0C1;
     }
 
     .el-icon-delete {
         margin-left: 3px;
         cursor: pointer;
-        color: #3e76b8;
+        color: #90C0C1;
     }
 
     .el-icon-success {
@@ -161,8 +161,10 @@ export default {
                 // }
                 else {
                     const {yyyyMMdd, mm} = getFileName();
-                    this.qiniuData.key = `/cosine/resourceUpload/${yyyyMMdd}/${mm}/` + newFile.name;
-                    newFile.data.key = `/cosine/resourceUpload/${yyyyMMdd}/${mm}/` + newFile.name;
+                    this.$nextTick(()=>{
+                        this.qiniuData.key = `/cosine/resourceUpload/${yyyyMMdd}/${mm}/` + newFile.name;
+                        newFile.data.key = `/cosine/resourceUpload/${yyyyMMdd}/${mm}/` + newFile.name;
+                    })
                 }
             }
         },

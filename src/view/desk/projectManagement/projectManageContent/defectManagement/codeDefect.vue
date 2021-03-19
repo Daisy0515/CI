@@ -273,6 +273,7 @@
                         let getData = data;
                         this.pageNo = getData.pageNo;
                         this.userId = getData.userId;
+                        console.log(this.userId);
                         this.totalPage = parseInt(getData.totalPage + "0");
                         let {list} = getData;
                         for (let i of list) {

@@ -1,30 +1,6 @@
 <template>
     <div id="index">
         <main id="main">
-<!--            <div class="skinBox skin1 type2" id="yht" style="color: #000;-->
-<!--    font-size: 14px;-->
-<!--    line-height: 1.5;-->
-<!--    min-width: 1280px;">-->
-<!--                <div class="xzgj" style="position: fixed;-->
-<!--    _position: absolute;-->
-<!--    z-index: 9999;-->
-<!--    right: 0;-->
-<!--    top: 900px;">-->
-<!--                    <div class="xzgj-child">-->
-<!--                        <div class="topTitle">-->
-<!--                            &lt;!&ndash;-中国科学技术大学研招-&ndash;&gt;-->
-<!--                            <div class="slidertx"></div>-->
-<!--                            <a class="layk">考生咨询</a></div>-->
-<!--                        <div class="conbg">-->
-<!--                            <ul class="menu_robot">-->
-<!--                                <li><a class="zszb lookview" style="background:url('https://image.360eol.com//robot/inc/images/icon-7.png')  no-repeat center 5px;" href="https://www.seu.edu.cn/main.htm" target="_blank">东大主页</a></li>-->
-<!--                                <li><a class="zszb lookview" style="background:url('https://image.360eol.com//robot/inc/images/icon-8.png')  no-repeat center 5px;" href="https://www.seu.edu.cn/17399/list.htm" target="_blank">院系风采</a></li>-->
-<!--                            </ul>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-
             <section class="cc-hero" id="heroImage">
                 <div class="cc-hero__lead">
                     <p class="cc-hero__title">聚集群体的智慧</p>
@@ -213,7 +189,6 @@ export default {
 </script>
 <style lang='scss'>
 @import "@/assets/scss/newindex.scss";
-@import "@/assets/scss/reset.scss";
 </style>
 <style scoped>
 .el-input-group__append .el-button--primary {
@@ -223,6 +198,34 @@ export default {
 
 .ee-inputButton >>> .el-input-group__append {
     border: none;
+}
+
+.el-button--primary {
+    color: #fff;
+    background-color: #80CCD0;
+    border-color: #80CCD0;
+    border-radius: 0;
+}
+
+.el-button--primary:focus,
+.el-button--primary:hover {
+    background: #ABC8CC;
+    border-color: #ABC8CC;
+    color: #fff;
+}
+
+.el-button--info {
+    color: #fff;
+    background-color: #011A24;
+    border-color: #011A24;
+    border-radius: 0;
+}
+
+.el-button--info:focus,
+.el-button--info:hover {
+    background: #2b333e;
+    border-color: #2b333e;
+    color: #fff;
 }
 
 .noheight_title {
@@ -265,7 +268,7 @@ export default {
     width: 81px;
     height: 17px;
     font-size: 18px;
-    font-family: PingFang HK;
+  /*font-family: PingFang HK;*/
     font-weight: 500;
     color: #011A24;
     line-height: 114px;
@@ -286,10 +289,43 @@ export default {
     margin-right: 10%;
 }
 
+.more_bu {
+    width: 81px;
+    height: 29px;
+    font-size: 18px;
+    font-family: DIN Alternate;
+    font-weight: bold;
+    color: #CCCCCC;
+    background-color: black;
+    margin-top: 30%;
+}
+
 .arrow {
     margin-bottom: 90px;
 }
 
+.process {
+    margin: 0 auto;
+    width: 176px;
+    height: 44px;
+    font-size: 60px;
+    font-family: DIN Condensed;
+    font-weight: bold;
+    color: #011A24;
+    line-height: 115px;
+}
+
+.process1 {
+    margin: 0 auto;
+    padding-top: 20px;
+    width: 117px;
+    height: 17px;
+    font-size: 18px;
+  /*font-family: PingFang HK;*/
+    font-weight: 500;
+    color: #011A24;
+    line-height: 115px;
+}
 
 .image {
     text-align: center;
@@ -303,44 +339,32 @@ export default {
     border: dashed 1px #aaa;
 }
 
-.system .system-box > img:last-child {
-    left: inherit;
+.border_pro {
+    margin: 0 auto;
+    width: 30px;
+    height: 6px;
+    background: #011A24;
 }
 
-.search > .search-box {
-    position: relative;
-}
+/*.process_img1 {*/
+/*    background-color: red;*/
+/*    margin-top: 6%;*/
+/*    margin-left: 9%;*/
+/*    position: relative;*/
+/*}*/
 
-.search > .search-box .search-box-wrap {
-    position: relative;
-    z-index: 9;
-}
+/*.process_img2 {*/
+/*    background-color: black;*/
+/*    margin-top: 6%;*/
+/*    position: relative;*/
+/*    right: -10%;*/
+/*}*/
 
-.search > .search-box > .placeholder {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    color: #999;
-    z-index: 1;
-}
-
-.navli {
-    font-size: 14px;
-}
-.retrun_laoban {
-    position: absolute;
-    right: 20px;
-    top: 51px;
-    display: block;
-    width: 68px;
-    line-height: 30px;
-    border-radius: 50px;
-    background-color: #1c356e;
-    color: #999;
-    font-size: 14px;
-    text-align: center;
-    border: 1px solid;
-    text-decoration: none;
-}
+/*.process_img3 {*/
+/*    background-color: #1e7e34;*/
+/*    margin-top: 6%;*/
+/*    position: relative;*/
+/*    right: -20%;*/
+/*}*/
 </style>
 

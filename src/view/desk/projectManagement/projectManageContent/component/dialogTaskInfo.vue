@@ -104,7 +104,7 @@
                 </div>
             </el-row>
             <div style="text-align:center">
-                <sourceUpload :uploadIndex="uploadIndex" v-on:setIdCard="setIdCard($event)"/>
+                <sourceUpload :uploadIndex="uploadIndex" v-on:setIdCard="setIdCard($event)" :fileIndex="2"/>
                 <el-button type="primary" size="mini" @click="uploadFile">确定上传</el-button>
             </div>
             <div style="text-align: center;margin-top: 50px">
@@ -235,10 +235,11 @@ export default {
             this.uploadIndex = !this.uploadIndex;
         },
         setIdCard(file) {
+            console.log(1);
             if (!file) {
                 errTips("请先选择文件！");
             } else {
-                (file) && (this.insertResource.resource = file);
+                (file) && (this.insertResource.resource = file["fileName"]);
                 let dataForm = this.insertResource.resource.split('/');
                 this.insertResource.resourceName = dataForm[dataForm.length - 1];
                 this.insertResource.missionId = this.form.id;
