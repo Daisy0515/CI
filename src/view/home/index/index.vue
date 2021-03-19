@@ -165,12 +165,8 @@ export default {
                 const {httpCode, msg, data} = results.data;
                 if (httpCode === 200) {
                     this.backgroundImageList = data.infoList;
-                    console.log(168, this.backgroundImageList);
-                    //console.log(this.backgroundImageList);
-                    //console.log(this.imgStyle);
-                    //this.imgStyle.backgroundImage=data.infoList[0].imgsrc;
                 } else {
-                    errTips(msg);
+                    //errTips(msg);
                 }
             });
         },
