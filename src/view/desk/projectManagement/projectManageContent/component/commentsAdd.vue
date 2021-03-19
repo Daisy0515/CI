@@ -170,6 +170,7 @@
                     if (httpCode === 200) {
                         // alert(this.ruleForm.resourceFile);
                         successTips('新增文档意见成功！');
+                        this.changeVisible();
                         //alert(1);
                     } else if (httpCode !== 401) {
                         errTips(msg);

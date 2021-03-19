@@ -1,0 +1,77 @@
+@charset "utf-8";
+html {background: #fff; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+.check_answer{list-style:none;text-align:center; color:#999;}
+.skinBox *{
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+}
+.skinBox *:before, .skinBox *:after {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  font-family: "iconfont"!important;
+}
+.skinBox ul li{list-style: none;}
+.skinBox ol li{color:#09a8fa; margin-left:20px;}
+.skinBox ol{list-style:decimal!important }
+.xu_ol{list-style:decimal!important}
+.skinBox ol li a{text-decoration: none!important}
+.skinBox{ color: #000;font-size: 14px; line-height: 1.5;min-width:1280px; }
+.skinBox button,
+.skinBox input,
+.skinBox select,
+.skinBox textarea { font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Microsoft Yahei", "Wenquanyi Micro Hei", sans-serif; font-weight: 300; color: #333; background: #fff; font-size: 100%; outline: none; }
+.skinBox table { border-collapse: collapse; border-spacing: 0; }
+.skinBox th { text-align: inherit; }
+.skinBox img { vertical-align: top; }
+.skinBox fieldset,
+.skinBox img { border: 0; }
+.skinBox iframe { display: block; }
+
+.skinBox a { text-decoration: none; cursor: pointer; color: #666; -webkit-transition: all 0.3s; -moz-transition: all 0.3s; -o-transition: all 0.3s; transition: all 0.3s; }
+.clearfix:before,
+.clearfix:after { display: block; overflow: hidden; height: 0; content: "."; }
+.clearfix:after { clear: both; }
+.clearfix { *zoom: 1;display: block;}
+.skinBox .fn-text-overflow { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.skinBox .none { display: none; }
+::-webkit-input-placeholder {
+  font-size: 14px;
+  color: #999;
+}/*webkit*/
+:-moz-placeholder {
+  font-size: 14px;
+  color: #999;
+}           /*firefox 4-18*/
+::-moz-placeholder {
+  font-size: 14px;
+  color: #999;
+}          /*firefox 19+*/
+:-ms-input-placeholder {
+  font-size: 14px;
+  color: #999;
+}      /*ie10+*/
+.hor-view { display: -webkit-box; display: -webkit-flex; display: flex; -webkit-box-orient: horizontal; -webkit-box-direction: normal; -webkit-flex-direction: row; flex-direction: row; }
+.flex-1 { -webkit-box-flex: 1; -webkit-flex: 1; -ms-flex: 1; flex: 1; }
+.skinBox select {
+  appearance:none;
+  -moz-appearance:none;
+  -webkit-appearance:none;
+  /* background: url("../images/xial.png")  calc(100% - 10px) center no-repeat; */
+}
+/*ol{list-style-type:none;counter-reset:sectioncounter;width:200px;}*/
+/*ol li:before {*/
+/*content:counter(sectioncounter) "、";*/
+/*counter-increment:sectioncounter;*/
+/*}*/
+body{ text-align:left;}
+ul{ position:static; bottom:auto; right:auto;}
+ul li{ width:auto; height:auto; float:inherit; background:none;}
+.newslist ul li{ text-align:left;}
+A:hover { border:none; color:#5dacec;background:none;}
+.xz-con .top_robot .close{font-size:0;}
+.xz-con .top_robot .close:before{content:''!important}
