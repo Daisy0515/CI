@@ -64,7 +64,7 @@
                             </el-tooltip>
                         </template>
                     </el-table-column>
-                    <el-table-column fixed prop="resourceName" label="资源名称" align="center">
+                    <el-table-column fixed prop="resourceName" label="交付任务" align="center">
                         <template slot-scope="scope">
                             <el-tooltip class="item" effect="dark" :content="scope.row.resourceName"
                                         placement="top-start">
@@ -82,6 +82,11 @@
 
                     <el-table-column prop="status" label="状态" align="center">
 
+                    </el-table-column>
+                    <el-table-column prop="fileName" label="文件名" align="center">
+                        <template slot-scope="scope">
+                            <a target="_Blank" :href="scope.row.resourceUrl"> {{scope.row.fileName}}</a>
+                        </template>
                     </el-table-column>
 
                     <el-table-column label="操作" align="center" width="350">
@@ -257,6 +262,14 @@
                                     i.typeName = j.processName;
                                     break;
                                 }
+                            }
+                        }
+                        for(let item of data.reviewTeamList){
+                            if(item.resourceUrl !==null){
+                                let urlList = item.resourceUrl.split('/');
+                                item.fileName = urlList[urlList.length-1];
+                            }else{
+                                item.fileName = null;
                             }
                         }
                         this.ResourceTable = data.reviewTeamList;
