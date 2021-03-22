@@ -3,6 +3,7 @@ $--color-primary: #90C0C1;
 
 // #4c83c3 -> #7cabb1
 //#4478b4 -> #7cabb1
+//#3e76b8 ->#7cabb1
 //#3e76b8 消息页面操作  -> 649696
 
 $--color-info: #011A24;
@@ -11,4 +12,4 @@ $--border-radius-base: 0;
 /* 改变 icon 字体路径变量，必需 */
 $--font-path: '~element-ui/lib/theme-chalk/fonts';
 
-@import "~element-ui/packages/theme-chalk/src/index"
+@import "~element-ui/packages/theme-chalk/src/index";
