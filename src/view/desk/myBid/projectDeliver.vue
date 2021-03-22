@@ -83,13 +83,13 @@
                     <el-table-column prop="status" label="状态" align="center">
 
                     </el-table-column>
-                    <el-table-column prop="fileName" label="文件名" align="center">
+                    <el-table-column prop="fileName" label="文件名" align="center" width="200">
                         <template slot-scope="scope">
                             <a target="_Blank" :href="scope.row.resourceUrl"> {{scope.row.fileName}}</a>
                         </template>
                     </el-table-column>
 
-                    <el-table-column label="操作" align="center" width="350">
+                    <el-table-column label="操作" align="center" >
                         <template slot-scope="scope">
                             <sourceUpload :uploadIndex="uploadIndex" :fileIndex="scope.row.id"
                                           v-on:setIdCard="setIdCard2(data=$event,id=scope.row.id)"/>

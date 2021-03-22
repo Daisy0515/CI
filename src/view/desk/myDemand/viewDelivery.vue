@@ -41,21 +41,21 @@
                 <el-table-column prop="status" label="状态" align="center">
 
                 </el-table-column>
-                <el-table-column prop="fileName" label="文件名" align="center">
+                <el-table-column prop="fileName" label="文件名" align="center" width="200">
                     <template slot-scope="scope">
                         <a target="_Blank" :href="scope.row.resourceUrl"> {{scope.row.fileName}}</a>
                     </template>
                 </el-table-column>
 
-                <el-table-column label="操作" align="center" width="350">
-                    <template slot-scope="scope">
-                        <a target="_Blank" :href="scope.row.resourceUrl">
-                            下载
-                        </a>
-                        <!-- <el-button @click="handleClickFile(scope.row.resourceUrl)" type="text" size="medium"
-                        >下载</el-button> -->
-                    </template>
-                </el-table-column>
+<!--                <el-table-column label="操作" align="center" >-->
+<!--                    <template slot-scope="scope">-->
+<!--                        <a target="_Blank" :href="scope.row.resourceUrl">-->
+<!--                            下载-->
+<!--                        </a>-->
+<!--                        &lt;!&ndash; <el-button @click="handleClickFile(scope.row.resourceUrl)" type="text" size="medium"-->
+<!--                        >下载</el-button> &ndash;&gt;-->
+<!--                    </template>-->
+<!--                </el-table-column>-->
             </el-table-column>
         </el-table>
         <div class="cancel" style="text-align: center;">
