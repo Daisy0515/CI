@@ -160,7 +160,7 @@
             }
 
             & button:nth-child(3) {
-                background: #3e76b8;
+                background: #7cabb1;
                 color: white;
             }
         }

@@ -41,6 +41,11 @@
                 <el-table-column prop="status" label="状态" align="center">
 
                 </el-table-column>
+                <el-table-column prop="fileName" label="文件名" align="center">
+                    <template slot-scope="scope">
+                        <a target="_Blank" :href="scope.row.resourceUrl"> {{scope.row.fileName}}</a>
+                    </template>
+                </el-table-column>
 
                 <el-table-column label="操作" align="center" width="350">
                     <template slot-scope="scope">
@@ -108,6 +113,14 @@
                 }).then(results => {
                     const {httpCode, msg, data} = results.data;
                     if (httpCode === 200) {
+                        for(let item of data.reviewTeamList){
+                            if(item.resourceUrl !==null){
+                                let urlList = item.resourceUrl.split('/');
+                                item.fileName = urlList[urlList.length-1];
+                            }else{
+                                item.fileName = null;
+                            }
+                        }
                         this.ReviewTable = data.reviewStatusList;
                         this.ResourceTable = data.reviewTeamList;
                         this.loading = false;

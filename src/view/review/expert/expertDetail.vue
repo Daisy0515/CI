@@ -418,7 +418,7 @@
             margin-left: 10px;
 
             &:hover {
-                color: #3e76b8;
+                color: #7cabb1;
             }
         }
     }

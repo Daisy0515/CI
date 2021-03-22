@@ -34,7 +34,7 @@
                             <span class="Forget">注册</span>
                         </router-link>
 
-                        <span style="float: right;color: #3e76b8;">暂无账号?</span>
+                        <span style="float: right;color: #7cabb1;">暂无账号?</span>
 
 
 
@@ -105,7 +105,7 @@
 
     .ThirdPart {
         /*float: right;*/
-        color: #3e76b8;
+        color: #7cabb1;
         /*cursor: pointer;*/
         margin-right: 20px;
         margin-bottom: 20px;

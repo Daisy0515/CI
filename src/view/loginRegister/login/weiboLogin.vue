@@ -48,7 +48,7 @@
                     <!-- <el-checkbox label="记住密码" name="type"></el-checkbox> -->
 
                     <router-link :to="{name:'personalRegister',query:{microblogId:loginForm.microblogId,type:loginForm.type}}">
-                        <span style="float: right;color: #3e76b8;margin-left: 10px">注册</span>
+                        <span style="float: right;color: #7cabb1;margin-left: 10px">注册</span>
                     </router-link>
 
                     <span style="float: right; margin-left: 10px">暂无账号?</span>
