@@ -85,6 +85,10 @@ export default {
                 require('./12.png'),
                 require('./13.png'),
                 require('./14.png'),
+                require('./13.png'),
+                require('./13.png'),
+                require('./13.png'),
+                require('./13.png'),
             ],
         };
     },
