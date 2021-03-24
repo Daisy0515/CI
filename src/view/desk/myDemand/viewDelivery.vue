@@ -41,16 +41,21 @@
                 <el-table-column prop="status" label="状态" align="center">
 
                 </el-table-column>
-
-                <el-table-column label="操作" align="center" width="350">
+                <el-table-column prop="fileName" label="文件名" align="center" width="200">
                     <template slot-scope="scope">
-                        <a target="_Blank" :href="scope.row.resourceUrl">
-                            下载
-                        </a>
-                        <!-- <el-button @click="handleClickFile(scope.row.resourceUrl)" type="text" size="medium"
-                        >下载</el-button> -->
+                        <a target="_Blank" :href="scope.row.resourceUrl"> {{scope.row.fileName}}</a>
                     </template>
                 </el-table-column>
+
+<!--                <el-table-column label="操作" align="center" >-->
+<!--                    <template slot-scope="scope">-->
+<!--                        <a target="_Blank" :href="scope.row.resourceUrl">-->
+<!--                            下载-->
+<!--                        </a>-->
+<!--                        &lt;!&ndash; <el-button @click="handleClickFile(scope.row.resourceUrl)" type="text" size="medium"-->
+<!--                        >下载</el-button> &ndash;&gt;-->
+<!--                    </template>-->
+<!--                </el-table-column>-->
             </el-table-column>
         </el-table>
         <div class="cancel" style="text-align: center;">
@@ -108,6 +113,14 @@
                 }).then(results => {
                     const {httpCode, msg, data} = results.data;
                     if (httpCode === 200) {
+                        for(let item of data.reviewTeamList){
+                            if(item.resourceUrl !==null){
+                                let urlList = item.resourceUrl.split('/');
+                                item.fileName = urlList[urlList.length-1];
+                            }else{
+                                item.fileName = null;
+                            }
+                        }
                         this.ReviewTable = data.reviewStatusList;
                         this.ResourceTable = data.reviewTeamList;
                         this.loading = false;

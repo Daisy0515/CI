@@ -160,7 +160,7 @@
             }
 
             .el-pagination.is-background .el-pager li:not(.disabled).active {
-                background: #3e76b8;
+                background: #7cabb1;
             }
         }
 

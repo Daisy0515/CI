@@ -378,7 +378,7 @@
 <style lang='scss' scoped>
     .teamApplication {
         .seeClass {
-            color: #3e76b8;
+            color: #7cabb1;
             cursor: pointer;
         }
 
@@ -393,7 +393,7 @@
             }
 
             .el-pagination.is-background .el-pager li:not(.disabled).active {
-                background: #3e76b8;
+                background: #7cabb1;
             }
         }
 

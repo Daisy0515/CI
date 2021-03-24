@@ -130,7 +130,7 @@
 
         .progressBtn {
             cursor: pointer;
-            color: #3e76b8;
+            color: #7cabb1;
         }
 
         .header_top {
@@ -143,7 +143,7 @@
             }
 
             & button:nth-child(3) {
-                background: #3e76b8;
+                background: #7cabb1;
                 color: white;
             }
         }

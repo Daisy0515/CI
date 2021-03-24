@@ -184,7 +184,7 @@ export default {
 
 .applicationView {
   .seeClass {
-    color: #3e76b8;
+    color: #7cabb1;
     cursor: pointer;
   }
 
@@ -199,7 +199,7 @@ export default {
     }
 
     .el-pagination.is-background .el-pager li:not(.disabled).active {
-      background: #3e76b8;
+      background: #7cabb1;
     }
   }
 

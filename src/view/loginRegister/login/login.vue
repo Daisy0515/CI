@@ -265,7 +265,7 @@
 
     .ThirdPart {
         /*float: right;*/
-        color: #3e76b8;
+        color: #7cabb1;
         /*cursor: pointer;*/
         margin-right: 20px;
         margin-bottom: 20px;

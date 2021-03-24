@@ -40,7 +40,7 @@
     .phoneSuccess {
         .el-icon-check {
             font-size: 22px;
-            color: #3e76b8;
+            color: #7cabb1;
             margin-right: 10px;
         }
 
