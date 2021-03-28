@@ -2,16 +2,25 @@
     <div>
         <div id="ROBOT">
             <div style="position: fixed;z-index: 9999;right: 0;top: 800px;">
-                <img src="./ROBOT.gif" v-on:click="robotDialog=true;">
+                <img src="./ROBOT.gif" v-on:click="robotDialog=!robotDialog;">
             </div>
         </div>
         <div id="robot_dialog" v-show="robotDialog">
-            <div style="position:fixed;top:200px;width: 900px;height: 600px;border: 1px solid #dfdfdf;overflow: hidden;
-            left: 50%;margin-left: -450px;box-shadow: 0 0 15px #555;z-index: 9999;background-color: white;">
-                <a class="close" style="position: absolute;right:15px;top:15px;z-index: 9999" v-on:click="robotDialog=false;"></a>
-                <Robot></Robot>
+        
+            <div style="position:fixed;top:600px;width: 300px;height: 200px;border: 1px solid #dfdfdf;overflow: hidden;
+            right: 0%;margin-left: -450px;box-shadow: 0 0 15px #555;z-index: 9999;background-color: white;overflow: auto;">
+                
+                   
+                        
+                   
+                    
+                        <Robot></Robot>
+                    
+                    
             </div>
+           
         </div>
+   
         <Index v-if="userToken === null || userToken === ''"/>
         <Developer v-if="userToken !== null && userToken !== '' && projectRole == 3"/>
         <Manager v-if="userToken !== null && userToken !== '' && projectRole == 2"/>
