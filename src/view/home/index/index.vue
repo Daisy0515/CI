@@ -22,6 +22,13 @@
                            icon="el-icon-arrow-left" v-if="backgroundImageList.length != 0"></el-button>
                 <el-button class="cc-hero__arrow_right" @click.stop="nextImg" size="medium" :circle="true"
                            icon="el-icon-arrow-right" v-if="backgroundImageList.length != 0"></el-button>
+                           <div style="position: absolute;
+                           bottom: 0%;
+                           left: 70%;
+                           background-color: #072fb3fa;">
+                           <a   style="    font-size: 40px;">{{newsTitle}}
+                           </a>
+                           </div>
             </section>
             <section class="center-section" id="service">
                 <div style="display: flex; justify-content: space-between;">
@@ -112,6 +119,7 @@ export default {
                 backgroundImage: 'url' + require('@/assets/img/index/index_background.jpg'),
             },
             mark: 0,
+            newsTitle:"",
             isIndexImage: true,
             // test: "群智服务特色",
             textList: [
@@ -190,6 +198,7 @@ export default {
             } else {
                 this.mark = 0;
             }
+            this.newsTitle = (this.backgroundImageList[this.mark].title.length>9)?this.backgroundImageList[this.mark].title.substring(0,9)+"...":this.backgroundImageList[this.mark].title;
             this.imgStyle.backgroundImage = 'url(' + this.backgroundImageList[this.mark].imgsrc + ')';
             this.itemId = this.backgroundImageList[this.mark].id;
             if (this.backgroundImageList[this.mark].title != "首页") {
@@ -204,6 +213,7 @@ export default {
             } else {
                 this.mark = this.backgroundImageList.length - 1;
             }
+            this.newsTitle = (this.backgroundImageList[this.mark].title.length>9)?this.backgroundImageList[this.mark].title.substring(0,9)+"...":this.backgroundImageList[this.mark].title;
             this.imgStyle.backgroundImage = 'url(' + this.backgroundImageList[this.mark].imgsrc + ')';
             this.itemId = this.backgroundImageList[this.mark].id;
             if (this.backgroundImageList[this.mark].title != "首页") {
