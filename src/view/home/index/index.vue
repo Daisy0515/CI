@@ -24,8 +24,8 @@
                            icon="el-icon-arrow-right" v-if="backgroundImageList.length != 0"></el-button>
                            <div style="position: absolute;
                            bottom: 0%;
-                           left: 70%;
-                           background-color: #072fb3fa;">
+                           left: 60%;
+                           background-color: #7cabb1;">
                            <a   style="    font-size: 40px;">{{newsTitle}}
                            </a>
                            </div>
@@ -106,7 +106,8 @@ export default {
     data() {
         return {
             searchData: "",
-            itemId: 21,
+            itemFlag: 0,
+            itemId:0,
             imgList: [require('@/assets/img/index/index_service_1.jpg'),
                 require('@/assets/img/index/index_service_2.jpg'),
                 require('@/assets/img/index/index_service_3.jpg'),
@@ -151,8 +152,11 @@ export default {
         }
     },
     created: function () {
-        this.getImageList();
-        //this.play();
+        this.getImageList(require('@/assets/img/index/index_background.jpg'));
+        this.play();
+        //console.log(this.imgStyle.backgroundImage);
+        
+        //console.log(this.backgroundImageList);
     },
     methods: {
         //搜索关键字
@@ -162,19 +166,27 @@ export default {
                 query: {search: this.searchData}
             });
         },
-        homepageView() {
-            if (this.itemId != 21) {
+        homepageView(val) {
+            if (this.itemFlag != 0) {
                 this.$router.push({path: 'homepageView', query: {id: this.itemId}});
             }
-            //console.log(this.itemId);
+            //console.log(this.itemFlag);
         },
-        getImageList() {
+        getImageList(val) {
             httpGet("v1/public/homepage/get/list").then(results => {
                 const {httpCode, msg, data} = results.data;
                 if (httpCode === 200) {
-                    this.backgroundImageList = data.infoList;
+                    //this.backgroundImageList = data.infoList;
+                        var imgsrc= val;
+                        var obj = {imgsrc:val,title:''};
+                        this.backgroundImageList.push(obj);
+                    for(let i = 0; i < data.infoList.length ; i++){
+                        imgsrc= data.infoList[i].imgsrc;
+                        obj = {imgsrc:imgsrc,title:data.infoList[i].title};
+                        this.backgroundImageList.push(obj);
+                    }
                 } else {
-                    //errTips(msg);
+                    errTips(msg);
                 }
             });
         },
@@ -184,12 +196,15 @@ export default {
             } else {
                 this.mark = 0;
             }
+            this.newsTitle = (this.backgroundImageList[this.mark].title.length>15)?this.backgroundImageList[this.mark].title.substring(0,9)+"...":this.backgroundImageList[this.mark].title;
             this.imgStyle.backgroundImage = 'url(' + this.backgroundImageList[this.mark].imgsrc + ')';
             this.itemId = this.backgroundImageList[this.mark].id;
-            if (this.backgroundImageList[this.mark].title != "首页") {
+            if (this.mark != 0) {
                 this.isIndexImage = false;
+                this.itemFlag = 1;
             } else {
                 this.isIndexImage = true;
+                this.itemFlag = 0;
             }
         },
         nextImg() {
@@ -198,13 +213,15 @@ export default {
             } else {
                 this.mark = 0;
             }
-            this.newsTitle = (this.backgroundImageList[this.mark].title.length>9)?this.backgroundImageList[this.mark].title.substring(0,9)+"...":this.backgroundImageList[this.mark].title;
+            this.newsTitle = (this.backgroundImageList[this.mark].title.length>15)?this.backgroundImageList[this.mark].title.substring(0,9)+"...":this.backgroundImageList[this.mark].title;
             this.imgStyle.backgroundImage = 'url(' + this.backgroundImageList[this.mark].imgsrc + ')';
             this.itemId = this.backgroundImageList[this.mark].id;
-            if (this.backgroundImageList[this.mark].title != "首页") {
+            if (this.mark != 0) {
                 this.isIndexImage = false;
+                this.itemFlag = 1;
             } else {
                 this.isIndexImage = true;
+                this.itemFlag = 0;
             }
         },
         prevImg() {
@@ -213,13 +230,15 @@ export default {
             } else {
                 this.mark = this.backgroundImageList.length - 1;
             }
-            this.newsTitle = (this.backgroundImageList[this.mark].title.length>9)?this.backgroundImageList[this.mark].title.substring(0,9)+"...":this.backgroundImageList[this.mark].title;
+            this.newsTitle = (this.backgroundImageList[this.mark].title.length>15)?this.backgroundImageList[this.mark].title.substring(0,9)+"...":this.backgroundImageList[this.mark].title;
             this.imgStyle.backgroundImage = 'url(' + this.backgroundImageList[this.mark].imgsrc + ')';
             this.itemId = this.backgroundImageList[this.mark].id;
-            if (this.backgroundImageList[this.mark].title != "首页") {
+            if (this.mark != 0) {
                 this.isIndexImage = false;
+                this.itemFlag = 1;
             } else {
                 this.isIndexImage = true;
+                this.itemFlag = 0;
             }
             //console.log(this.imgStyle.backgroundImage );
             //console.log(this.mark);
