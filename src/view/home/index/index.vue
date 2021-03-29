@@ -26,7 +26,7 @@
                            bottom: 0%;
                            left: 60%;
                            background-color: #7cabb1;">
-                           <a   style="    font-size: 40px;">{{newsTitle}}
+                           <a   style="    font-size: 40px;color:white;">{{newsTitle}}
                            </a>
                            </div>
             </section>
