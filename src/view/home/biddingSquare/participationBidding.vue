@@ -51,7 +51,7 @@
                         />
                     </el-form-item>
                     <el-form-item class="publish">
-                        <el-button type="primary" @click="submitForm('ruleForm')" size="medium">提交</el-button>
+                        <el-button type="primary" @click="open" size="medium">提交</el-button>
                     </el-form-item>
                 </el-form>
             </el-card>
@@ -63,6 +63,7 @@
     import {httpGet, httpPost} from "@/utils/http.js";
     import {errTips} from "@/utils/tips.js";
     import sourceUpload from "@/common/upload/resourceUpload";
+    import { MessageBox,message } from 'element-ui';
 
     export default {
         components: {
@@ -106,6 +107,7 @@
                     key: "",
                     token: ""
                 },
+                projectName:'',
                 ruleForm: {
                     projectCognize: "",
                     projectId: "",
@@ -134,6 +136,7 @@
             this.id = this.$route.query.id;
             this.ruleForm.projectId = this.$route.query.id;
             this.isView();
+            this.getAllType();
         },
         methods: {
             //判断是否是自己发布的项目
@@ -162,8 +165,41 @@
                     }
                 );
             },
+
+            getAllType() {
+                httpGet(`/v1/public/bid/selete/applyfor?id=${this.id}`).then(results => {
+                    const {httpCode, msg, data} = results.data;
+                    if (httpCode === 200) {
+                        this.projectName = data.name;
+                    } else if (httpCode === 400) {
+                        this.$router.push({path: "biddingSquare"});
+                    } else if (httpCode !== 401) {
+                        errTips(msg);
+                    }
+                });
+            },
+
+            open() {
+                MessageBox.confirm('确定要参与项目“'+this.projectName+'"的竞标吗？', '确认信息', {
+                distinguishCancelAndClose: true,
+                confirmButtonText: '保存',
+                cancelButtonText: '取消'
+                })
+                .then((action) => {
+                    if(action === "confirm"){
+                        //console.log(this.ruleForm);
+                        this.submitForm('ruleForm');
+                        message({
+                        message: '参与竞标成功',
+                        type: 'success',
+                        });
+                    }
+                })
+            },
+
             //表单验证，上传
             submitForm(formName) {
+                //console.log(this.$refs);
                 this.$refs[formName].validate(valid => {
                     if (valid) {
                         let {ruleForm} = this;
