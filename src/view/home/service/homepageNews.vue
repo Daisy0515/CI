@@ -22,7 +22,7 @@
         <div class="pagerHold">
             <el-pagination
                     @current-change="handleCurrentChange"
-                    :current-page.sync="pageNoR"
+                    :current-page.sync="pageNo"
                     :total="totalPage"
                     layout="prev, pager, next, jumper"
             ></el-pagination>

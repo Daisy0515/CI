@@ -22,13 +22,13 @@
                            icon="el-icon-arrow-left" v-if="backgroundImageList.length != 0"></el-button>
                 <el-button class="cc-hero__arrow_right" @click.stop="nextImg" size="medium" :circle="true"
                            icon="el-icon-arrow-right" v-if="backgroundImageList.length != 0"></el-button>
-                           <div style="position: absolute;
+                <div style="position: absolute;
                            bottom: 0%;
                            left: 60%;
                            background-color: #7cabb1;">
-                           <a   style="    font-size: 40px;color:white;">{{newsTitle}}
-                           </a>
-                           </div>
+                    <a style="    font-size: 40px;color:white;">{{ newsTitle }}
+                    </a>
+                </div>
             </section>
             <section class="center-section" id="service">
                 <div style="display: flex; justify-content: space-between;">
@@ -107,7 +107,7 @@ export default {
         return {
             searchData: "",
             itemFlag: 0,
-            itemId:0,
+            itemId: 0,
             imgList: [require('@/assets/img/index/index_service_1.jpg'),
                 require('@/assets/img/index/index_service_2.jpg'),
                 require('@/assets/img/index/index_service_3.jpg'),
@@ -120,9 +120,8 @@ export default {
                 backgroundImage: 'url' + require('@/assets/img/index/index_background.jpg'),
             },
             mark: 0,
-            newsTitle:"",
+            newsTitle: "",
             isIndexImage: true,
-            // test: "群智服务特色",
             textList: [
                 {
                     title: '角色赋能',
@@ -155,7 +154,7 @@ export default {
         this.getImageList(require('@/assets/img/index/index_background.jpg'));
         this.play();
         //console.log(this.imgStyle.backgroundImage);
-        
+
         //console.log(this.backgroundImageList);
     },
     methods: {
@@ -177,16 +176,14 @@ export default {
                 const {httpCode, msg, data} = results.data;
                 if (httpCode === 200) {
                     //this.backgroundImageList = data.infoList;
-                        var imgsrc= val;
-                        var obj = {imgsrc:val,title:''};
-                        this.backgroundImageList.push(obj);
-                    for(let i = 0; i < data.infoList.length ; i++){
-                        imgsrc= data.infoList[i].imgsrc;
-                        obj = {imgsrc:imgsrc,title:data.infoList[i].title};
+                    var imgsrc = val;
+                    var obj = {imgsrc: val, title: ''};
+                    this.backgroundImageList.push(obj);
+                    for (let i = 0; i < data.infoList.length; i++) {
+                        imgsrc = data.infoList[i].imgsrc;
+                        obj = {imgsrc: imgsrc, title: data.infoList[i].title, id: data.infoList[i].id};
                         this.backgroundImageList.push(obj);
                     }
-                } else {
-                    errTips(msg);
                 }
             });
         },
@@ -196,7 +193,7 @@ export default {
             } else {
                 this.mark = 0;
             }
-            this.newsTitle = (this.backgroundImageList[this.mark].title.length>15)?this.backgroundImageList[this.mark].title.substring(0,9)+"...":this.backgroundImageList[this.mark].title;
+            this.newsTitle = (this.backgroundImageList[this.mark].title.length > 20) ? this.backgroundImageList[this.mark].title.substring(0, 9) + "..." : this.backgroundImageList[this.mark].title;
             this.imgStyle.backgroundImage = 'url(' + this.backgroundImageList[this.mark].imgsrc + ')';
             this.itemId = this.backgroundImageList[this.mark].id;
             if (this.mark != 0) {
@@ -213,7 +210,7 @@ export default {
             } else {
                 this.mark = 0;
             }
-            this.newsTitle = (this.backgroundImageList[this.mark].title.length>15)?this.backgroundImageList[this.mark].title.substring(0,9)+"...":this.backgroundImageList[this.mark].title;
+            this.newsTitle = (this.backgroundImageList[this.mark].title.length > 20) ? this.backgroundImageList[this.mark].title.substring(0, 9) + "..." : this.backgroundImageList[this.mark].title;
             this.imgStyle.backgroundImage = 'url(' + this.backgroundImageList[this.mark].imgsrc + ')';
             this.itemId = this.backgroundImageList[this.mark].id;
             if (this.mark != 0) {
@@ -230,7 +227,7 @@ export default {
             } else {
                 this.mark = this.backgroundImageList.length - 1;
             }
-            this.newsTitle = (this.backgroundImageList[this.mark].title.length>15)?this.backgroundImageList[this.mark].title.substring(0,9)+"...":this.backgroundImageList[this.mark].title;
+            this.newsTitle = (this.backgroundImageList[this.mark].title.length > 20) ? this.backgroundImageList[this.mark].title.substring(0, 9) + "..." : this.backgroundImageList[this.mark].title;
             this.imgStyle.backgroundImage = 'url(' + this.backgroundImageList[this.mark].imgsrc + ')';
             this.itemId = this.backgroundImageList[this.mark].id;
             if (this.mark != 0) {
