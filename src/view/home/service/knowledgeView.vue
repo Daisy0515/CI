@@ -26,7 +26,7 @@
             <i class="icon iconfont icon-yonghu1"></i>
             作者：{{viewData.author }}
           </span>
-                    <span>类型：{{viewData.type===1?'论文':'专利'}}</span>
+<!--                    <span>类型：{{viewData.type===1?'论文':'专利'}}</span>-->
                 </div>
                 <div style="width:100%;" v-html="viewData.content"></div>
                 <div class="knowledgeView_bottom">

@@ -3,8 +3,8 @@
         <ul class="knowledge_list">
             <li>
                 <router-link
+                        v-for="(item,index) in infoList"
                         :to="{path:'homepageView',query:{id:item.id}}"
-                        v-for="(item,index) in singlePageInfo"
                         :key="index"
                 >
                     <el-card class="knowledge_card">
@@ -23,8 +23,7 @@
             <el-pagination
                     @current-change="handleCurrentChange"
                     :current-page.sync="pageNo"
-                    :total="total"
-                    :page-size="pageSize"
+                    :total="totalPage"
                     layout="prev, pager, next, jumper"
             ></el-pagination>
         </div>
@@ -39,12 +38,14 @@
         data() {
             return {
                 infoList: [],
-                total: 1,
+                totalPage: 1,
                 pageNo: 1,
-                pageSize: 5,
-                singlePageInfoList:[],
-                singlePageInfo:[],
-                count:0,
+                pageData: {
+                    pageSize: 8,
+                    pageNo: 1,
+                    orderBy: "id",
+                    orderType: "DESC"
+                }
             };
         },
         created: function () {
@@ -52,43 +53,21 @@
         },
         methods: {
             getViewData() {
-                httpGet("/v1/public/homepage/get/list").then(results => {
+                httpGet("/v1/public/homepage/get/list", this.pageData).then(results => {
                     const {httpCode, data, msg} = results.data;
                     if (httpCode === 200) {
                         this.infoList = data.infoList;
-                        this.total = this.infoList.length;
-                        //console.log(this.total);
-                        //this.pageNo = data.pageNo;
-                        let count=parseInt(this.total/this.pageSize)+1;
-                        //console.log(count);
-                        let arr=[];
-                        for(let i=0;i<count-1;i++){
-                            arr=[];
-                            for(let j=i*this.pageSize;j<(i+1)*this.pageSize;j++){
-                                arr.push(this.infoList[j]);
-                            }
-                            this.singlePageInfoList.push(arr);
-                        }
-                        arr=[];
-                        for(let i=(count-1)*this.pageSize;i<this.total;i++){
-                            arr.push(this.infoList[i]);
-                        }
-                        this.singlePageInfoList.push(arr);
-                        //console.log(this.singlePageInfoList);
-                        this.singlePageInfo = this.singlePageInfoList[this.pageNo-1];
-                        if(this.infoList.length === 0){
-                            message("该条件暂无数据");
-                        }
+                        this.totalPage = parseInt(data.totalPage + "0");
+                        this.pageNo = data.pageNo;
                     } else if (httpCode !== 401) {
-                        errTips(msg);
+                        //errTips(msg);
+                        message(msg);
                     }
                 });
             },
             handleCurrentChange(val) {
-                this.pageNo = val;
-                this.singlePageInfo = this.singlePageInfoList[this.pageNo-1];
-                
-                
+                this.pageData.pageNo = val;
+                this.getViewData();
             }
         }
     };
