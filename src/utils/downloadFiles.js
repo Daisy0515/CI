@@ -4,6 +4,10 @@ import FileSaver from 'file-saver'
 
 
 export const getFile = (url) => {
+    //检查地址是否是https协议
+    if(url.indexOf("https://")<0){//不是http协议
+        url = url.replace("http:","https:");//将http协议转换成https协议
+    }
     return new Promise((resolve, reject) => {
         axios({
             method:'get',

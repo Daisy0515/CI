@@ -180,12 +180,12 @@ export default {
                         this.centerDialogVisible = false;
                         if (typeof this.fileIndex == 'number') {
                             this.$emit('setIdCard', {
-                                fileName: `http://www.resource.cosinehub.cn/${this.qiniuData.key}`,
+                                fileName: `https://www.resource.cosinehub.cn/${this.qiniuData.key}`,
                                 fileIndex: this.fileIndex
                             });
                         } else {
                             //http://cosine.resource.ienkel.com
-                            this.$emit('setIdCard', `http://www.resource.cosinehub.cn/${this.qiniuData.key}`);
+                            this.$emit('setIdCard', `https://www.resource.cosinehub.cn/${this.qiniuData.key}`);
                         }
                     }, 500);
                 }
