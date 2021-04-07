@@ -6,11 +6,10 @@
                     <div class="module_headerCrumb">
                         <div class="refinery">
                             <div class="searchTitle">
-                                <h1>经典案例</h1>
+                                <h1>开源项目</h1>
                                 <h2>
                   <span>
-                    搜索最符合您的经典案例，点击
-                    <router-link to="publishtask">发布需求</router-link>。可以发布任务群智群策!
+                    基于cosine平台开发的优质开源项目
                   </span>
                                 </h2>
                             </div>
