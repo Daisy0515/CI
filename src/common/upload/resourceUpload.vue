@@ -34,7 +34,7 @@
                 <file-upload
                     :input-id="'upload' + fileIndex"
                     class="btn btn-primary"
-                    post-action="http://upload-z2.qiniup.com"
+                    post-action="https://upload-z2.qiniup.com"
                     :headers="{ accept: 'text/html;charset=utf-8' }"
                     :data="qiniuData"
                     :multiple="false"
