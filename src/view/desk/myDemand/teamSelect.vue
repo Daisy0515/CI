@@ -46,7 +46,7 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <el-button type="primary" @click="choice">确定选择</el-button>
+            <el-button type="primary" @click="open">确定选择</el-button>
         </div>
     </div>
 </template>
@@ -55,6 +55,7 @@
     import {hoursSeconds} from "@/utils/getDate.js";
     import {errTips, successTips} from "@/utils/tips.js";
     import {mapMutations} from "vuex";
+    import { MessageBox,message } from 'element-ui';
 
     export default {
         components: {},
@@ -94,6 +95,21 @@
                         errTips(msg);
                     }
                 });
+            },
+
+            open() {
+                MessageBox.confirm('选择团队后不可更改，请确认选择的团队无误', '确认信息', {
+                distinguishCancelAndClose: true,
+                confirmButtonText: '保存',
+                cancelButtonText: '取消'
+                })
+                .then((action) => {
+                    if(action === "confirm"){
+                        //console.log(this.ruleForm);
+                        this.choice();
+                       
+                    }
+                })
             },
             //确定选择团队
             choice() {
