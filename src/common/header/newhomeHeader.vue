@@ -29,7 +29,7 @@ color: #011A24;">{{ item.title }}</a>
                                 </router-link>
                             </li>
                             <li class="c-header__navigation__item">
-                                <a :href="landaryUrl" target="_blank" style="
+                                <a :href="landaryUrl" target="_blank" @click="isLogin('message',$event)" style="
 font-size: 14px;
 font-family: PingFang HK;
 font-weight: 300;
@@ -67,6 +67,10 @@ export default {
             landaryUrl: "http://39.108.172.142:7676/portal/usr/login",
             items: [
                 {
+                    title: "首页",
+                    url: "index"
+                },
+                {
                     title: "竞赛专区",
                     url: "competitionSquare"
                 },
@@ -90,13 +94,25 @@ export default {
         if(sessionStorage.getItem("userToken") !== "") {
             this.landaryUrl = this.landaryUrl + "?accessToken=" + JSON.parse(sessionStorage.getItem("userToken"));
         }
+        //console.log("new");
     },
     computed: {
         ...mapGetters(["getUser"])
     },
     mounted: function () {
     },
-    methods: {}
+    methods: {
+        isLogin(message,event){
+            //console.log("aaa");
+            if(sessionStorage.getItem("userToken") == "") {
+                this.$router.push({path:"login"});
+                event.preventDefault()
+            }else{
+               window.open(this.landaryUrl);
+               //this.$router.push(this.landaryUrl);
+            }
+        }
+    }
 };
 </script>
 <style lang='scss'>

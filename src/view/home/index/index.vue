@@ -10,7 +10,7 @@
                     <p class="cc-hero__title">__</p>
                     <div class="cc-hero__CTA">
                         <div class="ee-inputButton">
-                            <el-input placeholder="请输入内容" v-model="searchData">
+                            <el-input placeholder="请输入内容" v-model="searchData" @focus="clearTimer" @blur="startTimer">
                             </el-input>
                             <el-button @click.stop="search" slot="append" type="primary">查找项目</el-button>
                             <el-button @click.stop="publishTask" type="primary">发布需求</el-button>
@@ -122,6 +122,7 @@ export default {
             mark: 0,
             newsTitle: "",
             isIndexImage: true,
+            timerId:0,
             textList: [
                 {
                     title: '角色赋能',
@@ -241,7 +242,13 @@ export default {
             //console.log(this.mark);
         },
         play() {
-            setInterval(this.autoPlay, 5000)
+            this.timerId=setInterval(this.autoPlay, 5000)
+        },
+        clearTimer(){
+            clearInterval(this.timerId);
+        },
+        startTimer(){
+            this.timerId=setInterval(this.autoPlay, 5000);
         },
         publishTask() {
             this.$router.push({path: "publishTask"});

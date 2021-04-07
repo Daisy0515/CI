@@ -158,6 +158,10 @@
                     results => {
                         const getData = results.data;
                         if (getData.httpCode === 200) {
+                            message({
+                                message: '参与竞标成功',
+                                type: 'success',
+                                });
                             this.$router.push({path: "/desk/myBid"});
                         } else {
                             errTips(getData.msg);
@@ -189,10 +193,7 @@
                     if(action === "confirm"){
                         //console.log(this.ruleForm);
                         this.submitForm('ruleForm');
-                        message({
-                        message: '参与竞标成功',
-                        type: 'success',
-                        });
+                       
                     }
                 })
             },
