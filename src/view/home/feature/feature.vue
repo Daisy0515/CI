@@ -39,6 +39,26 @@
                         <br>
                            
                     </div>
+                  <div class="contact">
+                    <p>项目贡献者</p>
+                    <el-row>
+                      <el-col :span="8" v-for="i in pics.length" :key="i">
+                        <el-avatar :size="100" :src="pics[i-1]">
+                        </el-avatar>
+                        <br>
+                        <span>姓名：{{ names[i - 1] }}</span>
+                        <br>
+                        <span>学历：{{ occus[i - 1] }}</span>
+                        <br>
+                        <span>主页：</span>
+                        <a :href="homes[i-1]" target="_blank" v-if="homes[i-1] !== ''">个人主页</a>
+                        <span v-if="homes[i-1] === ''">暂无</span>
+                        <br>
+                        <br>
+                        <br>
+                      </el-col>
+                    </el-row>
+                  </div>
                     <div class="contact">
                         <p>合作单位</p>
                         <el-row>
@@ -54,26 +74,7 @@
                             </el-col>
                         </el-row>
                     </div>
-                    <div class="contact">
-                        <p>项目贡献者</p>
-                        <el-row>
-                            <el-col :span="8" v-for="i in pics.length" :key="i">
-                                <el-avatar :size="100" :src="pics[i-1]">
-                                </el-avatar>
-                                <br>
-                                <span>姓名：{{ names[i - 1] }}</span>
-                                <br>
-                                <span>学历：{{ occus[i - 1] }}</span>
-                                <br>
-                                <span>主页：</span>
-                                <a :href="homes[i-1]" target="_blank" v-if="homes[i-1] !== ''">个人主页</a>
-                                <span v-if="homes[i-1] === ''">暂无</span>
-                                <br>
-                                <br>
-                                <br>
-                            </el-col>
-                        </el-row>
-                    </div>
+
                     <div class="contact">
                         <p>联系方式</p>
                         <p>哈尔滨工业大学（深圳）</p>
