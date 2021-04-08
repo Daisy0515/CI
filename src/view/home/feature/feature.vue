@@ -1,14 +1,30 @@
 <template>
-    <div class="feature">
+    <div class="feature ">
         <main id="main" role="main" class="hp2018">
-            <section class="c-hero c-hero--enhanced" id="heroImage">
+            <!-- <section class="hasBg c-hero--enhanced" id="heroImage">
                 <div class="o-container">
-                    <div class="c-hero__lead">
-                        <h1 class="c-hero__title">关于我们</h1>
+                    <div class="module_headerCrumb">
+                        <div class="searchTitle">
+                            <h1>关于我们</h1>
+                        </div>
                         <!-- <h2 class="c-hero__copy u-marginBottom0">更便捷. 易管理. 快搜索.</h2> -->
+                    <!-- </div>
+                </div>
+            </section> -->
+            <div class="responsive resp">
+            <div class="module_secondaryHead guruSearch hasBg" style="height: 120px;">
+                <div class="container">
+                    <div class="module_headerCrumb">
+                        <div>
+                            <div class="searchTitle">
+                                <h2 style="position: absolute; top:120px">关于我们</h2>
+                            </div>
+                        </div>
+                        <span class="resultCount"></span>
                     </div>
                 </div>
-            </section>
+            </div>
+        </div>
             <div class="container">
                 <div class="about_count">
                     <div class="about_top">
@@ -19,34 +35,24 @@
                             <br>
                         </p>
                         <br>
-                        <p>
-                            <strong>
-                                使命：
+                        <br>
+                        <br>
+                           
+                    </div>
+                    <div class="contact">
+                        <p>合作单位</p>
+                        <el-row>
+                            <el-col :span="8" v-for="i in cooperativeSchool.length" :key="i">
+                                <el-avatar  :size="80" :src="cooperativeSchool[i-1]">
+                                </el-avatar>
                                 <br>
-                            </strong>为软件众包需求者和众多开发者提供一个可靠便捷的众包平台。
-                        </p>
-                        <br>
-                        <p>
-                            <strong>
-                                口号：
+                                <span>{{ schoolName[i - 1] }}</span>
                                 <br>
-                            </strong>促进众包软件开发中的竞争与合作。
-                        </p>
-                        <br>
-                        <p>
-                            <strong>产品理念</strong>
-                            <br>群智化、生态化、服务化
-                        </p>
-                        <br>
-                        <p class="characteristic">
-                            <strong>产品设计特点</strong>
-                            <br><span>更精准</span>
-                            <br>精准搜索需求和资源，为接包方推荐与他们技能相匹配的需求，为需求方推荐与需求相匹配
-                            <br><span>可跟踪</span>
-                            <br>项目管理透明化,通过在线甘特图，需求方能对项目进度进行可视化跟踪
-                            <br><span>可控制</span>
-                            <br>需求方可以通过系统催促项目进度，确保项目按期完成，特殊情况下可以终止项目。
-                        </p>
+                                <br>
+                                <br>
+                                <br>
+                            </el-col>
+                        </el-row>
                     </div>
                     <div class="contact">
                         <p>项目贡献者</p>
@@ -86,6 +92,11 @@ export default {
     methods: {},
     data() {
         return {
+            cooperativeSchool:[require("@/assets/img/cooperativeSchool/beijingyoudian.jpg"),require("@/assets/img/cooperativeSchool/dongnan.jpg"),require("@/assets/img/cooperativeSchool/landary.jpg"),
+            require("@/assets/img/cooperativeSchool/nanjing.png"),require("@/assets/img/cooperativeSchool/shandong.jpg"),require("@/assets/img/cooperativeSchool/shanghaijiaotong.jpg"),
+            require("@/assets/img/cooperativeSchool/wuhan.jpg"),require("@/assets/img/cooperativeSchool/zhongnan.png"),require("@/assets/img/cooperativeSchool/zhongshan.jpg"),
+            require("@/assets/img/cooperativeSchool/zhonguokuangye.png"),],
+            schoolName:["北京邮电大学","  东南大学","  蓝凌","  南京大学","  山东大学","上海交通大学","  武汉大学","  中南大学","  中山大学","中国矿业大学"],
             pics: [require("@/assets/img/contributor/zhj.jpg"), require("@/assets/img/contributor/wyj.jpg"), require("@/assets/img/contributor/yq.jpg"), require("@/assets/img/contributor/dl.jpg"),
                 require("@/assets/img/contributor/sjy.jpg"), require("@/assets/img/contributor/xwj.jpg"), require("@/assets/img/contributor/yuanqi.jpg"),
                 require("@/assets/img/contributor/slj.jpg"), require("@/assets/img/contributor/zjj.jpg"), require("@/assets/img/contributor/rqj.jpg")],
