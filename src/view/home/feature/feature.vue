@@ -38,22 +38,7 @@
                         <br>
                         <br>
                            
-                    </div>
-                    <div class="contact">
-                        <p>合作单位</p>
-                        <el-row>
-                            <el-col :span="8" v-for="i in cooperativeSchool.length" :key="i">
-                                <el-avatar  :size="80" :src="cooperativeSchool[i-1]">
-                                </el-avatar>
-                                <br>
-                                <span>{{ schoolName[i - 1] }}</span>
-                                <br>
-                                <br>
-                                <br>
-                                <br>
-                            </el-col>
-                        </el-row>
-                    </div>
+                    </div
                     <div class="contact">
                         <p>项目贡献者</p>
                         <el-row>
@@ -74,6 +59,21 @@
                             </el-col>
                         </el-row>
                     </div>
+                  <div class="contact">
+                    <p>合作单位</p>
+                    <el-row>
+                      <el-col :span="8" v-for="i in cooperativeSchool.length" :key="i">
+                        <el-avatar  :size="80" :src="cooperativeSchool[i-1]">
+                        </el-avatar>
+                        <br>
+                        <span>{{ schoolName[i - 1] }}</span>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                      </el-col>
+                    </el-row>
+                  </div>
                     <div class="contact">
                         <p>联系方式</p>
                         <p>哈尔滨工业大学（深圳）</p>

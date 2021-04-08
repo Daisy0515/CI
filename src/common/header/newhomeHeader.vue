@@ -104,7 +104,7 @@ export default {
     methods: {
         isLogin(message,event){
             //console.log("aaa");
-            if(sessionStorage.getItem("userToken") == "") {
+            if(sessionStorage.getItem("userToken") == null) {
                 this.$router.push({path:"login"});
                 event.preventDefault()
             }else{
