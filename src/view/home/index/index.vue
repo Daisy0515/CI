@@ -1,7 +1,6 @@
 <template>
     <div id="index">
         <main id="main">
-
             <section class="cc-hero" :style="imgStyle" id="heroImage" @click="homepageView">
                 <div class="cc-hero__lead" v-show="isIndexImage">
                     <p class="cc-hero__title">面向服务的群智化生态化</p>
@@ -60,19 +59,6 @@
                     </div>
                 </div>
             </section>
-            <section class="center-section" id="about">
-                <div class="about-img-text center-text">
-                    <p class="iimg-list__left-title noheight_title">ABOUT</p>
-                    <p class="iimg-list__left-subtitle">关于我们</p>
-                    <p class="iimg-list__left-title iimg-list__left-br">_</p>
-                    <p class="about-img-text-content" v-if="currentIndex==0">
-                        我们致力于打造真正的涵盖软件生命周期的众包平台<br>
-                        构建群智化、生态化、服务化三化融合的软件生态系统<br>
-                        吸引众多需求者和开发人员共同参与软件开发使命
-                    </p>
-                    <el-button @click="aboutUs" type="info">more</el-button>
-                </div>
-            </section>
             <section class="center-section news-img-text">
                 <p class="iimg-list__left-title noheight_title">THE NEWS</p>
                 <p class="iimg-list__left-subtitle">最新动态</p>
@@ -86,6 +72,19 @@
                     <p class="iimg-list__left-title iimg-list__left-br">_</p>
                     <IndexToolSet/>
                     <el-button @click="moreTool" type="info">更多工具</el-button>
+                </div>
+            </section>
+            <section class="center-section" id="about">
+                <div class="about-img-text center-text">
+                    <p class="iimg-list__left-title noheight_title">ABOUT</p>
+                    <p class="iimg-list__left-subtitle">关于我们</p>
+                    <p class="iimg-list__left-title iimg-list__left-br">_</p>
+                    <p class="about-img-text-content" v-if="currentIndex==0">
+                        我们致力于打造真正的涵盖软件生命周期的众包平台<br>
+                        构建群智化、生态化、服务化三化融合的软件生态系统<br>
+                        吸引众多需求者和开发人员共同参与软件开发使命
+                    </p>
+                    <el-button @click="aboutUs" type="info">more</el-button>
                 </div>
             </section>
         </main>
@@ -122,7 +121,7 @@ export default {
             mark: 0,
             newsTitle: "",
             isIndexImage: true,
-            timerId:0,
+            timerId: 0,
             textList: [
                 {
                     title: '角色赋能',
@@ -242,13 +241,13 @@ export default {
             //console.log(this.mark);
         },
         play() {
-            this.timerId=setInterval(this.autoPlay, 5000)
+            this.timerId = setInterval(this.autoPlay, 5000)
         },
-        clearTimer(){
+        clearTimer() {
             clearInterval(this.timerId);
         },
-        startTimer(){
-            this.timerId=setInterval(this.autoPlay, 5000);
+        startTimer() {
+            this.timerId = setInterval(this.autoPlay, 5000);
         },
         publishTask() {
             this.$router.push({path: "publishTask"});
