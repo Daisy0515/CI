@@ -43,13 +43,23 @@
 
                 <el-dialog title="交付配置" width="40%" :visible.sync="dialogTableVisible">
                     <div>
-                        <el-input placeholder="请输入内容" v-model="input1">
-                            <template slot="prepend">名称：</template>
+                        <el-input placeholder="请输入交付资源名称" v-model="input1">
+                            <template slot="prepend">&nbsp &nbsp &nbsp 名称：&nbsp &nbsp</template>
                         </el-input>
                     </div>
                     <div style="margin-top: 15px;">
-                        <el-input placeholder="请输入内容" v-model="input2">
-                            <template slot="prepend">描述：</template>
+                        <el-input placeholder="请输入交付资源描述" v-model="input2">
+                            <template slot="prepend">&nbsp &nbsp &nbsp 描述：&nbsp &nbsp</template>
+                        </el-input>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <el-input placeholder="可设置交付资源命名规范，非必选项" v-model="reg">
+                            <template slot="prepend">正则表达式：</template>
+                        </el-input>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <el-input placeholder="请输入交付资源命名规范" v-model="regD">
+                            <template slot="prepend">&nbsp &nbsp &nbsp 描述：&nbsp &nbsp</template>
                         </el-input>
                     </div>
                     <div style="margin-top: 15px;">
@@ -146,6 +156,8 @@
                 uploadIndex: false,
                 input1: '',
                 input2: '',
+                reg:'',
+                regD:'',
                 radioValue: '必须',
                 radio: '',
                 deliverData: [],
