@@ -1,16 +1,7 @@
 <template>
     <div class="feature ">
         <main id="main" role="main" class="hp2018">
-            <!-- <section class="hasBg c-hero--enhanced" id="heroImage">
-                <div class="o-container">
-                    <div class="module_headerCrumb">
-                        <div class="searchTitle">
-                            <h1>关于我们</h1>
-                        </div>
-                        <!-- <h2 class="c-hero__copy u-marginBottom0">更便捷. 易管理. 快搜索.</h2> -->
-                    <!-- </div>
-                </div>
-            </section> -->
+
             <div class="responsive resp">
             <div class="module_secondaryHead guruSearch hasBg" style="height: 120px;">
                 <div class="container">
@@ -40,10 +31,13 @@
                            
                     </div>
                   <div class="contact">
-                    <p>项目贡献者</p>
-                    <el-row>
-                      <el-col :span="8" v-for="i in pics.length" :key="i">
-                        <el-avatar :size="100" :src="pics[i-1]">
+                    <p style="text-align: center;font-size:40px;font-weight: bold">项目贡献者</p>
+                    <hr>
+                    <br>
+                    <br>
+                    <el-row align="middle">
+                      <el-col :span="8" style="text-align: center" v-for="i in pics.length" :key="i">
+                        <el-avatar :size="80" :src="pics[i-1]">
                         </el-avatar>
                         <br>
                         <span>姓名：{{ names[i - 1] }}</span>
@@ -60,9 +54,12 @@
                     </el-row>
                   </div>
                     <div class="contact">
-                        <p>合作单位</p>
-                        <el-row>
-                            <el-col :span="8" v-for="i in cooperativeSchool.length" :key="i">
+                        <p style="text-align: center;font-size:40px;font-weight: bold">合作单位</p>
+                      <hr>
+                      <br>
+                      <br>
+                        <el-row >
+                            <el-col :span="8" style="text-align: center" v-for="i in cooperativeSchool.length" :key="i">
                                 <el-avatar  :size="80" :src="cooperativeSchool[i-1]">
                                 </el-avatar>
                                 <br>
