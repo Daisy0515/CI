@@ -792,7 +792,7 @@ const vueRouter = new Router({
                     name: 'index',
                     component: index,
                     meta: {
-                        title: '首页',
+                        title: 'cosine',
                     }
                 },
                 {
