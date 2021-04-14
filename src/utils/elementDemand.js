@@ -44,6 +44,11 @@ import {
     TabPane,
     Avatar,
     Image,
+    Container,
+    Header,
+    Aside,
+    Main,
+    Footer,
 } from 'element-ui';
 
 const getElement = {
@@ -93,7 +98,11 @@ const getElement = {
         Vue.use(MenuItem);
         Vue.use(MenuItemGroup);
         Vue.use(Avatar);
-        Vue.use(Image);
+        Vue.use(Container);
+        Vue.use(Main);
+        Vue.use(Aside);
+        Vue.use(Header);
+        Vue.use(Footer);
     }
 }
 export default getElement
