@@ -81,7 +81,8 @@
                     </el-table-column>
 
                     <el-table-column prop="status" label="状态" align="center">
-
+                    </el-table-column>
+                    <el-table-column prop="regDescription" label="文件命名规范" align="center" width="200">
                     </el-table-column>
                     <el-table-column prop="fileName" label="文件名" align="center" width="200">
                         <template slot-scope="scope">
@@ -91,7 +92,7 @@
 
                     <el-table-column label="操作" align="center" >
                         <template slot-scope="scope">
-                            <sourceUpload :uploadIndex="uploadIndex" :fileIndex="scope.row.id"
+                            <sourceUpload :uploadIndex="uploadIndex" :fileIndex="scope.row.id" :myFilter="scope.row.reg"
                                           v-on:setIdCard="setIdCard2(data=$event,id=scope.row.id)"/>
                         </template>
                     </el-table-column>
