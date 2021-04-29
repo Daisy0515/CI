@@ -98,6 +98,7 @@ const getElement = {
         Vue.use(MenuItem);
         Vue.use(MenuItemGroup);
         Vue.use(Avatar);
+        Vue.use(Image);
         Vue.use(Container);
         Vue.use(Main);
         Vue.use(Aside);

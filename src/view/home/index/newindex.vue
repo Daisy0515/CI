@@ -1,12 +1,11 @@
 <template>
     <div>
         <div id="ROBOT">
-            <div style="position: fixed;z-index: 9999;right: 0;top: 800px;">
+            <div style="position: fixed;z-index: 9999;right: 5%;top: 75%;">
                 <img src="./ROBOT.gif" v-on:click="robotDialog=!robotDialog;">
             </div>
         </div>
-      <div></div>
-      <el-container style=" width: 800px;height: 600px;z-index: 100;position: fixed;top : 20%; right: 30%;">
+      <el-container v-show="robotDialog" style=" width: 50%;height: 582px;z-index: 100;position: fixed;top : 10%; right: 30%;">
         <el-aside width="200px" style=" background-color: aqua;">
           <el-row style="height: 100%">
             <el-col style="height: 100%" :span="24">
@@ -15,62 +14,62 @@
                   class="el-menu-vertical-demo"
                   @open="handleOpen"
                   @close="handleClose"
+                  @select="handleSelect"
                   background-color="#545c64"
                   text-color="#fff"
+                  :unique-opened = 'uniqueOpen'
                   active-text-color="#ffd04b">
                 <el-submenu index="1">
                   <template slot="title">
                     <i class="el-icon-location"></i>
-                    <span>导航一</span>
+                    <span>最近使用</span>
                   </template>
                   <el-menu-item-group>
                     <template slot="title">分组一</template>
-                    <el-menu-item index="1-1">选项1</el-menu-item>
-                    <el-menu-item index="1-2">选项2</el-menu-item>
+                    <el-menu-item index="1-1">代码审查</el-menu-item>
+                    <el-menu-item index="1-2">代码注释</el-menu-item>
+                    <el-menu-item index="1-3">余弦儿</el-menu-item>
                   </el-menu-item-group>
-                  <el-menu-item-group title="分组2">
-                    <el-menu-item index="1-3">选项3</el-menu-item>
-                  </el-menu-item-group>
-                  <el-submenu index="1-4">
-                    <template slot="title">选项4</template>
-                    <el-menu-item index="1-4-1">选项1</el-menu-item>
-                  </el-submenu>
                 </el-submenu>
-                <el-menu-item index="2">
-                  <i class="el-icon-menu"></i>
-                  <span slot="title">导航二</span>
-                </el-menu-item>
-                <el-menu-item index="3" disabled>
-                  <i class="el-icon-document"></i>
-                  <span slot="title">导航三</span>
-                </el-menu-item>
+                <el-submenu index="2">
+                  <template slot="title">
+                    <i class="el-icon-menu"></i>
+                    <span slot="title">内部服务</span>
+                  </template>
+                    <el-menu-item index="2-1">代码审查</el-menu-item>
+                    <el-menu-item index="2-2">代码注释</el-menu-item>
+                    <el-menu-item index="2-3">开发者推荐</el-menu-item>
+                </el-submenu>
+                <el-submenu index="3">
+                  <template slot="title">
+                    <i class="el-icon-menu"></i>
+                    <span slot="title">外部服务</span>
+                  </template>
+                    <el-menu-item index="3-1">知识查询</el-menu-item>
+                    <el-menu-item index="3-2">代码补全</el-menu-item>
+                </el-submenu>
                 <el-menu-item index="4">
                   <i class="el-icon-setting"></i>
-                  <span slot="title">导航四</span>
+                  <span slot="title">robot管理</span>
                 </el-menu-item>
               </el-menu>
             </el-col>
           </el-row>
         </el-aside>
-        <el-container>
-          <el-header style=" background-color: bisque;">Header</el-header>
-          <el-main style=" background-color: coral;">Main</el-main>
-          <el-footer style=" background-color: cornflowerblue;height: 150px;">Footer</el-footer>
-        </el-container>
-      </el-container>
-        <div id="robot_dialog" v-show="robotDialog">
         
-            <div style="position:fixed;top:600px;width: 300px;height: 200px;border: 1px solid #dfdfdf;overflow: hidden;
-            right: 0%;margin-left: -450px;box-shadow: 0 0 15px #555;z-index: 9999;background-color: white;overflow: auto;">
+          <codeReview v-if="iscodeReview" @childFn="robotClose"></codeReview>    
+          <cosineRobot v-if="iscosineRobot" @childFn="robotClose"></cosineRobot>
+      
+      </el-container>
+        <div id="robot_dialog" v-show="robotManage" >
+        
+            
                 
-                   
-                        
-                   
                     
-                        <Robot></Robot>
+                        <Robot @childFn="parentFn"></Robot>
                     
                     
-            </div>
+            
            
         </div>
    
@@ -88,6 +87,8 @@
     import IndexForDemand from '@/view/home/index/indexfordemand.vue';
     import ToolSet from '@/view/home/index/newtoolset2.vue';
     import Robot from '@/view/home/index/robot.vue';
+    import cosineRobot from '@/view/home/robot/cosineRobot.vue';
+    import codeReview from '@/view/home/robot/codeReview.vue';
 
 export default {
     components: {
@@ -97,18 +98,55 @@ export default {
         IndexForDemand,
         ToolSet,
         Robot,
+        cosineRobot,
+        codeReview,
     },
     data() {
         return {
             projectRole: 0,
             userToken: "",
             robotDialog: false,
+            textarea:'',
+            uniqueOpen : true,
+            iscosineRobot:true,
+            iscodeReview:false,
+            robotManage:false,
         }
     },
     created() {
         this.userToken = sessionStorage.getItem("userToken");
         this.projectRole = sessionStorage.getItem("projectRole");
-    }
+    },
+    methods:{
+      handleOpen(key, keyPath) {
+        console.log("open",key, keyPath);
+
+      },
+      handleSelect(key, keyPath) {
+        if(key=="2-1"||key=="1-1"){
+          this.iscosineRobot =false;
+          this.iscodeReview = true;
+        }
+        if(key=="1-3"){
+          this.iscodeReview = false;
+          this.iscosineRobot =true;
+          
+        }
+        if(key=="4"){
+          this.robotManage = !this.robotManage;
+          
+        }
+      },
+      handleClose(key, keyPath) {
+        console.log("close",key, keyPath);
+      },
+      parentFn(payload){
+        this.robotManage = payload;
+      },
+      robotClose(payload){
+        this.robotDialog=payload;
+      }
+    },
 }
 </script>
 <style scoped>

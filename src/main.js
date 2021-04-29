@@ -8,10 +8,12 @@ import store from './store/index.js'
 import getElement from './utils/elementDemand.js'
 import preventClick from './utils/preventClick'
 import promise from 'es6-promise';
+import Chat from 'jwchat';
 promise.polyfill();
 // import "@/assets/js/style.scss";
 Vue.use(getElement)
 Vue.use(preventClick)
+Vue.use(Chat)
 Vue.config.productionTip = false;
 import assign from 'object-assign';
 assign({}, {});
