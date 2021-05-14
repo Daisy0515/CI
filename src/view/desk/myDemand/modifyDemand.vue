@@ -31,16 +31,6 @@
                         </el-input>
                     </div>
                     <div style="margin-top: 15px;">
-                        <el-input placeholder="可设置交付资源命名规范，非必选项" v-model="reg">
-                            <template slot="prepend">正则表达式：</template>
-                        </el-input>
-                    </div>
-                    <div style="margin-top: 15px;">
-                        <el-input placeholder="请输入交付资源命名规范" v-model="regDescription">
-                            <template slot="prepend">描述：</template>
-                        </el-input>
-                    </div>
-                    <div style="margin-top: 15px;">
                         <span>必须上传：</span>
                         <el-radio  v-model="isResourceOptional" :label="true">是</el-radio>
                         <el-radio  v-model="isResourceOptional" :label="false">否</el-radio>
@@ -57,8 +47,6 @@
                                 <span v-if="!scope.row.isUpload">可选上传</span>
                             </template>
                         </el-table-column>
-                        <el-table-column prop="reg" label="正则表达式"> </el-table-column>
-                        <el-table-column prop="regDescription" label="命名规范"> </el-table-column>
                         <el-table-column label="操作" width="80" align="center">
                             <template slot-scope="scope" >
                                 <span @click="deleteResourceItem(scope.row.resourceName)"  v-if="!scope.row.isOrigin">

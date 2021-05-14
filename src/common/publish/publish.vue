@@ -53,16 +53,6 @@
                         </el-input>
                     </div>
                     <div style="margin-top: 15px;">
-                        <el-input placeholder="可设置交付资源命名规范，非必选项" v-model="reg">
-                            <template slot="prepend">正则表达式：</template>
-                        </el-input>
-                    </div>
-                    <div style="margin-top: 15px;">
-                        <el-input placeholder="请输入交付资源命名规范" v-model="regD">
-                            <template slot="prepend">描述：</template>
-                        </el-input>
-                    </div>
-                    <div style="margin-top: 15px;">
                         <label v-for="(item, index) in isMust" :key="index">
                             <input name="FruitX" type="radio" :value="item.value" v-model="radioValue"/>
                             {{ item.value }}
