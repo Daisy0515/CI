@@ -99,7 +99,7 @@ export default {
     components: {
         FileUpload
     },
-    props: ['uploadIndex', 'fileName', 'goUpload', 'fileIndex'],  //uploadIndex 用于开启上传文件，fileIndex用来区分上传组件
+    props: ['uploadIndex', 'fileName', 'goUpload', 'fileIndex', 'myFilter'],  //uploadIndex 用于开启上传文件，fileIndex用来区分上传组件
     data() {
         return {
             files: [],
@@ -144,6 +144,14 @@ export default {
                     this.loading = true;
                     this.centerDialogVisible = true;
                     this.$refs.upload.active = true;
+                }
+                if(this.myFilter !== null){
+                    let reg = new RegExp(this.myFilter);
+                    console.log(reg);
+                    if(!reg.test(newFile.name)){
+                        errTips('上传文件不符合命名规范');
+                        return prevent();
+                    }
                 }
                 // Before adding a file
                 // 添加文件前

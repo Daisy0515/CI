@@ -176,6 +176,7 @@
                 <el-table :data="resourceList" style="width: 100%">
                     <el-table-column prop="id" label="编号" width="180"> </el-table-column>
                     <el-table-column prop="resourceName" label="交付资源名称" width="180"> </el-table-column>
+                    <el-table-column prop="regDescription" label="上传文件命名规范" width="180"> </el-table-column>
                     <el-table-column prop="remark" label="备注"> </el-table-column>
                 </el-table>
             </el-card>

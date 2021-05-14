@@ -93,6 +93,8 @@
                                 </template>
                             </el-table-column>
                             <el-table-column prop="content" label="内容描述"> </el-table-column>
+                            <el-table-column prop="reg" label="正则表达式"> </el-table-column>
+                            <el-table-column prop="regDescription" label="命名规范"> </el-table-column>
                         </el-table>
                     </template>
                 </el-form>

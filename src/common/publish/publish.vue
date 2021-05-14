@@ -43,12 +43,22 @@
 
                 <el-dialog title="交付配置" width="40%" :visible.sync="dialogTableVisible">
                     <div>
-                        <el-input placeholder="请输入内容" v-model="input1">
+                        <el-input placeholder="请输入交付资源名称" v-model="input1">
                             <template slot="prepend">名称：</template>
                         </el-input>
                     </div>
                     <div style="margin-top: 15px;">
-                        <el-input placeholder="请输入内容" v-model="input2">
+                        <el-input placeholder="请输入交付资源描述" v-model="input2">
+                            <template slot="prepend">描述：</template>
+                        </el-input>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <el-input placeholder="可设置交付资源命名规范，非必选项" v-model="reg">
+                            <template slot="prepend">正则表达式：</template>
+                        </el-input>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <el-input placeholder="请输入交付资源命名规范" v-model="regD">
                             <template slot="prepend">描述：</template>
                         </el-input>
                     </div>
@@ -146,6 +156,8 @@
                 uploadIndex: false,
                 input1: '',
                 input2: '',
+                reg:null,
+                regD:null,
                 radioValue: '必须',
                 radio: '',
                 deliverData: [],
@@ -217,15 +229,16 @@
                     errTips('资源名称已存在');
                 } else {
                     this.radioValue === '必须' ? (this.radio = 1) : (this.radio = 0);
-                    var item = {projectId: null, resourceName: this.input1, content: this.input2, isUpload: this.radio};
-                    console.log(item);
+                    //就在这里加正则表达式
+                    var item = {projectId: null, resourceName: this.input1, content: this.input2, isUpload: this.radio, reg:this.reg, regDescription:this.regD};
                     this.deliverData.push(item);
                 }
 
                 this.input1 = "";
                 this.input2 = "";
+                this.reg = null;
+                this.regD = null;
                 this.radioValue = "必须";
-                //console.log(this.deliverData);
             },
             deleteItem(itemName) {
                 var L = this.deliverData.length;
@@ -303,8 +316,10 @@
             },
             setIdCard(data) {
                 data && (this.ruleForm.accessory = data);
+                console.log(320, this.ruleForm);
                 httpPost('/v1/authorization/bid/need/insert', this.ruleForm).then(results => {
                     const {data, msg, httpCode} = results.data;
+                    console.log(323, data);
                     if (httpCode === 200) {
                         this.id = data.id;
                         this.ruleForm1.id = this.id;
@@ -318,9 +333,11 @@
                         this.ruleForm1.reviewResourceList = this.deliverData;
                         this.haveValue === '有' ? (this.ruleForm1.isReview = true) : (this.ruleForm1.isReview = false);
                         //put /v1/authorization/review/isreview/update
-                        console.log(this.ruleForm1);
+                        // console.log(this.ruleForm1);
+                        console.log(337, this.ruleForm1);
                         httpPut('/v1/authorization/review/isreview/update', this.ruleForm1).then(results => {
                             const {data, msg, httpCode} = results.data;
+                            console.log(340, data);
                             if (httpCode === 200) {
                                 this.setCache('myDemand');
                                 //这个函数是干嘛的？？
