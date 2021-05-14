@@ -47,6 +47,15 @@ const vueRouter = new Router({
             }
         },
         {
+
+            path: '/oauth/bitbucket/redirect',
+            name: 'bitbucketOauth',
+            component: () => import('@/view/git/bitbucketOauth'),
+            meta: {
+                title: 'bitbucket授权'
+            }
+        },
+        {
             path: '/oauth/weibo/redirect',
             name: 'weiboLogin',
             component: () => import('@/view/loginRegister/login/weiboLogin'),
@@ -792,7 +801,7 @@ const vueRouter = new Router({
                     name: 'index',
                     component: index,
                     meta: {
-                        title: 'cosine',
+                        title: '首页',
                     }
                 },
                 {
@@ -2078,7 +2087,7 @@ const filterInvalidRequestForReview = function (to, from, next) {
 }
 
 vueRouter.beforeEach((to, from, next) => {
-    shareSessionStorage(to);
+    // shareSessionStorage(to);
     document.title = to.meta.title;
     if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
         if (sessionStorage.getItem('userToken')) { // 通过vuex state获取当前的token是否存在

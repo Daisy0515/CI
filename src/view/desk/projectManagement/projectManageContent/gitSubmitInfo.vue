@@ -37,16 +37,16 @@
                         </a>
                     </div>
                 </el-col>
-<!--                <el-col :span="6" :offset="4">-->
-<!--                    <el-card style="width: 150px;height: 150px; margin: 10px auto;">-->
-<!--                        <img :src="gitlabInfo.logo" class="logoCSS">-->
-<!--                    </el-card>-->
-<!--                    <div style="text-align: center;">-->
-<!--                        <a :href="gitlabInfo.authUrl">-->
-<!--                            <el-button type="primary" > 连接gitlab</el-button>-->
-<!--                        </a>-->
-<!--                    </div>-->
-<!--                </el-col>-->
+                <el-col :span="6" :offset="4">
+                    <el-card style="width: 150px;height: 150px; margin: 10px auto;">
+                        <img :src="bitbucketInfo.logo" class="logoCSS">
+                    </el-card>
+                    <div style="text-align: center;">
+                        <a :href="bitbucketInfo.authUrl">
+                            <el-button type="primary" > 连接bitbucket</el-button>
+                        </a>
+                    </div>
+                </el-col>
             </el-row>
         </div >
         <!--展示代码托管平台信息的阶段-->
@@ -61,7 +61,7 @@
                             <router-link to="/git-2" style="margin-left:20px;color:#16b0ff">如何使用git</router-link>
                         </el-col>
                     </el-row>
-                    <h2>仓库地址：{{reposHttpUrl}}</h2>
+                    <h2>仓库地址：{{reposSshUrl}}</h2>
                 </el-card>
             </div>
             <el-tabs v-model="activeName" @tab-click="handleTabClick" :tab-position="tabPosition" >
@@ -161,7 +161,8 @@
     import {httpGet,httpPost} from "@/utils/http";
     import {specificDate} from "@/utils/getDate";
     import {MessageBox} from 'element-ui';
-    import {githubInfo,gitlabInfo,giteeInfo} from '@/common/oauth/oauthSetting'
+    import {githubInfo,gitlabInfo,giteeInfo,bitbucketInfo} from '@/common/oauth/oauthSetting'
+    import bitbucketOauth from "@/view/git/bitbucketOauth";
     export default {
         name: "gitSubmitInfo",
         created(){
@@ -184,7 +185,7 @@
                 projectId: sessionStorage.getItem("projectId"),
                 teamId: sessionStorage.getItem("teamId"),
                 hasBind: false,          //当前团队是否已经绑定了平台
-                gitName: null,           //团队选择的git平台名称，目前有3种：gitlab,gitee,github
+                gitName: null,           //团队选择的git平台名称，目前有4种：gitlab,gitee,github,bitbucket
                 gitUserName: null,       //用户(项目经理角色)第三方git平台的用户名
                 reposName:null,          //团队绑定的仓库名称
                 reposHttpUrl:null,       //团队绑定的仓库名称的http地址
@@ -197,14 +198,16 @@
                 githubInfo:githubInfo, //官方github授权相关的信息
                 gitlabInfo:gitlabInfo, //官方gitlab授权相关的信息
                 giteeInfo:giteeInfo,   //官方gitee授权相关的信息
+                bitbucketInfo: bitbucketInfo,
 
                 oauthTypeMapping:{               //oauthType类型的映射
                     "gitlab":0,
                     "gitlabOfficial":1,
                     "github":2,
                     "gitee":3,
+                    "bitbucket":4
                 },
-                oauthNameList:["gitlab","gitlabOfficial","github","gitee"],
+                oauthNameList:["gitlab","gitlabOfficial","github","gitee", "bitbucket"],
 
                 /**----------------------------------git仓库信息展示模块------------------------------------**/
                 activeName:"branches",            //git仓库信息当前展示的栏目(包括:issues, branches, commits, pull request)
@@ -257,6 +260,7 @@
                         this.reposHttpUrl = data.reposHttpUrl;
                         this.reposSshUrl = data.reposSshUrl;
                         this.gitUserName = data.gitUserName;
+                        console.log(261, data.oauthType);
                         this.gitName = this.oauthNameList[parseInt(data.oauthType)];
                         this.hasBind = data.hasBind;
                     }else{
@@ -396,17 +400,33 @@
             getBranchesList(userName, gitName, reposName, gitProjectId){
                 let url = "/v1/authorization/"+ gitName +"/branches/list";
                 let data = {userName:userName};
+                console.log(400, this.gitName);
+                console.log(401, gitName);
+
                 if(gitName.indexOf("gitlab")>=0){
                     data.reposId = gitProjectId;
                 }else{
                     data.repos = reposName;
                 }
                 this.branches.listLoading = true;
+                // httpGet("/v1/authorization/bitbucket/check/refreshtoken", {userName: this.gitUserName}).then(
+                //     results=>{
+                //         const {httpCode, msg, data} = results.data;
+                //         if(httpCode === 200){
+                //             let tag = data.outOfDate;
+                //             if(tag){
+                //                 window.location.href=bitbucketInfo.authUrl;
+                //             }
+                //         }else{
+                //             errTips(msg);
+                //         }
+                //     }
+                // )
                 httpGet(url,data).then(results=>{
                     const {httpCode, msg, data} = results.data;
                     if(httpCode === 200){
                         this.branches.list = data.branchesList  ; //单个仓库信息包含branches(分支名称),url
-                    } else {
+                    }else {
                         errTips(msg);
                     }
                     this.branches.listLoading = false;
