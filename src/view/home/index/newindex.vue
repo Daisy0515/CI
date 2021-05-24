@@ -28,7 +28,8 @@
                     <template slot="title">分组一</template>
                     <el-menu-item index="1-1">代码审查</el-menu-item>
                     <el-menu-item index="1-2">代码注释</el-menu-item>
-                    <el-menu-item index="1-3">余弦儿</el-menu-item>
+                    <el-menu-item index="1-3">代码搜索</el-menu-item>
+                    <el-menu-item index="1-4">余弦儿</el-menu-item>
                   </el-menu-item-group>
                 </el-submenu>
                 <el-submenu index="2">
@@ -38,7 +39,8 @@
                   </template>
                     <el-menu-item index="2-1">代码审查</el-menu-item>
                     <el-menu-item index="2-2">代码注释</el-menu-item>
-                    <el-menu-item index="2-3">开发者推荐</el-menu-item>
+                    <el-menu-item index="2-3">代码搜索</el-menu-item>
+                    <el-menu-item index="2-4">开发者推荐</el-menu-item>
                 </el-submenu>
                 <el-submenu index="3">
                   <template slot="title">
@@ -59,6 +61,8 @@
         
           <codeReview v-if="iscodeReview" @childFn="robotClose"></codeReview>    
           <cosineRobot v-if="iscosineRobot" @childFn="robotClose"></cosineRobot>
+          <codeComment v-if="iscodeComment" @childFn="robotClose"></codeComment>
+          <codeSearch v-if="iscodeSearch" @childFn="robotClose"></codeSearch>
       
       </el-container>
         <div id="robot_dialog" v-show="robotManage" >
@@ -89,6 +93,8 @@
     import Robot from '@/view/home/index/robot.vue';
     import cosineRobot from '@/view/home/robot/cosineRobot.vue';
     import codeReview from '@/view/home/robot/codeReview.vue';
+    import codeComment from "@/view/home/robot/codeComment.vue";
+    import codeSearch from "@/view/home/robot/codeSearch.vue";
 
 export default {
     components: {
@@ -96,10 +102,12 @@ export default {
         Manager,
         Index,
         IndexForDemand,
-        ToolSet,
+        //ToolSet,
         Robot,
         cosineRobot,
         codeReview,
+        codeComment,
+        codeSearch,
     },
     data() {
         return {
@@ -110,6 +118,8 @@ export default {
             uniqueOpen : true,
             iscosineRobot:true,
             iscodeReview:false,
+            iscodeComment: false,
+            iscodeSearch: false,
             robotManage:false,
         }
     },
@@ -126,15 +136,25 @@ export default {
         if(key=="2-1"||key=="1-1"){
           this.iscosineRobot =false;
           this.iscodeReview = true;
-        }
-        if(key=="1-3"){
+          this.iscodeComment = false;
+          this.iscodeSearch = false;
+        } else if(key=="2-2"||key=="1-2") {
+          this.iscosineRobot =false;
+          this.iscodeReview = false;
+          this.iscodeComment = true;
+          this.iscodeSearch = false;
+        } else if (key=="2-3"||key=="1-3") {
+          this.iscosineRobot =false;
+          this.iscodeReview = false;
+          this.iscodeComment = false;
+          this.iscodeSearch = true;
+        } else if(key=="4"){
+          this.robotManage = !this.robotManage;
+        } else {
           this.iscodeReview = false;
           this.iscosineRobot =true;
-          
-        }
-        if(key=="4"){
-          this.robotManage = !this.robotManage;
-          
+          this.iscodeComment = false;
+          this.iscodeSearch = false;
         }
       },
       handleClose(key, keyPath) {

@@ -9,8 +9,11 @@ import getElement from './utils/elementDemand.js'
 import preventClick from './utils/preventClick'
 import promise from 'es6-promise';
 import Chat from 'jwchat';
+import htmlToPdf from './utils/htmlToPdf.js'
+
 promise.polyfill();
 // import "@/assets/js/style.scss";
+Vue.use(htmlToPdf)
 Vue.use(getElement)
 Vue.use(preventClick)
 Vue.use(Chat)
