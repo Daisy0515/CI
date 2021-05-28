@@ -11,6 +11,10 @@ import promise from 'es6-promise';
 import Chat from 'jwchat';
 import htmlToPdf from './utils/htmlToPdf.js'
 
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+Vue.use(ElementUI);
+
 promise.polyfill();
 // import "@/assets/js/style.scss";
 Vue.use(htmlToPdf)

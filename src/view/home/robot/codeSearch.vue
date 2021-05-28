@@ -18,6 +18,27 @@
         />
       </el-main>
 
+      <el-dialog title="上传代码" :visible.sync="uploadVisible" width="50%"
+        :modal-append-to-body="false" :append-to-body="true">
+        <div style="position: absolute;top:10%;bottom:0;left: 0;right: 0;width: 100%;height: 90%"
+             v-loading = "uploadLoading" element-loading-text="正在上传代码，请耐心等待..." v-if="uploadLoading"
+             element-loading-spinner="el-icon-loading"
+             element-loading-background="rgba(255, 255, 255, 0.7)">
+
+        </div>
+        <upload-page style="height: 70%" :HOST="HOST" @showUploadLoading = "showUploadLoading"></upload-page>
+      </el-dialog>
+
+      <el-dialog title="代码搜索" :visible.sync="codeSearchVisible" width="50%" :modal-append-to-body="false" :append-to-body="true">
+        <div style="position: absolute;top:10%;bottom:0;left: 0;right: 0;width: 100%;height: 90%"
+             v-loading = "initLoading" element-loading-text="正在初始化，请耐心等待..." v-if="initLoading"
+             element-loading-spinner="el-icon-loading"
+             element-loading-background="rgba(255, 255, 255, 0.7)">
+
+        </div>
+        <main-page :HOST="HOST" @showInitLoading="showInitLoading"></main-page>
+      </el-dialog>
+
     </el-container>
   </div>
 
@@ -25,8 +46,14 @@
 </template>
 
 <script>
+import uploadPage from "./codeSearchComponent/uploadPage";
+import MainPage from "./codeSearchComponent/mainPage";
 export default {
   name: "codeSearch",
+  components:{
+    MainPage,
+    uploadPage
+  },
   data() {
     return {
       config: {
@@ -47,15 +74,21 @@ export default {
         "img": require("@/assets/img/contributor/yuanqi.jpg")
       }],
       tool: {
+        show: ['history','more'],
         callback: this.toolEvent
       },
 
+      HOST:"http://localhost:8088",
 
+      //upload
+      uploadVisible:false,
+      uploadLoading:false,
+      codeSearchVisible:false,
+      initLoading:false,
     };
   },
 
   methods: {
-
     bindEnter() {
       const msg = this.inputMsg
       if (!msg) return;
@@ -77,11 +110,34 @@ export default {
     },
     toolEvent(type, plyload) {
       console.log('tools', type, plyload)
+      if(type == "history"){
+        this.upload();
+      }
+      if(type == "more"){
+        // console.log("get More");
+
+        this.search();
+      }
     },
 
     robotClose() {
       this.$emit("childFn", false);
     },
+
+    //codeSearch 实现部分
+    upload(){
+      this.uploadVisible = true;
+    },
+    search(){
+      this.codeSearchVisible = true;
+    },
+    showInitLoading(show){
+      this.initLoading = show;
+    },
+    showUploadLoading(show){
+      this.uploadLoading = show;
+    }
+
   }
 }
 </script>
@@ -139,6 +195,25 @@ p{
   font-weight: bold;
   margin:10px 20px 0 0;
 
+}
+
+>>>.el-dialog {
+  position: relative;
+  margin: 0 auto 50px;
+  background: #FFFFFF;
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgb(0 0 0);
+  box-sizing: border-box;
+  height: 70%;
+}
+
+>>>.el-dialog__body{
+  padding: 30px 20px;
+  color: #606266;
+  font-size: 14px;
+  word-break: break-all;
+  height: 76%;
+  overflow: auto;
 }
 
 </style>
