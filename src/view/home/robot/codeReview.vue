@@ -88,7 +88,7 @@ export default {
     data() {
       return {
         config: {
-          img: require("@/assets/img/contributor/rqj.jpg"),
+          img: require("@/assets/img/contributor/nakagawa.png"),
           name: '代码审查',
           dept: '我可以为您检查代码',
           callback: this.bindCover,
@@ -100,13 +100,13 @@ export default {
         },
         inputMsg:'',
         list:[{
-          "text": { "text": "点击工具栏文件按钮，使用代码审查" },
+          "text": { "text": "点击工具栏的\"文件\"按钮，使用代码审查。\n或者在下方输入框直接输入代码。" },
           "mine": false,
-          "img": require("@/assets/img/contributor/rqj.jpg")
+          "img": require("@/assets/img/contributor/nakagawa.png")
         }],
         tool: {
           //添加文件和历史工具栏，其中文件工具栏开源组件封装好了上传功能
-          show: ['file', 'history'],
+          show: ['file', 'more'],
           callback: this.toolEvent,
         },
         codeReviewVisible: false,
@@ -119,11 +119,11 @@ export default {
           staticAnalysisRes: '',
           codeFormatRes: ''
         },
-       
-        
+
+
       };
     },
-   
+
     methods: {
       //输入框点击回车之后触发的事件
       bindEnter(){
@@ -137,20 +137,15 @@ export default {
                 "img": require("@/assets/img/contributor/xwj.jpg")
             }
             this.list.push(msgObj)
-            const msgObj1 = {
-                "date": date.toLocaleString(),
-                "text": { "text": "点击工具栏文件按钮，使用代码审查" },
-                "mine": false,
-                "img": require("@/assets/img/contributor/rqj.jpg")
-            }
-            this.list.push(msgObj1)
+          this.doUploadWithJSON()
+
       },
       //工具栏组件的回调方法
       toolEvent (type, payload) {
         if (type === 'file') {
           let file = payload
           this.doUpload(file)
-        } else if (type === 'history') {
+        } else if (type === 'more') {
           this.doHistory(payload)
         }
 
@@ -191,14 +186,14 @@ export default {
             "date": date.toLocaleString(),
             "text": { "text": '静态代码分析结果' + '\n' + this.pdf.staticAnalysisRes },
             "mine": false,
-            "img": require("@/assets/img/contributor/rqj.jpg")
+            "img": require("@/assets/img/contributor/nakagawa.png")
           }
           this.list.push(msgStaticAnalysis)
           const codeFormat = {
             "date": date.toLocaleString(),
-            "text": { "text": '更多审查结果请点击工具栏的历史按钮' },
+            "text": { "text": "更多审查结果请点击工具栏的\"更多\"按钮" },
             "mine": false,
-            "img": require("@/assets/img/contributor/rqj.jpg")
+            "img": require("@/assets/img/contributor/nakagawa.png")
           }
           this.list.push(codeFormat)
           this.pdf.time = date.toDateString()
@@ -212,8 +207,52 @@ export default {
       doHistory() {
         this.codeReviewVisible = true
       },
-      
-      
+
+      doUploadWithJSON() {
+        let data = {
+          code: this.inputMsg
+        }
+        axios.post('http://1.15.173.185:8080/api/file/cosineNoFile', data)
+          .then(res => {
+            console.log('success')
+            let date = new Date()
+            if (res.data.stats !== 0) {
+              const errMsg = {
+                "date": date.toLocaleString(),
+                "text": { "text": "编译出错，请检查代码是否为C语言编译通过代码" },
+                "mine": false,
+                "img": require("@/assets/img/contributor/nakagawa.png")
+              }
+              this.list.push(errMsg)
+            } else {
+              console.log(res.data);
+              this.pdf.originalCode = res.data.originalCode
+              this.pdf.compileRes = res.data.compileRes
+              this.pdf.staticAnalysisRes = res.data.staticAnalysisRes
+              this.pdf.codeFormatRes = res.data.codeFormatRes
+              const msgStaticAnalysis = {
+                "date": date.toLocaleString(),
+                "text": { "text": '静态代码分析结果' + '\n' + this.pdf.staticAnalysisRes },
+                "mine": false,
+                "img": require("@/assets/img/contributor/nakagawa.png")
+              }
+              this.list.push(msgStaticAnalysis)
+              const codeFormat = {
+                "date": date.toLocaleString(),
+                "text": { "text": "更多审查结果请点击工具栏的\"更多\"按钮" },
+                "mine": false,
+                "img": require("@/assets/img/contributor/nakagawa.png")
+              }
+              this.list.push(codeFormat)
+              this.pdf.time = date.toDateString()
+            }
+
+          }).catch(err => {
+            console.log(err);
+          })
+      }
+
+
     }
 }
 </script>
@@ -221,7 +260,7 @@ export default {
 <style scoped>
      .chatright {
     background-color: #ffffff;
-    
+
     height: 100%;
 }
 .chatright .top {
@@ -256,7 +295,7 @@ p{
 }
 .msgright {
      float: right;
-     height: 20px; 
+     height: 20px;
 }
 .chatright .footer {
     background-color: #FBFCFC;
@@ -276,5 +315,5 @@ p{
 .to-large >>> .el-input__inner {
   width: 200%;
 }
-  
+
 </style>
