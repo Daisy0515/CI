@@ -68,27 +68,49 @@
 
                 </div>
                 <div class="main_item">
-                    <h4 class="userList">{{userList.competeTeamList.length>0?'成员列表':'暂无成员'}}</h4>
-                    <el-card
-                            style="float:left"
-                            class="item clearfix"
-                            v-for="(item, index) in userList.competeTeamList"
-                            :key="index"
-                    >
-                        <router-link @click.native="viewUserInfo({userId:userId, id:item.userId})" to>
-                            <img :src="item.headurl?item.headurl:getnoImg"/>
-                        </router-link>
-                        <div class="item_title" v-if="!manager_role">
-                            <span style="text-align:center; display:block; width:100%; margin-left:0px">{{item.name}}</span>
-                        </div>
-                        <div class="item_title" v-if="manager_role">
-                            <span>{{item.name}}</span>
-                            <span @click="deleteUser(item.userId,index)" >
+                    <el-container>
+                        <el-main>
+                            <h4 class="userList">{{userList.competeTeamList.length>0?'成员列表':'暂无成员'}}</h4>
+
+                            <el-card
+                                    style="float:left"
+                                    class="item clearfix"
+                                    v-for="(item, index) in pageUserlist"
+                                    :key="index"
+                            >
+                                <router-link @click.native="viewUserInfo({userId:userId, id:item.userId})" to>
+                                    <img :src="item.headurl?item.headurl:getnoImg"/>
+                                </router-link>
+                                <div class="item_title" v-if="!manager_role">
+                                    <span style="text-align:center; display:block; width:100%; margin-left:0px">{{item.name}}</span>
+                                </div>
+                                <div class="item_title" v-if="manager_role">
+                                    <span>{{item.name}}</span>
+                                    <span @click="deleteUser(item.userId,index)" >
                                 <i class="el-icon-error"></i>删除
                             </span>
-                        </div>
-                    </el-card>
+                                </div>
+                            </el-card>
+                        </el-main>
+                        <el-footer>
+                            <div style="width: 180px;height: 40px">
+
+                                <el-pagination
+                                        @size-change="teamhandleSizeChange"
+                                        @current-change="teamhandleCurrentChange"
+                                        :current-page.sync="currentPage2"
+                                        :page-sizes="[9, 12, 15, 18]"
+                                        :page-size=teampageSize
+                                        layout="sizes, prev, pager, next"
+                                        :total="teamtotalsize">
+                                </el-pagination>
+                            </div>
+                        </el-footer>
+                    </el-container>
+
+
                 </div>
+
             </div>
         </div>
         <team-member-info :dialogFormVisible="teamMemberInfoDialog" :ruleForm="userRuleForm"
@@ -138,7 +160,7 @@
                             :total="totalPage"
                             layout="prev, pager, next, jumper"
                     ></el-pagination>
-                </div>   
+                </div>
             </div>
         </div>
             <team-application-user-info :dialogFormVisible="userInfoDialog" :userData="userData"
@@ -189,6 +211,11 @@
                     competeTeamList: [],
                     typeList: []
                 },
+                pageUserlist:[],
+                teamMemberList:[],
+                teampageSize:9,
+                teamtotalsize:0,
+                currentPage2:1,
                 userId:null,
 
                 totalPage: 0,
@@ -218,8 +245,29 @@
             }
             this.getView();
             this.getApplication();
+
         },
         methods: {
+
+            teamhandleSizeChange(val){
+                this.teampageSize = val;
+            },
+            teamhandleCurrentChange(val){
+                this.pageUserlist = [];
+                var end = val*this.teampageSize;
+                var start = (val-1)*this.teampageSize;
+                if(end>this.teamtotalsize){
+                    end = this.teamtotalsize;
+                }
+                console.log(start,end,this.teamtotalsize);
+                for(let i = start; i < end; i++){
+                    var obj = this.teamMemberList[i];
+                    console.log(obj);
+                    this.pageUserlist.push(obj);
+                }
+            console.log(this.pageUserlist);
+            },
+
             //添加用户
             addUser(id) {
                 MessageBox.confirm("是否确定将此用户加入至团队？", "提示", {
@@ -366,7 +414,12 @@
                     const {httpCode, msg, data} = results.data;
                     if (httpCode === 200) {
                         this.userList = data;
+                        this.teamMemberList = this.userList.competeTeamList;
+                        this.teamtotalsize = this.teamMemberList.length;
                         // 筛选得到父类别
+                        //console.log(this.userList);
+                        console.log(this.teamMemberList,this.teamtotalsize);
+                        this.teamhandleCurrentChange(1);
                         this.types = this.userList.typeList.filter(function (item) {
                             if (item.parentId === 0)
                                 return item;

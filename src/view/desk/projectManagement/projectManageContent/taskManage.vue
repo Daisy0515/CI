@@ -63,12 +63,19 @@
                                 </el-form-item>
                                 <el-form-item label="指派人员" prop="participantList">
                                   <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-                                    <el-checkbox-group v-model="addMission.participantList">
-                                        <el-checkbox v-for="(item, index) in userList" :key="index" :label="item.id">{{
-                                            item.userName
-                                            }}
-                                        </el-checkbox>
-                                    </el-checkbox-group>
+                                    <el-select
+                                            v-model="addMission.participantList"
+                                            multiple
+                                            collapse-tags
+                                            style="margin-left: 20px;"
+                                            placeholder="请选择">
+                                        <el-option
+                                                v-for="(item, index) in userList"
+                                                :key="index"
+                                                :label="item.userName"
+                                                :value="item.id">
+                                        </el-option>
+                                    </el-select>
                                 </el-form-item>
                                 <el-form-item label="开始时间" prop="startTime">
                                     <el-date-picker

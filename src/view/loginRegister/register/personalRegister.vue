@@ -115,7 +115,6 @@
         created: function () {
             this.loginForm.microblogId = this.$route.query.microblogId;
             this.loginForm.type = this.$route.query.type;
-
             // console.log(this.loginForm.microblogId!=null);
             if (sessionStorage.getItem("userToken")) {
                 this.$router.push("/");
@@ -123,6 +122,8 @@
             }
         },
         methods: {
+
+
             setPhoneErr(msg) {
                 this.errorList.phoneError = msg;
             },

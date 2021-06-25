@@ -48,13 +48,13 @@
 
                     </el-form-item>
 
-<!--                    <el-form-item class="ThirdPartyLogin">-->
-<!--&lt;!&ndash;                        <a :href="'https://api.weibo.com/oauth2/authorize?client_id=' + clientId + '&response_type=code&redirect_uri=' + redirect_uri">&ndash;&gt;-->
-<!--                            <img :src="weibologo" class="logoCSS" @click="weibologin">-->
-<!--&lt;!&ndash;                        </a>&ndash;&gt;-->
+                    <el-form-item class="ThirdPartyLogin">
+<!--                        <a :href="'https://api.weibo.com/oauth2/authorize?client_id=' + clientId + '&response_type=code&redirect_uri=' + redirect_uri">-->
+                            <img :src="weibologo" class="logoCSS" @click="weibologin">
+<!--                        </a>-->
 <!--                        <img :src="weixinlogo" class="logoCSS">-->
 <!--                        <img :src="QQlogo" class="logoCSS">-->
-<!--                    </el-form-item>-->
+                    </el-form-item>
                     <el-form-item class="loginButton">
                         <el-button type="primary" @click="submitForm('loginForm')">登录</el-button>
                     </el-form-item>
