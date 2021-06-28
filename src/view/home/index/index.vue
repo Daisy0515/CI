@@ -2,7 +2,7 @@
     <div id="index">
         <main id="main">
             <section class="cc-hero" :style="imgStyle" id="heroImage" @click="homepageView">
-                <div class="cc-hero__lead" v-show="isIndexImage">
+                <div class="cc-hero__lead" v-show="isIndexImage" >
                     <p class="cc-hero__title">面向服务的群智化生态化</p>
                     <p class="cc-hero__title">软件开发平台</p>
                     <p class="cc-hero__subtitle">提供覆盖生命周期的软件开发服务</p>
@@ -220,6 +220,9 @@ export default {
                 this.isIndexImage = true;
                 this.itemFlag = 0;
             }
+            this.clearTimer();
+            this.startTimer();
+
         },
         prevImg() {
             if (this.mark > 0) {
@@ -237,17 +240,19 @@ export default {
                 this.isIndexImage = true;
                 this.itemFlag = 0;
             }
+            this.clearTimer();
+            this.startTimer();
             //console.log(this.imgStyle.backgroundImage );
             //console.log(this.mark);
         },
         play() {
-            this.timerId = setInterval(this.autoPlay, 5000)
+            this.timerId = setInterval(this.autoPlay, 8000)
         },
         clearTimer() {
             clearInterval(this.timerId);
         },
         startTimer() {
-            this.timerId = setInterval(this.autoPlay, 5000);
+            this.timerId = setInterval(this.autoPlay, 8000);
         },
         publishTask() {
             this.$router.push({path: "publishTask"});
