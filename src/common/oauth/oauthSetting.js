@@ -12,8 +12,8 @@ const homePageUrl = oauthHomePageUrl;
 
 export const githubInfo = {//官方github授权相关的信息
     logo: require("@/assets/img/git/github.jpg"),
-    clientId: "3aec007a081933c8a3ad",
-    clientSecret: "aa01e4f4fac25aee9439d50293b11305dbfb7b09",
+    clientId: "519c4c232efafaeb3a36",
+    clientSecret: "0a807782e1e0f3911b885c6f9812c8d90b2d7fb8",
     redirectUrl: homePageUrl + "oauth/github/redirect",
 };
 export const gitlabInfo = { //官方gitlab授权相关的信息
@@ -24,8 +24,8 @@ export const gitlabInfo = { //官方gitlab授权相关的信息
 };
 export const giteeInfo = { //官方gitee授权相关的信息
     logo: require("@/assets/img/git/gitee.png"),
-    clientId: "292c99a855e7b44d99cde7ed2566d6e644cbda44e73bba3c41f81705e4db2ddb",
-    clientSecret: "9533fadf30651cd577fbf5c6a7d536a6d7c6f0141f26b93c8987fccfb44a6bee",
+    clientId: "529a89aec1239469a27ff2e6149cc8adf225b2cf70e2fa86e35bca31835dcf59",
+    clientSecret: "18b1cbb3e9c01bd6b4c281ae512959192ce66fd617d93ffa7521a539a7c85158",
     redirectUrl: homePageUrl + "oauth/gitee/redirect",
 };
 export const bitbucketInfo = { //官方gitee授权相关的信息
