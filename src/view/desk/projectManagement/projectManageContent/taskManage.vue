@@ -7,7 +7,7 @@
                         <i class="el-icon-menu"></i>
                         任务管理
                     </p>
-                    <p class="ganttHeader_addTask" v-show="watchIndex || showIndex" @click="watchIndex = !watchIndex"
+                    <p class="ganttHeader_addTask" v-show="watchIndex || showIndex" @click="changeWatchIndex"
                        :class="watchIndex === true ? 'is-active' : ''">添加任务</p>
                 </div>
             </div>
@@ -333,6 +333,10 @@
             this.addMission.participantList = val ? tmp : [];
             this.isIndeterminate = false;
           },
+            changeWatchIndex(){//改变任务面板显示
+                this.watchIndex = !this.watchIndex;
+                this.closeTaskInfoDialog(true);
+            },
             insertNewMission() {//新建任务
                 if (this.insertMissionTitle.title === "") {
                     errTips('任务名称不能为空');
@@ -354,7 +358,7 @@
             },
             closeTaskInfoDialog(refresh = false) {//关闭“查看”窗口
                 if(refresh){
-                    this.getMissionTitleList();
+                    //this.getMissionTitleList();
                     let tmpId = 0;
                     for (let i = 0; i <= this.missionTitle.length; i++) {
                         if (this.missionTitle[i].title === this.missionTitleList[this.selectedMission].title) {
@@ -386,6 +390,7 @@
             },
             showSubTask(val) {//显示下方分页
                 this.missionInfoList = this.missionTitleList[val].missionInfoList;
+                this.closeTaskInfoDialog(true);
             },
             getMissionTitleList() {//获得所有任务的信息，展示在下面分页
                 this.tableLoading = true;
