@@ -62,7 +62,7 @@
                         </el-form-item>
                         <el-row>
                             <el-col :span="6">
-                                <el-form-item label="是否是比赛：">
+                                <el-form-item label="是否开放为竞赛：">
                                     <span v-if="ruleForm.isCompetition">是</span>
                                     <span v-if="!ruleForm.isCompetition">否</span>
                                 </el-form-item>

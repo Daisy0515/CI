@@ -92,7 +92,7 @@
             <div v-show="haveValue==='有'">
                 <el-form-item label="评审流程">
                     <el-button type="primary" size="small" @click="dialogTableVisible1 = true">评审配置</el-button>
-                    <el-button type="primary" size="small" style="margin-left: 3%;">参考模板</el-button>
+                    //<el-button type="primary" size="small" style="margin-left: 3%;">参考模板</el-button>
                     <el-dialog title="评审流程" width="40%" :visible.sync="dialogTableVisible1">
                         <div>
                             <el-input placeholder="请输入内容" v-model="input3">

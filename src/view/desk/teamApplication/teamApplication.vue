@@ -49,7 +49,6 @@
                 <el-table-column prop="leader" label="团队负责人" align="center"></el-table-column>
                 <el-table-column prop="proposer" label="申请人" align="center"></el-table-column>
                 <el-table-column prop="gmtCreate" label="添加时间" align="center"></el-table-column>
-                <el-table-column prop="type" label="类型" width="150" align="center"></el-table-column>
                 <el-table-column prop="status" label="状态" align="center"></el-table-column>
                 <el-table-column prop="type" label="项目类型" width="150" align="center"></el-table-column>
                 <el-table-column label="操作" prop="province" align="center" width="250">
